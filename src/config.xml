@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName"
+			value="com.microsoft.sqlserver.jdbc.SQLServerDriver">
+		</property>
+		<property name="url"
+			value="jdbc:sqlserver://127.0.0.1:1433;DatabaseName=Financial"/>
+		<property name="username" value="sa"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	<bean id="macroEconomicDao"
+		class="org.bear.dao.JdbcMacroEconomicDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="revenueDao"
+		class="org.bear.dao.JdbcRevenueDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="basicStockDao"
+		class="org.bear.dao.JdbcBasicStockDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="basicCashFlowsDao"
+		class="org.bear.dao.JdbcCashFlowsDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="basicBalanceSheetDao"
+		class="org.bear.dao.JdbcBalanceSheetDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="basicIncomeStatementDao"
+		class="org.bear.dao.JdbcIncomeStatementDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="basicFinancialDataDao"
+		class="org.bear.dao.JdbcFinancialDataDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="basicCommonMetaDataDao"
+		class="org.bear.dao.JdbcCommonMetaDataDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="journalDao"
+		class="org.bear.dao.JdbcJournalDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="americanMacroDao"
+		class="org.bear.dao.JdbcAmericanMacroDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="americanMacroPantherDao"
+		class="org.bear.dao.JdbcAmericanMacroPantherDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="pmIndexDao"
+		class="org.bear.dao.JdbcPMIndexDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+</beans>

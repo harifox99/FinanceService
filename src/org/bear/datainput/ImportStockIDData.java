@@ -1,0 +1,24 @@
+package org.bear.datainput;
+
+import java.util.List;
+
+import org.bear.dao.BasicStockDao;
+import org.bear.entity.BasicStockWrapper;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * @author edward
+ * 去資料庫擷取所有股票代碼
+ */
+public class ImportStockIDData 
+{
+	BasicStockDao basicStockDao;
+	List <BasicStockWrapper> wrapperList;
+	public ImportStockIDData()
+	{
+		//擷取所有股票代碼
+		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
+		basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
+		wrapperList = basicStockDao.findAllData();
+	}
+}

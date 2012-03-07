@@ -1,0 +1,11 @@
+package org.bear.dao;
+import java.util.List;
+import org.bear.entity.CashFlowsEntity;
+
+public interface CashFlowsDao 
+{
+	public void insertBatch(List<CashFlowsEntity> entity);
+	public List<CashFlowsEntity> findDataBySeason(String stockID, String year, String season);
+	public void insert(CashFlowsEntity cashFlowsEntity);
+	public List<CashFlowsEntity> findDataByYear(String stockID, String year);
+}

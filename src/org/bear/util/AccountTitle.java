@@ -1,0 +1,55 @@
+package org.bear.util;
+/**
+ * @author edward
+ * 四大報表的會計科目
+ */
+public enum AccountTitle 
+{
+	//現金流量表
+	INCOME_SUMMARY,
+	OPERATING_ACTIVITY,
+	INVESTING_ACTIVITY,
+	FINANCING_ACTIVITY,
+	NET_CASH_FLOWS,
+	BEGINNING_CASH,
+	ENDING_CASH,
+	FREE_CASH_FLOW,
+	SEASON,
+	EMPTY,
+	//資產負債表
+	Cash,
+	ShortTermInvestment,
+	Receivable,
+	OtherReceivable,
+	ShortTermBorrowing,
+	Inventory,
+	PrepaidExpense,
+	OtherCurrentAssets,
+	CurrentAssets,
+	LongTermInvestment,
+	FixedAssets,
+	OtherAssets,
+	TotalAssets,
+	LongTermOneYear,
+	AccountsPayable,
+	CurrentLiability,
+	LongTermLiability,
+	OtherLiability,
+	TotalLiability,
+	StockholdersEquity,
+	//損益表
+	OperatingRevenue,
+	OperatingCost,
+	GrossProfit,
+	OperatingExpense,
+	OperatingIncome,
+	InvestmentIncome,
+	NonOperatingRevenue,
+	NonOperatingExpense,
+	PreTaxIncome,
+	NetIncome,
+	EPS,
+	WghtAvgStocks,
+	//其他財務指標
+	NAV;
+}
