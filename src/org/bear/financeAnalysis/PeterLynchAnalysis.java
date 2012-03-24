@@ -25,10 +25,8 @@ public class PeterLynchAnalysis
 	PeterLynchWrapper wrapper;
 	final String initYear = "2002";
 	public PeterLynchAnalysis()
-	{
-		
-	}
-	public PeterLynchWrapper getPeterLynchAnalysis(String stockID)
+	{}
+	public PeterLynchWrapper getPeterLynchAnalysis(String stockID) throws Exception
 	{
 		int intYearLength = 8;
 		wrapper = new PeterLynchWrapper();
@@ -38,13 +36,13 @@ public class PeterLynchAnalysis
 		List <IncomeStatementEntity> incomeStatementList;
 		incomeStatementDao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
 		incomeStatementList = incomeStatementDao.findDataByYear(stockID, initYear);
-		//計算過去N年稅前盈餘成長率
-		double preTaxIncome = 0;
-		double totalGrowthRate = 0;
+		//計算過去N年稅前盈餘成長率		
+		double totalGrowthRate = 1;
+		/* 算數平均
 		for (int i = incomeStatementList.size() - intYearLength; i < incomeStatementList.size(); i++)
 		{
 			double earningsGrowthRate = 0;
-			
+			/* 
 			if (i == incomeStatementList.size() - intYearLength)
 			{
 				preTaxIncome = incomeStatementList.get(i).getPreTaxIncome();				
@@ -54,34 +52,38 @@ public class PeterLynchAnalysis
 				earningsGrowthRate = incomeStatementList.get(i).getPreTaxIncome() / preTaxIncome - 1;
 				totalGrowthRate = totalGrowthRate + getFinalGrowthRate(earningsGrowthRate);
 				preTaxIncome = incomeStatementList.get(i).getPreTaxIncome();
-			}
+			}			
+		}*/
+		//幾何平均
+		for (int i = 0; i < incomeStatementList.size()-1; i++)
+		{			
+			totalGrowthRate = totalGrowthRate * incomeStatementList.get(i+1).getPreTaxIncome() / incomeStatementList.get(i).getPreTaxIncome();
 		}
-		/*
-		totalGrowthRate = Math.pow((double)20160/65022, 0.2);
-		totalGrowthRate = Math.pow(5.72/1.79, 0.25);
-		totalGrowthRate = Math.pow(1.79/5.72, 0.25);
-		totalGrowthRate = Math.pow(5.72/1.79, 0.2);*/
-		totalGrowthRate = totalGrowthRate/(intYearLength - 1);
-		wrapper.setEarningsGrowthRate(StringUtil.setPointLength(totalGrowthRate * 100));
+		//totalGrowthRate = Math.pow((double)20160/65022, 0.2);
+		double exponent = (double)1/(incomeStatementList.size()-1);
+		totalGrowthRate = Math.pow(totalGrowthRate, exponent);
+		totalGrowthRate = totalGrowthRate - 1;
+		wrapper.setEarningsGrowthRate(StringUtil.setPointLength(totalGrowthRate*100));
 		//計算過去N年平均現金股息
 		//其他財務資料
 		FinancialDataDao financialDao = (FinancialDataDao)context.getBean("basicFinancialDataDao");
 		List <FinancialDataEntity> financialList;
 		financialList = financialDao.findDataByYear(stockID, initYear);
 		double cashDiv = 0;
+		//僅抓前七年
 		for (int i = financialList.size() - (intYearLength - 1); i < financialList.size(); i++)
 		{
 			cashDiv = cashDiv + financialList.get(i).getCashDiv();
 		}
 		cashDiv = cashDiv / (intYearLength - 1);
 		wrapper.setCashDiv(StringUtil.setPointLength(cashDiv));
-		//計算P/E Ratio, P/B Ratio, 股價
+		/* 計算P/E Ratio, P/B Ratio, 股價 */
 		GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
 		BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
 		parser.parse(2);
-		//P/E Ratio
+		/* P/E Ratio */
 		wrapper.setPer(parser.getPer());
-		//P/B Ratio
+		/* P/B Ratio */
 		double ratioNumber;
 		ratioNumber = StringUtil.setPointLength(parser.getPrice() / parser.getNav());
 		wrapper.setPbr(ratioNumber);
@@ -96,6 +98,7 @@ public class PeterLynchAnalysis
 		wrapper.setGrahamResult(ratioNumber);
 		return wrapper;
 	}
+	/*
 	private double getFinalGrowthRate(double earningsGrowthRate)
 	{
 		//設定最大盈餘成長率為50%，若超過50%以50%計
@@ -108,5 +111,5 @@ public class PeterLynchAnalysis
 		{
 			return maxGrowthRate;
 		}
-	}
+	}*/
 }
