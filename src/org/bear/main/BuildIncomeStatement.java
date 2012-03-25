@@ -11,6 +11,7 @@ import org.bear.datainput.ImportIncomeStatementCathay;
 public class BuildIncomeStatement {
 
 	/**
+	 * ¤U¸ü·l¯qªí
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -22,5 +23,10 @@ public class BuildIncomeStatement {
 	{
 		ImportIncomeStatementCathay importIncomeStatement = new ImportIncomeStatementCathay();
 		importIncomeStatement.insertBatchList();
+	}
+	public void updateBatch()
+	{
+		//ImportIncomeStatementCathay importIncomeStatement = new ImportIncomeStatementCathay();
+		//importIncomeStatement.updateBatchList();
 	}
 }
