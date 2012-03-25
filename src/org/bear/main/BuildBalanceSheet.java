@@ -6,6 +6,7 @@ import org.bear.datainput.ImportBalanceSheetCathay;
 public class BuildBalanceSheet {
 
 	/**
+	 * 下載資產負債表
 	 * @param args
 	 */
 	public static void main(String[] args) 
