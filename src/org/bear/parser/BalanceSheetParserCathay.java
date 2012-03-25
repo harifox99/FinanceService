@@ -26,10 +26,15 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 	public BalanceSheetEntity entity[];
 	//判斷季資料或年資料
 	boolean isYear;
+	String year;
+	String seasons;
 	public BalanceSheetParserCathay(){}
-	public BalanceSheetParserCathay(List<Element> elementList, String stockID, boolean isYear)
+	public BalanceSheetParserCathay(List<Element> elementList, String stockID, boolean isYear,
+			String year, String seasons)
 	{
 		this.isYear = isYear;
+		this.year = year;
+		this.seasons = seasons;
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		this.elementList = elementList;
 		this.stockID = stockID;
@@ -117,7 +122,8 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 		}
 		for (int i = 0; i < dataLength; i++)
 		{
-			if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null)
+			if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
+				entity[i].year.equals(year)	&& entity[i].seasons.endsWith(seasons))
 				dao.insert(entity[i]);
 		}
 	}
