@@ -4,7 +4,7 @@ import org.bear.parser.CashFlowsParserCathay;
 import org.bear.util.*;
 /**
  * @author edward
- * 瓣呼ъ瞷瑈秖
+ * 瓣呼ъ瞷瑈秖﹗
  */
 public class ImportCashFlowsCathay extends ImportStockIDData
 {									
@@ -12,29 +12,24 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 	{
 		try
 		{
-			BufferedWriter writer = new BufferedWriter(new FileWriter("cashflowCathay.txt"));			
-			int idleTime = 0;
-			for (int j = 0; j < wrapperList.size(); j++)
+			String[] seasons = {"01", "02", "03", "04"};
+			for (int i = 0; i < seasons.length; i++)
 			{
-				String stockID = wrapperList.get(j).getStockID();
-				System.out.println("布絏" + stockID + " " + idleTime + ". ");
-				writer.write("布絏" + stockID + " " + idleTime + ". ");
-				
-				//if (!stockID.startsWith("2392"))
-				//if (j < 288)
-					//continue;
-				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID);
-				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID);
-				cashFlowsParser.parse(2);
-				Thread.sleep(10000);		
-				/*
-				if (idleTime++ > 10)
+				BufferedWriter writer = new BufferedWriter(new FileWriter("cashflowCathay.txt"));			
+				int idleTime = 0;
+				for (int j = 0; j < wrapperList.size(); j++)
 				{
-					break;
-				}*/
-				idleTime++;
+					String stockID = wrapperList.get(j).getStockID();
+					System.out.println("布絏" + stockID + " " + idleTime + ". ");
+					writer.write("布絏" + stockID + " " + idleTime + ". ");
+					GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID);
+					CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, "2010", seasons[i]);
+					cashFlowsParser.parse(2);
+					Thread.sleep(10000);		
+					idleTime++;
+				}
+				writer.close();	
 			}
-			writer.close();	
 		}
 		catch (Exception ex)
 		{
