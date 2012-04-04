@@ -23,13 +23,15 @@ public class CashFlowsParserYam extends ParserBase implements Parser
 	CashFlowsDao basicCashFlowsDao;
 	//將elementList轉成可以儲存至DB的資料
 	String lastYear;
+	String year;
 	public CashFlowsEntity entity[];
-	public CashFlowsParserYam(List<Element> elementList, String stockID)
+	public CashFlowsParserYam(List<Element> elementList, String stockID, String year)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		this.elementList = elementList;
 		this.stockID = stockID;
-		entity = new CashFlowsEntity[dataLength];		
+		entity = new CashFlowsEntity[dataLength];	
+		this.year = year;
 		for (int i = 0; i < dataLength; i++)
 			entity[i] = new CashFlowsEntity();
 		basicCashFlowsDao = (CashFlowsDao)context.getBean("basicCashFlowsDao");
@@ -90,7 +92,8 @@ public class CashFlowsParserYam extends ParserBase implements Parser
 		}
 		for (int i = 0; i < dataLength; i++)
 		{
-			basicCashFlowsDao.insert(entity[i]);
+			if (entity[i].getYear().equals(year))
+				basicCashFlowsDao.insert(entity[i]);
 		}
 	}
 	/*
