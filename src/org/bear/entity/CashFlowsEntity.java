@@ -6,9 +6,9 @@ package org.bear.entity;
  */
 public class CashFlowsEntity extends BasicEntity
 {
-	String stockID;
-	String year;
-	String seasons;
+	public String stockID;
+	public String year;
+	public String seasons;
 	int incomeSummary;
 	int operatingActivity;
 	int investingActivity;
