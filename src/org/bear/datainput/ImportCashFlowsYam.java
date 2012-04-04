@@ -17,11 +17,13 @@ public class ImportCashFlowsYam extends ImportStockIDData
 			{
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");
-				//if (!stockID.startsWith("3561"))
+				/*if (!stockID.startsWith("3561"))
 				if (j < 521)
 					continue;
+				*/
 				GetURLYamCashFlow urlContent = new GetURLYamCashFlow(stockID);
-				CashFlowsParserYam cashFlowsParser = new CashFlowsParserYam(urlContent.getContent(), stockID, "2010");
+				CashFlowsParserYam cashFlowsParser = new CashFlowsParserYam(urlContent.getContent(), stockID);
+				cashFlowsParser.setYear("2010");
 				cashFlowsParser.parse(1);
 				Thread.sleep(10000);		
 				/*
