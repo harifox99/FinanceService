@@ -123,7 +123,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 		for (int i = 0; i < dataLength; i++)
 		{
 			if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
-				entity[i].year.equals(year)	&& entity[i].seasons.endsWith(seasons))
+				entity[i].year.equals(year)	&& entity[i].seasons.equals(seasons))
 				dao.insert(entity[i]);
 		}
 	}
