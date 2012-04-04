@@ -18,9 +18,13 @@ public class CashFlowsParserCathay extends CashFlowsParserYam
 	int operatingActivity[] = new int[dataLength];
 	//投資活動現金
 	int investingActivity[] = new int[dataLength];
-	public CashFlowsParserCathay(List<Element> elementList, String stockID)
-	{
+	String year;
+	String seasons;
+	public CashFlowsParserCathay(List<Element> elementList, String stockID, String year, String seasons)
+	{		
 		super(elementList, stockID);
+		this.year = year;
+		this.seasons = seasons;
 	}
 	/*
 	private Element getTableContent(Element element, int rows, int cols)
@@ -88,6 +92,8 @@ public class CashFlowsParserCathay extends CashFlowsParserYam
 		}
 		for (int i = 0; i < dataLength; i++)
 		{
+			if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
+					entity[i].year.equals(year)	&& entity[i].seasons.equals(seasons))
 			basicCashFlowsDao.insert(entity[i]);
 		}
 	}
