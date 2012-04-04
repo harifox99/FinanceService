@@ -3,7 +3,7 @@ import org.bear.parser.CashFlowsParserYam;
 import org.bear.util.*;
 /**
  * @author edward
- * 去蕃薯藤網站抓現金流量表
+ * 去蕃薯藤網站抓現金流量表（年表）
  */
 public class ImportCashFlowsYam extends ImportStockIDData
 {					
@@ -21,7 +21,7 @@ public class ImportCashFlowsYam extends ImportStockIDData
 				if (j < 521)
 					continue;
 				GetURLYamCashFlow urlContent = new GetURLYamCashFlow(stockID);
-				CashFlowsParserYam cashFlowsParser = new CashFlowsParserYam(urlContent.getContent(), stockID);
+				CashFlowsParserYam cashFlowsParser = new CashFlowsParserYam(urlContent.getContent(), stockID, "2010");
 				cashFlowsParser.parse(1);
 				Thread.sleep(10000);		
 				/*
