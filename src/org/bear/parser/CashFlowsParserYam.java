@@ -15,6 +15,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class CashFlowsParserYam extends ParserBase implements Parser
 {
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
 	//營業活動現金
 	int operatingActivity[] = new int[dataLength];
 	//投資活動現金
@@ -25,13 +31,12 @@ public class CashFlowsParserYam extends ParserBase implements Parser
 	String lastYear;
 	String year;
 	public CashFlowsEntity entity[];
-	public CashFlowsParserYam(List<Element> elementList, String stockID, String year)
+	public CashFlowsParserYam(List<Element> elementList, String stockID)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		this.elementList = elementList;
 		this.stockID = stockID;
 		entity = new CashFlowsEntity[dataLength];	
-		this.year = year;
 		for (int i = 0; i < dataLength; i++)
 			entity[i] = new CashFlowsEntity();
 		basicCashFlowsDao = (CashFlowsDao)context.getBean("basicCashFlowsDao");
