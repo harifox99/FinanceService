@@ -10,6 +10,7 @@ import org.bear.converter.RevenueConveter;
 import org.bear.entity.LongTermRevenueWrapper;
 import org.bear.entity.RevenueEntity;
 import org.bear.entity.RevenueIncreaseWrapper;
+import org.bear.util.StringUtil;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
@@ -19,6 +20,8 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 
 	public List<RevenueIncreaseWrapper> findAllRevenueIncrease(String stockID, Date startTime, Date endTime) 
 	{
+		//計算年度累計營收需要24個月
+		final int accumulationMonth = 24;
 		List <RevenueEntity> entityList = null;
 		List <RevenueIncreaseWrapper> wrapperList = new ArrayList <RevenueIncreaseWrapper>();
 		try
@@ -29,16 +32,56 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 			stringStart = format.format(startTime);
 			stringEnd = format.format(endTime);
+			stringStart = this.recombine(stringStart);
 			String sql = "select * from operatingRevenue where YearMonth >= '" + stringStart +
 			"' and YearMonth <= '" + stringEnd + "' and stockID = '" + stockID + "' order by YearMonth";
 			System.out.println("Sql Cmd:" + sql);
 			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
-			Iterator <RevenueEntity> iterator = entityList.iterator();     
+			Iterator <RevenueEntity> iterator = entityList.iterator();   
+			int loopIndex = -1;
+			List<Integer> listYearAccumu = new ArrayList<Integer>();
+			
 			while(iterator.hasNext())
 			{
-				RevenueIncreaseWrapper wrapper = new RevenueConveter().converter(iterator.next(), mapLastMonthRevenue);
+				System.out.println("loopIndex" + ++loopIndex);
+				RevenueEntity entity = iterator.next();
+				RevenueIncreaseWrapper wrapper = new RevenueConveter().converter(entity, mapLastMonthRevenue);
+				//計算年度累計營收
+				if (wrapper == null)
+					continue;
+				listYearAccumu.add(entity.getRevenue());
+				if (loopIndex < accumulationMonth)
+				{					
+					double rate = (double)entity.getAccumulation()/entity.getLastAccumulation();
+					rate = rate - 1;
+					rate = rate * 100;
+					rate = StringUtil.setPointLength(rate);
+					wrapper.setAccumulationOneYear(rate);
+				}
+				else
+				{
+					int yearAccumu = 0;
+					int lastYearAccumu = 0;
+					for (int i = 0; i < listYearAccumu.size(); i++)
+					{
+						if (i < (accumulationMonth/2))
+							lastYearAccumu += listYearAccumu.get(i);
+						else
+							yearAccumu += listYearAccumu.get(i);
+					}
+					double rate = (double)yearAccumu/lastYearAccumu;
+					rate = rate - 1;
+					rate = rate * 100;
+					rate = StringUtil.setPointLength(rate);
+					wrapper.setAccumulationOneYear(rate);
+					listYearAccumu.remove(0);
+				}
 				if (wrapper != null)
 					wrapperList.add(wrapper);
+			}
+			for (int i = 0; i < accumulationMonth; i++)
+			{
+				wrapperList.remove(0);
 			}
 		}
 		catch (Exception ex)
@@ -140,5 +183,19 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
 				ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		return entityList;
+	}
+	/**
+	 * 起始 年份減兩年
+	 * @param startYear
+	 * @return
+	 */
+	private String recombine(String startYear)
+	{
+		String dateUnit[] = startYear.split("/");
+		String year = dateUnit[0];
+		int intYear = Integer.parseInt(year);
+		intYear = intYear - 2;
+		startYear = String.valueOf(intYear) + "/" + dateUnit[1] + "/" + dateUnit[2];
+		return startYear;		
 	}
 }
