@@ -6,9 +6,16 @@ package org.bear.entity;
  */
 public class RevenueIncreaseWrapper 
 {
+	/**
+	 * 當年度累計營收
+	 */
+	double accumulation;
+	/**
+	 * 一年度累計營收
+	 */
+	double accumulationOneYear;
 	double yoyRevenue;
 	double momRevenue;
-	double accumulation;
 	double turnoverRatio;
 	String openIndex;
 	String highIndex;
@@ -16,6 +23,12 @@ public class RevenueIncreaseWrapper
 	String closeIndex;
 	String yearMonth;
 	
+	public double getAccumulationOneYear() {
+		return accumulationOneYear;
+	}
+	public void setAccumulationOneYear(double accumulationOneYear) {
+		this.accumulationOneYear = accumulationOneYear;
+	}
 	public String getOpenIndex() {
 		return openIndex;
 	}
