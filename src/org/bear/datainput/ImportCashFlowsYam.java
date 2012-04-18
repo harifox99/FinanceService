@@ -19,6 +19,7 @@ public class ImportCashFlowsYam extends ImportStockIDData
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");			
 				GetURLYamCashFlow urlContent = new GetURLYamCashFlow(stockID);
 				CashFlowsParserYam cashFlowsParser = new CashFlowsParserYam(urlContent.getContent(), stockID);
+				cashFlowsParser.setYear("2011");
 				cashFlowsParser.parse(1);
 				Thread.sleep(10000);		
 				idleTime++;
