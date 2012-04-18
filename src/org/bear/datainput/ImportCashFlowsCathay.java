@@ -12,7 +12,7 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 	{
 		try
 		{
-			String[] seasons = {"01", "02", "03", "04"};
+			String[] seasons = {"04"};
 			for (int i = 0; i < seasons.length; i++)
 			{
 				BufferedWriter writer = new BufferedWriter(new FileWriter("cashflowCathay.txt"));			
@@ -23,7 +23,7 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 					System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 					writer.write("股票代碼：" + stockID + " " + idleTime + ". ");
 					GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID);
-					CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, "2010", seasons[i]);
+					CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, "2011", seasons[i]);
 					cashFlowsParser.parse(2);
 					Thread.sleep(10000);		
 					idleTime++;
