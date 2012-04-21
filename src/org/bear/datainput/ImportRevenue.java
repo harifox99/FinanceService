@@ -80,10 +80,10 @@ public class ImportRevenue extends ParseFile
 	{
 		RevenueEntity entity = new RevenueEntity();
 		String stockID = bufferData[0].trim();
-		entity.setAccumulation(Integer.parseInt(bufferData[7].trim()));
+		entity.setAccumulation(Long.parseLong(bufferData[7].trim()));
 		entity.setCloseIndex(mapCloseIndex.get(stockID));
 		entity.setHighIndex(mapHighIndex.get(stockID));
-		entity.setLastAccumulation(Integer.parseInt(bufferData[8].trim()));
+		entity.setLastAccumulation(Long.parseLong(bufferData[8].trim()));
 		entity.setLastRevenue(Integer.parseInt(bufferData[5].trim()));
 		entity.setLowIndex(mapLowIndex.get(stockID));
 		entity.setOpenIndex(mapOpenIndex.get(stockID));
