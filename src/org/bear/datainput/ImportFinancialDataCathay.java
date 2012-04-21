@@ -36,9 +36,6 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 				entityList = new ArrayList <FinancialDataEntity>();
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
-				//if (!stockID.startsWith("2002"))
-				if (j < 497)	
-					continue;
 				//每股淨值年資料
 				GetURLCathayNav urlNav = new GetURLCathayNav(stockID, true);
 				NAVParserCathay navParser = new NAVParserCathay(urlNav.getContent(), stockID);
@@ -61,7 +58,8 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 						entity.setCashDiv(0.0);
 					else
 						entity.setCashDiv(mapCashDiv.get(year));	
-					entityList.add(entity);
+					if (entity.year.equals("2010") || entity.year.equals("2011"))
+						entityList.add(entity);
 				}				
 				dao.insertBatch(entityList);
 				Thread.sleep(10000);		
