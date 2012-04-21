@@ -14,8 +14,8 @@ public class RevenueEntity
 	String stockID;
 	String averageIndex;
 	int revenue;
-	int accumulation;
-	int lastAccumulation;
+	long accumulation;
+	long lastAccumulation;
 	int lastRevenue;
 	Date yearMonth;
 	String turnoverRatio;
@@ -50,16 +50,16 @@ public class RevenueEntity
 	public void setRevenue(int revenue) {
 		this.revenue = revenue;
 	}
-	public int getAccumulation() {
+	public long getAccumulation() {
 		return accumulation;
 	}
-	public void setAccumulation(int accumulation) {
+	public void setAccumulation(long accumulation) {
 		this.accumulation = accumulation;
 	}
-	public int getLastAccumulation() {
+	public long getLastAccumulation() {
 		return lastAccumulation;
 	}
-	public void setLastAccumulation(int lastAccumulation) {
+	public void setLastAccumulation(long lastAccumulation) {
 		this.lastAccumulation = lastAccumulation;
 	}
 	public int getLastRevenue() {
