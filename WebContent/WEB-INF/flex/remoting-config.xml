@@ -64,4 +64,9 @@
             <source>org.bear.main.BuildPMIndex</source>
         </properties>
     </destination>
+    <destination id="redRabbitAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.RedRabbitRevenueAnalysis</source>
+        </properties>
+    </destination>
 </service>
