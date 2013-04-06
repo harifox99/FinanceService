@@ -13,6 +13,8 @@ public interface RevenueDao
 	public List<RevenueIncreaseWrapper> findAllRevenueIncrease(String stockID, Date startTime, Date endTime);
 	//列舉特定期間營收資料
 	public List<RevenueEntity> findByDate(Date startTime, Date endTime);
+	//列舉過去N年的累計營收
+	public List<RevenueEntity> findByLatestSize(int size, String stockID);
 	//列舉長短期營收變動
 	public List<LongTermRevenueWrapper> findLongTermByDate(String stockID, Date startTime, Date endTime);
 	//傳回特定年份營收資料
