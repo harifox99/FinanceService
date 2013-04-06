@@ -198,4 +198,16 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		startYear = String.valueOf(intYear) + "/" + dateUnit[1] + "/" + dateUnit[2];
 		return startYear;		
 	}
+	/**
+	 * 請參考Interface的說明
+	 */
+	@Override
+	public List<RevenueEntity> findByLatestSize(int size, String stockID) {
+		String sql = "select top " + size + " * from operatingRevenue where stockID = '" +
+		stockID + "' order by yearMonth";
+		//System.out.println("SQL: " + sql);
+		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
+				ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
+		return entityList;
+	}
 }
