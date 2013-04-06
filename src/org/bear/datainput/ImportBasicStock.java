@@ -21,6 +21,7 @@ public class ImportBasicStock extends ParseFile
 		try
 		{			
 			reader = new BufferedReader(new FileReader("data/StockID.csv"));
+			//上市公司
 			while((readData = reader.readLine()) != null)
 			{
 				if (this.intRowIndex++ == 0)
@@ -36,6 +37,22 @@ public class ImportBasicStock extends ParseFile
 						stockType = Integer.parseInt(stockID);
 				}			
 			}
+			//上櫃公司
+			reader = new BufferedReader(new FileReader("data/Gretai.csv"));
+			while((readData = reader.readLine()) != null)
+			{
+				if (this.intRowIndex++ == 0)
+					continue;
+				else
+				{
+					System.out.println(this.intRowIndex);
+					bufferData = readData.split(",");
+					String stockID = bufferData[0].trim();				
+					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true)
+						list.add(this.getBasicGretaiWrapper(bufferData));
+				}			
+			}
+			
 		}
 		catch (IOException ex)
 		{
@@ -43,6 +60,7 @@ public class ImportBasicStock extends ParseFile
 		}
 		return list;
 	}
+	//處理上市資訊
 	private BasicStockWrapper getBasicStockWrapper(String[] bufferData)
 	{		
 		BasicStockWrapper wrapper = new BasicStockWrapper();
@@ -50,6 +68,18 @@ public class ImportBasicStock extends ParseFile
 		wrapper.setStockName(bufferData[1].trim());
 		wrapper.setStockBranch(1);
 		wrapper.setStockType(stockType);
+		return wrapper;
+	}
+	//處理上櫃資訊
+	private BasicStockWrapper getBasicGretaiWrapper(String[] bufferData)
+	{		
+		BasicStockWrapper wrapper = new BasicStockWrapper();
+		wrapper.setStockID(bufferData[0].trim());
+		wrapper.setStockName(bufferData[1].trim());
+		//1.上市；2上櫃
+		wrapper.setStockBranch(2);
+		//目前無法解析上櫃種類，一律以32代替
+		wrapper.setStockType(32);
 		return wrapper;
 	}
 }
