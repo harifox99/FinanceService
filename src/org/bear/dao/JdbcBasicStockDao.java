@@ -32,4 +32,14 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		this.getSimpleJdbcTemplate().batchUpdate(sql, parameters.toArray(new SqlParameterSource[0]));
 	}
 
+	@Override
+	public List<BasicStockWrapper> findStockTypeData(String stockBranch) {
+		// TODO Auto-generated method stub
+		List <BasicStockWrapper> wrapperList = null;
+		String sql = "select * from StockData where enabled <> 0 and StockType <> 17 and stockBranch = '" + stockBranch + "'";
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
+		//Iterator <BasicStockWrapper> iterator = wrapperList.iterator();
+		return wrapperList;
+	}
+
 }
