@@ -1,6 +1,7 @@
 package org.bear.main;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Date;
 import java.util.List;
 import org.bear.dao.RevenueDao;
@@ -40,23 +41,47 @@ public class BuildRevenueData {
 		{
 			System.out.println("Main index: " + i);
 			list = importRevenue.getRevenueEntity("data/index/" + indexList[i], "data/revenueTwse/" + revenueList[i]);
+			//第一筆不存，因為只使用上個月收盤價當本月開盤價
 			if (i == 0)
 				continue;
 			dao.insertBatch(list);
 		}
 	}
+	@SuppressWarnings("deprecation")
 	public void insertNewRevenue()
 	{
 		List <RevenueEntity> list;
 		File file = new File("data/revenueMonth");
-		String revenueList[] = file.list();
+		FilenameFilter filter = new FilenameFilter() 
+		{ 
+            public boolean accept(File file, String name) 
+            {
+            	return (name.indexOf(".csv") != -1);
+            }
+		};
+		String revenueList[] = file.list(filter);
+		/*************************/
 		file = new File("data/indexMonth");
-		String indexList[] = file.list();
+		/*
+		filter = new FilenameFilter() 
+		{ 
+            public boolean accept(File file, String name) 
+            {
+            	return (name.indexOf("*.csv") != -1);
+            }
+		};*/
+		String indexList[] = file.list(filter);
+		/*
+		for (int i = 0; i < indexList.length; i++) 
+		{
+		    System.out.println(indexList[i]);
+	    }*/
 		ImportRevenue importRevenue = new ImportRevenue();
 		for (int i = 0; i < revenueList.length; i++)
 		{
 			System.out.println("Main index: " + i);
 			list = importRevenue.getRevenueEntity("data/indexMonth/" + indexList[i], "data/revenueMonth/" + revenueList[i]);
+						
 			if (i == 0)
 				continue;
 			dao.insertBatch(list);
