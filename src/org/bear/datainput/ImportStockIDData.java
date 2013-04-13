@@ -20,5 +20,7 @@ public class ImportStockIDData
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 		wrapperList = basicStockDao.findAllData();
+		//wrapperList = basicStockDao.findStockTypeData("1");
+		//wrapperList = basicStockDao.findStockTypeData("2");
 	}
 }
