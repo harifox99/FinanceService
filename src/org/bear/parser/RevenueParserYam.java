@@ -143,6 +143,14 @@ public class RevenueParserYam extends ParserBase implements Parser
 		System.out.println("stockID: " + entityList.get(0).getStockID());
 		if (this.stockBranch == 2)
 			this.checkStockMarketData(entityList);
+		//移除最舊的一筆資料，因為最舊一筆的收盤價資料僅僅是做為下一筆的開盤價
+		entityList.remove(entityList.size()-1);
+		/*
+		for (int k = 0; k < entityList.size(); k++)
+		{
+			System.out.println(entityList.get(k).getYearMonth().toString());
+		}
+		if (stockID.equals("3209"))*/
 		dao.insertBatch(entityList);
 	}
 	/*
@@ -163,7 +171,7 @@ public class RevenueParserYam extends ParserBase implements Parser
 	{
 		try
 		{
-			return Long.parseLong(number);
+			return Long.parseLong(number)*1000;
 		}
 		catch (NumberFormatException ex)
 		{
@@ -174,7 +182,7 @@ public class RevenueParserYam extends ParserBase implements Parser
 	{
 		try
 		{
-			return Integer.parseInt(number);
+			return Integer.parseInt(number)*1000;
 		}
 		catch (NumberFormatException ex)
 		{
