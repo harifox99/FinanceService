@@ -2,24 +2,55 @@ package org.bear.main;
 import java.util.Date;
 import java.util.List;
 
+import org.bear.constant.CbcIndexConstant;
+import org.bear.constant.CepdIndexConstant;
 import org.bear.dao.*;
 import org.bear.datainput.ImportMacroEconomic;
 import org.bear.entity.MacroEconomicEntity;
+import org.bear.parser.taiwanMacro.CepdParser;
+import org.bear.parser.taiwanMacro.TwseIndex;
 import org.bear.util.ParseFile;
+import org.bear.util.cbc.GetCbcMoney;
+import org.bear.util.cbc.GetDemandDeposit;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BuildMacroEconomicData extends ParseFile
 {
 	/**
+	 * 用經建會、中央銀行與證券期貨發展基金會的資料建立總經指標、貨幣資料與大盤指數
 	 * @param args
 	 */
 	List <MacroEconomicEntity> list;
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
-		new BuildMacroEconomicData().insertBatch();
-		//new BuildMacroEconomicData().findAllList();
+		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
+		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
+		//CEPD
+		CepdParser parser = new CepdParser();
+		parser.setDao(dao);
+		for (int i = 0; i < CepdIndexConstant.CEPD_LIST.length; i++)
+		{
+			parser.setUrl(CepdIndexConstant.CEPD_LIST[i], CepdIndexConstant.CEPD_MAP[i]);
+			parser.setIndex(i);
+			parser.getConnection();
+			parser.parse(10);
+		}
+		//貨幣
+		GetCbcMoney money = new GetCbcMoney();
+		money.setDao(dao);
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("1993M02"), CbcIndexConstant.MONTH_HASH.get("2013M03"));
+		
+		//活期儲蓄存款
+		GetDemandDeposit deposit = new GetDemandDeposit();
+		deposit.setDao(dao);
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("1993M02"), CbcIndexConstant.MONTH_HASH.get("2013M03"));
+		
+		//TWSE
+		TwseIndex twseIndex = new TwseIndex();
+		twseIndex.setDao(dao);
+		twseIndex.getContent();
 	}
 	public void insertBatch()
 	{
