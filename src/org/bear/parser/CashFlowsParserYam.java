@@ -86,6 +86,7 @@ public class CashFlowsParserYam extends ParserBase implements Parser
 				{
 					resultElement = tdList.get(j);
 					String content = resultElement.getContent().toString();
+					//讓數字的","消失
 					content = content.replaceAll(",", "");
 					rowData[j-1] = content;
 					if (j == tdList.size() - 1)
