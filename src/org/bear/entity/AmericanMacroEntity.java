@@ -51,12 +51,6 @@ public class AmericanMacroEntity {
 	 * 每週工時
 	 */
 	String awhman;
-	public String getM1() {
-		return m1;
-	}
-	public void setM1(String m1) {
-		this.m1 = m1;
-	}
 	/**
 	 * 每週加班工時
 	 */
@@ -78,7 +72,7 @@ public class AmericanMacroEntity {
 	String m1;
 	String mzm;
 	String sp500;
-	String indproRate;
+	String indproYoy;
 	String tcuRate;
 	String rsxfs;
 	String cpi;
@@ -157,12 +151,6 @@ public class AmericanMacroEntity {
 	}
 	public void setIsRatio(String isRatio) {
 		this.isRatio = isRatio;
-	}
-	public String getIndproRate() {
-		return indproRate;
-	}
-	public void setIndproRate(String indproRate) {
-		this.indproRate = indproRate;
 	}
 	public String getTcuRate() {
 		return tcuRate;
@@ -265,6 +253,18 @@ public class AmericanMacroEntity {
 	}
 	public void setRsxfs(String rsxfs) {
 		this.rsxfs = rsxfs;
+	}
+	public String getM1() {
+		return m1;
+	}
+	public void setM1(String m1) {
+		this.m1 = m1;
+	}
+	public String getIndproYoy() {
+		return indproYoy;
+	}
+	public void setIndproYoy(String indproYoy) {
+		this.indproYoy = indproYoy;
 	}
 
 }
