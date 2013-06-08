@@ -34,10 +34,11 @@ public class BuildBasicStock {
 		 * 4.1.2> ァ︽> GetCbcMoney and GetDemandDeposit
 		 * 4.1.3> 芖舦计> TwseIndex
 		 * 4.2 瓣> BuildAmericanMacroData
-		 * 4.2.1>干UMCSENT(盞﹁厩禣獺み计)
-		 * 4.2.3>S&P 500 and CRB Index>SP500Main
-		 * 4.2.3.1>干CRB Index
-		 * 4.3> ISM计> Build PMIndex
+		 * 4.2.1> 干UMCSENT(盞﹁厩禣獺み计)
+		 * 4.2.2> ISM计> Build PMIndex
+		 * 4.2.3> S&P 500 and CRB Index>SP500Main
+		 * 4.2.3.1> 干CRB Index
+		 * 
 		 ************/
 	}
 	public void insertBatch()
