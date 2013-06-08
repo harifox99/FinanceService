@@ -48,7 +48,7 @@ public class ImportAmericanMacroPanther extends ParseFile
 			entity.setDate(strDate);
 			/** 總經指標 **/
 			//工業生產指數YoY
-			entity.setIndproRate(bufferData[2].trim());
+			entity.setIndproYoy(bufferData[2].trim());
 			//零售銷售
 			entity.setRsafs(bufferData[3].trim());
 			//新屋開工YoY

@@ -53,7 +53,7 @@ public class ImportAmericanMacro extends ParseFile
 			entity.setSpLow(bufferData[5].trim());
 			entity.setSpClose(bufferData[6].trim());
 			entity.setIndpro(bufferData[7].trim());
-			entity.setIndproRate(bufferData[8].trim());
+			entity.setIndproYoy(bufferData[8].trim());
 			entity.setDgOrder(bufferData[9].trim());
 			entity.setTcu(bufferData[10].trim());
 			entity.setTcuRate(bufferData[11].trim());
