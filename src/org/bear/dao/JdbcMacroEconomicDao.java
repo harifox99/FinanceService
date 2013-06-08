@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.bear.entity.MacroEconomicEntity;
 //import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
@@ -115,11 +116,26 @@ public class JdbcMacroEconomicDao extends SimpleJdbcDaoSupport implements MacroE
 		{
 			parameters.add(new BeanPropertySqlParameterSource(iterator));
 		}
-		
-		this.getSimpleJdbcTemplate().batchUpdate(sql, parameters.toArray(new SqlParameterSource[0]));
+		try
+		{
+			this.getSimpleJdbcTemplate().batchUpdate(sql, parameters.toArray(new SqlParameterSource[0]));
+		}
+		catch (DataAccessException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	public String getMessage()
 	{
 		return "Successful;";
+	}
+	@Override
+	public int update(String indexName, String indexValue, String date, String split) {
+		// TODO Auto-generated method stub
+		String[] dateArr = date.split(split);
+		String sql = "UPDATE MacroEconomics SET " + indexName + " = ? where year = '" + dateArr[0] + 
+		"' and month = '" + dateArr[1] + "'";
+		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
+		return result;
 	}
 }
