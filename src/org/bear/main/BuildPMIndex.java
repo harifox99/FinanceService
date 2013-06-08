@@ -1,14 +1,25 @@
 package org.bear.main;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.bear.constant.FredIndexParameterMap;
 import org.bear.dao.PMIndexDao;
 import org.bear.datainput.ImportPMIndex;
 import org.bear.entity.PMIndexEntity;
+import org.bear.parser.fred.FredEconomicUrl;
 import org.bear.util.ParseFile;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
+/**
+ * 建置PMI(也是從FRED來)
+ * @author edward
+ *
+ */
 public class BuildPMIndex extends ParseFile {
 
 	/**
@@ -18,8 +29,9 @@ public class BuildPMIndex extends ParseFile {
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
-		new BuildPMIndex().insertBatch();
-		//new BuildMacroEconomicData().findAllList();
+		//new BuildPMIndex().insertBatch();
+		FredEconomicUrl type = new FredEconomicUrl();
+		new BuildPMIndex().insertByFredApi(FredIndexParameterMap.AMERICA_PMI_LIST, type, FredIndexParameterMap.PMI);
 	}
 	public void insertBatch()
 	{
@@ -41,6 +53,54 @@ public class BuildPMIndex extends ParseFile {
 		PMIndexDao dao = (PMIndexDao)context.getBean("pmIndexDao");	
 		list = dao.findByDate(startTime, endTime);		
 		return list;
+	}
+	public void insertByFredApi(String[] catagoryList, FredEconomicUrl catagory, HashMap<String, String> parameterMap)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
+		PMIndexDao dao = (PMIndexDao)context.getBean("pmIndexDao");
+		String key = "date";
+		String value = "value";
+		list = new ArrayList<PMIndexEntity>();
+		try
+		{
+			for (int i = 0; i < catagoryList.length; i++)
+			{
+				catagory.setUrlString(catagoryList[i], catagory.observation_init, parameterMap);
+				HashMap<String, String> map = catagory.getContent(key, value);
+				if (i < 1)
+				{
+					for (Map.Entry<String,String> entry : map.entrySet()) 
+					{
+						PMIndexEntity entity = new PMIndexEntity();
+						String dateArray[] = entry.getKey().split("-");
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						Date date = dateFormat.parse(entry.getKey());
+						entity.setDate(entry.getKey());
+						entity.setYear(dateArray[0]);
+						entity.setYearMonth(date);
+						entity.setPmi(entry.getValue());
+						list.add(entity);
+					}
+					dao.insertBatch(list);
+				}
+				else
+				{
+					for (Map.Entry<String,String> entry : map.entrySet()) 
+					{				
+						int result = dao.update(FredIndexParameterMap.PMI_DB_COLUMN[i], entry.getValue(), entry.getKey());
+					    if (result <= 0)
+					    {					    	
+					    	System.out.println(entry.getValue() + ", " + entry.getKey());
+					    }
+					}
+				}
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 
 }
