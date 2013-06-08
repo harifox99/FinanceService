@@ -44,12 +44,12 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 
 	public void insertBatch(List<AmericanMacroPantherEntity> entity) {
 		String sql = "insert into americanMacroPanther(Year, Date, YearMonth, " +
-		"INDPRORate, RSAFS, HOUST, DGOrder, NEWORDER, PERMITNSA, " +
+		"INDPROYoY, RSAFS, HOUST, DGOrder, NEWORDER, PERMITNSA, " +
 		"INDPRO, PAYEMS, UNRATE, ISRatio, AWOTMAN, UMCSENT, ICSA, " +
-		"M1, MZM, TB3MS, GS10, BAA, CFP3M, CPI, CRB, " +
+		"M1SL, MZMSL, TB3MS, GS10, BAA, CPF3M, CPI, CRB, " +
 		"SP500, SPOpen, SPHigh, SPLow, SPClose) " +
 		"values (:year, :date, :yearMonth, " +
-		":indproRate, :rsafs, :houst, :dgOrder, :neworder, :permitnsa, " +
+		":indproYoy, :rsafs, :houst, :dgOrder, :neworder, :permitnsa, " +
 		":indpro, :payems, :unrate, :isRatio, :awotman, :umcsent, :icsa, " +
 		":m1, :mzm, :tb3ms, :gs10, :baa, :cfp3m, :cpi, :crb, " +
 		":sp500, :spOpen, :spHigh, :spLow, :spClose) ";
