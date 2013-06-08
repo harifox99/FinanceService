@@ -72,4 +72,11 @@ public class JdbcPMIndexDao extends SimpleJdbcDaoSupport implements PMIndexDao {
 
 	}
 
+	@Override
+	public int update(String indexName, String indexValue, String date) {
+		// TODO Auto-generated method stub
+		String sql = "UPDATE PMIndex SET " + indexName + " = ? where date = '" + date + "'";
+		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
+		return result;
+	}
 }
