@@ -2,9 +2,6 @@
  * 
  */
 package org.bear.dao;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.bear.entity.MacroEconomicEntity;
@@ -74,15 +71,17 @@ public class JdbcMacroEconomicDao extends SimpleJdbcDaoSupport implements MacroE
 				element.setStockMoneyMoM(0);
 				*/
 			//證券劃撥餘額指數
+			/* 暫時移除
 			int stockMoneyNumber = (int) (element.getStockMoneyIndex()/100);
 			element.setStockMoneyNumber(stockMoneyNumber);
 			//劃撥餘額年增率
 			double stockMoneyYoY = getStockMoneyYoY(element);
 			element.setStockMoneyYoY(stockMoneyYoY);
-			entityList.set(i, element);
+			entityList.set(i, element);*/
 		}
 		return entityList;
 	}
+	/*
 	private double getStockMoneyYoY(MacroEconomicEntity element)
 	{
 		String year = element.getYear().substring(0, 4);
