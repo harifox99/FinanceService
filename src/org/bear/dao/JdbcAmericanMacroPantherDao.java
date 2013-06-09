@@ -20,6 +20,13 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 			// TODO Auto-generated method stub
 			String sql = "select * from americanMacroPanther";
 			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(AmericanMacroPantherEntity.class));
+			for (int i = 0; i < entityList.size(); i++)
+			{
+				AmericanMacroPantherEntity element = entityList.get(i);
+				//將新屋開工/10
+				double houstIndex = Double.parseDouble(element.getHoust()) / 10;
+				element.setHoust(String.valueOf(houstIndex));
+			}
 		}
 		catch (Exception ex)
 		{
@@ -39,6 +46,13 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 		System.out.println("SQL: " + sql);
 		List <AmericanMacroPantherEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
 				ParameterizedBeanPropertyRowMapper.newInstance(AmericanMacroPantherEntity.class));
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			AmericanMacroPantherEntity element = entityList.get(i);
+			//將新屋開工/10
+			double houstIndex = Double.parseDouble(element.getHoust()) / 10;
+			element.setHoust(String.valueOf(houstIndex));
+		}
 		return entityList;
 	}
 
