@@ -71,7 +71,7 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 		"values (:year, :date, :yearMonth, " +
 		":indproYoy, :rsafs, :houst, :dgOrder, :neworder, :permitnsa, " +
 		":indpro, :payems, :unrate, :isRatio, :awotman, :umcsent, :icsa, " +
-		":m1, :mzm, :tb3ms, :gs10, :baa, :cfp3m, :cpi, :crb, " +
+		":m1sl, :mzmsl, :tb3ms, :gs10, :baa, :cfp3m, :cpi, :crb, " +
 		":sp500, :spOpen, :spHigh, :spLow, :spClose) ";
 		List <SqlParameterSource> parameters = new ArrayList <SqlParameterSource>();
 		for (AmericanMacroPantherEntity iterator:entity)
