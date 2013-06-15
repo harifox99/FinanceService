@@ -19,7 +19,7 @@ public class BuildBasicStock {
 		// TODO Auto-generated method stub
 		new BuildBasicStock().insertBatch();
 		/************
-		 * 1. 先執行BuildBasicStock，建立股票基本資訊
+		 * 1. 先執行BuildBasicStock，建立股票基本資訊 (砍掉股票代碼有A的)
 		 * 2. 建立營收資料> BuildRevenueYam
 		 * 2.1 上櫃成交資料：首頁 > 上櫃股票交易資訊 > 上櫃股票統計報表 > 市場交易月報> 櫃檯買賣股票成交資料彙總表
 		 * 2.2 上市成交資料：首頁 > 統計報表 > 依統計報表查詢 > 市場交易月報> 證券交易統計表
