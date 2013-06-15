@@ -69,8 +69,8 @@ public class AmericanMacroEntity {
 	String gs10;
 	String gs3m;
 	String baa;
-	String m1;
-	String mzm;
+	String m1sl;
+	String mzmsl;
 	String sp500;
 	String indproYoy;
 	String tcuRate;
@@ -236,12 +236,6 @@ public class AmericanMacroEntity {
 	public void setBaa(String baa) {
 		this.baa = baa;
 	}
-	public String getMzm() {
-		return mzm;
-	}
-	public void setMzm(String mzm) {
-		this.mzm = mzm;
-	}
 	public String getSp500() {
 		return sp500;
 	}
@@ -254,17 +248,23 @@ public class AmericanMacroEntity {
 	public void setRsxfs(String rsxfs) {
 		this.rsxfs = rsxfs;
 	}
-	public String getM1() {
-		return m1;
-	}
-	public void setM1(String m1) {
-		this.m1 = m1;
-	}
 	public String getIndproYoy() {
 		return indproYoy;
 	}
 	public void setIndproYoy(String indproYoy) {
 		this.indproYoy = indproYoy;
+	}
+	public String getM1sl() {
+		return m1sl;
+	}
+	public void setM1sl(String m1sl) {
+		this.m1sl = m1sl;
+	}
+	public String getMzmsl() {
+		return mzmsl;
+	}
+	public void setMzmsl(String mzmsl) {
+		this.mzmsl = mzmsl;
 	}
 
 }
