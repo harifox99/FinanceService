@@ -74,8 +74,8 @@ public class ImportAmericanMacro extends ParseFile
 			entity.setGs10(bufferData[23].trim());
 			entity.setGs3m(bufferData[24].trim());
 			entity.setBaa(bufferData[25].trim());
-			entity.setM1(bufferData[26].trim());
-			entity.setMzm(bufferData[27].trim());
+			entity.setM1sl(bufferData[26].trim());
+			entity.setMzmsl(bufferData[27].trim());
 			entity.setSp500(bufferData[28].trim());
 			entity.setRsxfs(bufferData[29].trim());
 		}
