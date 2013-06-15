@@ -26,6 +26,9 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 				//將新屋開工/10
 				double houstIndex = Double.parseDouble(element.getHoust()) / 10;
 				element.setHoust(String.valueOf(houstIndex));
+				//1/存貨銷售比
+				double isRatio = 1/Double.parseDouble(element.getIsRatio());
+				element.setIsRatio(String.valueOf(isRatio));
 			}
 		}
 		catch (Exception ex)
@@ -52,6 +55,9 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 			//將新屋開工/10
 			double houstIndex = Double.parseDouble(element.getHoust()) / 10;
 			element.setHoust(String.valueOf(houstIndex));
+			//1/存貨銷售比
+			double isRatio = 1/Double.parseDouble(element.getIsRatio());
+			element.setIsRatio(String.valueOf(isRatio));
 		}
 		return entityList;
 	}
