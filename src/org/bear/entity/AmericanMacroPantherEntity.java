@@ -17,6 +17,11 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	 * 非農就業人口
 	 */
 	String payems;
+	/**
+	 * 商業存貨
+	 */
+	String businv;
+	
 	public String getPayems() {
 		return payems;
 	}
@@ -40,6 +45,12 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	}
 	public void setCfp3m(String cfp3m) {
 		this.cfp3m = cfp3m;
+	}
+	public String getBusinv() {
+		return businv;
+	}
+	public void setBusinv(String businv) {
+		this.businv = businv;
 	}
 
 }
