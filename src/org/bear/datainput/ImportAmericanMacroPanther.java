@@ -77,9 +77,9 @@ public class ImportAmericanMacroPanther extends ParseFile
 			entity.setIcsa(bufferData[14].trim());
 			/** 貨幣 **/
 			//M1
-			entity.setM1(bufferData[15].trim());
+			entity.setM1sl(bufferData[15].trim());
 			//MZM
-			entity.setMzm(bufferData[16].trim());
+			entity.setMzmsl(bufferData[16].trim());
 			/** 利率 **/
 			//國庫券3個月殖利率
 			entity.setTb3ms(bufferData[17].trim());
