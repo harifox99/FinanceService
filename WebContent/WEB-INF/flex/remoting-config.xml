@@ -69,4 +69,9 @@
             <source>org.bear.financeAnalysis.RedRabbitRevenueAnalysis</source>
         </properties>
     </destination>
+    <destination id="roeAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.RoeAnalysis</source>
+        </properties>
+    </destination>
 </service>
