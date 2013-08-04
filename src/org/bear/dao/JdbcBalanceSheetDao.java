@@ -80,4 +80,14 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 		return wrapperList;
 	}
 
+	public List<BalanceSheetEntity> findDataByYear(String stockID) 
+	{
+		List <BalanceSheetEntity> wrapperList = null;
+		String sql = "select * from BalanceSheet where seasons = '00'" + 
+		" and stockID = '" + stockID + "' order by Year";
+		System.out.println("findDataByYear: " + sql);
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
+		return wrapperList;
+	}
+
 }
