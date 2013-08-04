@@ -17,9 +17,12 @@ public class RedRabbitRevenueAnalysis
 	final int sixYear = 72+1;
 	final int threeMonth = 3;
 	JdbcRevenueDao jdbcRevenueDao;
+	//紅兔指標至少要14個月才能計算
+	final int minMonth = 14;
 	public List<RedRabbitWrapper> getRedRabbit()
 	{
 		List<RedRabbitWrapper> redRabitWrapper = new ArrayList<RedRabbitWrapper>();
+		String debug = "";
 		try
 		{
 			ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -30,26 +33,12 @@ public class RedRabbitRevenueAnalysis
 			{
 				RedRabbitWrapper wrapper = new RedRabbitWrapper();	
 				String stockID = stockIdList.get(i).getStockID();
-				int currentRevenue = 0;			
-				//本月營收創六年以來新高
-				List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(sixYear-1, stockID);
-				for (int j = 0; j < entityList.size(); j++)
-				{
-					wrapper.setMonthSize(entityList.size());
-					if (j == 0)
-					{
-						currentRevenue = entityList.get(j).getRevenue();
-						wrapper.setSixYearHigh(1);
-					}
-					else
-					{
-						if (currentRevenue < entityList.get(j).getRevenue());
-						{
-							wrapper.setSixYearHigh(0);
-							break;
-						}						
-					}
-				}
+				debug = stockID;
+				int currentRevenue = 0;
+				//紅兔指標至少要14個月才能計算
+				List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(minMonth, stockID);
+				if (entityList.size() < minMonth)
+					continue;
 				//創近一年新高
 				entityList = jdbcRevenueDao.findByLatestSize(oneYear, stockID);
 				for (int j = 0; j < entityList.size(); j++)
@@ -67,7 +56,28 @@ public class RedRabbitRevenueAnalysis
 							break;
 						}						
 					}
-				}		
+				}	
+				
+				//本月營收創六年以來新高
+			    entityList = jdbcRevenueDao.findByLatestSize(sixYear-1, stockID);
+				for (int j = 0; j < entityList.size(); j++)
+				{
+					wrapper.setMonthSize(entityList.size());
+					if (j == 0)
+					{
+						currentRevenue = entityList.get(j).getRevenue();
+						wrapper.setSixYearHigh(1);
+					}
+					else
+					{
+						if (currentRevenue < entityList.get(j).getRevenue());
+						{
+							wrapper.setSixYearHigh(0);
+							break;
+						}						
+					}
+				}
+					
 				//創六年同期新高(2)&次高(1)
 				//創六年同期新低(2)&次低(1)
 				entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);		
@@ -273,8 +283,10 @@ public class RedRabbitRevenueAnalysis
 				}		
 				//本月MoM>去年同期MoM
 				entityList = jdbcRevenueDao.findByLatestSize(14, stockID);
+				/* 這個月/上個月 */
 				double currentMom = (double)entityList.get(0).getRevenue()/entityList.get(1).getRevenue();
-				double lastMom = (double)entityList.get(12).getRevenue()/entityList.get(13).getRevenue();
+				/* 去年同一個月/去年上一個月 */
+				double lastMom = (double)entityList.get(oneYear).getRevenue()/entityList.get(oneYear+1).getRevenue();
 				if (currentMom > lastMom)
 					wrapper.setMomGrow(1);
 				else
@@ -286,6 +298,7 @@ public class RedRabbitRevenueAnalysis
 		}
 		catch (Exception ex)
 		{
+			System.out.println("debug id: " + debug);
 			ex.printStackTrace();
 		}
 		return redRabitWrapper;
