@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
+
 public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 
 	public List<RevenueIncreaseWrapper> findAllRevenueIncrease(String stockID, Date startTime, Date endTime) 
@@ -209,5 +210,23 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
 				ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		return entityList;
+	}
+	public void update(String stockID, RevenueEntity entity)
+	{
+		Date date = entity.getYearMonth();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");	
+		String dateString = dateFormat.format(date);
+		String sql = "update OperatingRevenue set revenue = '" + entity.getRevenue() + "', lastRevenue = '" + entity.getLastRevenue() +
+		"', accumulation = '" + entity.getAccumulation() + "', lastAccumulation = '" + entity.getLastAccumulation() +
+		"' where stockID = '" + stockID + "' and yearMonth = '" + dateString + "'";
+		this.getSimpleJdbcTemplate().update(sql);
+	}
+	public void update(String stockID, String turnoverRatio, String averageIndex, Date date)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = dateFormat.format(date);
+		String sql = "update OperatingRevenue set turnoverRatio = '" + turnoverRatio + "', averageIndex = '" +
+					averageIndex + "' where stockID = '" + stockID + "' and yearMonth = '" + dateString + "'";
+		this.getSimpleJdbcTemplate().update(sql);
 	}
 }
