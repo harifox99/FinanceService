@@ -1,0 +1,72 @@
+package org.bear.parser.sfi;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.HTMLElementName;
+import org.bear.entity.RevenueEntity;
+
+public class PriceParser extends ParserBase
+{
+	public void getTableContent(Element element) 
+	{
+		List<Element> trList = element.getAllElements(HTMLElementName.TR);
+		String openIndex = "";
+		for (int i = 0; i < trList.size(); i++)
+		{
+			if (i == 0)
+				continue;
+			Element trElement = trList.get(i);
+			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
+			Element resultElement = null;
+			String year = null;
+			RevenueEntity entity = new RevenueEntity();
+			for (int j = 0; j < tdList.size(); j++)
+			{	
+				resultElement = tdList.get(j).getFirstElement(HTMLElementName.SPAN);				
+				String content = resultElement.getContent().toString().trim();				
+				//琵计","ア
+				content = content.replaceAll(",", "");
+				try
+				{
+					if (j == 0)//
+					{
+						year = content;
+						entity.setStockID(stockID);
+					}
+					else if (j == 1)//る
+					{
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");						
+						Date date = dateFormat.parse(year + "-" + content);
+						entity.setYearMonth(date);
+					}
+					else if (j == 5)//程蔼
+					{
+						entity.setHighIndex(content);
+					}
+					else if (j == 7)//程
+					{
+						entity.setLowIndex(content);
+					}
+					else if (j == 10)//Μ絃
+					{
+						entity.setCloseIndex(content);						
+						entity.setOpenIndex(openIndex);
+						openIndex = content;
+						//材掸ぃ魁度盢セるΜ絃基讽る秨絃基	
+						if (i != 1)
+							entityList.add(entity);
+					}
+					else
+						continue;
+				}			
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}				
+			}
+			dao.insertBatch(entityList);
+		}
+	}
+}
