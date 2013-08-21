@@ -161,7 +161,7 @@ public class CashFlowsParserCathay extends CashFlowsParserYam
 	public void setYearAndSeason(CashFlowsEntity entity, String rowData)
 	{
 		String yearAndSeason[] = rowData.split("\\.");
-		entity.setYear(this.convertYear(yearAndSeason[0]));
+		entity.setYear(convertYear(yearAndSeason[0]));
 		entity.setSeasons(this.convertMonth(yearAndSeason[1]));
 		entity.setStockID(stockID);
 	}
