@@ -13,11 +13,11 @@ import net.htmlparser.jericho.Source;
  */
 public class GetURLContentBase 
 {
-	String urlString;
-	String urlHeaderSeason;
-	String urlHeaderYear;
-	String urlHeader;
-	String urlFooter;
+	protected String urlString;
+	protected String urlHeaderSeason;
+	protected String urlHeaderYear;
+	protected String urlHeader;
+	protected String urlFooter;
 	public List<Element> getContent()
 	{
 		boolean isConnect = false;
