@@ -94,7 +94,7 @@ public class NAVParserCathay extends BalanceSheetParserCathay
 				{
 					if (rowData[k].length() > 3)
 						rowData[k] = rowData[k].substring(0, 3);
-					listYear.add(this.convertYear(rowData[k]));
+					listYear.add(convertYear(rowData[k]));
 					break;
 				}
 				default:
