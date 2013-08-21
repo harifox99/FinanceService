@@ -25,7 +25,7 @@ public class GetSFIPrice implements GetSFIContent
 		parser.setResponseString(responseString);
 		parser.setStockID(stockID);
 		parser.parse(2);
-		System.out.println(responseString);		
+		//System.out.println(responseString);		
 	}
     public static void main(String args[])
     {

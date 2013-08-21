@@ -27,6 +27,6 @@ public class GetSFIRevenue implements GetSFIContent
 		parser.setResponseString(responseString);
 		parser.setStockID(stockID);
 		parser.parse(2);
-		System.out.println(responseString);		
+		//System.out.println(responseString);		
 	}
 }
