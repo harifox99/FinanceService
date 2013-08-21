@@ -23,6 +23,7 @@ public class ImportPriceSFI extends ImportStockIDData
 					continue;
 				else
 					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
+				Thread.sleep(5000);
 			}
 		}
 		catch (Exception ex)
