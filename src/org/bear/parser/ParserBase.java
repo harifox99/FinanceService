@@ -25,7 +25,7 @@ public class ParserBase
 	 * @param chineseYear
 	 * @return
 	 */
-	public String convertYear(String chineseYear)
+	public static String convertYear(String chineseYear)
 	{
 		int intYear = Integer.parseInt(chineseYear) + 1911;
 		String year = String.valueOf(intYear);
