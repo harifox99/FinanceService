@@ -47,7 +47,7 @@ public class CashDivParserCathay extends ParserBase {
 					resultElement = tdList.get(j);
 					String content = resultElement.getContent().toString();
 					content = content.replaceAll(",", "");
-					listYear.add(this.convertYear(content));
+					listYear.add(convertYear(content));
 				}
 				else if (j == 1)
 				{
