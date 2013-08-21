@@ -18,7 +18,7 @@ public class BuildRevenueSFI {
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 價格資訊 */
 		getContent = new GetSFIPrice();
-		sfi.insertBatchList("2012", "1", "2013", "7", getContent);
+		sfi.insertBatchList("2011", "12", "2013", "7", getContent);
 		/* 營收資訊 */
 		getContent = new GetSFIRevenue();
 		sfi.insertBatchList("2012", "1", "2013", "7", getContent);
