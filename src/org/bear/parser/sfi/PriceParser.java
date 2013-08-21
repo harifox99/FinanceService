@@ -66,7 +66,8 @@ public class PriceParser extends ParserBase
 					ex.printStackTrace();
 				}				
 			}
-			dao.insertBatch(entityList);
+			
 		}
+		dao.insertBatch(entityList);
 	}
 }
