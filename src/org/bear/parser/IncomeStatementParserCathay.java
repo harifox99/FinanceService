@@ -24,13 +24,13 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 	IncomeStatementDao dao;
 	//將elementList轉成可以儲存至DB的資料
 	public IncomeStatementEntity entity[];
-	String year;
-	String seasons;
+	String[] years;
+	String[] seasons;
 	public IncomeStatementParserCathay(List<Element> elementList, String stockID, boolean isYear,
-			String year, String seasons)
+			String[] years, String[] seasons)
 	{
 		this.isYear = isYear;
-		this.year = year;
+		this.years = years;
 		this.seasons = seasons;
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		this.elementList = elementList;
@@ -101,14 +101,18 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 				}
 			}			
 		}
+		
 		for (int i = 0; i < dataLength; i++)
 		{
-			//建立所有資料
-			if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
-				entity[i].year.equals(year)	&& entity[i].seasons.equals(seasons))
-				dao.insert(entity[i]);
-			else
-				System.out.println("年資料可能不足，" + stockID);
+			for (int j = 0; j < seasons.length; j++)
+			{
+				for (int k = 0; k < years.length; k++)
+				{
+					if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
+						entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
+					dao.insert(entity[i]);
+				}
+			}
 		}
 	}
 	public void setStockData(String rowData[])
