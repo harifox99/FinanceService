@@ -17,10 +17,10 @@ public class BuildCashFlowsStatement {
 	{
 		//ImportCashFlowsYear importCashFlows = new ImportCashFlowsYear();
 		//importCashFlows.insertBatchList();
-		//ImportCashFlowsCathay importCashFlows = new ImportCashFlowsCathay();
-		//importCashFlows.insertBatchList();
-		ImportCashFlowsYam importCashFlows = new ImportCashFlowsYam();
+		ImportCashFlowsCathay importCashFlows = new ImportCashFlowsCathay();
 		importCashFlows.insertBatchList();
+		//ImportCashFlowsYam importCashFlows = new ImportCashFlowsYam();
+		//importCashFlows.insertBatchList();
 	}
 	public List<CashFlowsEntity> getList() {
 		return list;
