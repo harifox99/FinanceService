@@ -20,20 +20,20 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class BalanceSheetParserCathay extends ParserBase implements Parser
 {
-	//現金流量DAO
+	//資產負債DAO
 	BalanceSheetDao dao;
 	//將elementList轉成可以儲存至DB的資料
 	public BalanceSheetEntity entity[];
 	//判斷季資料或年資料
 	boolean isYear;
-	String year;
-	String seasons;
+	String[] years;
+	String[] seasons;
 	public BalanceSheetParserCathay(){}
 	public BalanceSheetParserCathay(List<Element> elementList, String stockID, boolean isYear,
-			String year, String seasons)
+			String[] years, String[] seasons)
 	{
 		this.isYear = isYear;
-		this.year = year;
+		this.years = years;
 		this.seasons = seasons;
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		this.elementList = elementList;
@@ -122,9 +122,15 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 		}
 		for (int i = 0; i < dataLength; i++)
 		{
-			if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
-				entity[i].year.equals(year)	&& entity[i].seasons.equals(seasons))
-				dao.insert(entity[i]);
+			for (int j = 0; j < seasons.length; j++)
+			{
+				for (int k = 0; k < years.length; k++)
+				{
+					if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
+							entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
+						dao.insert(entity[i]);
+				}
+			}
 		}
 	}
 	public void setStockData(String rowData[])
@@ -290,13 +296,13 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 		if (this.isYear == false)
 		{
 			String yearAndSeason[] = rowData.split("\\.");
-			entity.setYear(this.convertYear(yearAndSeason[0]));
+			entity.setYear(convertYear(yearAndSeason[0]));
 			entity.setSeasons(this.convertMonth(yearAndSeason[1]));
 			entity.setStockID(stockID);
 		}
 		else
 		{
-			entity.setYear(this.convertYear(rowData));
+			entity.setYear(convertYear(rowData));
 			entity.setSeasons("00");
 			entity.setStockID(stockID);
 		}
