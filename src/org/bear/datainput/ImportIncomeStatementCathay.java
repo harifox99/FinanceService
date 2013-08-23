@@ -15,28 +15,35 @@ public class ImportIncomeStatementCathay extends ImportStockIDData
 	public void insertBatchList()
 	{
 		try
-		{		
-			//String[] seasons = {"04"};
-			String year[] = {"2011"};
-			for (int i = 0; i < year.length; i++)
-			{			
-				int idleTime = 0;
-				for (int j = 0; j < wrapperList.size(); j++)
-				{
-					String stockID = wrapperList.get(j).getStockID();
-					System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
-					//年資料
-					GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, true);
-					IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, true, year[i], "00");
-					incomeStatementYear.parse(2);
-					//季資料
-					/*
-					GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, false);
-					IncomeStatementParserCathay incomeStatementSeason = new IncomeStatementParserCathay(urlContent.getContent(), stockID, false, "2011", "04");
-					incomeStatementSeason.parse(2);*/
-					Thread.sleep(10000);	
-					idleTime++;
-				}
+		{							
+			int idleTime = 0;
+			/* for (int j = 0; j < wrapperList.size(); j++)
+			{
+				String[] seasons = {"01", "02", "03", "04"};
+				String[] years = {"2012"};
+				String stockID = wrapperList.get(j).getStockID();
+				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
+				//季資料
+				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, false);
+				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, false, years, seasons);
+				incomeStatementYear.parse(2);
+				Thread.sleep(5000);	
+				idleTime++;
+			}*/
+			
+			//for (int j = 0; j < wrapperList.size(); j++)
+			for (int j = 0; j < 1; j++)
+			{
+				String[] seasons = {"00"};
+				String[] years = {"2012"};
+				String stockID = wrapperList.get(j).getStockID();
+				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
+				//年資料
+				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, true);
+				IncomeStatementParserCathay incomeStatementSeason = new IncomeStatementParserCathay(urlContent.getContent(), stockID, true, years, seasons);
+				incomeStatementSeason.parse(2);
+				Thread.sleep(10000);	
+				idleTime++;
 			}
 		}
 		catch (Exception ex)
