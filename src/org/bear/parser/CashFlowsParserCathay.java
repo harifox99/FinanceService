@@ -2,13 +2,14 @@ package org.bear.parser;
 import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
-import org.bear.entity.CashFlowsEntity;
+
+import org.bear.entity.BasicEntity;
 import org.bear.util.*;
 /**
  * @author edward
  * Parse國泰網站的現金流量表
  */
-public class CashFlowsParserCathay extends CashFlowsParserYam
+public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 {
 	//期初現金
 	int beginningCash[] = new int[dataLength];
@@ -18,13 +19,16 @@ public class CashFlowsParserCathay extends CashFlowsParserYam
 	int operatingActivity[] = new int[dataLength];
 	//投資活動現金
 	int investingActivity[] = new int[dataLength];
-	String year;
-	String seasons;
-	public CashFlowsParserCathay(List<Element> elementList, String stockID, String year, String seasons)
+	String[] years;
+	String[] seasons;
+	//判斷季資料或年資料
+	boolean isYear;
+	public CashFlowsParserCathay(List<Element> elementList, String stockID, String[] years, String[] seasons, boolean isYear)
 	{		
 		super(elementList, stockID);
-		this.year = year;
+		this.years = years;
 		this.seasons = seasons;
+		this.isYear = isYear;
 	}
 	/*
 	private Element getTableContent(Element element, int rows, int cols)
@@ -92,9 +96,15 @@ public class CashFlowsParserCathay extends CashFlowsParserYam
 		}
 		for (int i = 0; i < dataLength; i++)
 		{
-			if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
-					entity[i].year.equals(year)	&& entity[i].seasons.equals(seasons))
-			basicCashFlowsDao.insert(entity[i]);
+			for (int j = 0; j < seasons.length; j++)
+			{
+				for (int k = 0; k < years.length; k++)
+				{							
+					if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
+						entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
+						basicCashFlowsDao.insert(entity[i]);
+				}
+			}
 		}
 	}
 	public void setStockData(String rowData[])
@@ -158,12 +168,21 @@ public class CashFlowsParserCathay extends CashFlowsParserYam
 			entity[l].setNetCashFlows(endingCash[l] - beginningCash[l]);
 		}		
 	}
-	public void setYearAndSeason(CashFlowsEntity entity, String rowData)
+	public void setYearAndSeason(BasicEntity entity, String rowData)
 	{
-		String yearAndSeason[] = rowData.split("\\.");
-		entity.setYear(convertYear(yearAndSeason[0]));
-		entity.setSeasons(this.convertMonth(yearAndSeason[1]));
-		entity.setStockID(stockID);
+		if (this.isYear == false)
+		{
+			String yearAndSeason[] = rowData.split("\\.");
+			entity.setYear(convertYear(yearAndSeason[0]));
+			entity.setSeasons(this.convertMonth(yearAndSeason[1]));
+			entity.setStockID(stockID);
+		}
+		else
+		{
+			entity.setYear(convertYear(rowData));
+			entity.setSeasons("00");
+			entity.setStockID(stockID);
+		}
 	}
 }
 
