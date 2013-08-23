@@ -15,26 +15,35 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 	{
 		try
 		{		
-			String[] seasons = {"01", "02", "03", "04"};
-			for (int i = 0; i < seasons.length; i++)
+			int idleTime = 0;
+			
+			/*
+			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int idleTime = 0;
-				for (int j = 0; j < wrapperList.size(); j++)
-				{
-					String stockID = wrapperList.get(j).getStockID();
-					System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");				
-					//年資料
-					/*
-					GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, true);
-					BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContent(), stockID, true);
-					balanceSheetYear.parse(2);
-					//季資料*/
-					GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
-					BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, "2010", seasons[i]);
-					balanceSheetSeason.parse(2);
-					Thread.sleep(10000);		
-					idleTime++;
-				}			
+				String[] years = {"2012"};
+				String[] seasons = {"01", "02", "03", "04"};
+				String stockID = wrapperList.get(j).getStockID();
+				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");				
+				//季資料
+				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
+				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons);
+				balanceSheetSeason.parse(2);
+				Thread.sleep(10000);		
+				idleTime++;
+			}*/			
+			//for (int j = 0; j < 1; j++)
+			for (int j = 0; j < wrapperList.size(); j++)
+			{
+				String[] years = {"2012"};
+				String[] seasons = {"00"};
+				String stockID = wrapperList.get(j).getStockID();
+				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");				
+				//年資料
+				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, true);
+				BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContent(), stockID, true, years, seasons);
+				balanceSheetYear.parse(2);
+				Thread.sleep(10000);		
+				idleTime++;
 			}
 		}
 		catch (Exception ex)
