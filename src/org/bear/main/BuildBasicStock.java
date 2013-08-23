@@ -25,9 +25,10 @@ public class BuildBasicStock {
 		 * 2.2 上市成交資料：首頁 > 統計報表 > 依統計報表查詢 > 市場交易月報> 證券交易統計表
 		 * 2.3 目前以證券期貨發展基金會的資料為主取代2.1 & 2.2, BuildRevenueSFI
 		 * 3. 財務報表
-		 * 3.1  資產負債表
-		 * 3.2 損益表
-		 * 3.3 現金流量表
+		 * 3.1  資產負債表 > BuildBalanceSheet
+		 * 3.2 損益表 > BuildIncomeStatement
+		 * 3.3 現金流量表 > BuildCashFlowsStatement
+		 * 3.4 財務比率表 > BuildFinancialData
 		 * 3.4 年報出來時，要重新擷取資料
 		 * 4. 總經資料
 		 * 4.1 台灣> BuildMacroEconomicData
