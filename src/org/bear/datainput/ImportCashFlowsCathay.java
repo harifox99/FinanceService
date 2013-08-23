@@ -1,34 +1,44 @@
 package org.bear.datainput;
-import java.io.*;
 import org.bear.parser.CashFlowsParserCathay;
 import org.bear.util.*;
 /**
  * @author edward
- * 去國泰網站抓現金流量表（季表）
+ * 去玉山網站抓現金流量表
  */
 public class ImportCashFlowsCathay extends ImportStockIDData
 {									
 	public void insertBatchList()
 	{
 		try
-		{
-			String[] seasons = {"04"};
-			for (int i = 0; i < seasons.length; i++)
+		{			
+			int idleTime = 0;
+			//年資料
+			//for (int i = 0; i < wrapperList.size(); i++)
+			for (int i = 0; i < 1; i++)
 			{
-				BufferedWriter writer = new BufferedWriter(new FileWriter("cashflowCathay.txt"));			
-				int idleTime = 0;
-				for (int j = 0; j < wrapperList.size(); j++)
-				{
-					String stockID = wrapperList.get(j).getStockID();
-					System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
-					writer.write("股票代碼：" + stockID + " " + idleTime + ". ");
-					GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID);
-					CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, "2011", seasons[i]);
-					cashFlowsParser.parse(2);
-					Thread.sleep(10000);		
-					idleTime++;
-				}
-				writer.close();	
+				String[] seasons = {"00"};
+				String[] years = {"2012"};
+				String stockID = wrapperList.get(i).getStockID();
+				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
+				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, true);
+				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, true);
+				cashFlowsParser.parse(2);
+				Thread.sleep(5000);		
+				idleTime++;
+			}
+			//季資料
+			//for (int i = 0; i < wrapperList.size(); i++)
+			for (int i = 0; i < 1; i++)
+			{
+				String[] seasons = {"01", "02", "03", "04"};
+				String[] years = {"2012"};
+				String stockID = wrapperList.get(i).getStockID();
+				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
+				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
+				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, false);
+				cashFlowsParser.parse(2);
+				Thread.sleep(5000);		
+				idleTime++;
 			}
 		}
 		catch (Exception ex)
