@@ -1,6 +1,7 @@
 package org.bear.parser.sfi;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 
 import org.bear.entity.RevenueEntity;
+import org.bear.util.newRevenue.GetGretaiPrice;
 
 public class GretaiParser extends ParserBase 
 {
@@ -42,6 +44,14 @@ public class GretaiParser extends ParserBase
 						Date date = dateFormat.parse(year + "-" + content);
 						entity.setYearMonth(date);
 					}
+					else if (j == 2)//程蔼基
+					{
+						entity.setHighIndex(content);
+					}
+					else if (j == 3)//程基
+					{
+						entity.setLowIndex(content);
+					}
 					else if (j == 4)//キАΜ絃基
 					{
 						entity.setAverageIndex(content);
@@ -56,7 +66,14 @@ public class GretaiParser extends ParserBase
 				catch (Exception ex)
 				{
 					ex.printStackTrace();
-				}				
+				}			
+				GetGretaiPrice getGretaiPrice = new GetGretaiPrice();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(entity.getYearMonth());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+				String dateString = sdf.format(calendar.getTime());
+				getGretaiPrice.getContent(stockID, dateString.substring(0, 4), 
+						dateString.substring(5, dateString.length()), null, null);
 			}
 			dao.update(stockID, entity.getTurnoverRatio(), entity.getAverageIndex(), entity.getYearMonth());
 		}
