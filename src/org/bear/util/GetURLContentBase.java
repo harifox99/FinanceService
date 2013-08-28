@@ -28,6 +28,7 @@ public class GetURLContentBase
 			try
 			{
 				source = new Source(new URL(urlString));
+				elementList = source.getAllElements(HTMLElementName.TABLE);
 				isConnect = true;
 			}
 			catch(MalformedURLException ex)
@@ -36,9 +37,10 @@ public class GetURLContentBase
 			}
 			catch(IOException ex)
 			{
-				ex.printStackTrace();
+				//ex.printStackTrace();
+				System.out.println("查無此股票資訊");
 			}
-			elementList = source.getAllElements(HTMLElementName.TABLE);
+			
 		}
 		return elementList;
 	}
