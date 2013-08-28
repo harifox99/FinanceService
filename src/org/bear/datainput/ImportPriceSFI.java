@@ -1,5 +1,6 @@
 package org.bear.datainput;
 
+import org.bear.util.newRevenue.GetSFIPrice;
 import org.bear.util.newRevenue.GetTwseIndividualIndex;
 import org.bear.util.newRevenue.GretaiIndividualIndex;
 
@@ -13,7 +14,9 @@ public class ImportPriceSFI extends ImportStockIDData
 			int idleTime = 0;
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				String stockID = wrapperList.get(j).getStockID();				
+				String stockID = wrapperList.get(j).getStockID();			
+				//if (!stockID.equals("1338") )
+					//continue;
 				int stockBranch = wrapperList.get(j).getStockBranch();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");	
 				idleTime++;
@@ -21,8 +24,14 @@ public class ImportPriceSFI extends ImportStockIDData
 					continue;
 				else if (sfi instanceof GretaiIndividualIndex && stockBranch == 1)
 					continue;
-				else
+				else if (sfi instanceof GetSFIPrice && stockBranch == 1)
 					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
+				else if (sfi instanceof GretaiIndividualIndex && stockBranch == 2)
+					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
+				else if (sfi instanceof GetTwseIndividualIndex && stockBranch == 1)
+					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
+				else
+					continue;
 				Thread.sleep(5000);
 			}
 		}
