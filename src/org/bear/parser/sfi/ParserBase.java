@@ -37,8 +37,15 @@ public abstract class ParserBase {
 	public void parse(int tableIndex) {
 		Source source = new Source(responseString);
 		//System.out.println(source.toString());
-		elementList = source.getAllElements(HTMLElementName.TABLE);
-		this.getTableContent(elementList.get(tableIndex));				
+		try
+		{
+			elementList = source.getAllElements(HTMLElementName.TABLE);
+			this.getTableContent(elementList.get(tableIndex));
+		}
+		catch (IndexOutOfBoundsException ex)
+		{
+			System.out.println(stockID + ": 查無此股票資訊");
+		}
 	}
 	public abstract void getTableContent(Element element);
 }
