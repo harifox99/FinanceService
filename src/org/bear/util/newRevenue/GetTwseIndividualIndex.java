@@ -37,6 +37,8 @@ public class GetTwseIndividualIndex extends GetURLContentBase implements GetSFIC
 	{
 		this.setUrlString(stockID, startYear);
 		List<Element> elementList = super.getContent();
+		if (elementList == null)
+			return;
 		List<Element> trList = elementList.get(7).getAllElements(HTMLElementName.TR);
 		for (int i = 0; i < trList.size(); i++)
 		{
