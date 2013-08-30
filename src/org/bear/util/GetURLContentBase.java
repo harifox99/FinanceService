@@ -39,6 +39,7 @@ public class GetURLContentBase
 			{
 				//ex.printStackTrace();
 				System.out.println("查無此股票資訊");
+				isConnect = true;
 			}
 			
 		}
