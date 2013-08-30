@@ -8,6 +8,7 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 
+import org.bear.entity.GretaiPriceEntity;
 import org.bear.entity.RevenueEntity;
 import org.bear.util.newRevenue.GetGretaiPrice;
 
@@ -59,6 +60,25 @@ public class GretaiParser extends ParserBase
 					else if (j == 8)//週轉率
 					{
 						entity.setTurnoverRatio(content);
+						GetGretaiPrice getGretaiPrice = new GetGretaiPrice();
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(entity.getYearMonth());
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+						String dateString = sdf.format(calendar.getTime());
+						getGretaiPrice.getContent(stockID, dateString.substring(0, 4), 
+							dateString.substring(4, dateString.length()), null, null);
+						GretaiPriceEntity gretaiPriceEntity = getGretaiPrice.getEntity();
+						entity.setOpenIndex(gretaiPriceEntity.getOpenIndex());
+						entity.setCloseIndex(gretaiPriceEntity.getCloseIndex());
+						if (this.checkPrice(entity) == true)
+							entityList.add(entity);
+						else
+						{
+							System.out.println("解析櫃臺資訊異常");
+							System.out.println("stockID: " + stockID);
+							System.out.println("dateString: " + dateString);
+							//System.exit(0);
+						}
 					}
 					else
 						continue;
@@ -66,16 +86,35 @@ public class GretaiParser extends ParserBase
 				catch (Exception ex)
 				{
 					ex.printStackTrace();
-				}			
-				GetGretaiPrice getGretaiPrice = new GetGretaiPrice();
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(entity.getYearMonth());
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-				String dateString = sdf.format(calendar.getTime());
-				getGretaiPrice.getContent(stockID, dateString.substring(0, 4), 
-						dateString.substring(5, dateString.length()), null, null);
+				}		
 			}
-			dao.update(stockID, entity.getTurnoverRatio(), entity.getAverageIndex(), entity.getYearMonth());
 		}
+		dao.insertBatch(entityList);
+	}
+	private boolean checkPrice(RevenueEntity entity)
+	{
+		boolean isLegal = true;
+		try
+		{
+			if (Double.parseDouble(entity.getCloseIndex()) < Double.parseDouble(entity.getLowIndex()))
+				entity.setLowIndex(entity.getCloseIndex());
+			if (Double.parseDouble(entity.getOpenIndex()) < Double.parseDouble(entity.getLowIndex()))
+				entity.setLowIndex(entity.getOpenIndex());
+			if (Double.parseDouble(entity.getCloseIndex()) > Double.parseDouble(entity.getHighIndex()))
+				entity.setHighIndex(entity.getCloseIndex());
+			if (Double.parseDouble(entity.getOpenIndex()) > Double.parseDouble(entity.getHighIndex()))
+				entity.setHighIndex(entity.getOpenIndex());
+		}
+		catch (NumberFormatException nfe)
+		{
+			isLegal = false;
+			System.out.println("NumberFormatException occurred in GretaiParser.checkPrice.");
+		}
+		catch (NullPointerException npe)
+		{
+			isLegal = false;
+			System.out.println("NullPointerException occurred in GretaiParser.checkPrice.");
+		}
+		return isLegal;
 	}
 }
