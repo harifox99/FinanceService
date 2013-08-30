@@ -32,17 +32,34 @@ public class GretaiPriceParser extends ParserBase
 				content = content.replaceAll(",", "");
 				try
 				{
-					if (j == 3 && i == 1)//秨絃基
-					{					
-						entity.setOpenIndex(content);
+					if (j == 3)//秨絃基
+					{			
+						if (i == 1)
+						{
+							Double.parseDouble(content);
+							entity.setOpenIndex(content);
+						}
+						else
+						{
+							if (entity.getOpenIndex() == null)
+							{
+								Double.parseDouble(content);
+								entity.setOpenIndex(content);
+							}
+						}
 					}
 					else if (j == 6)//Μ絃基
 					{
+						Double.parseDouble(content);
 						entity.setCloseIndex(content);
 					}
 					else
 						continue;
 				}			
+				catch (NumberFormatException nfx)
+				{
+					System.out.println("基瞷--");
+				}
 				catch (Exception ex)
 				{
 					ex.printStackTrace();
