@@ -140,10 +140,10 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				}
 			}
 		}
-		if (this.checkExpectedNum() == false && this.isCombined == true)
+		if (this.checkExpectedNum() == true && this.isCombined == true)
 		{
 			GetURLCathayBalanceSheetSingle urlContent = new GetURLCathayBalanceSheetSingle(stockID, this.isYear);
-			BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContent(), stockID, true, years, seasons, expectedNum, false);
+			BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContent(), stockID, this.isYear, years, seasons, expectedNum, false);
 			balanceSheetYear.parse(2);
 		}
 	}
@@ -159,7 +159,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 			if (entity[i].year == null && entity[i].seasons == null && entity[i].stockID == null)
 				counter++;
 		}
-		if (counter == this.expectedNum)
+		if ( (dataLength - counter) <= this.expectedNum)
 			return true;
 		else
 			return false;
