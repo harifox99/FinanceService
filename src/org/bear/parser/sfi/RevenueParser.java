@@ -43,19 +43,31 @@ public class RevenueParser extends ParserBase
 					}
 					else if (j == 2)//盈餘
 					{
-						entity.setRevenue(Integer.parseInt(content.substring(0, content.length()-3)));
+						if (content.equals("0"))
+							entity.setRevenue(0);
+						else
+							entity.setRevenue(Integer.parseInt(content.substring(0, content.length()-3)));
 					}
 					else if (j == 3)//上期盈餘
 					{
-						entity.setLastRevenue(Integer.parseInt(content.substring(0, content.length()-3)));
+						if (content.equals("0"))
+							entity.setLastRevenue(0);
+						else
+							entity.setLastRevenue(Integer.parseInt(content.substring(0, content.length()-3)));
 					}
 					else if (j == 6)//累計營收
 					{
-						entity.setAccumulation(Long.parseLong(content.substring(0, content.length()-3)));
+						if (content.equals("0"))
+							entity.setAccumulation(0);
+						else
+							entity.setAccumulation(Long.parseLong(content.substring(0, content.length()-3)));
 					}
 					else if (j == 7)//上期累計營收
 					{
-						entity.setLastAccumulation(Long.parseLong(content.substring(0, content.length()-3)));
+						if (content.equals("0"))
+							entity.setLastAccumulation(0);
+						else
+							entity.setLastAccumulation(Long.parseLong(content.substring(0, content.length()-3)));
 					}
 					else
 						continue;
