@@ -16,22 +16,24 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 		try
 		{		
 			int idleTime = 0;
-			
-			/*
-			for (int j = 0; j < wrapperList.size(); j++)
+						
+			//for (int j = 0; j < wrapperList.size(); j++)
+			for (int j = 52; j < wrapperList.size(); j++)
 			{
-				String[] years = {"2012"};
+				int expectedNum = 6;
+				String[] years = {"2012", "2013"};
 				String[] seasons = {"01", "02", "03", "04"};
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");				
 				//季資料
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
-				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons);
+				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
 				balanceSheetSeason.parse(2);
-				Thread.sleep(10000);		
+				Thread.sleep(5000);		
 				idleTime++;
-			}*/			
-			//for (int j = 780; j < wrapperList.size(); j++)
+			}			
+			
+			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 8;
@@ -45,7 +47,7 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 				balanceSheetYear.parse(2);
 				Thread.sleep(5000);		
 				idleTime++;
-			}
+			}*/
 		}
 		catch (Exception ex)
 		{
