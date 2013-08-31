@@ -10,6 +10,7 @@ import org.bear.dao.BalanceSheetDao;
 import org.bear.entity.BalanceSheetEntity;
 import org.bear.entity.BasicEntity;
 import org.bear.util.AccountTitle;
+import org.bear.util.GetURLCathayBalanceSheetSingle;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -26,19 +27,26 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 	public BalanceSheetEntity entity[];
 	//判斷季資料或年資料
 	boolean isYear;
+	//判斷合併報表資料是否足夠
+	int expectedNum;
+	//擷取合併報表=true, 否則=false
+	boolean isCombined;
 	String[] years;
 	String[] seasons;
 	public BalanceSheetParserCathay(){}
 	public BalanceSheetParserCathay(List<Element> elementList, String stockID, boolean isYear,
-			String[] years, String[] seasons)
+			String[] years, String[] seasons, int expectedNum, boolean isCombined)
 	{
 		this.isYear = isYear;
 		this.years = years;
 		this.seasons = seasons;
+		this.isCombined = isCombined;
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		this.elementList = elementList;
 		this.stockID = stockID;
-		entity = new BalanceSheetEntity[dataLength];		
+		this.expectedNum = expectedNum;
+		entity = new BalanceSheetEntity[dataLength];	
+		
 		for (int i = 0; i < dataLength; i++)
 			entity[i] = new BalanceSheetEntity();
 		dao = (BalanceSheetDao)context.getBean("basicBalanceSheetDao");
@@ -132,6 +140,30 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				}
 			}
 		}
+		if (this.checkExpectedNum() == false && this.isCombined == true)
+		{
+			GetURLCathayBalanceSheetSingle urlContent = new GetURLCathayBalanceSheetSingle(stockID, this.isYear);
+			BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContent(), stockID, true, years, seasons, expectedNum, false);
+			balanceSheetYear.parse(2);
+		}
+	}
+	/**
+	 * 檢查合併報表資料是否足夠，若不足，則擷取單一報表
+	 * @return
+	 */
+	private boolean checkExpectedNum()
+	{
+		int counter = 0;
+		for (int i = 0; i < dataLength; i++)
+		{
+			if (entity[i].year == null && entity[i].seasons == null && entity[i].stockID == null)
+				counter++;
+		}
+		if (counter == this.expectedNum)
+			return true;
+		else
+			return false;
+		
 	}
 	public void setStockData(String rowData[])
 	{
