@@ -30,7 +30,7 @@ public class GetSFIPrice implements GetSFIContent
     public static void main(String args[])
     {
     	//GetSFIPrice revenue = new GetSFIPrice();
-    	GetSFIRevenue revenue = new GetSFIRevenue();
+    	GetSFITwseRevenue revenue = new GetSFITwseRevenue();
     	revenue.getContent("1101", "2013", "3", "2013", "6");
     }
 }
