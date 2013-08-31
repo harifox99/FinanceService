@@ -1,5 +1,6 @@
 package org.bear.datainput;
 
+import org.bear.util.newRevenue.GetSFIGrateiRevenue;
 import org.bear.util.newRevenue.GetSFIPrice;
 import org.bear.util.newRevenue.GetSFITwseRevenue;
 import org.bear.util.newRevenue.GetTwseIndividualIndex;
@@ -32,6 +33,8 @@ public class ImportPriceSFI extends ImportStockIDData
 				else if (sfi instanceof GetTwseIndividualIndex && stockBranch == 1)
 					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
 				else if (sfi instanceof GetSFITwseRevenue && stockBranch == 1)
+					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
+				else if (sfi instanceof GetSFIGrateiRevenue && stockBranch == 2)
 					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
 				else
 					continue;
