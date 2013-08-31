@@ -9,7 +9,7 @@ import org.bear.datainput.GetSFIContent;
 import org.bear.parser.sfi.RevenueParser;
 import org.bear.util.HttpUtil;
 
-public class GetSFIRevenue implements GetSFIContent
+public class GetSFITwseRevenue implements GetSFIContent
 {
 	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth)
 	{
