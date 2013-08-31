@@ -17,8 +17,8 @@ public class ImportPriceSFI extends ImportStockIDData
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				String stockID = wrapperList.get(j).getStockID();			
-				if (!stockID.equals("1338") )
-					continue;
+				//if (!stockID.equals("1338") )
+					//continue;
 				int stockBranch = wrapperList.get(j).getStockBranch();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");	
 				idleTime++;
@@ -32,10 +32,10 @@ public class ImportPriceSFI extends ImportStockIDData
 					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
 				else if (sfi instanceof GetTwseIndividualIndex && stockBranch == 1)
 					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
-				else if (sfi instanceof GetSFITwseRevenue && stockBranch == 1)
-					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
 				else if (sfi instanceof GetSFIGrateiRevenue && stockBranch == 2)
 					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);
+				else if (sfi instanceof GetSFITwseRevenue && stockBranch == 1)
+					sfi.getContent(stockID, startYear, startMonth, endYear, endMonth);				
 				else
 					continue;
 				Thread.sleep(3000);
