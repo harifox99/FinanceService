@@ -159,10 +159,10 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 			if (entity[i].year == null && entity[i].seasons == null && entity[i].stockID == null)
 				counter++;
 		}
-		if ( (dataLength - counter) <= this.expectedNum)
-			return true;
-		else
+		if ( (dataLength - counter) >= this.expectedNum)
 			return false;
+		else
+			return true;
 		
 	}
 	public void setStockData(String rowData[])
