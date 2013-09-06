@@ -3,6 +3,7 @@ package org.bear.parser;
 import java.io.BufferedWriter;
 import java.util.List;
 import net.htmlparser.jericho.Element;
+import org.bear.entity.BasicEntity;
 import org.bear.util.AccountTitle;
 /**
  * @author edward
@@ -20,6 +21,10 @@ public class ParserBase
 	public final int dataLength = 8;
 	//辨別會計科目
 	public AccountTitle title;
+	//判斷合併報表資料是否足夠
+	int expectedNum;
+	//擷取合併報表=true, 否則=false
+	boolean isCombined;
 	/**
 	 * 將民國轉成西元年
 	 * @param chineseYear
@@ -48,5 +53,23 @@ public class ParserBase
 			return "04";
 		else
 			return "05";
+	}
+	/**
+	 * 檢查合併報表資料是否足夠，若不足，則擷取單一報表
+	 * @return
+	 */
+	public boolean checkExpectedNum(BasicEntity[] entity, int expectedNum)
+	{
+		int counter = 0;
+		for (int i = 0; i < dataLength; i++)
+		{
+			if (entity[i].year == null && entity[i].seasons == null && entity[i].stockID == null)
+				counter++;
+		}
+		if ( (dataLength - counter) >= expectedNum)
+			return false;
+		else
+			return true;
+		
 	}
 }
