@@ -10,6 +10,8 @@ import org.bear.parser.CashDivParserCathay;
 import org.bear.parser.NAVParserCathay;
 import org.bear.util.GetURLCathayCashDiv;
 import org.bear.util.GetURLCathayNav;
+import org.bear.util.GetURLCathayNavSingle;
+import org.bear.util.GetURLContentBase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -24,57 +26,75 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 	//其他財務資料DAO
 	FinancialDataDao dao;
 	FinancialDataEntity entity;
+	int expectedNum = 8;
 	public void insertBatchList()
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		dao = (FinancialDataDao)context.getBean("basicFinancialDataDao");
 		try
 		{		
-			int idleTime = 0;
+			int idleTime = 0;			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				entityList = new ArrayList <FinancialDataEntity>();
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
-				//每股淨值年資料
-				GetURLCathayNav urlNav = new GetURLCathayNav(stockID, true);
-				NAVParserCathay navParser = new NAVParserCathay(urlNav.getContent(), stockID);
-				navParser.parse(2);
-				//每年配發股息
-				GetURLCathayCashDiv urlCashDiv = new GetURLCathayCashDiv(stockID);
-				CashDivParserCathay cashDivParser = new CashDivParserCathay(urlCashDiv.getContent(), stockID);
-				cashDivParser.parse(3);
-				HashMap <String, Double> mapCashDiv = cashDivParser.getCashDivData();
-				HashMap <String, Double> mapNav = navParser.getNavData();
-				for (int k = 0; k < mapNav.size(); k++)
-				{
-					entity = new FinancialDataEntity();
-					String year = navParser.getYearList().get(k);
-					entity.setYear(year);
-					entity.setSeasons("00");
-					entity.setNav(mapNav.get(year));
-					entity.setStockID(stockID);
-					if (mapCashDiv.get(year) == null)
-						entity.setCashDiv(0.0);
-					else
-						entity.setCashDiv(mapCashDiv.get(year));	
-					if (entity.year.equals("2010") || entity.year.equals("2011"))
-						entityList.add(entity);
-				}				
-				dao.insertBatch(entityList);
-				Thread.sleep(10000);		
-				/*
-				if (idleTime++ > 10)
-				{
-					break;
-				}*/
+				/***********/
+				this.setFinancialData(stockID, true);
+				/***********/
+				Thread.sleep(5000);		
 				idleTime++;
-			}
-			
+			}			
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+		}
+	}
+	private void setFinancialData(String stockID, boolean isCombined)
+	{
+		//每股淨值年資料
+		GetURLContentBase urlNav;
+		if (isCombined == true)
+			urlNav = new GetURLCathayNav(stockID, true);
+		else
+			urlNav = new GetURLCathayNavSingle(stockID, true);
+		NAVParserCathay navParser = new NAVParserCathay(urlNav.getContent(), stockID);
+		navParser.parse(2);
+		//每年配發股息
+		GetURLCathayCashDiv urlCashDiv = new GetURLCathayCashDiv(stockID);
+		CashDivParserCathay cashDivParser = new CashDivParserCathay(urlCashDiv.getContent(), stockID);
+		cashDivParser.parse(3);
+		HashMap <String, Double> mapCashDiv = cashDivParser.getCashDivData();
+		HashMap <String, Double> mapNav = navParser.getNavData();
+		for (int k = 0; k < mapNav.size(); k++)
+		{
+			entity = new FinancialDataEntity();
+			String year = navParser.getYearList().get(k);
+			entity.setYear(year);
+			entity.setSeasons("00");
+			entity.setNav(mapNav.get(year));
+			entity.setStockID(stockID);
+			if (mapCashDiv.get(year) == null)
+				entity.setCashDiv(0.0);
+			else
+				entity.setCashDiv(mapCashDiv.get(year));	
+			if (entity.year.equals("2005") || entity.year.equals("2006") || entity.year.equals("2007") ||
+				entity.year.equals("2008") || entity.year.equals("2009") || entity.year.equals("2010") ||
+				entity.year.equals("2011") || entity.year.equals("2012"))
+			{
+				entityList.add(entity);
+				//合併財務資料不足，擷取非合併財務資料
+				if (isCombined == true)
+					dao.insert(entity);
+				else
+					dao.insertWithCheck(entity);
+			}
+		}	
+			
+		if (entityList.size() < expectedNum && isCombined == true)
+		{
+			this.setFinancialData(stockID, false);
 		}
 	}
 }
