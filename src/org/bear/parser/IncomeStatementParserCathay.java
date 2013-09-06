@@ -10,6 +10,7 @@ import net.htmlparser.jericho.HTMLElementName;
 import org.bear.dao.IncomeStatementDao;
 import org.bear.entity.IncomeStatementEntity;
 import org.bear.util.AccountTitle;
+import org.bear.util.GetURLCathayIncomeStatementSingle;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -27,11 +28,13 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 	String[] years;
 	String[] seasons;
 	public IncomeStatementParserCathay(List<Element> elementList, String stockID, boolean isYear,
-			String[] years, String[] seasons)
+			String[] years, String[] seasons, int expectedNum, boolean isCombined)
 	{
 		this.isYear = isYear;
 		this.years = years;
 		this.seasons = seasons;
+		this.isCombined = isCombined;
+		this.expectedNum = expectedNum;
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		this.elementList = elementList;
 		this.stockID = stockID;
@@ -109,10 +112,19 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 				for (int k = 0; k < years.length; k++)
 				{
 					if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
-						entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
-					dao.insert(entity[i]);
+							entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
+						if (this.isCombined == true)
+							dao.insert(entity[i]);
+						else
+							dao.insertWithCheck(entity[i]);
 				}
 			}
+		}
+		if (checkExpectedNum(entity, expectedNum) == true && this.isCombined == true)
+		{
+			GetURLCathayIncomeStatementSingle urlContent = new GetURLCathayIncomeStatementSingle(stockID, this.isYear);
+			IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, this.isYear, years, seasons, expectedNum, false);
+			incomeStatementYear.parse(2);
 		}
 	}
 	public void setStockData(String rowData[])
