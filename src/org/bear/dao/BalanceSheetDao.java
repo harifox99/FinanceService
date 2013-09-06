@@ -16,4 +16,5 @@ public interface BalanceSheetDao
 	public List<BalanceSheetEntity> findDataByYear(String stockID, String year);
 	public List<BalanceSheetEntity> findDataByYear(String stockID);
 	public void insert(BalanceSheetEntity balanceSheetEntity);
+	public void insertWithCheck(BalanceSheetEntity balanceSheetEntity);
 }

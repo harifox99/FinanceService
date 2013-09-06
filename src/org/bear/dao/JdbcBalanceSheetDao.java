@@ -90,4 +90,25 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 		return wrapperList;
 	}
 
+	@Override
+	public void insertWithCheck(BalanceSheetEntity balanceSheetEntity) {
+		String sql = "select * from BalanceSheet where stockid = '" + balanceSheetEntity.getStockID() +
+		"' and year = '" + balanceSheetEntity.getYear() + "' and seasons = '" + balanceSheetEntity.getSeasons() + "'";
+		System.out.println(sql);
+		List <BalanceSheetEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
+		if (wrapperList.size() <= 0)
+		{
+			sql = "insert into BalanceSheet(StockID, Year, Seasons, Cash, ShortTermInvestment, " + 
+			"Receivable, OtherReceivable, ShortTermBorrowing, Inventory, PrepaidExpense, OtherCurrentAssets, " +
+			"CurrentAssets, LongTermInvestment, FixedAssets, OtherAssets, TotalAssets, LongTermOneYear, " +
+			"CurrentLiability, LongTermLiability, OtherLiability, TotalLiability, StockholdersEquity, AccountsPayable) " +
+			"values (:stockID, :year, :seasons, :cash, :shortTermInvestment, :receivable, :otherReceivable, " + 
+			":shortTermBorrow, :inventory, :prepaidExpense, :otherCurrentAssets, :currentAssets, :longTermInvestment, " +
+			":fixedAssets, :otherAssets, :totalAssets, :longTermOneYear, :currentLiability, " +
+			":longTermLiability, :otherLiability, :totalLiability, :stockholdersEquity, :accountsPayable)";
+			SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(balanceSheetEntity);
+			this.getSimpleJdbcTemplate().update(sql, parameterSource);
+		}		
+	}
+
 }
