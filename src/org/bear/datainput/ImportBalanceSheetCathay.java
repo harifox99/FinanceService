@@ -16,9 +16,8 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 		try
 		{		
 			int idleTime = 0;
-						
-			//for (int j = 0; j < wrapperList.size(); j++)
-			for (int j = 52; j < wrapperList.size(); j++)
+			/*
+			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 6;
 				String[] years = {"2012", "2013"};
@@ -31,13 +30,12 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 				balanceSheetSeason.parse(2);
 				Thread.sleep(5000);		
 				idleTime++;
-			}			
-			
-			/*
+			}*/			
+		
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 8;
-				String[] years = {"2005","2006","2007","2008","2009","2010","2011","2012",};
+				String[] years = {"2005","2006","2007","2008","2009","2010","2011","2012"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");				
@@ -47,7 +45,7 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 				balanceSheetYear.parse(2);
 				Thread.sleep(5000);		
 				idleTime++;
-			}*/
+			}
 		}
 		catch (Exception ex)
 		{
