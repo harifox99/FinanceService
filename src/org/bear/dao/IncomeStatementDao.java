@@ -3,7 +3,6 @@
  */
 package org.bear.dao;
 import java.util.List;
-
 import org.bear.entity.IncomeStatementEntity;
 
 /**
@@ -15,5 +14,6 @@ public interface IncomeStatementDao {
 	public List<IncomeStatementEntity> findDataBySeason(String stockID, String year, String seasons);
 	public List<IncomeStatementEntity> findDataByYear(String stockID, String year);
 	public List<IncomeStatementEntity> findDataByYear(String stockID);
-	public void insert(IncomeStatementEntity balanceSheetEntity);
+	public void insert(IncomeStatementEntity incomeStatementEntity);
+	public void insertWithCheck(IncomeStatementEntity incomeStatementEntity);
 }

@@ -5,7 +5,6 @@ package org.bear.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bear.entity.FinancialDataEntity;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -43,9 +42,11 @@ public class JdbcFinancialDataDao extends SimpleJdbcDaoSupport implements Financ
 	/* (non-Javadoc)
 	 * @see org.bear.dao.FinancialDataDao#insert(org.bear.entity.FinancialDataEntity)
 	 */
-	public void insert(FinancialDataEntity FinancialEntity) {
-		// TODO Auto-generated method stub
-
+	public void insert(FinancialDataEntity financialEntity) {
+		String sql = "insert into financialData(StockID, Year, Seasons, NAV, CashDiv) " +
+		"values (:stockID, :year, :seasons, :nav, :cashDiv)";
+		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(financialEntity);
+		this.getSimpleJdbcTemplate().update(sql, parameterSource);
 	}
 
 	/* (non-Javadoc)
@@ -61,6 +62,21 @@ public class JdbcFinancialDataDao extends SimpleJdbcDaoSupport implements Financ
 			parameters.add(new BeanPropertySqlParameterSource(iterator));
 		}
 		this.getSimpleJdbcTemplate().batchUpdate(sql, parameters.toArray(new SqlParameterSource[0]));
+	}
+
+	@Override
+	public void insertWithCheck(FinancialDataEntity financialEntity) {
+		String sql = "select * from financialData where stockid = '" + financialEntity.getStockID() +
+		"' and year = '" + financialEntity.getYear() + "' and seasons = '" + financialEntity.getSeasons() + "'";
+		System.out.println(sql);
+		List <FinancialDataEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(FinancialDataEntity.class));
+		if (wrapperList.size() <= 0)
+		{
+			sql = "insert into financialData(StockID, Year, Seasons, NAV, CashDiv) " +
+			"values (:stockID, :year, :seasons, :nav, :cashDiv)";
+			SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(financialEntity);
+			this.getSimpleJdbcTemplate().update(sql, parameterSource);
+		}
 	}
 
 }

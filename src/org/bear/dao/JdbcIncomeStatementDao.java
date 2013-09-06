@@ -5,6 +5,7 @@ package org.bear.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bear.entity.IncomeStatementEntity;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -36,7 +37,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 	/* (non-Javadoc)
 	 * @see org.bear.dao.IncomeStatementDao#insert(org.bear.entity.IncomeStatementEntity)
 	 */
-	public void insert(IncomeStatementEntity balanceSheetEntity) {
+	public void insert(IncomeStatementEntity incomeStatementEntity) {
 		// TODO Auto-generated method stub
 		String sql = "insert into incomeStatement(StockID, Year, Seasons, OperatingRevenue, OperatingCost, " + 
 		"GrossProfit, OperatingExpense, OperatingIncome, InvestmentIncome, NonOperatingRevenue, " +
@@ -44,7 +45,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		"values (:stockID, :year, :seasons, :operatingRevenue, :operatingCost, :grossProfit, " + 
 		":operatingExpense, :operatingIncome, :investmentIncome, :nonOperatingRevenue, " +
 		":nonOperatingExpense, :preTaxIncome, :netIncome, :eps, :wghtAvgStocks)";
-		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(balanceSheetEntity);
+		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(incomeStatementEntity);
 		this.getSimpleJdbcTemplate().update(sql, parameterSource);
 	}
 
@@ -87,6 +88,26 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		System.out.println("findDataByYear: " + sql);
 		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return wrapperList;
+	}
+
+	@Override
+	public void insertWithCheck(IncomeStatementEntity incomeStatementEntity) {
+		String sql = "select * from incomeStatement where stockid = '" + incomeStatementEntity.getStockID() +
+		"' and year = '" + incomeStatementEntity.getYear() + "' and seasons = '" + incomeStatementEntity.getSeasons() + "'";
+		System.out.println(sql);
+		List <IncomeStatementEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		if (wrapperList.size() <= 0)
+		{
+			sql = "insert into incomeStatement(StockID, Year, Seasons, OperatingRevenue, OperatingCost, " + 
+			"GrossProfit, OperatingExpense, OperatingIncome, InvestmentIncome, NonOperatingRevenue, " +
+			"NonOperatingExpense, PreTaxIncome, NetIncome, EPS, WghtAvgStocks) " +
+			"values (:stockID, :year, :seasons, :operatingRevenue, :operatingCost, :grossProfit, " + 
+			":operatingExpense, :operatingIncome, :investmentIncome, :nonOperatingRevenue, " +
+			":nonOperatingExpense, :preTaxIncome, :netIncome, :eps, :wghtAvgStocks)";
+			SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(incomeStatementEntity);
+			this.getSimpleJdbcTemplate().update(sql, parameterSource);
+		}
+		
 	}
 
 }
