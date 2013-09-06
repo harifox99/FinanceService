@@ -54,4 +54,21 @@ public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsD
 		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
 		return wrapperList;
 	}
+
+	@Override
+	public void insertWithCheck(CashFlowsEntity cashFlowsEntity) {
+		String sql = "select * from StatementOfCashFlow where stockid = '" + cashFlowsEntity.getStockID() +
+		"' and year = '" + cashFlowsEntity.getYear() + "' and seasons = '" + cashFlowsEntity.getSeasons() + "'";
+		System.out.println(sql);
+		List <CashFlowsEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
+		if (wrapperList.size() <= 0)
+		{
+			sql = "insert into StatementOfCashFlow(StockID, Year, Seasons, IncomeSummary, OperatingActivity, " + 
+			"InvestingActivity, FinancingActivity, NetCashFlows, BeginningCash, EndingCash, FreeCashFlow) " +
+			"values (:stockID, :year, :seasons, :incomeSummary, :operatingActivity, " + 
+			":investingActivity, :financingActivity, :netCashFlows, :beginningCash, :endingCash, :freeCashFlow)";
+			SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(cashFlowsEntity);
+			this.getSimpleJdbcTemplate().update(sql, parameterSource);
+		}		
+	}
 }
