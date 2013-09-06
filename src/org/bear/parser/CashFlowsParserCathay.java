@@ -23,12 +23,14 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 	String[] seasons;
 	//判斷季資料或年資料
 	boolean isYear;
-	public CashFlowsParserCathay(List<Element> elementList, String stockID, String[] years, String[] seasons, boolean isYear)
+	public CashFlowsParserCathay(List<Element> elementList, String stockID, String[] years, String[] seasons, boolean isYear, int expectedNum, boolean isCombined)
 	{		
 		super(elementList, stockID);
 		this.years = years;
 		this.seasons = seasons;
 		this.isYear = isYear;
+		this.isCombined = isCombined;
+		this.expectedNum = expectedNum;
 	}
 	/*
 	private Element getTableContent(Element element, int rows, int cols)
@@ -102,15 +104,30 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 				{							
 					if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
 						entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
-						basicCashFlowsDao.insert(entity[i]);
+						if (this.isCombined == true)
+							basicCashFlowsDao.insert(entity[i]);
+						else
+							basicCashFlowsDao.insertWithCheck(entity[i]);
 				}
 			}
+		}
+		if (this.checkExpectedNum(entity, expectedNum) == true && this.isCombined == true)
+		{
+			GetURLCathayCashFlowSingle urlContent = new GetURLCathayCashFlowSingle(stockID, this.isYear);
+			CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, this.isYear, expectedNum, false);
+			cashFlowsParser.parse(2);
 		}
 	}
 	public void setStockData(String rowData[])
 	{
 		for (int k = 0; k < dataLength; k++)
 		{
+			if (rowData[k] == null)
+				continue;
+			if (rowData[k].equals("N/A"))
+		    {
+				rowData[k] = "0";
+		    }
 			switch (title) 
 			{
 				case INCOME_SUMMARY:
