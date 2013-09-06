@@ -29,6 +29,8 @@ public class BuildMacroEconomicData extends ParseFile
 		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
 		CepdParser parser = new CepdParser();
+		parser.setStartDate("2013,4");
+		parser.setEndDate("2013,7");
 		parser.setDao(dao);
 		for (int i = 0; i < CepdIndexConstant.CEPD_LIST.length; i++)
 		{
@@ -40,17 +42,17 @@ public class BuildMacroEconomicData extends ParseFile
 		//³f¹ô
 		GetCbcMoney money = new GetCbcMoney();
 		money.setDao(dao);
-		money.getContent(CbcIndexConstant.MONTH_HASH.get("1993M02"), CbcIndexConstant.MONTH_HASH.get("2013M03"));
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2013M07"));
 		
 		//¬¡´ÁÀx»W¦s´Ú
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("1993M02"), CbcIndexConstant.MONTH_HASH.get("2013M03"));
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2013M07"));
 		
 		//TWSE
 		TwseIndex twseIndex = new TwseIndex();
 		twseIndex.setDao(dao);
-		twseIndex.getContent();
+		twseIndex.getContent("2013", "4", "2013", "7");
 	}
 	public void insertBatch()
 	{
