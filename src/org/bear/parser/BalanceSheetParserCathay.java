@@ -27,10 +27,6 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 	public BalanceSheetEntity entity[];
 	//判斷季資料或年資料
 	boolean isYear;
-	//判斷合併報表資料是否足夠
-	int expectedNum;
-	//擷取合併報表=true, 否則=false
-	boolean isCombined;
 	String[] years;
 	String[] seasons;
 	public BalanceSheetParserCathay(){}
@@ -135,35 +131,20 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				for (int k = 0; k < years.length; k++)
 				{
 					if (entity[i].year != null && entity[i].seasons != null && entity[i].stockID != null &&
-							entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
-						dao.insert(entity[i]);
+						entity[i].year.equals(years[k])	&& entity[i].seasons.equals(seasons[j]))
+						if (this.isCombined == true)
+							dao.insert(entity[i]);
+						else
+							dao.insertWithCheck(entity[i]);
 				}
 			}
 		}
-		if (this.checkExpectedNum() == true && this.isCombined == true)
+		if (this.checkExpectedNum(entity, expectedNum) == true && this.isCombined == true)
 		{
 			GetURLCathayBalanceSheetSingle urlContent = new GetURLCathayBalanceSheetSingle(stockID, this.isYear);
 			BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContent(), stockID, this.isYear, years, seasons, expectedNum, false);
 			balanceSheetYear.parse(2);
 		}
-	}
-	/**
-	 * 檢查合併報表資料是否足夠，若不足，則擷取單一報表
-	 * @return
-	 */
-	private boolean checkExpectedNum()
-	{
-		int counter = 0;
-		for (int i = 0; i < dataLength; i++)
-		{
-			if (entity[i].year == null && entity[i].seasons == null && entity[i].stockID == null)
-				counter++;
-		}
-		if ( (dataLength - counter) >= this.expectedNum)
-			return false;
-		else
-			return true;
-		
 	}
 	public void setStockData(String rowData[])
 	{
@@ -229,8 +210,16 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				}
 				case OtherCurrentAssets: 
 				{	
-					int result = Integer.parseInt(rowData[k]);
-					entity[k].setOtherCurrentAssets(result);
+					try
+					{
+						int result = Integer.parseInt(rowData[k]);
+						entity[k].setOtherReceivable(result);
+					}
+					catch (NumberFormatException ex)
+					{
+						int result = Integer.parseInt(rowData[k].substring(rowData[k].indexOf(">")+1));
+						entity[k].setOtherReceivable(result);
+					}
 					break;	
 				}
 				case CurrentAssets: 
