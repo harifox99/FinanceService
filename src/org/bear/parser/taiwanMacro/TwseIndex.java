@@ -16,13 +16,14 @@ public class TwseIndex extends CbcParser
 {
 	private String url = "http://webline.sfi.org.tw/B/intdb/single/sfis503b.asp";
 	List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-	public void getContent()
+	public void getContent(String startYear, String startMonth, 
+						   String endYear, String endMonth)
 	{
 		//ªì©l­È
-		paramList.add(new BasicNameValuePair("SYY", "1993"));
-		paramList.add(new BasicNameValuePair("SMM", "2"));
-		paramList.add(new BasicNameValuePair("EYY", "2013"));
-		paramList.add(new BasicNameValuePair("EMM", "3"));
+		paramList.add(new BasicNameValuePair("SYY", startYear));
+		paramList.add(new BasicNameValuePair("SMM", startMonth));
+		paramList.add(new BasicNameValuePair("EYY", endYear));
+		paramList.add(new BasicNameValuePair("EMM", endMonth));
 		paramList.add(new BasicNameValuePair("CHARTYPE", "5"));
 		paramList.add(new BasicNameValuePair("GOTOPROG", "sfis503b.asp"));
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
