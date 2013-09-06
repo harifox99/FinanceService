@@ -86,7 +86,7 @@ public class NAVParserCathay extends BalanceSheetParserCathay
 			{
 				case NAV:
 				{
-					double result = Double.parseDouble(rowData[k]);
+					double result = Double.parseDouble(rowData[k].substring(rowData[k].indexOf(">")+1));
 					listNav.add(result);
 					break;
 				}	
