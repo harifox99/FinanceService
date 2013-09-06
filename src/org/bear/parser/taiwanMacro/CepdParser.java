@@ -16,8 +16,8 @@ import net.htmlparser.jericho.Source;
  *
  */
 public class CepdParser {
-	public String startDate = "1993,2,";
-	public String endDate = "2013,3";
+	private String startDate;
+	private String endDate;
 	private String urlHeader = "http://index.cepd.gov.tw/Result.aspx?lang=1&type=";
 	private String urlMiddle = "^^,,^";
 	private String urlFooter = ",^";
@@ -27,6 +27,19 @@ public class CepdParser {
 	List<Element> elementList = null;
 	MacroEconomicDao dao;
 	List <MacroEconomicEntity> list;
+	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	public void setIndex(int index) {
 		this.index = index;
 	}
@@ -40,7 +53,7 @@ public class CepdParser {
 	 */
 	public void setUrl(String indexName, String mapName)
 	{
-		this.url = urlHeader + mapName + "&p=1^1^" + startDate + endDate + urlMiddle + indexName + urlFooter;
+		this.url = urlHeader + mapName + "&p=1^1^" + startDate + "," + endDate + urlMiddle + indexName + urlFooter;
 		System.out.println(this.url);
 	}
 	public void getConnection()
