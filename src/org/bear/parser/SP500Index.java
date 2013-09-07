@@ -18,10 +18,13 @@ import net.htmlparser.jericho.Source;
  *
  */
 public class SP500Index{
+	/*
 	private String[] url = {"http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=1993&d=04&e=13&f=2013&g=m",
 			        "http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=1993&d=04&e=13&f=2013&g=m&z=66&y=66",
 			        "http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=1993&d=04&e=13&f=2013&g=m&z=66&y=132",
-			        "http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=1993&d=04&e=13&f=2013&g=m&z=66&y=198"};
+			        "http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=1993&d=04&e=13&f=2013&g=m&z=66&y=198"};*/
+	
+	private String[] url = {"http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=2012&d=07&e=30&f=2013&g=m"};
 	Source source;
 	List<Element> elementList = null;
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
