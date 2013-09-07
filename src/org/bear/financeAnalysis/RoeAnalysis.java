@@ -40,34 +40,41 @@ public class RoeAnalysis
 	{
 		List<BasicStockWrapper> stockList = dao.findAllData();
 		List<RoeYearWrapper> roeYearList = new ArrayList<RoeYearWrapper>();
-		for (int i = 0; i < stockList.size(); i++)
+		try
 		{
-			String stockID = "";
-			stockID = stockList.get(i).getStockID();
-			//if (stockID.equals("1232"))
-				//System.out.println();
-			balanceSheetList = balanceSheetDao.findDataByYear(stockID);
-			incomeStatementList = incomeStatementDao.findDataByYear(stockID);
-			if (incomeStatementList.size() != balanceSheetList.size())
-				continue;
-			if (incomeStatementList.size() < totalYear)
-				continue;
-			RoeYearWrapper wrapper = new RoeYearWrapper();
-			wrapper.setRoeSize(totalYear);
-			List<Double> roeList = new ArrayList<Double>();
-			for (int j = incomeStatementList.size() - totalYear; j < incomeStatementList.size(); j++)
+			for (int i = 0; i < stockList.size(); i++)
 			{
-				if (j == incomeStatementList.size() - totalYear)
+				String stockID = "";
+				stockID = stockList.get(i).getStockID();					
+				//if (!stockID.equals("3687"))
+					//continue;
+				balanceSheetList = balanceSheetDao.findDataByYear(stockID);
+				incomeStatementList = incomeStatementDao.findDataByYear(stockID);
+				if (incomeStatementList.size() != balanceSheetList.size())
+					continue;
+				if (incomeStatementList.size() < totalYear)
+					continue;
+				RoeYearWrapper wrapper = new RoeYearWrapper();
+				wrapper.setRoeSize(totalYear);
+				List<Double> roeList = new ArrayList<Double>();
+				for (int j = incomeStatementList.size() - totalYear; j < incomeStatementList.size(); j++)
 				{
-					wrapper.setStockID(stockID);
-					wrapper.setYear(incomeStatementList.get(j).getYear());
-				}
-				double roe = (double)incomeStatementList.get(j).getNetIncome() / balanceSheetList.get(j).getStockholdersEquity();				
-				roeList.add(StringUtil.setPointLength(roe*100));
-			}			
-			wrapper.setRoeList(roeList);
-			if (this.checkExpectedRoe(roeList, demandRoe, demandYear))
-				roeYearList.add(wrapper);
+					if (j == incomeStatementList.size() - totalYear)
+					{
+						wrapper.setStockID(stockID);
+						wrapper.setYear(incomeStatementList.get(j).getYear());
+					}
+					double roe = (double)incomeStatementList.get(j).getNetIncome() / balanceSheetList.get(j).getStockholdersEquity();				
+					roeList.add(StringUtil.setPointLength(roe*100));
+				}			
+				wrapper.setRoeList(roeList);
+				if (this.checkExpectedRoe(roeList, demandRoe, demandYear))
+					roeYearList.add(wrapper);
+			}
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
 		}
 		return roeYearList;
 	}
