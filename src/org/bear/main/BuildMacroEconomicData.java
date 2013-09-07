@@ -29,7 +29,7 @@ public class BuildMacroEconomicData extends ParseFile
 		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
 		CepdParser parser = new CepdParser();
-		parser.setStartDate("2013,4");
+		parser.setStartDate("2013,7");
 		parser.setEndDate("2013,7");
 		parser.setDao(dao);
 		for (int i = 0; i < CepdIndexConstant.CEPD_LIST.length; i++)
