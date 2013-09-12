@@ -20,11 +20,19 @@ public class UpdateJournalData
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JournalDao journalDao = (JournalDao)context.getBean("journalDao");
-		SimpleDateFormat format =  new SimpleDateFormat("yyyyMMddhhmmss");        
-		java.util.Date today = new Date();        
-		entity.setTransactionID(String.valueOf(format.format(today)));
 		try
 		{			
+			if (entity.getTransactionID().equals(""))
+			{
+				SimpleDateFormat format =  new SimpleDateFormat("yyyyMMddhhmmss");        
+				java.util.Date today = new Date();        
+				entity.setTransactionID(String.valueOf(format.format(today)));
+			}
+			else
+			{
+				int serialNo = entity.getSerialNo();
+				journalDao.closeTransaction(entity.getTransactionID(), --serialNo);
+			}
 			journalDao.insert(entity);
 			return "Successful!";
 		}
