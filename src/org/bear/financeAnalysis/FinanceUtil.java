@@ -587,7 +587,7 @@ public class FinanceUtil
 	public List<CashFlowsWrapper> getCashFlowByYear(String stockID, String year)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		//現金流量 表
+		//現金流量表
 		CashFlowsDao cashFlowsDao = (CashFlowsDao)context.getBean("basicCashFlowsDao");
 		List <CashFlowsEntity> cashFlowsList;
 		//損益表
