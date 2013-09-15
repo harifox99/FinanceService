@@ -229,9 +229,11 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 					averageIndex + "' where stockID = '" + stockID + "' and yearMonth = '" + dateString + "'";
 		this.getSimpleJdbcTemplate().update(sql);
 	}
-	public int update(String indexName, String indexValue, String date) {
+	public int update(String indexName, String indexValue, Date date, String stockID) {
 		// TODO Auto-generated method stub
-		String sql = "update OperatingRevenue SET " + indexName + " = ? where date = '" + date + "'";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = dateFormat.format(date);
+		String sql = "update OperatingRevenue SET " + indexName + " = ? where yearMonth = '" + dateString + "' and StockID = '" + stockID + "'";
 		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
 		return result;
 	}

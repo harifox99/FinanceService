@@ -21,5 +21,5 @@ public interface RevenueDao
 	public List<RevenueEntity> findAllData(String stockID, String year);
 	public void update(String stockID, RevenueEntity entity);
 	public void update(String stockID, String turnoverRatio, String averageIndex, Date date);
-	public int update(String indexName, String indexValue, String date);
+	public int update(String indexName, String indexValue, Date date, String stockID);
 }
