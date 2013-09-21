@@ -25,17 +25,21 @@ public class BuildMacroEconomicData extends ParseFile
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
+		String startYear = "2013";
+		String startMonth = "7";
+		String endYear = "2013";
+		String endMonth = "7";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
 		CepdParser parser = new CepdParser();
-		parser.setStartDate("2013,7");
-		parser.setEndDate("2013,7");
+		parser.setStartDate(startYear + "," + startMonth);
+		parser.setEndDate(endYear + "," + endMonth);
 		parser.setDao(dao);
 		for (int i = 0; i < CepdIndexConstant.CEPD_LIST.length; i++)
 		{
-			parser.setUrl(CepdIndexConstant.CEPD_LIST[i], CepdIndexConstant.CEPD_MAP[i]);
 			parser.setIndex(i);
+			parser.setUrl(CepdIndexConstant.CEPD_LIST[i], CepdIndexConstant.CEPD_MAP[i]);
 			parser.getConnection();
 			parser.parse(10);
 		}
@@ -52,7 +56,7 @@ public class BuildMacroEconomicData extends ParseFile
 		//TWSE
 		TwseIndex twseIndex = new TwseIndex();
 		twseIndex.setDao(dao);
-		twseIndex.getContent("2013", "4", "2013", "7");
+		twseIndex.getContent(startYear, startMonth, endYear, endMonth);
 	}
 	public void insertBatch()
 	{
