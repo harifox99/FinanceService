@@ -13,6 +13,7 @@ import org.bear.datainput.ImportPMIndex;
 import org.bear.entity.PMIndexEntity;
 import org.bear.parser.fred.FredEconomicUrl;
 import org.bear.util.ParseFile;
+import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
@@ -52,6 +53,7 @@ public class BuildPMIndex extends ParseFile {
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		PMIndexDao dao = (PMIndexDao)context.getBean("pmIndexDao");	
 		list = dao.findByDate(startTime, endTime);		
+		convert2MinusFifty();
 		return list;
 	}
 	public void insertByFredApi(String[] catagoryList, FredEconomicUrl catagory, HashMap<String, String> parameterMap)
@@ -102,5 +104,30 @@ public class BuildPMIndex extends ParseFile {
 			ex.printStackTrace();
 		}
 	}
-
+	private void convert2MinusFifty()
+	{
+		double pmiStandard = 50;
+		
+		for (int i = 0; i < list.size(); i++)
+		{
+			double result;
+			result = StringUtil.sub(Double.parseDouble(list.get(i).getDeliveries()), pmiStandard);
+			list.get(i).setDeliveries(String.valueOf(result));
+			
+			result = StringUtil.sub(Double.parseDouble(list.get(i).getEmployment()), pmiStandard);
+			list.get(i).setEmployment(String.valueOf(result));
+			
+			result = StringUtil.sub(Double.parseDouble(list.get(i).getInventories()), pmiStandard);
+			list.get(i).setInventories(String.valueOf(result));
+			
+			result = StringUtil.sub(Double.parseDouble(list.get(i).getNewOrders()), pmiStandard);
+			list.get(i).setNewOrders(String.valueOf(result));
+						
+			result = StringUtil.sub(Double.parseDouble(list.get(i).getPmi()), pmiStandard);
+			list.get(i).setPmi(String.valueOf(result));
+						
+			result = StringUtil.sub(Double.parseDouble(list.get(i).getProduction()), pmiStandard);
+			list.get(i).setProduction(String.valueOf(result));
+		}
+	}
 }
