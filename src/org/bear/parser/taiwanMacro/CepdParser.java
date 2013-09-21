@@ -20,6 +20,7 @@ public class CepdParser {
 	private String endDate;
 	private String urlHeader = "http://index.cepd.gov.tw/Result.aspx?lang=1&type=";
 	private String urlMiddle = "^^,,^";
+	private String urlMiddleYoy = "^3,^,,^";
 	private String urlFooter = ",^";
 	private String url;
 	Source source;
@@ -53,7 +54,10 @@ public class CepdParser {
 	 */
 	public void setUrl(String indexName, String mapName)
 	{
-		this.url = urlHeader + mapName + "&p=1^1^" + startDate + "," + endDate + urlMiddle + indexName + urlFooter;
+		if (this.index != 6)
+			this.url = urlHeader + mapName + "&p=1^1^" + startDate + "," + endDate + urlMiddle + indexName + urlFooter;
+		else
+			this.url = urlHeader + mapName + "&p=1^1^" + startDate + "," + endDate + urlMiddleYoy + indexName + urlFooter;
 		System.out.println(this.url);
 	}
 	public void getConnection()
@@ -80,7 +84,7 @@ public class CepdParser {
 			list = new ArrayList<MacroEconomicEntity>();
 			MacroEconomicEntity entity = new MacroEconomicEntity();
 			String dateString = null;
-			if (i < 1)
+			if (i < 1 || (i < 2 && index == 6))
 				continue;
 			for (int j = 0; j < tdList.size(); j++)
 			{				
@@ -104,7 +108,7 @@ public class CepdParser {
 							dateString = content;
 						}
 					}
-					else
+					else if (j == 1 && index != 6)
 					{
 						if (index == 0)
 						{
@@ -121,7 +125,19 @@ public class CepdParser {
 						    	System.out.println(content + ", " + dateString);
 						    }
 						}
-					}					
+					}	
+					else if (index == 6)
+					{
+						if (j == 0 || j == 1)
+							continue;
+						resultElement = tdList.get(j).getFirstElement(HTMLElementName.FONT);		
+						content = resultElement.getContent().toString().trim();	
+						int result = dao.update(CepdIndexConstant.CEPD_NAME[index], content, dateString, "-");
+						if (result <= 0)
+					    {					    	
+					    	System.out.println(content + ", " + dateString);
+					    }
+					}
 				}
 				catch (Exception ex)
 				{
