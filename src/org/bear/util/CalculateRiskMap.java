@@ -69,6 +69,8 @@ public class CalculateRiskMap
 			reinvestmentRate.setSeasons("01");
 			List <Double> reinvestmentRateList = reinvestmentRate.getReinvestmentRateList();
 			String currentYear;
+			//如果沒有營收資訊...不知道我在寫什麼...營收資料缺乏的總年份
+			int misCount = 0;
 			for (int i = 0; i < balanceSheetList.size(); i++)
 			{
 				wrapper = new RiskMapWrapper();
@@ -79,7 +81,7 @@ public class CalculateRiskMap
 				else
 				{
 					maxPrice = 0;
-					minPrice = 1000;
+					minPrice = 2000;
 					averagePrice = 0;
 					currentYear = balanceSheetList.get(i).getYear();
 					//ROE
@@ -89,6 +91,12 @@ public class CalculateRiskMap
 					//NAV
 					wrapper.setNav(StringUtil.setPointLength(financialList.get(i).getNav()));				
 					revenueEntityList = revenueDao.findAllData(stockID, currentYear);
+					//營收資料有缺，所以跳過這個年度的投資風險地圖
+					if (revenueEntityList.size() == 0)
+					{
+						misCount++;
+						continue;
+					}
 					for (int j = 0; j < revenueEntityList.size(); j++)
 					{
 						//年度平均收盤價
@@ -132,7 +140,7 @@ public class CalculateRiskMap
 					/**************************/
 				    wrapper.setYear(balanceSheetList.get(i).getYear());
 				    //補上他媽的盈再率，真苦呀
-				    wrapper.setReinvestmentRate(reinvestmentRateList.get(reinvestmentRateList.size()-i));
+				    wrapper.setReinvestmentRate(reinvestmentRateList.get(reinvestmentRateList.size()-i+misCount));
 					riskMapList.add(wrapper);
 					lastEquity = balanceSheetList.get(i).getStockholdersEquity();
 				}
