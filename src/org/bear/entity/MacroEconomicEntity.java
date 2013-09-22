@@ -31,6 +31,7 @@ public class MacroEconomicEntity
 	double stockMoneyYoY;
 	int stockMoneyNumber;
 	String demandDeposits;
+	String generalIndexYoy;
 	public String getTwseOpen() {
 		return twseOpen;
 	}
@@ -165,4 +166,10 @@ public class MacroEconomicEntity
 	public void setDemandDeposits(String demandDeposits) {
 		this.demandDeposits = demandDeposits;
 	}
+	public String getGeneralIndexYoy() {
+		return generalIndexYoy;
+	}
+	public void setGeneralIndexYoy(String generalIndexYoy) {
+		this.generalIndexYoy = generalIndexYoy;
+	}	
 }
