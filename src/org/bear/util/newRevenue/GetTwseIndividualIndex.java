@@ -11,8 +11,8 @@ import net.htmlparser.jericho.HTMLElementName;
 import org.bear.dao.RevenueDao;
 import org.bear.datainput.GetSFIContent;
 import org.bear.entity.RevenueEntity;
-import org.bear.parser.ParserBase;
 import org.bear.util.GetURLContentBase;
+import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -59,7 +59,7 @@ public class GetTwseIndividualIndex extends GetURLContentBase implements GetSFIC
 					{
 						resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
 						content = resultElement.getContent().toString().trim();						
-						year = ParserBase.convertYear(content);
+						year = StringUtil.convertYear(content);
 						entity.setStockID(stockID);
 					}
 					else if (j == 1)//ды
