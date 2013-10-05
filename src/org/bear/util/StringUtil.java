@@ -11,6 +11,11 @@ import java.text.NumberFormat;
  */
 public class StringUtil 
 {
+	/**
+	 * 看起來是移除特殊字元
+	 * @param string
+	 * @return
+	 */
 	public static String eraseSpecialChar(String string)
 	{
 		if (string.contains("$"))
@@ -57,10 +62,38 @@ public class StringUtil
 		number = Double.parseDouble(formatter.format(number));
 		return number;
 	}
+	/**
+	 * 精確的double減法
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
 	public static double sub(double v1, double v2) 
 	{
 		BigDecimal b1 = new BigDecimal(Double.toString(v1));
 		BigDecimal b2 = new BigDecimal(Double.toString(v2));
 		return b1.subtract(b2).doubleValue();
+	}
+	/**
+	 * 將民國轉成西元年
+	 * @param chineseYear
+	 * @return
+	 */
+	public static String convertYear(String chineseYear)
+	{
+		int intYear = Integer.parseInt(chineseYear) + 1911;
+		String year = String.valueOf(intYear);
+		return year;
+	}
+	/**
+	 * 將西元年轉成民國
+	 * @param year
+	 * @return
+	 */
+	public static String convertChineseYear(String year)
+	{
+		int intChineseYear = Integer.parseInt(year) - 1911;
+		String chineseYear = String.valueOf(intChineseYear);
+		return chineseYear;
 	}
 }
