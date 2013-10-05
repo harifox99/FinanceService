@@ -37,10 +37,13 @@ public class BuildBasicStock {
 		 * 4.1.3> 台灣加權指數> TwseIndex
 		 * 4.2 美國> BuildAmericanMacroData
 		 * 4.2.1> 補UMCSENT(密西根大學消費者信心指數)
-		 * 4.2.2> ISM指數> Build PMIndex
+		 * 4.2.2> ISM指數> BuildPMIndex
 		 * 4.2.3> S&P 500 and CRB Index>SP500Main
 		 * 4.2.3.1> 補CRB Index
-		 * 
+		 * 5.1 3/31年報, 5/15, 8/15, 11/15季報
+		 * 5.2 每個月10號營收
+		 * 5.3 每個月25號經濟指標
+		 * 5.4 每個月1號籌碼
 		 ************/
 	}
 	public void insertBatch()
