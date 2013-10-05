@@ -6,6 +6,7 @@ import java.util.List;
 import org.bear.dao.BalanceSheetDao;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.IncomeStatementDao;
+import org.bear.entity.BuffettAnalysisWrapper;
 import org.bear.entity.RoeYearWrapper;
 import org.bear.entity.BalanceSheetEntity;
 import org.bear.entity.BasicStockWrapper;
@@ -36,7 +37,7 @@ public class RoeAnalysis
 	 * @param demandRoe 期望ROE
 	 * @return
 	 */
-	public List<RoeYearWrapper> getDemandROEList(int totalYear, int demandYear, int demandRoe)
+	public List<RoeYearWrapper> getDemandROEList(int totalYear, int demandYear, int demandRoe, String discountRate)
 	{
 		List<BasicStockWrapper> stockList = dao.findAllData();
 		List<RoeYearWrapper> roeYearList = new ArrayList<RoeYearWrapper>();
@@ -76,6 +77,8 @@ public class RoeAnalysis
 		{
 			ex.printStackTrace();
 		}
+		if (!discountRate.equals(""))
+			this.getExpectedRate(roeYearList, Integer.parseInt(discountRate));
 		return roeYearList;
 	}
 	private boolean checkExpectedRoe(List<Double> roeList, int demandRoe, int demandYear)
@@ -93,5 +96,22 @@ public class RoeAnalysis
 		else
 			return false;
 	}
-	
+	/**
+	 * 可用折現率（合理股價）過濾
+	 * @param stockList
+	 * @param expectedRate
+	 */
+	private void getExpectedRate (List<RoeYearWrapper> stockList, double expectedRate)
+	{
+		BuffettAnalysis buffettAnalysis = new BuffettAnalysis();
+		for (int i = 0; i < stockList.size(); i++)
+		{
+			BuffettAnalysisWrapper wrapper = buffettAnalysis.getBuffettAnalysis(stockList.get(i).getStockID());
+			double ratioNumber = buffettAnalysis.expectedRate(expectedRate, wrapper.getReasonablePrice());
+			ratioNumber = StringUtil.setPointLength(ratioNumber);
+			if (wrapper.getPrice() < ratioNumber)
+				stockList.remove(stockList.get(i));
+		}
+		
+	}
 }
