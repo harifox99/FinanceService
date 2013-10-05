@@ -92,7 +92,7 @@ public class BuffettAnalysis
 	 * @param reasonablePrice ¦X²z»ù
 	 * @return
 	 */
-	private double expectedRate(double rate, double reasonablePrice)
+	public double expectedRate(double rate, double reasonablePrice)
 	{
 		double price = 0;
 		for (int i = 0; i <= entityList.size() ; i++)
