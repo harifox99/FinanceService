@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bear.util.StringUtil;
+
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 
@@ -47,7 +49,7 @@ public class CashDivParserCathay extends ParserBase {
 					resultElement = tdList.get(j);
 					String content = resultElement.getContent().toString();
 					content = content.replaceAll(",", "");
-					listYear.add(convertYear(content));
+					listYear.add(StringUtil.convertYear(content));
 				}
 				else if (j == 1)
 				{
