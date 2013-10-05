@@ -10,9 +10,10 @@ import net.htmlparser.jericho.HTMLElementName;
 
 import org.bear.entity.GretaiPriceEntity;
 import org.bear.entity.RevenueEntity;
+import org.bear.util.StringUtil;
 import org.bear.util.newRevenue.GetGretaiPrice;
 
-public class GretaiParser extends ParserBase 
+public class GretaiParser extends RevenueParserBase 
 {
 	public void getTableContent(Element element) 
 	{
@@ -36,7 +37,7 @@ public class GretaiParser extends ParserBase
 				{
 					if (j == 0)//ж~
 					{					
-						year = org.bear.parser.ParserBase.convertYear(content);
+						year = StringUtil.convertYear(content);
 						entity.setStockID(stockID);
 					}
 					else if (j == 1)//ды
