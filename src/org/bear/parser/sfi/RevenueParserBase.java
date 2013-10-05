@@ -11,13 +11,13 @@ import org.bear.entity.RevenueEntity;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public abstract class ParserBase {
+public abstract class RevenueParserBase {
 	RevenueDao dao;
 	String stockID;
 	public String responseString;
 	List<Element> elementList = null;
 	public List<RevenueEntity> entityList = new ArrayList<RevenueEntity>();	
-	public ParserBase()
+	public RevenueParserBase()
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		dao = (RevenueDao)context.getBean("revenueDao");
