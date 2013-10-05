@@ -9,5 +9,5 @@ public interface BasicStockDao
 	//列出所有股票
 	public List<BasicStockWrapper> findAllData();
 	//列出上市(branchType=1)或上櫃(branchType=2)股票
-	public List<BasicStockWrapper> findStockTypeData(String branchType);
+	public List<BasicStockWrapper> findStockTypeData(String stockBranch);
 }
