@@ -4,7 +4,7 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import org.bear.entity.GretaiPriceEntity;
 
-public class GretaiPriceParser extends ParserBase 
+public class GretaiPriceParser extends RevenueParserBase 
 {
 	GretaiPriceEntity entity;
 	public GretaiPriceEntity getEntity() {
