@@ -26,17 +26,6 @@ public class ParserBase
 	//擷取合併報表=true, 否則=false
 	boolean isCombined;
 	/**
-	 * 將民國轉成西元年
-	 * @param chineseYear
-	 * @return
-	 */
-	public static String convertYear(String chineseYear)
-	{
-		int intYear = Integer.parseInt(chineseYear) + 1911;
-		String year = String.valueOf(intYear);
-		return year;
-	}
-	/**
 	 * 轉換季度顯示方法
 	 * @param season
 	 * @return
