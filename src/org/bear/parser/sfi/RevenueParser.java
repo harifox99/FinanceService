@@ -8,7 +8,7 @@ import net.htmlparser.jericho.HTMLElementName;
 
 import org.bear.entity.RevenueEntity;
 
-public class RevenueParser extends ParserBase
+public class RevenueParser extends RevenueParserBase
 {
 	public void getTableContent(Element element) 
 	{
