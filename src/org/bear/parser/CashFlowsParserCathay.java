@@ -190,13 +190,13 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 		if (this.isYear == false)
 		{
 			String yearAndSeason[] = rowData.split("\\.");
-			entity.setYear(convertYear(yearAndSeason[0]));
+			entity.setYear(StringUtil.convertYear(yearAndSeason[0]));
 			entity.setSeasons(this.convertMonth(yearAndSeason[1]));
 			entity.setStockID(stockID);
 		}
 		else
 		{
-			entity.setYear(convertYear(rowData));
+			entity.setYear(StringUtil.convertYear(rowData));
 			entity.setSeasons("00");
 			entity.setStockID(stockID);
 		}
