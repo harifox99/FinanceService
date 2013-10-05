@@ -13,7 +13,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ImportStockIDData 
 {
 	BasicStockDao basicStockDao;
-	List <BasicStockWrapper> wrapperList;
+	protected List <BasicStockWrapper> wrapperList;
 	public ImportStockIDData()
 	{
 		//擷取所有股票代碼
