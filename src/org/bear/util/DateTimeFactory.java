@@ -441,6 +441,13 @@ public class DateTimeFactory {
 	 * @return Date
 	 * @author lsw
 	 */
+	
+	public Date addMonth(Date date, int month) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, month);
+		return calendar.getTime();
+	}
 	public Date addDay(Date date, int day) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
