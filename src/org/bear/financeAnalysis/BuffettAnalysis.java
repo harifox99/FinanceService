@@ -40,25 +40,31 @@ public class BuffettAnalysis
 		double roeRecently = 0;
 		double roeFiveYears = 0;
 		double ratioNumber;
-		for (int i = riskMapWrapperList.size() - 1; i >= riskMapWrapperList.size() - arraySize; i--)
+		if (riskMapWrapperList.size() - arraySize >= 0)
 		{
-			//過去最新四季
-			if (i == riskMapWrapperList.size() - 1)
+			for (int i = riskMapWrapperList.size() - 1; i >= riskMapWrapperList.size() - arraySize; i--)
 			{
-				roeRecently = riskMapWrapperList.get(i).getRoe();				
+				//過去最新四季
+				if (i == riskMapWrapperList.size() - 1)
+				{
+					roeRecently = riskMapWrapperList.get(i).getRoe();				
+				}
+				//過去五年
+				else
+				{
+					roeFiveYears = roeFiveYears + riskMapWrapperList.get(i).getRoe();
+				}			
 			}
-			//過去五年
-			else
-			{
-				roeFiveYears = roeFiveYears + riskMapWrapperList.get(i).getRoe();
-			}			
+			roeFiveYears = roeFiveYears/5;
+			//今年ROE < 平均ROE
+			if (roeRecently < roeFiveYears)
+				wrapper.setRoe(StringUtil.setPointLength(roeRecently));
+			else //今年ROE > 平均ROE
+				wrapper.setRoe(StringUtil.setPointLength( (roeFiveYears+roeRecently)/2) );
 		}
-		roeFiveYears = roeFiveYears/5;
-		//今年ROE < 平均ROE
-		if (roeRecently < roeFiveYears)
-			wrapper.setRoe(StringUtil.setPointLength(roeRecently));
-		else //今年ROE > 平均ROE
-			wrapper.setRoe(StringUtil.setPointLength( (roeFiveYears+roeRecently)/2) );
+		//資料不足以計算ROE
+		else
+			wrapper.setRoe(0.0);
 		//每股淨值NAV
 		GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
 		BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
@@ -84,6 +90,7 @@ public class BuffettAnalysis
 		ratioNumber = this.expectedRate(0.15, wrapper.getReasonablePrice());
 		ratioNumber = StringUtil.setPointLength(ratioNumber);
 		wrapper.setLowerBound(ratioNumber);
+		wrapper.setPrice(parser.getPrice());
 		return wrapper;
 	}
 	/**
