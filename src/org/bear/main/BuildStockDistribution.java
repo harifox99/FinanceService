@@ -6,9 +6,11 @@ import org.bear.dao.JdbcStockTypeDao;
 import org.bear.dao.JdbcThreeBigDao;
 import org.bear.datainput.ImportStockIDData;
 import org.bear.parser.distribution.Gretai3BigParser;
+import org.bear.parser.distribution.SupervisorParser;
 import org.bear.util.distribution.GetGretai3Big;
 import org.bear.util.distribution.StockDistribution;
 import org.bear.util.distribution.GetTwse3Big;
+import org.bear.util.distribution.SupervisorDistribution;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -20,14 +22,16 @@ public class BuildStockDistribution extends ImportStockIDData
 	}
 	public BuildStockDistribution()
 	{
+		String startYear = "2013";
+		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
+		JdbcStockDistributionDao stockDistributionDao = (JdbcStockDistributionDao)context.getBean("stockDistributionDao");
+		JdbcStockTypeDao stockTypedao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
+		JdbcThreeBigDao threeBigDao = (JdbcThreeBigDao)context.getBean("threeBigDao");
 		//集保庫存資料
 		
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
-			     //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
+	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
 		String[] dateString = {"20131101"};
-		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		JdbcStockDistributionDao stockDistributionDao = (JdbcStockDistributionDao)context.getBean("stockDistributionDao");
-		
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
@@ -45,10 +49,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		//證交所三大法人增減
 		//String[] monthList = {"01", "02", "03", "04", "05", "06", "07", "08", "09"};
 		String[] monthList = {"09", "10", "11", "12"};
-		JdbcStockTypeDao stockTypedao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
-		JdbcThreeBigDao threeBigDao = (JdbcThreeBigDao)context.getBean("threeBigDao");
 		List<Integer> typeIdList = stockTypedao.findAllData();
-		String startYear = "2013";
 		for (int i = 0; i < typeIdList.size(); i++)
 		{
 			for (int j = 0; j < monthList.length; j++)
@@ -77,5 +78,13 @@ public class BuildStockDistribution extends ImportStockIDData
 			parser.setDateString(startYear + monthList[i]);
 			parser.parse(2);
 		}
+		
+		//董監持股
+		SupervisorDistribution supervisor = new SupervisorDistribution();
+		SupervisorParser parser = new SupervisorParser();
+		parser.setElementList(supervisor.getContent());
+		parser.setThreeBigDao(threeBigDao);
+		parser.setDateString(startYear + monthList[0] + "01");
+		parser.parse(5);
 	}
 }
