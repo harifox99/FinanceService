@@ -92,8 +92,24 @@ public class BasicDataParserCathay extends ParserBase
 				{
 					resultElement = tdList.get(j+1);
 					content = resultElement.getContent().toString();
-					per = Double.parseDouble(content);
-					per = StringUtil.setPointLength(per);
+					if (content.equals("N/A"))
+						per = 0;
+					else
+					{
+						per = Double.parseDouble(content);
+						per = StringUtil.setPointLength(per);
+					}
+				}
+				//如果查無本益比，則以同業平均本益比代替
+				else if (content.equals("同業平均本益比"))
+				{
+					resultElement = tdList.get(j+1);
+					content = resultElement.getContent().toString();
+					if (per == 0)
+					{
+						per = Double.parseDouble(content);
+						per = StringUtil.setPointLength(per);
+					}
 				}
 			}
 		}
