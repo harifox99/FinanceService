@@ -35,4 +35,12 @@ public class JdbcThreeBigDao extends SimpleJdbcDaoSupport implements ThreeBigDao
 		return null;
 	}
 
+	@Override
+	public int update(String indexName, String indexValue, String date, String stockID) {
+		String sql = "UPDATE ThreeBig SET " + indexName + " = ? where yearMonth = '" + date + "' and stockID = '" + stockID + "'";
+		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
+		return result;
+	}
+	
+
 }
