@@ -47,7 +47,7 @@ public class RoeAnalysis
 			{
 				String stockID = "";
 				stockID = stockList.get(i).getStockID();					
-				//if (!stockID.equals("3687"))
+				//if (!stockID.equals("1733"))
 					//continue;
 				balanceSheetList = balanceSheetDao.findDataByYear(stockID);
 				incomeStatementList = incomeStatementDao.findDataByYear(stockID);
@@ -78,7 +78,7 @@ public class RoeAnalysis
 			ex.printStackTrace();
 		}
 		if (!discountRate.equals(""))
-			this.getExpectedRate(roeYearList, Integer.parseInt(discountRate));
+			roeYearList = this.getExpectedRate(roeYearList, Integer.parseInt(discountRate));
 		return roeYearList;
 	}
 	private boolean checkExpectedRoe(List<Double> roeList, int demandRoe, int demandYear)
@@ -101,17 +101,20 @@ public class RoeAnalysis
 	 * @param stockList
 	 * @param expectedRate
 	 */
-	private void getExpectedRate (List<RoeYearWrapper> stockList, double expectedRate)
+	private List<RoeYearWrapper> getExpectedRate (List<RoeYearWrapper> stockList, double expectedRate)
 	{
 		BuffettAnalysis buffettAnalysis = new BuffettAnalysis();
+		expectedRate = expectedRate/100;
+		List<RoeYearWrapper> roeYearList = new ArrayList<RoeYearWrapper>();
 		for (int i = 0; i < stockList.size(); i++)
 		{
-			BuffettAnalysisWrapper wrapper = buffettAnalysis.getBuffettAnalysis(stockList.get(i).getStockID());
-			double ratioNumber = buffettAnalysis.expectedRate(expectedRate, wrapper.getReasonablePrice());
-			ratioNumber = StringUtil.setPointLength(ratioNumber);
-			if (wrapper.getPrice() < ratioNumber)
-				stockList.remove(stockList.get(i));
+			//System.out.println("StockID: " + stockList.get(i).getStockID());
+			BuffettAnalysisWrapper wrapper = buffettAnalysis.getBuffettAnalysis(stockList.get(i).getStockID());		
+			double expectedPrice = buffettAnalysis.expectedRate(expectedRate, wrapper.getReasonablePrice());
+			expectedPrice = StringUtil.setPointLength(expectedPrice);
+			if (wrapper.getPrice() < expectedPrice)
+				roeYearList.add(stockList.get(i));
 		}
-		
+		return roeYearList;
 	}
 }
