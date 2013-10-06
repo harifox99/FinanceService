@@ -40,10 +40,13 @@ public class BuildBasicStock {
 		 * 4.2.2> ISM指數> BuildPMIndex
 		 * 4.2.3> S&P 500 and CRB Index>SP500Main
 		 * 4.2.3.1> 補CRB Index
-		 * 5.1 3/31年報, 5/15, 8/15, 11/15季報
-		 * 5.2 每個月10號營收
-		 * 5.3 每個月25號經濟指標
-		 * 5.4 每個月1號籌碼
+		 * 5. 籌碼
+		 * 5.1 BuildStockDistribution
+		 * 6.1 3/31年報, 5/15, 8/15, 11/15季報
+		 * 6.2 每個月10號營收
+		 * 6.3 每個月25號經濟指標
+		 * 6.4 每個月1號籌碼
+		 * 6.5 每個月X號董監持股
 		 ************/
 	}
 	public void insertBatch()
