@@ -61,4 +61,16 @@
 		class="org.bear.dao.JdbcPMIndexDao">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	<bean id="stockDistributionDao"
+		class="org.bear.dao.JdbcStockDistributionDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="stockTypeDao"
+		class="org.bear.dao.JdbcStockTypeDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="threeBigDao"
+		class="org.bear.dao.JdbcThreeBigDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
