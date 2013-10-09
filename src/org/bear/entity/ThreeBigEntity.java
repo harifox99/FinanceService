@@ -6,6 +6,9 @@ public class ThreeBigEntity {
 	String stockID;
 	Date yearMonth;
 	long quantity;
+	long supervisor;
+	long manager;
+	long strongStockHolder;
 	public String getStockID() {
 		return stockID;
 	}
@@ -23,6 +26,24 @@ public class ThreeBigEntity {
 	}
 	public void setQuantity(long quantity) {
 		this.quantity = quantity;
+	}
+	public long getSupervisor() {
+		return supervisor;
+	}
+	public void setSupervisor(long supervisor) {
+		this.supervisor = supervisor;
+	}
+	public long getManager() {
+		return manager;
+	}
+	public void setManager(long manager) {
+		this.manager = manager;
+	}
+	public long getStrongStockHolder() {
+		return strongStockHolder;
+	}
+	public void setStrongStockHolder(long strongStockHolder) {
+		this.strongStockHolder = strongStockHolder;
 	}
 	
 }
