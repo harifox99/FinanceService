@@ -1,10 +1,10 @@
 package org.bear.dao;
 
 import java.util.List;
-
 import org.bear.entity.ThreeBigEntity;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcThreeBigDao extends SimpleJdbcDaoSupport implements ThreeBigDao {
@@ -30,9 +30,14 @@ public class JdbcThreeBigDao extends SimpleJdbcDaoSupport implements ThreeBigDao
 	}
 
 	@Override
-	public List<ThreeBigEntity> latest(int duration) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ThreeBigEntity> latest(String stockID, int duration) 
+	{
+		duration++;
+		String sql = "select top (" + duration + ") * from threeBig " +
+				"where stockID = '" + stockID + "' order by YearMonth desc"; 
+		List <ThreeBigEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
+				ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigEntity.class));
+		return entityList;
 	}
 
 	@Override
