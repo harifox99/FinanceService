@@ -4,5 +4,5 @@ import org.bear.entity.StockDistributionEntity;
 
 public interface StockDistributionDao {
 	public void insert(StockDistributionEntity entity);
-	public List <StockDistributionEntity> latest(int duration);
+	public List <StockDistributionEntity> latest(String stockID, int duration);
 }
