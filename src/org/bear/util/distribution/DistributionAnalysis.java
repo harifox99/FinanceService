@@ -19,7 +19,7 @@ public class DistributionAnalysis
 	{		
 		List <DistributionWrapper> distributionWrapperList = new ArrayList<DistributionWrapper>();
 		List <StockDistributionEntity> distributionList = stockDistributionDao.latest(stockID, duration);
-		List <ThreeBigEntity> threeBigList = threeBigDao.latest(stockID, duration);
+		//List <ThreeBigEntity> threeBigList = threeBigDao.latest(stockID, duration);
 		
 		for (int i = 0; i < distributionList.size()-1; i++)
 		{
@@ -52,22 +52,21 @@ public class DistributionAnalysis
 			distributionList.get(i).getD800000() - distributionList.get(i+1).getD800000() + 
 			distributionList.get(i).getD1000000() - distributionList.get(i+1).getD1000000());
 			//三大法人
-			wrapper.setThreeBig(threeBigList.get(i).getQuantity());
+			//wrapper.setThreeBig(threeBigList.get(i).getQuantity());
+			long quantity = threeBigDao.query(stockID, distributionList.get(i).getYearMonth(), "Quantity", 0);
+			wrapper.setThreeBig(quantity);
 			//經理人(董監持股要20號才有，查不到先補0)
-			if (threeBigList.get(i).getManager() == 0)
-				wrapper.setManager(0);
-			else
-				wrapper.setManager(threeBigList.get(i).getManager() - threeBigList.get(i+1).getManager());
+			long manager = threeBigDao.query(stockID, distributionList.get(i).getYearMonth(), "Manager", 0);
+			long previousManager = threeBigDao.query(stockID, distributionList.get(i).getYearMonth(), "Manager", -1);
+			wrapper.setManager(manager - previousManager);
 			//董監(同上)
-			if (threeBigList.get(i).getSupervisor() == 0)
-				wrapper.setSupervisors(0);
-			else
-				wrapper.setSupervisors(threeBigList.get(i).getSupervisor() - threeBigList.get(i+1).getSupervisor());
+			long supervisor = threeBigDao.query(stockID, distributionList.get(i).getYearMonth(), "Supervisor", 0);
+			long previousSupervisor = threeBigDao.query(stockID, distributionList.get(i).getYearMonth(), "Supervisor", -1);
+			wrapper.setSupervisors(supervisor - previousSupervisor);
 			//大大股東
-			if (threeBigList.get(i).getStrongStockHolder() == 0)
-				wrapper.setStrongStockHolder(0);
-			else
-				wrapper.setStrongStockHolder(threeBigList.get(i).getStrongStockHolder() - threeBigList.get(i+1).getStrongStockHolder());
+			long strongStockHolder = threeBigDao.query(stockID, distributionList.get(i).getYearMonth(), "StrongStockHolder", 0);
+			long previousStrongStockHolder = threeBigDao.query(stockID, distributionList.get(i).getYearMonth(), "StrongStockHolder", -1);
+			wrapper.setStrongStockHolder(strongStockHolder - previousStrongStockHolder);
 			distributionWrapperList.add(wrapper);
 		}
 		distributionWrapperList = this.reverse(distributionWrapperList);
