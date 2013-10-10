@@ -74,4 +74,9 @@
             <source>org.bear.financeAnalysis.RoeAnalysis</source>
         </properties>
     </destination>
+    <destination id="distributionAnalysis">
+        <properties>
+            <source>org.bear.util.distribution.DistributionAnalysis</source>
+        </properties>
+    </destination>
 </service>
