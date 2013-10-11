@@ -46,7 +46,7 @@ public class BuildBasicStock {
 		 * 6.2 每個月10號營收
 		 * 6.3 每個月25號經濟指標
 		 * 6.4 每個月1號籌碼
-		 * 6.5 每個月X號董監持股
+		 * 6.5 每個月20號董監持股
 		 ************/
 	}
 	public void insertBatch()
