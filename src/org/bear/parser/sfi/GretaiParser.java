@@ -15,6 +15,15 @@ import org.bear.util.newRevenue.GetGretaiPrice;
 
 public class GretaiParser extends RevenueParserBase 
 {
+	String year;
+	String month;
+	
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
 	public void getTableContent(Element element) 
 	{
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);
@@ -72,7 +81,12 @@ public class GretaiParser extends RevenueParserBase
 						entity.setOpenIndex(gretaiPriceEntity.getOpenIndex());
 						entity.setCloseIndex(gretaiPriceEntity.getCloseIndex());
 						if (this.checkPrice(entity) == true)
-							entityList.add(entity);
+						{
+							//僅擷取需要的年月
+							if (dateString.substring(0, 4).equals(year) &&
+								dateString.substring(4, 6).equals(month))							
+								entityList.add(entity);
+						}
 						else
 						{
 							System.out.println("解析櫃臺資訊異常");
