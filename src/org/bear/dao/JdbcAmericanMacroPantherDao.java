@@ -56,8 +56,15 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 			double houstIndex = Double.parseDouble(element.getHoust()) / 10;
 			element.setHoust(String.valueOf(houstIndex));
 			//1/¦s³f¾P°â¤ñ
-			double isRatio = 1/Double.parseDouble(element.getIsRatio());
-			element.setIsRatio(String.valueOf(isRatio));
+			if (element.getIsRatio() != null)
+			{
+				double isRatio = 1/Double.parseDouble(element.getIsRatio());
+				element.setIsRatio(String.valueOf(isRatio));
+			}
+			else
+			{
+				element.setIsRatio("0");
+			}
 		}
 		return entityList;
 	}
