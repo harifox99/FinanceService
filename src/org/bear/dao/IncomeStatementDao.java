@@ -16,4 +16,5 @@ public interface IncomeStatementDao {
 	public List<IncomeStatementEntity> findDataByYear(String stockID);
 	public void insert(IncomeStatementEntity incomeStatementEntity);
 	public void insertWithCheck(IncomeStatementEntity incomeStatementEntity);
+	public List<IncomeStatementEntity> findDataByLatest(int size, String stockID);
 }

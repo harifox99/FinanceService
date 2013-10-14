@@ -110,4 +110,15 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		
 	}
 
+	@Override
+	public List<IncomeStatementEntity> findDataByLatest(int size, String stockID) {
+		// TODO Auto-generated method stub
+		List <IncomeStatementEntity> wrapperList = null;
+		String sql = "select top " + size + " * from incomeStatement where stockID = '" +
+		stockID + "' ORDER BY Year DESC, Seasons DESC";
+		//System.out.println("SQL: " + sql);
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		return wrapperList;
+	}
+
 }
