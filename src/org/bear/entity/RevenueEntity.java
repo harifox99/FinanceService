@@ -5,7 +5,7 @@ import java.util.*;
  * @author edward
  *
  */
-public class RevenueEntity 
+public class RevenueEntity
 {
 	String openIndex;
 	String highIndex;
