@@ -205,7 +205,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 	@Override
 	public List<RevenueEntity> findByLatestSize(int size, String stockID) {
 		String sql = "select top " + size + " * from operatingRevenue where stockID = '" +
-		stockID + "' order by yearMonth";
+		stockID + "' order by yearMonth desc";
 		//System.out.println("SQL: " + sql);
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
 				ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
