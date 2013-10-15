@@ -24,7 +24,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class PerfectAnalysis 
 {	
 	//最多只看半年成長
-	final int maxMonth = 6;
+	final int maxMonth = 5;
 	//最多只看過去4季
 	final int maxSeasons = 4;
 	//可以繼續掃瞄的股票代碼
@@ -33,14 +33,17 @@ public class PerfectAnalysis
 	List<String> columnNameList = new ArrayList<String>(); 
 	/**
 	 * 
-	 * @param yoyGrowMonth 期望的YoY連續成長月份
-	 * @param profitRatioGrowSeason 期望的利益率連續成長季數
-	 * @param expectedGrossProfitRatio 期望的當季毛利率 
-	 * @param operatingProfitRatio 期望的當季營業利益率
-	 * @param expectedPe 期望PE Ratio
+	 * @param yoyTotalMonth 總月份數 (YoY)
+	 * @param yoyGrowMonth 期望的月份數 (YoY)
+	 * @param demandOperatingProfit 期望的連續營業利益率上升季數
+	 * @param demandPreTaxIncome 期望的連續稅前淨利率上升季數
+	 * @param expectedGrossProfitRatio 期望的毛利率
+	 * @param operatingProfitRatio 期望的營業利益率
+	 * @param expectedPe 期望的PE
 	 * @return
 	 */
-	public List<List<String>> analysis(int yoyGrowMonth, int profitRatioGrowSeason, 
+	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, 
+			int demandOperatingProfit, int demandPreTaxIncome,
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -61,7 +64,9 @@ public class PerfectAnalysis
 			for (int i = 0; i < stockList.size(); i++)
 			{
 				String stockID = stockList.get(i).getStockID();
-				System.out.println("stockID: " + stockID);
+				//if (!stockID.equals("1715"))
+					//continue;
+				//System.out.println("stockID: " + stockID);
 				List<RevenueEntity> revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
 				//Set Column Name
 				if (i == 0)
@@ -71,7 +76,7 @@ public class PerfectAnalysis
 						this.addColumnName(revenueList.get(j).getYearMonth(), "營收");
 					}
 				}
-				List<String> yoyList = this.checkYoy(revenueList, yoyGrowMonth);
+				List<String> yoyList = this.checkYoy(revenueList, yoyTotalMonth, yoyGrowMonth);
 				if (yoyList != null)
 				{					
 					yoyList = ReverseUtil.reverse(yoyList);					
@@ -84,7 +89,7 @@ public class PerfectAnalysis
 			for (int i = 0; i < perfectList.size(); i++)
 			{				
 				String stockID = perfectList.get(i).get(0);
-				System.out.println("stockID: " + stockID);
+				//System.out.println("stockID: " + stockID);
 				List<IncomeStatementEntity> entity = incomeStatementDao.findDataByLatest(maxSeasons+1, stockID);
 				//Set Column Name
 				if (i == 0)
@@ -95,7 +100,7 @@ public class PerfectAnalysis
 					}
 				}
 				//營業利益率
-				List<String> rateList = this.checkProfitRatio(entity, profitRatioGrowSeason, 1);
+				List<String> rateList = this.checkProfitRatio(entity, demandOperatingProfit, 1);
 				if (rateList != null)
 				{
 					rateList = ReverseUtil.reverse(rateList);			
@@ -111,7 +116,7 @@ public class PerfectAnalysis
 			for (int i = 0; i < perfectList.size(); i++)
 			{
 				String stockID = perfectList.get(i).get(0);
-				System.out.println("stockID: " + stockID);
+				//System.out.println("stockID: " + stockID);
 				List<IncomeStatementEntity> entity = incomeStatementDao.findDataByLatest(maxSeasons+1, stockID);
 				//Set Column Name
 				if (i == 0)
@@ -122,7 +127,7 @@ public class PerfectAnalysis
 					}
 				}
 				//稅前淨利率
-				List<String> rateList = this.checkProfitRatio(entity, profitRatioGrowSeason, 2);
+				List<String> rateList = this.checkProfitRatio(entity, demandPreTaxIncome, 2);
 				if (rateList != null)
 				{
 					rateList = ReverseUtil.reverse(rateList);		
@@ -194,14 +199,16 @@ public class PerfectAnalysis
 		return perfectList;
 	}
 	/**
-	 * YoY連N季成長
+	 * YoY月成長，期望M個月份有N個月份YoY上升
 	 * @param revenue
-	 * @param expectedRate
+	 * @param totalMonth 總月份M
+	 * @param expectedMonth 期望月份N
 	 * @return
 	 */
-	private List<String> checkYoy(List<RevenueEntity> revenue, int expectedRate)
+	private List<String> checkYoy(List<RevenueEntity> revenue, int totalMonth, int expectedMonth)
 	{
 		List<String> yoyList = new ArrayList<String>();
+		int difference = totalMonth - expectedMonth;
 		for (int i = 0; i < maxMonth; i++)
 		{
 			//YoY Revenue
@@ -210,8 +217,21 @@ public class PerfectAnalysis
 				return null;
 			double thisMonthYoy = (double)revenue.get(i).getRevenue()/revenue.get(i).getLastRevenue();
 			double lastMonthYoy = (double)revenue.get(i+1).getRevenue()/revenue.get(i+1).getLastRevenue();
-			if (i < expectedRate && thisMonthYoy < lastMonthYoy)
-				return null;					
+			if (i < totalMonth && thisMonthYoy < lastMonthYoy)
+			{
+				//期望M個月份有N個月份YoY上升
+				//期望totalMonth個月份有expectedMonth個月份YoY上升
+				if (difference-- <= 0)
+					return null;
+				else
+				{
+					thisMonthYoy -= 1;
+					thisMonthYoy *= 100;
+					NumberFormat formatter = new DecimalFormat(".##");
+					String strRevenue = formatter.format(thisMonthYoy);
+					yoyList.add(strRevenue);	
+				}
+			}		
 			else
 			{
 				thisMonthYoy -= 1;
@@ -228,13 +248,14 @@ public class PerfectAnalysis
 				String strRevenue = formatter.format(lastMonthYoy);
 				yoyList.add(strRevenue);					
 			}		
-		}		
+		}	
+		
 		return yoyList;
 	}
 	/**
 	 * 
 	 * @param entity
-	 * @param expectedRate 期望益利率
+	 * @param expectedRate 期望利益率
 	 * @param type, 0 for 毛利率, 1 for 營業利益率, 2 for 稅前淨利率
 	 * @return
 	 */
