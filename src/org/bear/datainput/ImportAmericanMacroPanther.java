@@ -88,7 +88,7 @@ public class ImportAmericanMacroPanther extends ParseFile
 			//BAA殖利率
 			entity.setBaa(bufferData[19].trim());
 			//90天商業本票
-			entity.setCfp3m(bufferData[20].trim());
+			entity.setCpf3m(bufferData[20].trim());
 			/** 通貨膨脹 **/
 			//CPI
 			entity.setCpi(bufferData[21].trim());
