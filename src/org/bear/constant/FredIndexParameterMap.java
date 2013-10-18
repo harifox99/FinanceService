@@ -3,8 +3,8 @@ package org.bear.constant;
 import java.util.HashMap;
 
 public class FredIndexParameterMap {
-	/* 工業生產指數YoY,零售銷售,耐久財訂單,非國防非航空器耐久財,商業存貨 */
-	public static final String[] AMERICA_YOY_LIST = {"INDPROYoY", "RSAFS", "DGORDER", "NEWORDER", "BUSINV","CPIAUCSL"};
+	/* 工業生產指數YoY,零售銷售,耐久財訂單,非國防非航空器耐久財,商業存貨,建築許可YoY */
+	public static final String[] AMERICA_YOY_LIST = {"INDPROYoY", "RSAFS", "DGORDER", "NEWORDER", "BUSINV", "CPIAUCSL", "PERMITNSAYoY"};
 	public static final HashMap<String, String> CPIAUCSL = new HashMap<String, String>();
 		static
 		{
@@ -54,8 +54,8 @@ public class FredIndexParameterMap {
 	}	
 	/*********************/
 	
-	/* 3個月殖利率,10年期殖利率,BAA殖利率,90天商業本票 */
-	public static final String[] AMERICA_INTEREST_LIST = {"TB3MS", "GS10", "BAA", "CPF3M"};
+	/* 3個月殖利率,10年期殖利率,BAA殖利率,90天商業本票, 高收益債利差 */
+	public static final String[] AMERICA_INTEREST_LIST = {"TB3MS", "GS10", "BAA", "CPF3M", "BAMLH0A0HYM2"};
 	public static final HashMap<String, String> INTEREST = new HashMap<String, String>();
 		static
 		{
