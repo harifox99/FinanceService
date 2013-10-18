@@ -8,7 +8,7 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	/**
 	 * 90天商業本票
 	 */
-	String cfp3m;
+	String cpf3m;
 	/**
 	 * 零售銷售
 	 */
@@ -21,7 +21,14 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	 * 商業存貨
 	 */
 	String businv;
-	
+	/**
+	 * 高收益債利差
+	 */
+	String bamlh0a0hym2;
+	/**
+	 * 建築許可YoY
+	 */
+	String permitnsaYoy;
 	public String getPayems() {
 		return payems;
 	}
@@ -40,17 +47,30 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	public void setTb3ms(String tb3ms) {
 		this.tb3ms = tb3ms;
 	}
-	public String getCfp3m() {
-		return cfp3m;
-	}
-	public void setCfp3m(String cfp3m) {
-		this.cfp3m = cfp3m;
-	}
+
 	public String getBusinv() {
 		return businv;
 	}
 	public void setBusinv(String businv) {
 		this.businv = businv;
 	}
-
+	public String getCpf3m() {
+		return cpf3m;
+	}
+	public void setCpf3m(String cpf3m) {
+		this.cpf3m = cpf3m;
+	}
+	public String getBamlh0a0hym2() {
+		return bamlh0a0hym2;
+	}
+	public void setBamlh0a0hym2(String bamlh0a0hym2) {
+		this.bamlh0a0hym2 = bamlh0a0hym2;
+	}
+	public String getPermitnsaYoy() {
+		return permitnsaYoy;
+	}
+	public void setPermitnsaYoy(String permitnsaYoy) {
+		this.permitnsaYoy = permitnsaYoy;
+	}
+	
 }
