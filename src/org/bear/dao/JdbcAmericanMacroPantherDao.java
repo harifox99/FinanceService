@@ -73,12 +73,12 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 		String sql = "insert into americanMacroPanther(Year, Date, YearMonth, " +
 		"INDPROYoY, RSAFS, HOUST, DGOrder, NEWORDER, PERMITNSA, " +
 		"INDPRO, PAYEMS, UNRATE, ISRatio, AWOTMAN, UMCSENT, ICSA, " +
-		"M1SL, MZMSL, TB3MS, GS10, BAA, CPF3M, CPI, CRB, " +
+		"M1SL, MZMSL, TB3MS, GS10, BAA, CPF3M, CPI, CRB, BAMLH0A0HYM2, PERMITNSAYoy," +
 		"SP500, SPOpen, SPHigh, SPLow, SPClose) " +
 		"values (:year, :date, :yearMonth, " +
 		":indproYoy, :rsafs, :houst, :dgOrder, :neworder, :permitnsa, " +
 		":indpro, :payems, :unrate, :isRatio, :awotman, :umcsent, :icsa, " +
-		":m1sl, :mzmsl, :tb3ms, :gs10, :baa, :cfp3m, :cpi, :crb, " +
+		":m1sl, :mzmsl, :tb3ms, :gs10, :baa, :cpf3m, :cpi, :crb, :bamlh0a0hym2, :permitnsaYoy," +
 		":sp500, :spOpen, :spHigh, :spLow, :spClose) ";
 		List <SqlParameterSource> parameters = new ArrayList <SqlParameterSource>();
 		for (AmericanMacroPantherEntity iterator:entity)
