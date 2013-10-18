@@ -32,8 +32,12 @@ public class FredEconomicUrl extends GetFredContentBase
 	}
 	public void setUrlString(String series_id, String observation_start, HashMap<String, String> parameterMap) {
 		// TODO Auto-generated method stub
+		//INDPRO and INDPROYoY常ノINDPRO硂把计耝戈
 		if (series_id.contains("INDPRO"))
 			series_id = "INDPRO";
+		//PERMITNSA and PERMITNSAYoY常ノPERMITNSA硂把计耝戈
+		if (series_id.contains("PERMITNSA"))
+			series_id = "PERMITNSA";
 		this.urlString = this.urlStringHeader + "series_id=" + series_id + "&api_key=" + this.api_key +
 			"&observation_start=" + observation_start +	
 			"&units=" + parameterMap.get("units") + 
