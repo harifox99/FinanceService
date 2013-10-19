@@ -66,6 +66,7 @@ public class BuildAmericanMacroData extends ParseFile
 						entity.setYear(dateArray[0]);
 						entity.setYearMonth(date);
 						entity.setHoust(entry.getValue());
+						entity.setBaseline("0");
 						list.add(entity);
 					}
 					dao.insertBatch(list);
@@ -75,18 +76,19 @@ public class BuildAmericanMacroData extends ParseFile
 				{
 					for (Map.Entry<String,String> entry : map.entrySet()) 
 					{				
-						int result;
+						int result;						
 						if (catagoryList[i].equals("CPIAUCSL"))
 							result = dao.update("CPI", entry.getValue(), entry.getKey());
 						else
 							result = dao.update(catagoryList[i], entry.getValue(), entry.getKey());
 					    if (result <= 0)
 					    {					    	
-					    	System.out.println(entry.getValue() + ", " + entry.getKey());
+					    	System.out.println("Update Error! " + entry.getValue() + ", " + entry.getKey());
 					    	//System.out.println("Abnormal Terminating!");
 					    	//System.exit(1);
 					    }
 					}
+					
 				}
 			}
 		}
