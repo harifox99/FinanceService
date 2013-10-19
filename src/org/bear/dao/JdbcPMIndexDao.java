@@ -60,9 +60,9 @@ public class JdbcPMIndexDao extends SimpleJdbcDaoSupport implements PMIndexDao {
 	public void insertBatch(List<PMIndexEntity> entity) {
 		// TODO Auto-generated method stub
 		String sql = "insert into pmIndex(Year, Date, YearMonth, SPOpen, SPHigh, SPLow, SPClose, " +
-		"NewOrders, Production, Employment, Deliveries, Inventories, PMI) " +
+		"NewOrders, Production, Employment, Deliveries, Inventories, PMI, Baseline) " +
 		"values (:year, :date, :yearMonth, :spOpen, :spHigh, :spLow, :spClose, " +
-		":newOrders, :production, :employment, :deliveries, :inventories, :pmi)";
+		":newOrders, :production, :employment, :deliveries, :inventories, :pmi, :baseline)";
 		List <SqlParameterSource> parameters = new ArrayList <SqlParameterSource>();
 		for (PMIndexEntity iterator:entity)
 		{
