@@ -81,6 +81,7 @@ public class BuildPMIndex extends ParseFile {
 						entity.setYear(dateArray[0]);
 						entity.setYearMonth(date);
 						entity.setPmi(entry.getValue());
+						entity.setBaseline("0");
 						list.add(entity);
 					}
 					dao.insertBatch(list);
