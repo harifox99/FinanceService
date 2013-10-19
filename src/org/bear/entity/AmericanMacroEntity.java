@@ -59,6 +59,7 @@ public class AmericanMacroEntity {
 	 * 非農就業人口
 	 */
 	String nfp;
+	String baseline;
 	String unrate; 
 	String umcsent;
 	String icsa;
@@ -266,5 +267,11 @@ public class AmericanMacroEntity {
 	public void setMzmsl(String mzmsl) {
 		this.mzmsl = mzmsl;
 	}
-
+	public String getBaseline() {
+		return baseline;
+	}
+	public void setBaseline(String baseline) {
+		this.baseline = baseline;
+	}
+	
 }
