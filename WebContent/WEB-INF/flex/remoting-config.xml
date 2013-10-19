@@ -79,4 +79,9 @@
             <source>org.bear.util.distribution.DistributionAnalysis</source>
         </properties>
     </destination>
+    <destination id="perfectAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.PerfectAnalysis</source>
+        </properties>
+    </destination>
 </service>
