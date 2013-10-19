@@ -29,6 +29,7 @@ public class PMIndexEntity
 	String deliveries;
 	String inventories;
 	String pmi;
+	String baseline;
 	public String getYear() {
 		return year;
 	}
@@ -107,4 +108,11 @@ public class PMIndexEntity
 	public void setPmi(String pmi) {
 		this.pmi = pmi;
 	}
+	public String getBaseline() {
+		return baseline;
+	}
+	public void setBaseline(String baseline) {
+		this.baseline = baseline;
+	}
+	
 }
