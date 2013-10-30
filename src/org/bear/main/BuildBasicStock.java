@@ -35,13 +35,15 @@ public class BuildBasicStock {
 		 * 4.1.1> 經建會> CepdParser
 		 * 4.1.2> 央行> GetCbcMoney and GetDemandDeposit
 		 * 4.1.3> 台灣加權指數> TwseIndex
+		 * 4.1.4> 補投資人信心指數
 		 * 4.2 美國> BuildAmericanMacroData
 		 * 4.2.1> 補UMCSENT(密西根大學消費者信心指數)
 		 * 4.2.2> ISM指數> BuildPMIndex
 		 * 4.2.3> S&P 500 and CRB Index>SP500Main
 		 * 4.2.3.1> 補CRB Index
 		 * 5. 籌碼
-		 * 5.1 BuildStockDistribution
+		 * 5.1> 集保董監持股> BuildStockDistribution
+		 * 5.2> 證交所董監持股改> BuildSupervisor 
 		 * 6.1 3/31年報, 5/15, 8/15, 11/15季報
 		 * 6.2 每個月10號營收
 		 * 6.3 每個月25號經濟指標
