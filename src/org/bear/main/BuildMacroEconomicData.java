@@ -46,12 +46,12 @@ public class BuildMacroEconomicData extends ParseFile
 		//³f¹ô
 		GetCbcMoney money = new GetCbcMoney();
 		money.setDao(dao);
-		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2013M08"));
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2013M09"));
 		
 		//¬¡´ÁÀx»W¦s´Ú
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2013M08"));
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2013M09"));
 		
 		//TWSE
 		TwseIndex twseIndex = new TwseIndex();
