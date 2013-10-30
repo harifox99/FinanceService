@@ -6,7 +6,6 @@ import java.util.List;
 import org.bear.dao.JdbcStockDistributionDao;
 import org.bear.dao.JdbcThreeBigDao;
 import org.bear.entity.StockDistributionEntity;
-import org.bear.entity.ThreeBigEntity;
 import org.bear.journal.wrapper.DistributionWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -91,11 +90,11 @@ public class DistributionAnalysis
 		}
 		return reverseList;
 	}
-	
+	/*
 	public static void main (String args[])
 	{
 		DistributionAnalysis analysis = new DistributionAnalysis();
 		List<DistributionWrapper> list = analysis.getDistribution("4702", 12);
-	}
+	}*/
 	
 }
