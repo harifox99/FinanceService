@@ -24,7 +24,7 @@ public class TestMain extends ParseFile
 		//int input = scanner.nextInt();
 		//System.out.printf("Oh! I get %d!!", scanner.nextInt());
 		//System.out.printf("Oh! I get " + input);
-		TestMain main = new TestMain();
+		//TestMain main = new TestMain();
 	}
 	public TestMain()
 	{
