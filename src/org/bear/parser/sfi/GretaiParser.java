@@ -12,7 +12,11 @@ import org.bear.entity.GretaiPriceEntity;
 import org.bear.entity.RevenueEntity;
 import org.bear.util.StringUtil;
 import org.bear.util.newRevenue.GetGretaiPrice;
-
+/**
+ * 利用櫃臺月成交資訊擷取最高、最低、平均收盤價、周轉率
+ * @author edward
+ *
+ */
 public class GretaiParser extends RevenueParserBase 
 {
 	String year;
