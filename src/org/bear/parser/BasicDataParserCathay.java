@@ -61,11 +61,16 @@ public class BasicDataParserCathay extends ParserBase
 				{
 					resultElement = tdList.get(j+1);
 					content = resultElement.getContent().toString();
-					List<Element> pList = resultElement.getAllElements(HTMLElementName.P);
-					resultElement = pList.get(0);
-					content = resultElement.getContent().toString();
-					nav = Double.parseDouble(content);
-					nav = StringUtil.setPointLength(nav);
+					if (content.equals("N/A"))
+						nav = 0.9;
+					else
+					{
+						List<Element> pList = resultElement.getAllElements(HTMLElementName.P);
+						resultElement = pList.get(0);
+						content = resultElement.getContent().toString();
+						nav = Double.parseDouble(content);
+						nav = StringUtil.setPointLength(nav);
+					}
 				}
 				else if (content.equals("¦¬½L»ù"))
 				{
