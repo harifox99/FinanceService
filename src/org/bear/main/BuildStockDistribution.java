@@ -19,7 +19,7 @@ public class BuildStockDistribution extends ImportStockIDData
 	}
 	public BuildStockDistribution()
 	{
-		String startYear = "2012";
+		String startYear = "2013";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JdbcStockDistributionDao stockDistributionDao = (JdbcStockDistributionDao)context.getBean("stockDistributionDao");
 		JdbcStockTypeDao stockTypedao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
@@ -43,8 +43,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		}
 		
 		//證交所三大法人增減
-		String[] monthList = {"01", "02", "03", "04", "05", "06", "07", "08", "09"};
-		//String[] monthList = {"09", "10", "11", "12"};
+		String[] monthList = {"10"};
 		List<Integer> typeIdList = stockTypedao.findAllData();
 		for (int i = 0; i < typeIdList.size(); i++)
 		{
@@ -58,7 +57,7 @@ public class BuildStockDistribution extends ImportStockIDData
 					continue;
 				GetTwse3Big twse3Big = new GetTwse3Big();
 				twse3Big.setThreeBigDao(threeBigDao);
-				System.out.println(typeIdList.get(i).toString() + " " + startYear + " " + monthList[j]);
+				System.out.println(startYear + "/" + monthList[j] + ", typeId: " + typeIdList.get(i).toString());
 				twse3Big.getContent(typeIdList.get(i).toString(), startYear, monthList[j], null, null);
 			}
 		}
