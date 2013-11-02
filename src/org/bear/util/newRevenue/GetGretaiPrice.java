@@ -9,7 +9,11 @@ import org.bear.datainput.GetSFIContent;
 import org.bear.entity.GretaiPriceEntity;
 import org.bear.parser.sfi.GretaiPriceParser;
 import org.bear.util.HttpUtil;
-
+/**
+ * 利用櫃臺個股日成交資訊擷取當月開盤、收盤價
+ * @author edward
+ *
+ */
 public class GetGretaiPrice implements GetSFIContent 
 {
 	GretaiPriceEntity entity;
