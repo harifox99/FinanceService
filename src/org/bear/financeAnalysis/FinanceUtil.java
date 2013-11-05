@@ -617,6 +617,7 @@ public class FinanceUtil
 			wrapper.setNetCashFlows(cashFlowsList.get(i).getNetCashFlows());
 			//設定期別
 			wrapper.setYear(cashFlowsList.get(i).getYear());
+			/* 移除錯誤的現金流量計算法，可能是當初資料不足，所以使用舊的計算方法，當資料補足之後，改用新的計算方法, 2013/11/05
 			//計算最新一年的累計損益資料
 			if (i == cashFlowsList.size() - 1)
 			{
@@ -644,18 +645,18 @@ public class FinanceUtil
 				wrapper.setDifference(cashFlowsList.get(i).getOperatingActivity() - netIncome);				
 			}
 			else
-			{
-				//現金流量比率
-				double ratioNumber = (double) cashFlowsList.get(i).getOperatingActivity()/balanceSheetList.get(i+1).getCurrentLiability()*100;
-				wrapper.setCashFlowToCurrentDebt(StringUtil.setPointLength(ratioNumber));
-				//稅後純益
-				wrapper.setIncomeSummary(incomeStatementList.get(i+1).getNetIncome());
-				//營運活動之現金佔稅後純益比率
-				ratioNumber = (double)cashFlowsList.get(i).getOperatingActivity()/incomeStatementList.get(i+1).getNetIncome()*100;
-				wrapper.setCashNetRatio(StringUtil.setPointLength(ratioNumber));				
-				//營運活動現金流量與會計盈餘落差
-				wrapper.setDifference(cashFlowsList.get(i).getOperatingActivity() - incomeStatementList.get(i+1).getNetIncome());								
-			}
+			{*/
+			//現金流量比率
+			double ratioNumber = (double) cashFlowsList.get(i).getOperatingActivity()/balanceSheetList.get(i).getCurrentLiability()*100;
+			wrapper.setCashFlowToCurrentDebt(StringUtil.setPointLength(ratioNumber));
+			//稅後純益
+			wrapper.setIncomeSummary(incomeStatementList.get(i).getNetIncome());
+			//營運活動之現金佔稅後純益比率
+			ratioNumber = (double)cashFlowsList.get(i).getOperatingActivity()/incomeStatementList.get(i).getNetIncome()*100;
+			wrapper.setCashNetRatio(StringUtil.setPointLength(ratioNumber));				
+			//營運活動現金流量與會計盈餘落差
+			wrapper.setDifference(cashFlowsList.get(i).getOperatingActivity() - incomeStatementList.get(i).getNetIncome());								
+			//}
 			wrapperList.add(wrapper);
 		}		
 		return wrapperList;
