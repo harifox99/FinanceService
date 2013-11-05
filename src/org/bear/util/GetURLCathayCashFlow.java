@@ -1,7 +1,7 @@
 package org.bear.util;
 /**
  * @author edward
- * 國泰網站的現金流量表URL
+ * 玉山網站的現金流量表URL
  */
 public class GetURLCathayCashFlow extends GetURLContentBase
 {
