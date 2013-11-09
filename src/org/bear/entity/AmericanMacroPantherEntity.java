@@ -32,20 +32,8 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	/**
 	 * VIX®£·W«ü¼Æ
 	 */
-	String vixclsHigh;
-	String vixclsLow;
-	public String getVixclsHigh() {
-		return vixclsHigh;
-	}
-	public void setVixclsHigh(String vixclsHigh) {
-		this.vixclsHigh = vixclsHigh;
-	}
-	public String getVixclsLow() {
-		return vixclsLow;
-	}
-	public void setVixclsLow(String vixclsLow) {
-		this.vixclsLow = vixclsLow;
-	}
+	String vixHigh;
+	String vixLow;
 	public String getPayems() {
 		return payems;
 	}
@@ -89,5 +77,16 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	public void setPermitnsaYoy(String permitnsaYoy) {
 		this.permitnsaYoy = permitnsaYoy;
 	}
-	
+	public String getVixHigh() {
+		return vixHigh;
+	}
+	public void setVixHigh(String vixHigh) {
+		this.vixHigh = vixHigh;
+	}
+	public String getVixLow() {
+		return vixLow;
+	}
+	public void setVixLow(String vixLow) {
+		this.vixLow = vixLow;
+	}
 }
