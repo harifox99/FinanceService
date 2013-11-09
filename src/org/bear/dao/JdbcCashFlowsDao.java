@@ -10,12 +10,14 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsDao {
 
-	public List<CashFlowsEntity> findDataBySeason(String stockID, String year, String season)
+	public List<CashFlowsEntity> findDataBySeason(String stockID, String year, String seasons)
 	{
 		// TODO Auto-generated method stub
 		List <CashFlowsEntity> wrapperList = null;
-		String sql = "select * from statementOfCashFlow where stockID = '" + stockID + "'" +
-					 " and year = '" + year + "' and seasons = '" + season + "'";
+		String sql = "select * from statementOfCashFlow where (seasons >= " + seasons + ") and (year >= " + year +
+		") and (stockID = '" + stockID + "') and (seasons <> '00') " + 
+		"or (year > " + year + ") and (stockID = '" + stockID + "') and (seasons <> '00') order by Year";
+		System.out.println("findDataBySeason: " + sql);
 		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
 		//Iterator <BasicStockWrapper> iterator = wrapperList.iterator();
 		return wrapperList;
