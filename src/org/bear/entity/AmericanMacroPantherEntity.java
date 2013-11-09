@@ -29,6 +29,23 @@ public class AmericanMacroPantherEntity extends AmericanMacroEntity {
 	 * 建築許可YoY
 	 */
 	String permitnsaYoy;
+	/**
+	 * VIX恐慌指數
+	 */
+	String vixclsHigh;
+	String vixclsLow;
+	public String getVixclsHigh() {
+		return vixclsHigh;
+	}
+	public void setVixclsHigh(String vixclsHigh) {
+		this.vixclsHigh = vixclsHigh;
+	}
+	public String getVixclsLow() {
+		return vixclsLow;
+	}
+	public void setVixclsLow(String vixclsLow) {
+		this.vixclsLow = vixclsLow;
+	}
 	public String getPayems() {
 		return payems;
 	}
