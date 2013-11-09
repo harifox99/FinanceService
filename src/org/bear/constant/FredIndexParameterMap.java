@@ -64,6 +64,16 @@ public class FredIndexParameterMap {
 		}	 
 	/*********************/
 		
+	/* VIX恐慌指數 */
+	public static final String[] AMERICA_VIX_LIST = {"VIXCLS"};
+	public static final HashMap<String, String> VIX = new HashMap<String, String>();
+		static
+		{
+			VIX.put("units", "lin");
+			VIX.put("frequency", "d");
+		}	 
+		/*********************/	
+		
 	/* 月份轉換 */
 	public static final HashMap<String, String> MONTH = new HashMap<String, String>();
 	static
