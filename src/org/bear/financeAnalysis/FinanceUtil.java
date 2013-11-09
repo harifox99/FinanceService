@@ -584,7 +584,7 @@ public class FinanceUtil
 	 * @param year
 	 * @return
 	 */
-	public List<CashFlowsWrapper> getCashFlowByYear(String stockID, String year)
+	public List<CashFlowsWrapper> getCashFlowByYear(String stockID, String year, String season)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		//現金流量表
@@ -599,9 +599,9 @@ public class FinanceUtil
 		/***********************************************/
 		List <CashFlowsWrapper> wrapperList = new ArrayList<CashFlowsWrapper>();
 		CashFlowsWrapper wrapper;
-		incomeStatementList = incomeStatementDao.findDataByYear(stockID, year);
-		cashFlowsList = cashFlowsDao.findDataByYear(stockID, year);
-		balanceSheetList = balanceSheetDao.findDataByYear(stockID, year);
+		incomeStatementList = incomeStatementDao.findDataBySeason(stockID, year, season);
+		cashFlowsList = cashFlowsDao.findDataBySeason(stockID, year, season);
+		balanceSheetList = balanceSheetDao.findDataBySeason(stockID, year, season);
 		for (int i = 0; i < cashFlowsList.size(); i++)
 		{
 			wrapper = new CashFlowsWrapper();
@@ -616,7 +616,7 @@ public class FinanceUtil
 			//本期產生現金流量
 			wrapper.setNetCashFlows(cashFlowsList.get(i).getNetCashFlows());
 			//設定期別
-			wrapper.setYear(cashFlowsList.get(i).getYear());
+			wrapper.setYear(balanceSheetList.get(i).getYear() + "-" + balanceSheetList.get(i).getSeasons());
 			/* 移除錯誤的現金流量計算法，可能是當初資料不足，所以使用舊的計算方法，當資料補足之後，改用新的計算方法, 2013/11/05
 			//計算最新一年的累計損益資料
 			if (i == cashFlowsList.size() - 1)
