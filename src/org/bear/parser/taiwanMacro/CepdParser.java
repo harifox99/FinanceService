@@ -54,10 +54,10 @@ public class CepdParser {
 	 */
 	public void setUrl(String indexName, String mapName)
 	{
-		if (this.index != 6)
-			this.url = urlHeader + mapName + "&p=1^1^" + startDate + "," + endDate + urlMiddle + indexName + urlFooter;
-		else
+		if (this.index == 6 || this.index == 7)
 			this.url = urlHeader + mapName + "&p=1^1^" + startDate + "," + endDate + urlMiddleYoy + indexName + urlFooter;
+		else
+			this.url = urlHeader + mapName + "&p=1^1^" + startDate + "," + endDate + urlMiddle + indexName + urlFooter;			
 		System.out.println(this.url);
 	}
 	public void getConnection()
@@ -84,7 +84,7 @@ public class CepdParser {
 			list = new ArrayList<MacroEconomicEntity>();
 			MacroEconomicEntity entity = new MacroEconomicEntity();
 			String dateString = null;
-			if (i < 1 || (i < 2 && index == 6))
+			if (i < 1 || (i < 2 && (index == 6 || index == 7)))
 				continue;
 			for (int j = 0; j < tdList.size(); j++)
 			{				
@@ -108,7 +108,7 @@ public class CepdParser {
 							dateString = content;
 						}
 					}
-					else if (j == 1 && index != 6)
+					else if (j == 1 && index != 6 && index != 7)
 					{
 						if (index == 0)
 						{
@@ -126,7 +126,7 @@ public class CepdParser {
 						    }
 						}
 					}	
-					else if (index == 6)
+					else if (index == 6 || index == 7)
 					{
 						if (j == 0 || j == 1)
 							continue;
