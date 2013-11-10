@@ -33,6 +33,7 @@ public class MacroEconomicEntity
 	String demandDeposits;
 	String generalIndexYoy;
 	String confidence;
+	String exportOrder;
 	public String getTwseOpen() {
 		return twseOpen;
 	}
@@ -178,5 +179,12 @@ public class MacroEconomicEntity
 	}
 	public void setConfidence(String confidence) {
 		this.confidence = confidence;
+	}
+	public String getExportOrder() {
+		return exportOrder;
+	}
+	public void setExportOrder(String exportOrder) {
+		this.exportOrder = exportOrder;
 	}	
+	
 }
