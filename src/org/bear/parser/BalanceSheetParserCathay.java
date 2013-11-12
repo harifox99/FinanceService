@@ -105,6 +105,10 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 						title = AccountTitle.AccountsPayable;
 					else if (content.equals("期別"))
 						title = AccountTitle.SEASON;
+					else if (content.equals("短期借款"))
+						title = AccountTitle.ShortTermLoan;
+					else if (content.equals("應付商業本票"))
+						title = AccountTitle.CommercialPaperPayable;
 					else
 					{
 						title = AccountTitle.EMPTY;
@@ -300,6 +304,18 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				{	
 					int result = Integer.parseInt(rowData[k]);
 					entity[k].setAccountsPayable(result);
+					break;	
+				}
+				case ShortTermLoan: 
+				{	
+					int result = Integer.parseInt(rowData[k]);
+					entity[k].setShortTermLoan(result);
+					break;	
+				}
+				case CommercialPaperPayable: 
+				{	
+					int result = Integer.parseInt(rowData[k]);
+					entity[k].setCommercialPaperPayable(result);
 					break;	
 				}
 				case SEASON:
