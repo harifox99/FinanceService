@@ -13,15 +13,16 @@ public enum AccountTitle
 	NET_CASH_FLOWS,
 	BEGINNING_CASH,
 	ENDING_CASH,
-	FREE_CASH_FLOW,
-	SEASON,
-	EMPTY,
+	FREE_CASH_FLOW,	
 	//資產負債表
 	Cash,
 	ShortTermInvestment,
 	Receivable,
 	OtherReceivable,
+	//短期借支
 	ShortTermBorrowing,
+	//短期借款
+	ShortTermLoan,
 	Inventory,
 	PrepaidExpense,
 	OtherCurrentAssets,
@@ -37,6 +38,7 @@ public enum AccountTitle
 	OtherLiability,
 	TotalLiability,
 	StockholdersEquity,
+	CommercialPaperPayable,
 	//損益表
 	OperatingRevenue,
 	OperatingCost,
@@ -51,5 +53,8 @@ public enum AccountTitle
 	EPS,
 	WghtAvgStocks,
 	//其他財務指標
-	NAV;
+	NAV,
+	SEASON,
+	EMPTY,
+	MONTH,
 }
