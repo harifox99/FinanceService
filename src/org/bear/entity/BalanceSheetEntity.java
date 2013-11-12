@@ -29,6 +29,8 @@ public class BalanceSheetEntity extends BasicEntity
 	int totalLiability;
 	int stockholdersEquity;
 	int accountsPayable;
+	int commercialPaperPayable;
+	int shortTermLoan;
 	public int getCash() {
 		return cash;
 	}
@@ -149,4 +151,17 @@ public class BalanceSheetEntity extends BasicEntity
 	public void setAccountsPayable(int accountsPayable) {
 		this.accountsPayable = accountsPayable;
 	}
+	public int getCommercialPaperPayable() {
+		return commercialPaperPayable;
+	}
+	public void setCommercialPaperPayable(int commercialPaperPayable) {
+		this.commercialPaperPayable = commercialPaperPayable;
+	}
+	public int getShortTermLoan() {
+		return shortTermLoan;
+	}
+	public void setShortTermLoan(int shortTermLoan) {
+		this.shortTermLoan = shortTermLoan;
+	}
+	
 }
