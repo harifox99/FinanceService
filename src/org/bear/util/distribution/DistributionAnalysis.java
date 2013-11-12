@@ -43,8 +43,8 @@ public class DistributionAnalysis
 			//大戶
 			wrapper.setMajorInvestor(
 			distributionList.get(i).getD400000() - distributionList.get(i+1).getD400000() +
-			distributionList.get(i).getD600000() - distributionList.get(i+1).getD600000() + 
-			distributionList.get(i).getD800000() - distributionList.get(i+1).getD800000());
+			distributionList.get(i).getD600000() - distributionList.get(i+1).getD600000()); 
+			//distributionList.get(i).getD800000() - distributionList.get(i+1).getD800000());
 			//大股東
 			wrapper.setMajorShareholders(
 			distributionList.get(i).getD600000() - distributionList.get(i+1).getD600000() +
