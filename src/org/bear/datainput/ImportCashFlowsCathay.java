@@ -27,11 +27,11 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 				Thread.sleep(5000);		
 				idleTime++;
 			}*/
+			
 			//©u¸ê®Æ
-
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
-				int expectedNum = 6;
+				int expectedNum = 7;
 				String[] seasons = {"01", "02", "03", "04"};
 				String[] years = {"2012", "2013"};
 				String stockID = wrapperList.get(i).getStockID();
@@ -39,7 +39,7 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, false, expectedNum, true);
 				cashFlowsParser.parse(2);
-				Thread.sleep(5000);		
+				Thread.sleep(3000);		
 				idleTime++;
 			}
 		}
