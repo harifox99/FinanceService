@@ -27,11 +27,11 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 		String sql = "insert into BalanceSheet(StockID, Year, Seasons, Cash, ShortTermInvestment, " + 
 		"Receivable, OtherReceivable, ShortTermBorrowing, Inventory, PrepaidExpense, OtherCurrentAssets, " +
 		"CurrentAssets, LongTermInvestment, FixedAssets, OtherAssets, TotalAssets, LongTermOneYear, " +
-		"CurrentLiability, LongTermLiability, OtherLiability, TotalLiability, StockholdersEquity, AccountsPayable) " +
+		"CurrentLiability, LongTermLiability, OtherLiability, TotalLiability, StockholdersEquity, AccountsPayable, ShortTermLoan, CommercialPaperPayable) " +
 		"values (:stockID, :year, :seasons, :cash, :shortTermInvestment, :receivable, :otherReceivable, " + 
 		":shortTermBorrow, :inventory, :prepaidExpense, :otherCurrentAssets, :currentAssets, :longTermInvestment, " +
 		":fixedAssets, :otherAssets, :totalAssets, :longTermOneYear, :currentLiability, " +
-		":longTermLiability, :otherLiability, :totalLiability, :stockholdersEquity, :accountsPayable)";
+		":longTermLiability, :otherLiability, :totalLiability, :stockholdersEquity, :accountsPayable, :shortTermLoan, :commercialPaperPayable)";
 		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(balanceSheetEntity);
 		this.getSimpleJdbcTemplate().update(sql, parameterSource);
 	}
