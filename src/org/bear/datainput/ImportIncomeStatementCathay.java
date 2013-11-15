@@ -19,7 +19,7 @@ public class ImportIncomeStatementCathay extends ImportStockIDData
 			int idleTime = 0;
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 6;
+				int expectedNum = 7;
 				String[] seasons = {"01", "02", "03", "04"};
 				String[] years = {"2012", "2013"};
 				String stockID = wrapperList.get(j).getStockID();
@@ -28,7 +28,7 @@ public class ImportIncomeStatementCathay extends ImportStockIDData
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, false);
 				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
 				incomeStatementYear.parse(2);
-				Thread.sleep(5000);	
+				Thread.sleep(3000);	
 				idleTime++;
 			}
 			//for (int j = 0; j < wrapperList.size(); j++)
