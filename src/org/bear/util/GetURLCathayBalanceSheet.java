@@ -12,6 +12,7 @@ public class GetURLCathayBalanceSheet extends GetURLContentBase
 	public GetURLCathayBalanceSheet(String stockID, boolean isYear)
 	{
 		urlHeaderSeason = "http://dj.mybank.com.tw/z/zc/zcp/zcpa/zcpa_";
+		//urlHeaderSeason = "http://www.esunsec.com.tw/z/zc/zcp/zcpa/zcpa_";
 		urlHeaderYear = "http://dj.mybank.com.tw/z/zc/zcp/zcpb/zcpb_";
 		urlFooter = ".asp.htm";
 		if (isYear)
