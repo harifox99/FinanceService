@@ -265,6 +265,10 @@ public class FinanceUtil
 			//權益乘數
 			ratioNumber = (double) balanceSheetList.get(i).getTotalAssets()/balanceSheetList.get(i).getStockholdersEquity();
 			wrapper.setEquityMultiplier(StringUtil.setPointLength(ratioNumber));
+			//長短期金融債負債比
+			ratioNumber = (double) (balanceSheetList.get(i).getLongTermLiability() + balanceSheetList.get(i).getLongTermOneYear() + balanceSheetList.get(i).getCommercialPaperPayable() + balanceSheetList.get(i).getShortTermLoan())/
+			balanceSheetList.get(i).getTotalAssets()*100;
+			wrapper.setBankLiability(StringUtil.setPointLength(ratioNumber));
 			//設定期別
 			wrapper.setYear(balanceSheetList.get(i).getYear());
 			financialStructureList.add(wrapper);
@@ -300,6 +304,10 @@ public class FinanceUtil
 			//權益乘數
 			ratioNumber = (double) balanceSheetList.get(i).getTotalAssets()/balanceSheetList.get(i).getStockholdersEquity();
 			wrapper.setEquityMultiplier(StringUtil.setPointLength(ratioNumber));
+			//長短期金融債負債比
+			ratioNumber = (double) (balanceSheetList.get(i).getLongTermLiability() + balanceSheetList.get(i).getLongTermOneYear() + balanceSheetList.get(i).getCommercialPaperPayable() + balanceSheetList.get(i).getShortTermLoan())/
+			balanceSheetList.get(i).getTotalAssets()*100;
+			wrapper.setBankLiability(StringUtil.setPointLength(ratioNumber));
 			//設定期別
 			wrapper.setYear(balanceSheetList.get(i).getYear() + "-" + balanceSheetList.get(i).getSeasons());
 			financialStructureList.add(wrapper);
