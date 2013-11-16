@@ -16,10 +16,10 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 		try
 		{		
 			int idleTime = 0;
-			/*
+			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 6;
+				int expectedNum = 7;
 				String[] years = {"2012", "2013"};
 				String[] seasons = {"01", "02", "03", "04"};
 				String stockID = wrapperList.get(j).getStockID();
@@ -28,10 +28,10 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
 				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
 				balanceSheetSeason.parse(2);
-				Thread.sleep(5000);		
+				Thread.sleep(3000);		
 				idleTime++;
-			}*/			
-		
+			}		
+			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 8;
@@ -45,7 +45,7 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 				balanceSheetYear.parse(2);
 				Thread.sleep(5000);		
 				idleTime++;
-			}
+			}*/
 		}
 		catch (Exception ex)
 		{
