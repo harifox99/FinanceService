@@ -28,7 +28,7 @@ public class ImportIncomeStatementCathay extends ImportStockIDData
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, false);
 				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
 				incomeStatementYear.parse(2);
-				Thread.sleep(3000);	
+				Thread.sleep(2000);	
 				idleTime++;
 			}
 			//for (int j = 0; j < wrapperList.size(); j++)
