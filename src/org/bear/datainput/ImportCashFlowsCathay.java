@@ -31,9 +31,9 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 			//季資料
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
-				int expectedNum = 7;
-				String[] seasons = {"01", "02", "03", "04"};
-				String[] years = {"2012", "2013"};
+				int expectedNum = 3;
+				String[] seasons = {"01", "02", "03"};
+				String[] years = {"2013"};
 				String stockID = wrapperList.get(i).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
