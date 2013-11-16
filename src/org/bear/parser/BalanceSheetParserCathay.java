@@ -143,7 +143,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				}
 			}
 		}
-		if (this.checkExpectedNum(entity, expectedNum) == true && this.isCombined == true)
+		if (this.checkExpectedNum(entity, expectedNum, years, seasons) == true && this.isCombined == true)
 		{
 			GetURLCathayBalanceSheetSingle urlContent = new GetURLCathayBalanceSheetSingle(stockID, this.isYear);
 			BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContent(), stockID, this.isYear, years, seasons, expectedNum, false);

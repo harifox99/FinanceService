@@ -111,7 +111,7 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 				}
 			}
 		}
-		if (this.checkExpectedNum(entity, expectedNum) == true && this.isCombined == true)
+		if (this.checkExpectedNum(entity, expectedNum, years, seasons) == true && this.isCombined == true)
 		{
 			GetURLCathayCashFlowSingle urlContent = new GetURLCathayCashFlowSingle(stockID, this.isYear);
 			CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, this.isYear, expectedNum, false);

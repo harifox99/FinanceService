@@ -120,7 +120,7 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 				}
 			}
 		}
-		if (checkExpectedNum(entity, expectedNum) == true && this.isCombined == true)
+		if (this.checkExpectedNum(entity, expectedNum, years, seasons) == true && this.isCombined == true)
 		{
 			GetURLCathayIncomeStatementSingle urlContent = new GetURLCathayIncomeStatementSingle(stockID, this.isYear);
 			IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, this.isYear, years, seasons, expectedNum, false);
