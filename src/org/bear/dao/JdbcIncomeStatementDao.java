@@ -121,4 +121,13 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		return wrapperList;
 	}
 
+	@Override
+	public IncomeStatementEntity findSingleDataBySeason(String stockID,
+			String year, String seasons) {
+		// TODO Auto-generated method stub
+		String sql = "select * from incomeStatement where stockID = '" + stockID + "' and year = '" + year + "' and seasons = '" + seasons + "'";
+		IncomeStatementEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		return entity;
+	}
+
 }
