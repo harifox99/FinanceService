@@ -21,6 +21,10 @@ public class FinancialStructureAnalysisWrapper extends BasicEntity
 	 * Åv¯q­¼¼Æ
 	 */
 	double equityMultiplier;
+	/**
+	 * ª÷¿Ä­t¶Å
+	 */
+	double bankLiability;
 	public double getHoldersEquityRatio() {
 		return holdersEquityRatio;
 	}
@@ -38,5 +42,12 @@ public class FinancialStructureAnalysisWrapper extends BasicEntity
 	}
 	public void setEquityMultiplier(double equityMultiplier) {
 		this.equityMultiplier = equityMultiplier;
+	}
+	public double getBankLiability() {
+		return bankLiability;
+	}
+	public void setBankLiability(double bankLiability) {
+		this.bankLiability = bankLiability;
 	} 
+	
 }
