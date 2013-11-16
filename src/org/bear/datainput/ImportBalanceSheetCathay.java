@@ -23,12 +23,14 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 				String[] years = {"2012", "2013"};
 				String[] seasons = {"01", "02", "03", "04"};
 				String stockID = wrapperList.get(j).getStockID();
+				//if (!stockID.equals("3213"))
+					//continue;
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");				
 				//季資料
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
 				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
 				balanceSheetSeason.parse(2);
-				Thread.sleep(3000);		
+				Thread.sleep(2000);		
 				idleTime++;
 			}		
 			/*
