@@ -47,13 +47,35 @@ public class ParserBase
 	 * 檢查合併報表資料是否足夠，若不足，則擷取單一報表
 	 * @return
 	 */
-	public boolean checkExpectedNum(BasicEntity[] entity, int expectedNum)
+	public boolean checkExpectedNum(BasicEntity[] entity, int expectedNum, String[] years, String[] seasons)
 	{
 		int counter = 0;
 		for (int i = 0; i < dataLength; i++)
 		{
 			if (entity[i].year == null && entity[i].seasons == null && entity[i].stockID == null)
+			{
 				counter++;
+			}
+			else
+			{
+				boolean isFind = false;
+				for (int j = 0; j < seasons.length; j++)
+				{
+					if (isFind)
+						break;
+					for (int k = 0; k < years.length; k++)
+					{
+						if (entity[i].year.equals(years[k]) && entity[i].seasons.equals(seasons[j]))
+						{
+							//找到年份相符合的資料，不做處置
+							isFind = true;
+							break;
+						}
+					}
+				}
+				if (isFind == false)
+					counter++;
+			}
 		}
 		if ( (dataLength - counter) >= expectedNum)
 			return false;
