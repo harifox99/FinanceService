@@ -23,10 +23,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class PerfectAnalysis 
 {	
-	//最多只看半年成長
-	final int maxMonth = 5;
-	//最多只看過去4季
-	final int maxSeasons = 4;
+	//最多只看過去3個月成長
+	final int maxMonth = 3;
+	//最多只看過去2季
+	final int maxSeasons = 2;
 	//可以繼續掃瞄的股票代碼
 	List<List<Double>> legalStockIdList = new ArrayList<List<Double>>();
 	//Column Name
@@ -43,7 +43,7 @@ public class PerfectAnalysis
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, 
-			int demandOperatingProfit, int demandPreTaxIncome,
+			int demandOperatingProfit, int demandPreTaxIncome, int demandEps,
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -138,6 +138,34 @@ public class PerfectAnalysis
 				}
 			}
 			//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
+			perfectList = calculateList;
+			calculateList = new ArrayList<List<String>>();
+			
+			//期望EPS
+			for (int i = 0; i < perfectList.size(); i++)
+			{
+				String stockID = perfectList.get(i).get(0);
+				//System.out.println("stockID: " + stockID);
+				List<IncomeStatementEntity> entity = incomeStatementDao.findDataByLatest(demandEps, stockID);
+				if (i == 0)
+				{
+					for (int j = entity.size()-1; j >= 0; j--)
+					{
+						this.addColumnName(entity.get(j).getYear() + "-" + entity.get(j).getSeasons(), "EPS");
+					}
+				}
+				//計算期望EPS
+				List<String> rateList = this.checkEpsGrowth(entity, 
+						incomeStatementDao, demandEps);
+				if (rateList != null)
+				{
+					rateList = ReverseUtil.reverse(rateList);		
+					//把EPS直接附在稅前淨利率後面
+					perfectList.get(i).addAll(rateList);
+					//所有符合期望的資料暫存在calculateList
+					calculateList.add(perfectList.get(i));
+				}
+			}						
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
 			//期望毛利率
@@ -260,8 +288,7 @@ public class PerfectAnalysis
 	 * @return
 	 */
 	private List<String> checkProfitRatio(List<IncomeStatementEntity> entity, int expectedRate, int type)
-	{
-		//稅前淨利率		
+	{	
 		List<String> rateList = new ArrayList<String>();
 		for (int i = 0; i < maxSeasons; i++)
 		{
@@ -373,5 +400,30 @@ public class PerfectAnalysis
 	private void addColumnName(String dateString, String comment)
 	{
 		columnNameList.add(dateString + "\n" + comment);
+	}
+	private List<String> checkEpsGrowth(List<IncomeStatementEntity> entity, 
+			IncomeStatementDao incomeStatementDao, int demandEps)
+	{
+		List<String> rateList = new ArrayList<String>();
+		for (int i = 0; i < demandEps; i++)
+		{
+			String stockID = entity.get(i).getStockID();
+			String year = entity.get(i).getYear();
+			String seasons = entity.get(i).getSeasons();
+			//本季EPS
+			double thisYearEps = entity.get(i).getEps();
+			//擷取去年本季EPS
+			int intYear = Integer.parseInt(year);
+			year = String.valueOf(--intYear);
+			System.out.println("stockID: " + stockID);
+			IncomeStatementEntity lastEntity = incomeStatementDao.findSingleDataBySeason(stockID, year, seasons);
+			double lastYearEps = lastEntity.getEps();
+			if (thisYearEps < lastYearEps && i < demandEps)
+				return null;
+			else
+				rateList.add(String.valueOf(thisYearEps));				
+		
+		}
+		return rateList;
 	}
 }
