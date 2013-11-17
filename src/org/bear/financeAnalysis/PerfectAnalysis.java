@@ -24,8 +24,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 public class PerfectAnalysis 
 {	
-	//程筁3るΘ
-	final int maxMonth = 3;
+	//程筁4るΘ
+	final int maxMonth = 4;
 	//程筁2﹗
 	final int maxSeasons = 2;
 	//膥尿苯核布絏
