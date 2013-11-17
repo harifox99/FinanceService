@@ -11,7 +11,7 @@
 		<property name="url"
 			value="jdbc:sqlserver://192.168.1.3:1433;DatabaseName=Financial"/>
 		<property name="username" value="sa"></property>
-		<property name="password" value="1234"></property>
+		<property name="password" value="789@654"></property>
 	</bean>
 	<bean id="macroEconomicDao"
 		class="org.bear.dao.JdbcMacroEconomicDao">
