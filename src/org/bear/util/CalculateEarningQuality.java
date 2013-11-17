@@ -71,11 +71,13 @@ public class CalculateEarningQuality
 				wrapper.setOperatingRevenueRatio(ratioNumber);				
 				double operatingRevenue = ratioNumber;
 				//存貨
+				//若存貨為0
 				if (first[0] + second[0] == 0)
 				{
 					ratioNumber = 0;
 					wrapper.setInventoryIndex(0);
 				}
+				//若存貨不為0
 				else
 				{
 					ratioNumber = (double) (balanceSheetList.get(i).getInventory() - (first[0]+second[0])/2) / ((first[0] + second[0])/2);
@@ -101,10 +103,21 @@ public class CalculateEarningQuality
 				wrapper.setOperatingExpensesRatio(ratioNumber);
 				wrapper.setOperatingExpensesIndex(StringUtil.setPointLength(ratioNumber - operatingRevenue, 4));
 				//應付帳款
-				ratioNumber = (double) (balanceSheetList.get(i).getAccountsPayable() - (first[5]+second[5])/2) / ((first[5] + second[5])/2);
-				ratioNumber = StringUtil.setPointLength(ratioNumber, 4);
+				//若應付帳款為0
+				if (first[5] + second[5] == 0)
+				{
+					ratioNumber = 0;
+					wrapper.setAccountsPayableIndex(0);
+				}
+				//若應付帳款不為0
+				else
+				{
+					ratioNumber = (double) (balanceSheetList.get(i).getAccountsPayable() - (first[5]+second[5])/2) / ((first[5] + second[5])/2);
+					ratioNumber = StringUtil.setPointLength(ratioNumber, 4);
+					wrapper.setAccountsPayableIndex(StringUtil.setPointLength(operatingRevenue - ratioNumber , 4));
+				}
 				wrapper.setAccountsPayableRatio(ratioNumber);
-				wrapper.setAccountsPayableIndex(StringUtil.setPointLength(operatingRevenue - ratioNumber , 4));
+				//wrapper.setAccountsPayableIndex(StringUtil.setPointLength(operatingRevenue - ratioNumber , 4));
 				if (isYear)
 					wrapper.setYear(balanceSheetList.get(i).getYear());
 				else
