@@ -71,10 +71,20 @@ public class CalculateEarningQuality
 				wrapper.setOperatingRevenueRatio(ratioNumber);				
 				double operatingRevenue = ratioNumber;
 				//¦s³f
-				ratioNumber = (double) (balanceSheetList.get(i).getInventory() - (first[0]+second[0])/2) / ((first[0] + second[0])/2);
-				ratioNumber = StringUtil.setPointLength(ratioNumber, 4);
+				if (first[0] + second[0] == 0)
+				{
+					ratioNumber = 0;
+					wrapper.setInventoryIndex(0);
+				}
+				else
+				{
+					ratioNumber = (double) (balanceSheetList.get(i).getInventory() - (first[0]+second[0])/2) / ((first[0] + second[0])/2);
+					ratioNumber = StringUtil.setPointLength(ratioNumber, 4);
+					wrapper.setInventoryIndex(StringUtil.setPointLength(ratioNumber - operatingRevenue, 4));
+				}
+				
 				wrapper.setInventoryRatio(ratioNumber);				
-				wrapper.setInventoryIndex(StringUtil.setPointLength(ratioNumber - operatingRevenue, 4));
+				//wrapper.setInventoryIndex(StringUtil.setPointLength(ratioNumber - operatingRevenue, 4));
 				//À³¦¬±b´Ú
 				ratioNumber = (double) (balanceSheetList.get(i).getReceivable() - (first[2]+second[2])/2) / ((first[2] + second[2])/2);
 				ratioNumber = StringUtil.setPointLength(ratioNumber, 4);
