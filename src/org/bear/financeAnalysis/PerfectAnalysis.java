@@ -20,6 +20,7 @@ import org.bear.util.ReverseUtil;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 public class PerfectAnalysis 
 {	
@@ -416,7 +417,16 @@ public class PerfectAnalysis
 			int intYear = Integer.parseInt(year);
 			year = String.valueOf(--intYear);
 			System.out.println("stockID: " + stockID);
-			IncomeStatementEntity lastEntity = incomeStatementDao.findSingleDataBySeason(stockID, year, seasons);
+			IncomeStatementEntity lastEntity;
+			try
+			{
+				lastEntity = incomeStatementDao.findSingleDataBySeason(stockID, year, seasons);
+			}
+			catch (EmptyResultDataAccessException ex)
+			{
+				System.out.println(stockID + "資料不足，無法計算！");
+				return null;				
+			}
 			double lastYearEps = lastEntity.getEps();
 			if (thisYearEps < lastYearEps && i < demandEps)
 				return null;
