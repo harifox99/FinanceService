@@ -216,6 +216,7 @@ public class PerfectAnalysis
 					//所有符合期望的資料暫存在calculateList
 					calculateList.add(perfectList.get(i));
 				}
+				Thread.sleep(1000);
 			}
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
