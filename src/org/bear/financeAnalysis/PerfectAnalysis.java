@@ -36,15 +36,16 @@ public class PerfectAnalysis
 	 * 
 	 * @param yoyTotalMonth 總月份數 (YoY)
 	 * @param yoyGrowMonth 期望的月份數 (YoY)
+	 * @param demandGrossProfit 期望的毛利率上升季數
 	 * @param demandOperatingProfit 期望的連續營業利益率上升季數
-	 * @param demandPreTaxIncome 期望的連續稅前淨利率上升季數
+	 * @param demandEps 期望的連續EPS年增率上升季數
 	 * @param expectedGrossProfitRatio 期望的毛利率
 	 * @param operatingProfitRatio 期望的營業利益率
 	 * @param expectedPe 期望的PE
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, 
-			int demandOperatingProfit, int demandPreTaxIncome, int demandEps,
+			int demandGrossProfit, int demandOperatingProfit, int demandEps,
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -97,15 +98,15 @@ public class PerfectAnalysis
 				{
 					for (int j = entity.size()-1; j >= 0; j--)
 					{
-						this.addColumnName(entity.get(j).getYear() + "-" + entity.get(j).getSeasons(), "營業利益率");
+						this.addColumnName(entity.get(j).getYear() + "-" + entity.get(j).getSeasons(), "毛利率");
 					}
 				}
-				//營業利益率
-				List<String> rateList = this.checkProfitRatio(entity, demandOperatingProfit, 1);
+				//毛利率
+				List<String> rateList = this.checkProfitRatio(entity, demandGrossProfit, 0);
 				if (rateList != null)
 				{
 					rateList = ReverseUtil.reverse(rateList);			
-					//把營業利益率直接附在營收YoY後面
+					//把毛利率直接附在營收YoY後面
 					perfectList.get(i).addAll(rateList);
 					//所有符合期望的資料暫存在calculateList
 					calculateList.add(perfectList.get(i));
@@ -124,15 +125,15 @@ public class PerfectAnalysis
 				{
 					for (int j = entity.size()-1; j >= 0; j--)
 					{
-						this.addColumnName(entity.get(j).getYear() + "-" + entity.get(j).getSeasons(), "稅前淨利率");
+						this.addColumnName(entity.get(j).getYear() + "-" + entity.get(j).getSeasons(), "營業利益率");
 					}
 				}
-				//稅前淨利率
-				List<String> rateList = this.checkProfitRatio(entity, demandPreTaxIncome, 2);
+				//營業利益率
+				List<String> rateList = this.checkProfitRatio(entity, demandOperatingProfit, 1);
 				if (rateList != null)
 				{
 					rateList = ReverseUtil.reverse(rateList);		
-					//把稅前淨利率直接附在營業利益率後面
+					//把營業利益率直接附在毛利率後面
 					perfectList.get(i).addAll(rateList);
 					//所有符合期望的資料暫存在calculateList
 					calculateList.add(perfectList.get(i));
