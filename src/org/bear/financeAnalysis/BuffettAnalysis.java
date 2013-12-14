@@ -70,6 +70,14 @@ public class BuffettAnalysis
 		BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
 		parser.parse(2);
 		wrapper.setNav(parser.getNav());
+		try
+		{
+			Thread.sleep(1000);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		//ªÑ»ù²b­È¤ñPBR
 		ratioNumber = parser.getPrice()/parser.getNav();
 		ratioNumber = StringUtil.setPointLength(ratioNumber);
