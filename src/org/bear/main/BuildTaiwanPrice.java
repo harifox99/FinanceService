@@ -14,8 +14,8 @@ public class BuildTaiwanPrice {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String year = "2013";
-		String preMonth = "9";
-		String month = "10";
+		String preMonth = "10";
+		String month = "11";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 上市公司價格資訊 */
