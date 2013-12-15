@@ -129,7 +129,7 @@ public class PerfectAnalysis
 					}
 				}
 				//營業利益率
-				List<String> rateList = this.checkProfitRatio(entity, demandOperatingProfit, 1);
+				List<String> rateList = this.checkProfitRatioYoy(entity, demandOperatingProfit, 1, incomeStatementDao);
 				if (rateList != null)
 				{
 					rateList = ReverseUtil.reverse(rateList);		
@@ -338,7 +338,7 @@ public class PerfectAnalysis
 	/**
 	 * 
 	 * @param entity
-	 * @param expectedRatio 期望益利率
+	 * @param expectedRatio 期望利益率
 	 * @param type, 0 for 毛利率, 1 for 營業利益率, 2 for 稅前淨利率
 	 * @return
 	 */
@@ -435,6 +435,69 @@ public class PerfectAnalysis
 			else
 				rateList.add(String.valueOf(thisYearEps));				
 		
+		}
+		return rateList;
+	}
+	private List<String> checkProfitRatioYoy(List<IncomeStatementEntity> entity, 
+			int expectedRate, int type, IncomeStatementDao incomeStatementDao)
+	{	
+		List<String> rateList = new ArrayList<String>();
+		for (int i = 0; i < maxSeasons; i++)
+		{
+			double thisSeason = 0;
+			double lastSeason = 0;
+			String stockID = entity.get(i).getStockID();
+			String year = entity.get(i).getYear();
+			String seasons = entity.get(i).getSeasons();
+			//擷取去年本季利益率用
+			int intYear = Integer.parseInt(year);
+			year = String.valueOf(--intYear);
+			System.out.println("stockID: " + stockID);
+			IncomeStatementEntity lastEntity;
+			try
+			{
+				lastEntity = incomeStatementDao.findSingleDataBySeason(stockID, year, seasons);
+			}
+			catch (EmptyResultDataAccessException ex)
+			{
+				System.out.println(stockID + "資料不足，無法計算！");
+				return null;				
+			}
+			switch (type) 
+			{						
+				//毛利率
+				case 0:
+					thisSeason = (double)entity.get(i).getGrossProfit() / entity.get(i).getOperatingRevenue();
+					lastSeason = (double)lastEntity.getGrossProfit() / lastEntity.getOperatingRevenue();
+					break;
+				//營業利益率	
+				case 1:	
+					thisSeason = (double)entity.get(i).getOperatingIncome() / entity.get(i).getOperatingRevenue();
+					lastSeason = (double)lastEntity.getOperatingIncome() / lastEntity.getOperatingRevenue();
+					break;
+				//稅前淨利率
+				case 2:
+					thisSeason = (double)entity.get(i).getPreTaxIncome() / entity.get(i).getOperatingRevenue();
+					lastSeason = (double)lastEntity.getPreTaxIncome() / lastEntity.getOperatingRevenue();
+					break;
+			}
+					
+			if (i < expectedRate && thisSeason < lastSeason)
+				return null;	
+			else
+			{
+				thisSeason *= 100;
+				NumberFormat formatter = new DecimalFormat(".##");
+				String strRevenue = formatter.format(thisSeason);
+				rateList.add(strRevenue);	
+			}		
+			if (i == maxSeasons-1)
+			{
+				lastSeason *= 100;
+				NumberFormat formatter = new DecimalFormat(".##");
+				String strRevenue = formatter.format(lastSeason);
+				rateList.add(strRevenue);	
+			}	
 		}
 		return rateList;
 	}
