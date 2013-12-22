@@ -24,7 +24,7 @@ public class SP500Index{
 			        "http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=1993&d=04&e=13&f=2013&g=m&z=66&y=132",
 			        "http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=1993&d=04&e=13&f=2013&g=m&z=66&y=198"};*/
 	
-	private String[] url = {"http://finance.yahoo.com/q/hp?s=%5EGSPC&a=01&b=1&c=2012&d=08&e=30&f=2013&g=m"};
+	private String[] url = {"http://finance.yahoo.com/q/hp?s=%5EGSPC&a=00&b=3&c=1950&d=11&e=22&f=2013&g=m"};
 	Source source;
 	List<Element> elementList = null;
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
