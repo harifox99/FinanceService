@@ -27,7 +27,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
 	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
-		String[] dateString = {"20131202"};
+		String[] dateString = {"20140102"};
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
@@ -43,7 +43,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		}
 		
 		//證交所三大法人增減
-		String[] monthList = {"11"};
+		String[] monthList = {"12"};
 		List<Integer> typeIdList = stockTypedao.findAllData();
 		for (int i = 0; i < typeIdList.size(); i++)
 		{
@@ -71,7 +71,7 @@ public class BuildStockDistribution extends ImportStockIDData
 			parser.setElementList(gretai3Big.getContent());
 			parser.setThreeBigDao(threeBigDao);
 			parser.setDateString(startYear + monthList[i]);
-			parser.parse(2);
+			parser.parse(0);
 		}
 		
 		
