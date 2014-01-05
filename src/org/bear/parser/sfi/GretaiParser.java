@@ -1,10 +1,8 @@
 package org.bear.parser.sfi;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 
@@ -58,6 +56,11 @@ public class GretaiParser extends RevenueParserBase
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");						
 						Date date = dateFormat.parse(year + "-" + content);
 						entity.setYearMonth(date);
+						//僅擷取需要的年月
+						if ( !(this.year.equals(year) && this.month.equals(content)) )
+						{
+							break;
+						}
 					}
 					else if (j == 2)//最高價
 					{
@@ -74,28 +77,23 @@ public class GretaiParser extends RevenueParserBase
 					else if (j == 8)//週轉率
 					{
 						entity.setTurnoverRatio(content);
-						GetGretaiPrice getGretaiPrice = new GetGretaiPrice();
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(entity.getYearMonth());
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-						String dateString = sdf.format(calendar.getTime());
-						getGretaiPrice.getContent(stockID, dateString.substring(0, 4), 
-							dateString.substring(4, dateString.length()), null, null);
-						GretaiPriceEntity gretaiPriceEntity = getGretaiPrice.getEntity();
+						GetGretaiPrice getGretaiPrice = new GetGretaiPrice(stockID, year, month, null, null);						
+						GretaiPriceParser parser = new GretaiPriceParser();	
+						parser.setElementList(getGretaiPrice.getElementList());
+						parser.parse(0);
+						//將開盤價與收盤價儲存
+						GretaiPriceEntity gretaiPriceEntity = parser.getEntity();
 						entity.setOpenIndex(gretaiPriceEntity.getOpenIndex());
 						entity.setCloseIndex(gretaiPriceEntity.getCloseIndex());
 						if (this.checkPrice(entity) == true)
-						{
-							//僅擷取需要的年月
-							if (dateString.substring(0, 4).equals(year) &&
-								dateString.substring(4, 6).equals(month))							
-								entityList.add(entity);
+						{						
+							entityList.add(entity);
 						}
+						
 						else
 						{
 							System.out.println("解析櫃臺資訊異常");
 							System.out.println("stockID: " + stockID);
-							System.out.println("dateString: " + dateString);
 							//System.exit(0);
 						}
 					}
