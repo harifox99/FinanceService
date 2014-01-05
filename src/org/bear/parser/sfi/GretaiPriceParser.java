@@ -67,4 +67,9 @@ public class GretaiPriceParser extends RevenueParserBase
 			}
 		}
 	}
+	public void parse(int tableIndex) {
+		// TODO Auto-generated method stub
+		this.getTableContent(elementList.get(tableIndex));
+	}
+	
 }

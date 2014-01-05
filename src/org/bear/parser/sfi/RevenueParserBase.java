@@ -47,5 +47,12 @@ public abstract class RevenueParserBase {
 			System.out.println(stockID + ": 查無此股票資訊");
 		}
 	}
+	
+	public List<Element> getElementList() {
+		return elementList;
+	}
+	public void setElementList(List<Element> elementList) {
+		this.elementList = elementList;
+	}
 	public abstract void getTableContent(Element element);
 }
