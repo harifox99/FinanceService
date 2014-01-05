@@ -1,29 +1,19 @@
 package org.bear.util.newRevenue;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.bear.datainput.GetSFIContent;
-import org.bear.entity.GretaiPriceEntity;
-import org.bear.parser.sfi.GretaiPriceParser;
-import org.bear.util.HttpUtil;
+import net.htmlparser.jericho.Element;
+
+import org.bear.util.GetURLContentBase;
+import org.bear.util.StringUtil;
 /**
  * 利用櫃臺個股日成交資訊擷取當月開盤、收盤價
  * @author edward
  *
  */
-public class GetGretaiPrice implements GetSFIContent 
+public class GetGretaiPrice extends GetURLContentBase
 {
-	GretaiPriceEntity entity;
-	public GretaiPriceEntity getEntity() {
-		return entity;
-	}
-	public void setEntity(GretaiPriceEntity entity) {
-		this.entity = entity;
-	}
-	@Override
+	List<Element> elementList;
+	/* 櫃臺由Post改成Get，所以你知道的........
 	public void getContent(String stockID, String startYear, String startMonth,
 			String endYear, String endMonth) {
 		GretaiPriceParser parser = new GretaiPriceParser();
@@ -39,11 +29,26 @@ public class GetGretaiPrice implements GetSFIContent
 		parser.parse(2);
 		entity = parser.getEntity();
 		//System.out.println(responseString);	
+	}*/
+	public GetGretaiPrice(String stockID, String startYear, String startMonth,
+			String endYear, String endMonth) 
+	{
+		urlHeader = "http://www.otc.org.tw/ch/stock/aftertrading/daily_trading_info/st43_print.php?d=";
+		urlFooter = "&s=0,asc,0";
+		urlString = urlHeader + StringUtil.convertChineseYear(startYear) + "/" + startMonth + "&stkno=" + stockID + urlFooter;		
+		System.out.println(urlString);
+		elementList = super.getContent();
 	}
 	public static void main(String args[])
 	{
-		GetGretaiPrice price = new GetGretaiPrice();
-		price.getContent("1336", "2013", "7", null, null);
+		//GetGretaiPrice price = new GetGretaiPrice();
+		//price.getContent("1336", "2013", "7", null, null);
 	}
-
+	public List<Element> getElementList() {
+		return elementList;
+	}
+	public void setElementList(List<Element> elementList) {
+		this.elementList = elementList;
+	}
+	
 }
