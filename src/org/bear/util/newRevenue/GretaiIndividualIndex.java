@@ -15,13 +15,14 @@ public class GretaiIndividualIndex implements GetSFIContent {
 			String endYear, String endMonth) 
 	{
 		GretaiParser parser = new GretaiParser();
-		String url = "http://www.otc.org.tw/ch/stock/statistics/monthly/result_st44.php";
+		String url =   "http://www.otc.org.tw/ch/stock/statistics/monthly/print_st44.php";
+		//String url = "http://www.otc.org.tw/ch/stock/statistics/monthly/result_st44.php";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		paramList.add(new BasicNameValuePair("timestamp", "1376901040511"));
-		paramList.add(new BasicNameValuePair("ajax", "true"));
-		paramList.add(new BasicNameValuePair("yy", startYear));
-		paramList.add(new BasicNameValuePair("input_stock_code", stockID));
-		String responseString = HttpUtil.send(url, paramList, 1, "big5");
+		//paramList.add(new BasicNameValuePair("timestamp", "1376901040511"));
+		//paramList.add(new BasicNameValuePair("ajax", "true"));
+		paramList.add(new BasicNameValuePair("yy", startYear));		
+		paramList.add(new BasicNameValuePair("stk_no", stockID));
+		String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
 		parser.setResponseString(responseString);
 		parser.setStockID(stockID);
 		parser.setYear(startYear);
@@ -29,14 +30,14 @@ public class GretaiIndividualIndex implements GetSFIContent {
 			parser.setMonth("0" + startMonth);
 		else
 			parser.setMonth(startMonth);
-		parser.parse(2);
+		parser.parse(0);
 		//System.out.println(responseString);	
 	}
 	public static void main(String args[])
     {
     	//GetSFIPrice revenue = new GetSFIPrice();
 		GretaiIndividualIndex revenue = new GretaiIndividualIndex();
-    	revenue.getContent("1256", "2013", null, null, null);
+    	revenue.getContent("1256", "2013", "12", null, null);
     }
 
 }
