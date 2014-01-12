@@ -36,16 +36,17 @@ public class PerfectAnalysis
 	 * 
 	 * @param yoyTotalMonth 總月份數 (YoY)
 	 * @param yoyGrowMonth 期望的月份數 (YoY)
+	 * @param demandOperatingProfit 期望的連續營業利益年增率上升季數
 	 * @param demandGrossProfit 期望的毛利率上升季數
-	 * @param demandOperatingProfit 期望的連續營業利益率上升季數
+	 * @param demandOperatingProfitRatio 期望的連續營業利益率年增率上升季數
 	 * @param demandEps 期望的連續EPS年增率上升季數
 	 * @param expectedGrossProfitRatio 期望的毛利率
 	 * @param operatingProfitRatio 期望的營業利益率
 	 * @param expectedPe 期望的PE
 	 * @return
 	 */
-	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, 
-			int demandGrossProfit, int demandOperatingProfit, int demandEps,
+	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
+			int demandGrossProfit, int demandOperatingProfitRatio, int demandEps,
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -88,6 +89,8 @@ public class PerfectAnalysis
 				}
 			}		
 			calculateList = new ArrayList<List<String>>();
+			
+			//毛利率季增數
 			for (int i = 0; i < perfectList.size(); i++)
 			{				
 				String stockID = perfectList.get(i).get(0);
@@ -115,6 +118,8 @@ public class PerfectAnalysis
 			//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
+			
+			//營業利益率年增數
 			for (int i = 0; i < perfectList.size(); i++)
 			{
 				String stockID = perfectList.get(i).get(0);
@@ -142,7 +147,7 @@ public class PerfectAnalysis
 			//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
-			
+						
 			//期望EPS
 			for (int i = 0; i < perfectList.size(); i++)
 			{
@@ -170,6 +175,7 @@ public class PerfectAnalysis
 			}						
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
+			
 			//期望毛利率
 			for (int i = 0; i < perfectList.size(); i++)
 			{
@@ -184,6 +190,7 @@ public class PerfectAnalysis
 			//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
+			
 			//期望營業利益率
 			for (int i = 0; i < perfectList.size(); i++)
 			{
@@ -197,6 +204,23 @@ public class PerfectAnalysis
 			}
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
+			
+			//營業利益年增數
+			for (int i = 0; i < perfectList.size(); i++)
+			{
+				String stockID = perfectList.get(i).get(0);
+				//System.out.println("stockID: " + stockID);
+				List<IncomeStatementEntity> entity = incomeStatementDao.findDataByLatest(maxSeasons+1, stockID);
+				//營業利益
+				if (checkProfitYoy(entity, demandOperatingProfit, 1, incomeStatementDao))
+				{
+					calculateList.add(perfectList.get(i));
+				}
+			}
+			//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
+			perfectList = calculateList;
+			calculateList = new ArrayList<List<String>>();
+			
 			//期望本益比
 			for (int i = 0; i < perfectList.size(); i++)
 			{
@@ -221,6 +245,7 @@ public class PerfectAnalysis
 			}
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
+						
 		}
 		catch (Exception ex)
 		{
@@ -286,7 +311,7 @@ public class PerfectAnalysis
 	/**
 	 * 
 	 * @param entity
-	 * @param expectedRate 期望利益率
+	 * @param expectedRate 期望利益率連續季增率
 	 * @param type, 0 for 毛利率, 1 for 營業利益率, 2 for 稅前淨利率
 	 * @return
 	 */
@@ -336,7 +361,7 @@ public class PerfectAnalysis
 		return rateList;
 	}
 	/**
-	 * 
+	 * 計算期望的利益率是否達成最低要求
 	 * @param entity
 	 * @param expectedRatio 期望利益率
 	 * @param type, 0 for 毛利率, 1 for 營業利益率, 2 for 稅前淨利率
@@ -404,6 +429,13 @@ public class PerfectAnalysis
 	{
 		columnNameList.add(dateString + "\n" + comment);
 	}
+	/**
+	 * 
+	 * @param entity
+	 * @param incomeStatementDao
+	 * @param demandEps 期望EPS年增率連續成長季數
+	 * @return
+	 */
 	private List<String> checkEpsGrowth(List<IncomeStatementEntity> entity, 
 			IncomeStatementDao incomeStatementDao, int demandEps)
 	{
@@ -438,6 +470,14 @@ public class PerfectAnalysis
 		}
 		return rateList;
 	}
+	/**
+	 * 計算本季的利益率是否超越去年同期
+	 * @param entity
+	 * @param expectedRate, 期望利益率年增率連續成長季數
+	 * @param type, 0 for 毛利率, 1 for 營業利益率, 2 for 稅前淨利率
+	 * @param incomeStatementDao
+	 * @return
+	 */
 	private List<String> checkProfitRatioYoy(List<IncomeStatementEntity> entity, 
 			int expectedRate, int type, IncomeStatementDao incomeStatementDao)
 	{	
@@ -500,5 +540,58 @@ public class PerfectAnalysis
 			}	
 		}
 		return rateList;
+	}
+	private boolean checkProfitYoy(List<IncomeStatementEntity> entity, 
+			int expectedRate, int type, IncomeStatementDao incomeStatementDao)
+	{	
+		double thisSeason = 0;
+		double lastSeason = 0;
+		String stockID = entity.get(0).getStockID();
+		String year = entity.get(0).getYear();
+		String seasons = entity.get(0).getSeasons();
+		for (int i = 0; i < expectedRate; i++)
+		{						
+			//擷取去年本季利益率用
+			int intYear = Integer.parseInt(year);
+			year = String.valueOf(--intYear);
+			System.out.println("stockID: " + stockID);
+			IncomeStatementEntity lastEntity;
+			try
+			{
+				lastEntity = incomeStatementDao.findSingleDataBySeason(stockID, year, seasons);
+			}
+			catch (EmptyResultDataAccessException ex)
+			{
+				System.out.println(stockID + "資料不足，無法計算！");
+				return false;				
+			}
+			switch (type) 
+			{						
+				//毛利
+				case 0:
+					if (thisSeason == 0)
+						thisSeason = (double)entity.get(i).getGrossProfit();
+					lastSeason = (double)lastEntity.getGrossProfit();
+					break;
+				//營業利益
+				case 1:	
+					if (thisSeason == 0)
+						thisSeason = (double)entity.get(i).getOperatingIncome();
+					lastSeason = (double)lastEntity.getOperatingIncome();
+					break;
+				//稅前淨利
+				case 2:
+					if (thisSeason == 0)
+						thisSeason = (double)entity.get(i).getPreTaxIncome();
+					lastSeason = (double)lastEntity.getPreTaxIncome();
+					break;
+			}
+					
+			if (thisSeason < lastSeason)
+				return false;	
+			else
+				thisSeason = lastSeason;
+		}
+		return true;
 	}
 }
