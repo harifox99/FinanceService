@@ -221,6 +221,18 @@ public class PerfectAnalysis
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
 			
+			//至少要有N期營收是正的
+			for (int i = 0; i < perfectList.size(); i++)
+			{
+				if (this.checkPlusRevenue(perfectList.get(i), yoyTotalMonth+1, yoyTotalMonth-1))
+				{
+					calculateList.add(perfectList.get(i));
+				}
+			}
+			//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
+			perfectList = calculateList;
+			calculateList = new ArrayList<List<String>>();
+			
 			//期望本益比
 			for (int i = 0; i < perfectList.size(); i++)
 			{
@@ -593,5 +605,25 @@ public class PerfectAnalysis
 				thisSeason = lastSeason;
 		}
 		return true;
+	}
+	/**
+	 * 營收年增率至少要有expectedNum期為正
+	 * @param revenue
+	 * @param totalNum 
+	 * @param expectNum
+	 * @return
+	 */
+	private boolean checkPlusRevenue(List<String> revenue, int totalNum, int expectNum)
+	{
+		int counter = 0;
+		for (int i = 1; i <= totalNum; i++)
+		{
+			if (Double.parseDouble(revenue.get(i)) > 0)
+				counter++;
+		}
+		if (counter >= expectNum)
+			return true;
+		else
+			return false;
 	}
 }
