@@ -134,7 +134,7 @@ public class PerfectAnalysis
 					}
 				}
 				//營業利益率
-				List<String> rateList = this.checkProfitRatioYoy(entity, demandOperatingProfit, 1, incomeStatementDao);
+				List<String> rateList = this.checkProfitRatioYoy(entity, demandOperatingProfitRatio, 1, incomeStatementDao);
 				if (rateList != null)
 				{
 					rateList = ReverseUtil.reverse(rateList);		
@@ -616,12 +616,22 @@ public class PerfectAnalysis
 	private boolean checkPlusRevenue(List<String> revenue, int totalNum, int expectNum)
 	{
 		int counter = 0;
+		//過去totalNum個月要有expectNum個月，其營收YoY大於0 
 		for (int i = 1; i <= totalNum; i++)
 		{
 			if (Double.parseDouble(revenue.get(i)) > 0)
 				counter++;
 		}
 		if (counter >= expectNum)
+			return true;
+		counter = 0;
+		//最後expectNum-1個月，其營收YoY都要大於0
+		for (int i = expectNum+1; i <= totalNum; i++)
+		{
+			if (Double.parseDouble(revenue.get(i)) > 0)
+				counter++;
+		}
+		if (counter >= expectNum-1)
 			return true;
 		else
 			return false;
