@@ -19,7 +19,7 @@ public class BuildStockDistribution extends ImportStockIDData
 	}
 	public BuildStockDistribution()
 	{
-		String startYear = "2013";
+		String startYear = "2014";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JdbcStockDistributionDao stockDistributionDao = (JdbcStockDistributionDao)context.getBean("stockDistributionDao");
 		JdbcStockTypeDao stockTypedao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
@@ -27,7 +27,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
 	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
-		String[] dateString = {"20140102"};
+		String[] dateString = {"20140205"};
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
@@ -43,7 +43,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		}
 		
 		//證交所三大法人增減
-		String[] monthList = {"12"};
+		String[] monthList = {"01"};
 		List<Integer> typeIdList = stockTypedao.findAllData();
 		for (int i = 0; i < typeIdList.size(); i++)
 		{
