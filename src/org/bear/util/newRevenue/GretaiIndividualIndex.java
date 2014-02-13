@@ -26,9 +26,9 @@ public class GretaiIndividualIndex implements GetSFIContent {
 		parser.setResponseString(responseString);
 		parser.setStockID(stockID);
 		parser.setYear(startYear);
-		if (startMonth.length() == 1)
-			parser.setMonth("0" + startMonth);
-		else
+		//if (startMonth.length() == 1)
+			//parser.setMonth("0" + startMonth);
+		//else
 			parser.setMonth(startMonth);
 		parser.parse(0);
 		//System.out.println(responseString);	
