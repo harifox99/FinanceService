@@ -101,6 +101,7 @@ public class BasicDataParserCathay extends ParserBase
 						per = 0;
 					else
 					{
+						content = content.replaceAll(",", "");
 						per = Double.parseDouble(content);
 						per = StringUtil.setPointLength(per);
 					}
