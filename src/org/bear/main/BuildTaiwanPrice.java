@@ -13,14 +13,16 @@ import org.bear.util.newRevenue.GretaiIndividualIndex;
 public class BuildTaiwanPrice {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String year = "2013";
-		String preMonth = "11";
-		String month = "12";
+		
+		String preYear = "2013";
+		String preMonth = "12";
+		String year = "2014";
+		String month = "1";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 上市公司價格資訊 */
 		getContent = new GetSFIPrice();
-		sfi.insertBatchList(year, preMonth, year, month, getContent);
+		sfi.insertBatchList(preYear, preMonth, year, month, getContent);
 		/* 證交所平均價與週轉率 */
 		getContent = new GetTwseIndividualIndex();
 		sfi.insertBatchList(year, null, null, null, getContent);
