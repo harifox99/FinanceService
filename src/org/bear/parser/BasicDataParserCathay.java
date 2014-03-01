@@ -98,7 +98,7 @@ public class BasicDataParserCathay extends ParserBase
 					resultElement = tdList.get(j+1);
 					content = resultElement.getContent().toString();
 					if (content.equals("N/A"))
-						per = 0;
+						per = -1;
 					else
 					{
 						content = content.replaceAll(",", "");
@@ -106,6 +106,7 @@ public class BasicDataParserCathay extends ParserBase
 						per = StringUtil.setPointLength(per);
 					}
 				}
+				/*
 				//如果查無本益比，則以同業平均本益比代替
 				else if (content.equals("同業平均本益比"))
 				{
@@ -116,7 +117,7 @@ public class BasicDataParserCathay extends ParserBase
 						per = Double.parseDouble(content);
 						per = StringUtil.setPointLength(per);
 					}
-				}
+				}*/
 			}
 		}
 	}
