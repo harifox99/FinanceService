@@ -582,19 +582,34 @@ public class PerfectAnalysis
 				//毛利
 				case 0:
 					if (thisSeason == 0)
+					{
 						thisSeason = (double)entity.get(i).getGrossProfit();
+						//最新一季的資料要 > 0
+						if (thisSeason < 0)
+							return false;
+					}
 					lastSeason = (double)lastEntity.getGrossProfit();
 					break;
 				//營業利益
 				case 1:	
 					if (thisSeason == 0)
+					{
 						thisSeason = (double)entity.get(i).getOperatingIncome();
+						//最新一季的資料要 > 0
+						if (thisSeason < 0)
+							return false;
+					}
 					lastSeason = (double)lastEntity.getOperatingIncome();
 					break;
 				//稅前淨利
 				case 2:
 					if (thisSeason == 0)
+					{
 						thisSeason = (double)entity.get(i).getPreTaxIncome();
+						//最新一季的資料要 > 0
+						if (thisSeason < 0)
+							return false;
+					}
 					lastSeason = (double)lastEntity.getPreTaxIncome();
 					break;
 			}
