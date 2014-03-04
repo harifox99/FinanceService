@@ -132,6 +132,8 @@ public class BuildAmericanMacroData extends ParseFile
 		{
 			String key = entry.getKey().substring(0, 7);
 			String data = entry.getValue();
+			if (data.equals("."))
+				continue;
 			if (vixHigh.get(key) == null)
 			{
 				vixHigh.put(key, data);
