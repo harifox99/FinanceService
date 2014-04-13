@@ -23,7 +23,8 @@ public class BuildBasicStock {
 		 * 2. 建立營收資料> 
 		 * 2.1 上櫃成交資料：首頁 > 上櫃股票交易資訊 > 上櫃股票統計報表 > 市場交易月報> 櫃檯買賣股票成交資料彙總表
 		 * 2.2 上市成交資料：首頁 > 統計報表 > 依統計報表查詢 > 市場交易月報> 證券交易統計表
-		 * 2.3 目前以證券期貨發展基金會的資料為主取代2.1 & 2.2, BuildRevenueSFI
+		 * 2.3 每個月個股成交資訊， BuildTaiwanPrice
+		 * 2.4 目前以證券期貨發展基金會的資料為主取代2.1 & 2.2, BuildRevenueSFI
 		 * 3. 財務報表
 		 * 3.1  資產負債表 > BuildBalanceSheet
 		 * 3.2 損益表 > BuildIncomeStatement
