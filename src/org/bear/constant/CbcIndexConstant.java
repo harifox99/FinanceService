@@ -18,7 +18,9 @@ public class CbcIndexConstant
 		MONTH_HASH.put("2013M10", 628);	
 		MONTH_HASH.put("2013M11", 629);		
 		MONTH_HASH.put("2013M12", 630);		
-		MONTH_HASH.put("2014M01", 631);		
+		MONTH_HASH.put("2014M01", 631);	
+		MONTH_HASH.put("2014M02", 632);	
+		MONTH_HASH.put("2014M03", 633);	
 	}	
 	
 	/* ³f¹ô */
