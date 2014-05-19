@@ -4,6 +4,7 @@
 package org.bear.datainput;
 import java.util.*;
 
+import org.bear.constant.FinancialReport;
 import org.bear.dao.FinancialDataDao;
 import org.bear.entity.FinancialDataEntity;
 import org.bear.parser.CashDivParserCathay;
@@ -26,7 +27,7 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 	//其他財務資料DAO
 	FinancialDataDao dao;
 	FinancialDataEntity entity;
-	int expectedNum = 8;
+	int expectedNum = FinancialReport.expectedNum;;
 	public void insertBatchList()
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -42,7 +43,7 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 				/***********/
 				this.setFinancialData(stockID, true);
 				/***********/
-				Thread.sleep(5000);		
+				Thread.sleep(3000);		
 				idleTime++;
 			}			
 		}
@@ -79,9 +80,7 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 				entity.setCashDiv(0.0);
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
-			if (entity.year.equals("2005") || entity.year.equals("2006") || entity.year.equals("2007") ||
-				entity.year.equals("2008") || entity.year.equals("2009") || entity.year.equals("2010") ||
-				entity.year.equals("2011") || entity.year.equals("2012"))
+			if (entity.year.equals("2013"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
