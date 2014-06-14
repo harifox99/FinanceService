@@ -65,7 +65,8 @@ public class BasicDataParserCathay extends ParserBase
 						nav = 0.9;
 					else
 					{
-						List<Element> pList = resultElement.getAllElements(HTMLElementName.P);
+						//´«URL¤F
+						List<Element> pList = resultElement.getAllElements(HTMLElementName.SPAN);
 						resultElement = pList.get(0);
 						content = resultElement.getContent().toString();
 						nav = Double.parseDouble(content);
