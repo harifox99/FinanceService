@@ -41,7 +41,7 @@ public class CashFlowsParserYam extends ParserBase implements Parser
 			entity[i] = new CashFlowsEntity();
 		basicCashFlowsDao = (CashFlowsDao)context.getBean("basicCashFlowsDao");
 	}
-	public void parse(int tableIndex)
+	public void parse(int tableIndex) throws NullPointerException
 	{
 		this.getTableContent(elementList.get(tableIndex));
 	}
