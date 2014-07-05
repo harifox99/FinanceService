@@ -40,14 +40,19 @@ public class FinanceUtil
 	 * @return
 	 */
 	public List<EarningPowerWrapper> getEarningPowerBySeason(String stockID, String year, String seasons)
-	{
-		IncomeStatementDao dao;
+	{		
 		List <EarningPowerWrapper> earningPowerList = new ArrayList<EarningPowerWrapper>();
-		EarningPowerWrapper wrapper;
-		List <IncomeStatementEntity> incomeStatementList;
+		EarningPowerWrapper wrapper;		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		dao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
+		IncomeStatementDao dao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
+		List <IncomeStatementEntity> incomeStatementList;
 		incomeStatementList = dao.findDataBySeason(stockID, year, seasons);
+		//資產負債表
+		BalanceSheetDao balanceSheetDao = (BalanceSheetDao)context.getBean("basicBalanceSheetDao");
+		List <BalanceSheetEntity> balanceSheetList;
+		balanceSheetList = balanceSheetDao.findDataBySeason(stockID, year, seasons);
+		if (balanceSheetList.size() != incomeStatementList.size())
+			return null;
 		for (int i = 0; i < incomeStatementList.size(); i++)
 		{
 			double ratioNumber;
@@ -61,6 +66,9 @@ public class FinanceUtil
 			//稅前淨利率
 			ratioNumber = (double) incomeStatementList.get(i).getPreTaxIncome()*100/incomeStatementList.get(i).getOperatingRevenue();
 			wrapper.setIncomeBeforeTaxRatio(StringUtil.setPointLength(ratioNumber));
+			//存貨營收比
+			ratioNumber = (double) balanceSheetList.get(i).getInventory()*100/incomeStatementList.get(i).getOperatingRevenue();
+			wrapper.setInventoryRevenueRatio(StringUtil.setPointLength(ratioNumber));
 			//設定期別
 			wrapper.setYear(incomeStatementList.get(i).getYear() + "-" + incomeStatementList.get(i).getSeasons());
 			//wrapper.setSeasons(incomeStatementList.get(i).getSeasons());
@@ -76,13 +84,18 @@ public class FinanceUtil
 	 */
 	public List<EarningPowerWrapper> getEarningPowerByYear(String stockID, String year)
 	{
-		IncomeStatementDao dao;
 		List <EarningPowerWrapper> earningPowerList = new ArrayList<EarningPowerWrapper>();
-		EarningPowerWrapper wrapper;
-		List <IncomeStatementEntity> incomeStatementList;
+		EarningPowerWrapper wrapper;		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		dao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
+		IncomeStatementDao dao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
+		List <IncomeStatementEntity> incomeStatementList;
 		incomeStatementList = dao.findDataByYear(stockID, year);
+		//資產負債表
+		BalanceSheetDao balanceSheetDao = (BalanceSheetDao)context.getBean("basicBalanceSheetDao");
+		List <BalanceSheetEntity> balanceSheetList;
+		balanceSheetList = balanceSheetDao.findDataByYear(stockID, year);
+		if (balanceSheetList.size() != incomeStatementList.size())
+			return null;
 		for (int i = 0; i < incomeStatementList.size(); i++)
 		{
 			double ratioNumber;
@@ -96,6 +109,9 @@ public class FinanceUtil
 			//稅前淨利率
 			ratioNumber = (double) incomeStatementList.get(i).getPreTaxIncome()*100/incomeStatementList.get(i).getOperatingRevenue();
 			wrapper.setIncomeBeforeTaxRatio(StringUtil.setPointLength(ratioNumber));
+			//存貨營收比
+			ratioNumber = (double) balanceSheetList.get(i).getInventory()*100/incomeStatementList.get(i).getOperatingRevenue();
+			wrapper.setInventoryRevenueRatio(StringUtil.setPointLength(ratioNumber));
 			//設定期別
 			wrapper.setYear(incomeStatementList.get(i).getYear());
 			earningPowerList.add(wrapper);
