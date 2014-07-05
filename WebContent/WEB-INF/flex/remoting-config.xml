@@ -9,9 +9,79 @@
     <default-channels>
         <channel ref="my-amf"/>
     </default-channels>
-	<destination id="healthIndexService">
+	<destination id="macroEconomicEntity">
         <properties>
-            <source>com.health.service.HealthIndexService</source>
+            <source>org.bear.entity.MacroEconomicEntity</source>
+        </properties>
+    </destination>
+    <destination id="jdbcMacroEconomicDao">
+        <properties>
+            <source>org.bear.dao.JdbcMacroEconomicDao</source>
+        </properties>
+    </destination>
+    <destination id="buildMacroEconomicData">
+        <properties>
+            <source>org.bear.main.BuildMacroEconomicData</source>
+        </properties>
+    </destination>
+    <destination id="buildRevenueData">
+        <properties>
+            <source>org.bear.main.BuildRevenueData</source>
+        </properties>
+    </destination>
+    <destination id="financeUtil">
+        <properties>
+            <source>org.bear.financeAnalysis.FinanceUtil</source>
+        </properties>
+    </destination>
+    <destination id="buffettAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.BuffettAnalysis</source>
+        </properties>
+    </destination>
+    <destination id="peterLynchAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.PeterLynchAnalysis</source>
+        </properties>
+    </destination>
+    <destination id="getJournalMetaData">
+        <properties>
+            <source>org.bear.journal.GetJournalMetaData</source>
+        </properties>
+    </destination>
+    <destination id="updateJournalData">
+        <properties>
+            <source>org.bear.journal.UpdateJournalData</source>
+        </properties>
+    </destination>
+    <destination id="buildAmericanMacroData">
+        <properties>
+            <source>org.bear.main.BuildAmericanMacroData</source>
+        </properties>
+    </destination>
+    <destination id="buildPmIndex">
+        <properties>
+            <source>org.bear.main.BuildPMIndex</source>
+        </properties>
+    </destination>
+    <destination id="redRabbitAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.RedRabbitRevenueAnalysis</source>
+        </properties>
+    </destination>
+    <destination id="roeAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.RoeAnalysis</source>
+        </properties>
+    </destination>
+    <destination id="distributionAnalysis">
+        <properties>
+            <source>org.bear.util.distribution.DistributionAnalysis</source>
+        </properties>
+    </destination>
+    <destination id="perfectAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.PerfectAnalysis</source>
         </properties>
     </destination>
 </service>
