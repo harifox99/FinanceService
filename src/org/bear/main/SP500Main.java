@@ -3,6 +3,7 @@ import org.bear.parser.CrbParser;
 import org.bear.parser.SP500Index;
 import org.bear.parser.SP500PeParser;
 /**
+ * §ïSP500Index
  * «Ø¸mS&P500 Index, PE Ratio, and CRB Index
  * @author edward
  *
