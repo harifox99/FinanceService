@@ -27,14 +27,14 @@ public class BuildStockDistribution extends ImportStockIDData
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
 	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
-		String[] dateString = {"20140502"};
+		String[] dateString = {"20140701"};
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				//if (!wrapperList.get(j).getStockID().equals("2923"))
 					//continue;
-				System.out.println("StockID: " + wrapperList.get(j).getStockID());
+				System.out.println("StockID: " + wrapperList.get(j).getStockID() + ", " + j);
 				StockDistribution stockDistribution = new StockDistribution();
 				stockDistribution.setDao(stockDistributionDao);
 				stockDistribution.getContent(wrapperList.get(j).getStockID(), 
@@ -43,7 +43,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		}
 		
 		//證交所三大法人增減
-		String[] monthList = {"03", "04"};
+		String[] monthList = {"05", "06"};
 		List<Integer> typeIdList = stockTypedao.findAllData();
 		for (int i = 0; i < typeIdList.size(); i++)
 		{
