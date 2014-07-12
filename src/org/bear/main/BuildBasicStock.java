@@ -38,7 +38,7 @@ public class BuildBasicStock {
 		 * 4.1.3> 芖舦计> TwseIndex
 		 * 4.1.4> 干щ戈獺み计
 		 * 4.2 瓣> BuildAmericanMacroData
-		 * 4.2.1> 干UMCSENT(盞﹁厩禣獺み计)2014/3ぇセ计┕癶る5る夹恶4る
+		 * 4.2.1> 干UMCSENT(盞﹁厩禣獺み计)2014/1ぇセ计┕癶る2る夹恶1る
 		 * 4.2.2> ISM计> BuildPMIndex
 		 * 4.2.3> S&P 500 and CRB Index>SP500Main
 		 * 4.2.3.1> 干CRB Index
