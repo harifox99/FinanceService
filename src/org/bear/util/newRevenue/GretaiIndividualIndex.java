@@ -15,7 +15,8 @@ public class GretaiIndividualIndex implements GetSFIContent {
 			String endYear, String endMonth) 
 	{
 		GretaiParser parser = new GretaiParser();
-		String url =   "http://www.otc.org.tw/ch/stock/statistics/monthly/print_st44.php";
+		String url =   "http://www.gretai.org.tw/web/stock/statistics/monthly/print_st44.php?l=zh-tw";
+		//String url =   "http://www.otc.org.tw/ch/stock/statistics/monthly/print_st44.php";
 		//String url = "http://www.otc.org.tw/ch/stock/statistics/monthly/result_st44.php";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		//paramList.add(new BasicNameValuePair("timestamp", "1376901040511"));
