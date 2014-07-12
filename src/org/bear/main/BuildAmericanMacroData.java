@@ -17,6 +17,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class BuildAmericanMacroData extends ParseFile
 {
 	/**
+	 * 改catagory.observation_init的起始值
 	 * @param args
 	 */
 	List <AmericanMacroPantherEntity> list;
