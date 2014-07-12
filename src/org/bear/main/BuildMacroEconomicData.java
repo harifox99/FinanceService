@@ -18,6 +18,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class BuildMacroEconomicData extends ParseFile
 {
 	/**
+	 * 改startYear, startMonth, endYear, endMonth
+	 * 改CbcIndexConstant.MONTH_HASH.get("201XMXX")
 	 * 用經建會、中央銀行與證券期貨發展基金會的資料建立總經指標、貨幣資料與大盤指數
 	 * @param args
 	 */
@@ -26,9 +28,9 @@ public class BuildMacroEconomicData extends ParseFile
 	{
 		// TODO Auto-generated method stub
 		String startYear = "2014";
-		String startMonth = "4";
+		String startMonth = "5";
 		String endYear = "2014";
-		String endMonth = "4";
+		String endMonth = "5";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
@@ -46,12 +48,12 @@ public class BuildMacroEconomicData extends ParseFile
 		//貨幣
 		GetCbcMoney money = new GetCbcMoney();
 		money.setDao(dao);
-		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M04"));
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M05"));
 		
 		//活期儲蓄存款
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M04"));
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M05"));
 		
 		//TWSE
 		TwseIndex twseIndex = new TwseIndex();
