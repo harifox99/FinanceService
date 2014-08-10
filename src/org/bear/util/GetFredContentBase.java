@@ -7,7 +7,7 @@ package org.bear.util;
 public class GetFredContentBase {
 	public final String api_key = "ed82409405be66fda627007e4c5d77b1";
 	public final String limit = "1000";
-	public final String observation_init = "2014-04-01";
+	public final String observation_init = "2014-06-01";
 	String file_type = "txt";
 	protected String urlStringHeader = "http://api.stlouisfed.org/fred/series/observations?";
 	protected String urlString = "";
