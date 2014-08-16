@@ -13,12 +13,12 @@ public class BuildRevenueSFI {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String year = "2014";
-		String month = "5";
+		String month = "7";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 上市營收資訊 */
-		//getContent = new GetSFITwseRevenue();
-		//sfi.insertBatchList(year, month, year, month, getContent);
+		getContent = new GetSFITwseRevenue();
+		sfi.insertBatchList(year, month, year, month, getContent);
 		/* 上櫃營收資訊 */
 		getContent = new GetSFIGrateiRevenue();
 		sfi.insertBatchList(year, month, year, month, getContent);
