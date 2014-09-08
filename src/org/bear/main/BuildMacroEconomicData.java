@@ -28,9 +28,9 @@ public class BuildMacroEconomicData extends ParseFile
 	{
 		// TODO Auto-generated method stub
 		String startYear = "2014";
-		String startMonth = "6";
+		String startMonth = "7";
 		String endYear = "2014";
-		String endMonth = "6";
+		String endMonth = "7";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
@@ -48,12 +48,12 @@ public class BuildMacroEconomicData extends ParseFile
 		//³f¹ô
 		GetCbcMoney money = new GetCbcMoney();
 		money.setDao(dao);
-		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M06"));
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M07"));
 		
 		//¬¡´ÁÀx»W¦s´Ú
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M06"));
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M07"));
 		
 		//TWSE
 		TwseIndex twseIndex = new TwseIndex();
