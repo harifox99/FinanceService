@@ -5,6 +5,7 @@ import org.bear.parser.SP500PeParser;
 /**
  * 改SP500Index
  * 建置S&P500 Index, PE Ratio, and CRB Index
+ * 改SP500Index的URL來擷取S&P500指數
  * @author edward
  *
  */
