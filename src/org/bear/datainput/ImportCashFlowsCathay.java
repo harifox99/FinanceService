@@ -30,10 +30,10 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 			}*/
 			
 			//©u¸ê®Æ
-			for (int i = 1391; i < wrapperList.size(); i++)
+			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] seasons = {"01"};
+				String[] seasons = {"01","02"};
 				String[] years = {"2014"};
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("2850"))
