@@ -22,8 +22,9 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2014"};
-				String[] seasons = {"01"};
+				String[] seasons = {"01", "02"};				
 				String stockID = wrapperList.get(j).getStockID();
+				/*
 				if (!(stockID.equals("2314") || stockID.equals("2321") || stockID.equals("2364") || stockID.equals("2454") ||
 					 stockID.equals("2603") || stockID.equals("2880") || stockID.equals("2882") || stockID.equals("2883") ||
 					 stockID.equals("2885") || stockID.equals("2886") || stockID.equals("2887") || stockID.equals("2888") ||
@@ -35,11 +36,21 @@ public class ImportBalanceSheetCathay extends ImportStockIDData
 					 stockID.equals("5014") || stockID.equals("5820") || stockID.equals("5880")				 
 						))
 					continue;
+					*/
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");				
 				//季資料
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
 				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
-				balanceSheetSeason.parse(2);
+				try
+				{					
+					balanceSheetSeason.parse(2);
+				}
+				catch (NullPointerException ex)
+				{
+					System.out.println("NullPointerException!");
+					idleTime--;
+					j--;
+				}
 				Thread.sleep(3000);		
 				idleTime++;
 			}		
