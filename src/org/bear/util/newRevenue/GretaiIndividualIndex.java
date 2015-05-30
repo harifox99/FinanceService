@@ -7,17 +7,19 @@ import org.apache.http.message.BasicNameValuePair;
 import org.bear.datainput.GetSFIContent;
 import org.bear.parser.sfi.GretaiParser;
 import org.bear.util.HttpUtil;
-
+/**
+ * 
+ * @author edward
+ *
+ */
 public class GretaiIndividualIndex implements GetSFIContent {
 
 	@Override
 	public void getContent(String stockID, String startYear, String startMonth,
 			String endYear, String endMonth) 
 	{
-		GretaiParser parser = new GretaiParser();
-		String url =   "http://www.gretai.org.tw/web/stock/statistics/monthly/print_st44.php?l=zh-tw";
-		//String url =   "http://www.otc.org.tw/ch/stock/statistics/monthly/print_st44.php";
-		//String url = "http://www.otc.org.tw/ch/stock/statistics/monthly/result_st44.php";
+		GretaiParser parser = new GretaiParser();		
+		String url = "http://www.tpex.org.tw/web/stock/statistics/monthly/print_st44.php?l=zh-tw";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		//paramList.add(new BasicNameValuePair("timestamp", "1376901040511"));
 		//paramList.add(new BasicNameValuePair("ajax", "true"));
@@ -27,10 +29,8 @@ public class GretaiIndividualIndex implements GetSFIContent {
 		parser.setResponseString(responseString);
 		parser.setStockID(stockID);
 		parser.setYear(startYear);
-		//if (startMonth.length() == 1)
-			//parser.setMonth("0" + startMonth);
-		//else
-			parser.setMonth(startMonth);
+		parser.setStartMonth(startMonth);
+		parser.setEndMonth(endMonth);
 		parser.parse(0);
 		//System.out.println(responseString);	
 	}
