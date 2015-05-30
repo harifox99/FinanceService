@@ -2,6 +2,7 @@ package org.bear.parser.sfi;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
@@ -18,16 +19,24 @@ import org.bear.util.newRevenue.GetGretaiPrice;
 public class GretaiParser extends RevenueParserBase 
 {
 	String year;
-	String month;
-	
+	String startMonth;
+	String endMonth;
+	HashMap<String, Boolean> monthMap = new HashMap<String, Boolean>(); 
 	public void setYear(String year) {
 		this.year = year;
 	}
-	public void setMonth(String month) {
-		this.month = month;
+	
+	public void setStartMonth(String startMonth) {
+		this.startMonth = startMonth;
 	}
+
+	public void setEndMonth(String endMonth) {
+		this.endMonth = endMonth;
+	}
+
 	public void getTableContent(Element element) 
 	{
+		this.setMonthMap();
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);
 		for (int i = 0; i < trList.size(); i++)
 		{
@@ -37,6 +46,7 @@ public class GretaiParser extends RevenueParserBase
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
 			Element resultElement = null;
 			String year = null;
+			String month = null;
 			RevenueEntity entity = new RevenueEntity();
 			for (int j = 0; j < tdList.size(); j++)
 			{	
@@ -56,8 +66,9 @@ public class GretaiParser extends RevenueParserBase
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");						
 						Date date = dateFormat.parse(year + "-" + content);
 						entity.setYearMonth(date);
-						//僅擷取需要的年月
-						if ( !(this.year.equals(year) && this.month.equals(content)) )
+						month = content;
+						//僅擷取需要的年月					
+						if ( !(this.year.equals(year) && monthMap.get(month) != null) )
 						{
 							break;
 						}
@@ -133,5 +144,12 @@ public class GretaiParser extends RevenueParserBase
 			System.out.println("NullPointerException occurred in GretaiParser.checkPrice.");
 		}
 		return isLegal;
+	}
+	private void setMonthMap()
+	{
+		for (int i = Integer.parseInt(startMonth); i <= Integer.parseInt(endMonth); i++)
+		{
+			monthMap.put(String.valueOf(i), true);
+		}
 	}
 }
