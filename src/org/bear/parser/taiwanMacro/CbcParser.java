@@ -6,7 +6,7 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 /**
- * 解析央行的總經資料(CBC)
+ * 解析央行的總經資料(CBC)，主要是貨幣供給額
  * @author edward
  *
  */
@@ -37,14 +37,18 @@ public class CbcParser
 			{				
 				resultElement = tdList.get(j);
 				String content = resultElement.getContent().toString().trim();
+				content = content.replaceAll(",", "");
 				try
 				{
 					if (j == 0)
 					{
 						dateString = content;
 					}
+					else if (j == 3 || j == 4)
+						continue;
 					else
 					{
+						
 						int result = dao.update(CbcIndexConstant.MONEY[j-1], content, dateString, "M");
 						if (result <= 0)
 					    {					    	
