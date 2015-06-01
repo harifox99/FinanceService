@@ -1,16 +1,14 @@
 package org.bear.util.cbc;
-/**
- * 擷取央行的資料（主要是活期存款）
- */
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.MacroEconomicDao;
-import org.bear.parser.taiwanMacro.DemandDepositParser;
+import org.bear.parser.taiwanMacro.SimpleParser;
 import org.bear.util.HttpUtil;
-
+/**
+ * 擷取央行的資料（主要是活期存款）
+ */
 public class GetDemandDeposit {
 	MacroEconomicDao dao;
 	public void setDao(MacroEconomicDao dao) {
@@ -18,7 +16,8 @@ public class GetDemandDeposit {
 	}
 	public void getContent(int startDateValue, int endDateValue)
 	{
-		DemandDepositParser parser = new DemandDepositParser();
+		SimpleParser parser = new SimpleParser();
+		parser.setTableName("DemandDeposits");
 		parser.setDao(dao);
 		String url = "http://www.pxweb.cbc.gov.tw/Dialog/Saveshow.asp";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
