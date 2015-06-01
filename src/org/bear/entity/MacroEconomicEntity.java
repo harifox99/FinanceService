@@ -124,10 +124,16 @@ public class MacroEconomicEntity
 	public void setOverworkTime(String overworkTime) {
 		this.overworkTime = overworkTime;
 	}
-	public String getSemiIndex() {
-		NumberFormat formatter = new DecimalFormat("#.##");
-		double temp = Double.parseDouble(semiIndex);
-		return formatter.format(temp);
+	public String getSemiIndex() 
+	{
+		if (semiIndex != null)
+		{
+			NumberFormat formatter = new DecimalFormat("#.##");
+			double temp = Double.parseDouble(semiIndex);
+			return formatter.format(temp);
+		}
+		else
+			return semiIndex;
 	}
 	public void setSemiIndex(String semiIndex) {
 		this.semiIndex = semiIndex;
