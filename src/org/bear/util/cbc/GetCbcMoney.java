@@ -47,6 +47,7 @@ public class GetCbcMoney
 		/***************************************************/
 		paramList.add(new BasicNameValuePair("var4", "ºØÃþ"));
 		paramList.add(new BasicNameValuePair("Valdavarden4", "1"));
+		paramList.add(new BasicNameValuePair("values4", "1"));
 		paramList.add(new BasicNameValuePair("values4", "2"));
 		paramList.add(new BasicNameValuePair("matrix", "EF01M01"));
 		paramList.add(new BasicNameValuePair("root", "../PXfile/EFS/"));
