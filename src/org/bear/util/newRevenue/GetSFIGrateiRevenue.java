@@ -5,14 +5,20 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.bear.datainput.GetSFIContent;
 import org.bear.parser.sfi.RevenueParser;
 import org.bear.util.HttpUtil;
-
-public class GetSFIGrateiRevenue extends GetSFITwseRevenue {
+/**
+ * 櫃台的營收資訊從證券期貨發展基金會
+ * @author edward
+ *
+ */
+public class GetSFIGrateiRevenue implements GetSFIContent 
+{
 	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth)
 	{
     	RevenueParser parser = new RevenueParser();
-		String url = "http://webline.sfi.org.tw/B/intdb/single/sfis211b1.asp";
+		String url = "http://www.sfi.org.tw/newsfi/intdb/single/sfis211b1.asp";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("SCODE", stockID));
 		paramList.add(new BasicNameValuePair("SYY", startYear));
