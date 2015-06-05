@@ -8,13 +8,17 @@ import org.apache.http.message.BasicNameValuePair;
 import org.bear.datainput.GetSFIContent;
 import org.bear.parser.sfi.RevenueParser;
 import org.bear.util.HttpUtil;
-
+/**
+ * 證券期貨發展基金會擷取上市公司營收
+ * @author edward
+ *
+ */
 public class GetSFITwseRevenue implements GetSFIContent
 {
 	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth)
 	{
     	RevenueParser parser = new RevenueParser();
-		String url = "http://webline.sfi.org.tw/B/intdb/single/sfis112b1.asp";
+		String url = "http://www.sfi.org.tw/newsfi/intdb/single/sfis112b1.asp";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("SCODE", stockID));
 		paramList.add(new BasicNameValuePair("SYY", startYear));
