@@ -20,6 +20,7 @@ public interface RevenueDao
 	//傳回特定年份營收資料
 	public List<RevenueEntity> findAllData(String stockID, String year);
 	public void update(String stockID, RevenueEntity entity);
+	public void updatePrice(String stockID, RevenueEntity entity);
 	public void update(String stockID, String turnoverRatio, String averageIndex, Date date);
 	public int update(String indexName, String indexValue, Date date, String stockID);
 }
