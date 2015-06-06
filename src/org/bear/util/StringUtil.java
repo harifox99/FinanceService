@@ -96,4 +96,16 @@ public class StringUtil
 		String chineseYear = String.valueOf(intChineseYear);
 		return chineseYear;
 	}
+	/**
+	 * 1-9月份數字前+0
+	 * @param month
+	 * @return
+	 */
+	public static String addZeroMonth(String month)
+	{
+		if (month.length() == 1)
+			return "0" + month;
+		else
+			return month;
+	}
 }
