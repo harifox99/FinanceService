@@ -69,6 +69,10 @@ public class RevenueParser extends RevenueParserBase
 						else
 							entity.setLastAccumulation(Long.parseLong(content.substring(0, content.length()-3)));
 					}
+					else if (j == 9)//
+					{
+						entityList.add(entity);
+					}
 					else
 						continue;
 				}			
@@ -77,7 +81,8 @@ public class RevenueParser extends RevenueParserBase
 					ex.printStackTrace();
 				}				
 			}
-			dao.update(stockID, entity);
+			//dao.update(stockID, entity);			
 		}
+		dao.insertBatch(entityList);
 	}
 }
