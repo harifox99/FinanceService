@@ -33,4 +33,9 @@ public class GetSFIGrateiRevenue implements GetSFIContent
 		parser.parse(2);
 		//System.out.println(responseString);		
 	}
+	public static void main(String args[])
+	{
+		GetSFIContent getContent = new GetSFIGrateiRevenue();
+		getContent.getContent("8077", "2014", "05", "2014", "08");
+	}
 }
