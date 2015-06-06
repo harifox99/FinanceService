@@ -12,15 +12,17 @@ public class BuildRevenueSFI {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String year = "2014";
-		String month = "8";
+		String startYear = "2014";
+		String startMonth = "9";
+		String endYear = "2015";
+		String endMonth = "4";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 上市營收資訊 */
 		getContent = new GetSFITwseRevenue();
-		sfi.insertBatchList(year, month, year, month, getContent);
+		sfi.insertBatchList(startYear, startMonth, endYear, endMonth, getContent);
 		/* 上櫃營收資訊 */
 		getContent = new GetSFIGrateiRevenue();
-		sfi.insertBatchList(year, month, year, month, getContent);
+		sfi.insertBatchList(startYear, startMonth, endYear, endMonth, getContent);
 	}
 }
