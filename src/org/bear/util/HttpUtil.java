@@ -2,7 +2,6 @@ package org.bear.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -124,6 +123,61 @@ public class HttpUtil {
 		
 		return responseString;
 	}
+	/**
+	 * 若擷取資料失敗，可以重新發送Request
+	 * @param url
+	 * @param paramList
+	 * @param retryCount
+	 * @param encoding
+	 * @return
+	 */
+	public static String sendWithRetry(String url, List<NameValuePair> paramList, int retryCount, String encoding)
+	{
+		DefaultHttpClient httpClinet = new DefaultHttpClient();
+		retryCount=retryCount<0?0:retryCount;
+		retryCount=retryCount>10?10:retryCount;
+		HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		HttpPost post = new HttpPost(url);
+		httpClinet.setHttpRequestRetryHandler(retryHandler);
+		UrlEncodedFormEntity entity = null;
+		try 
+		{
+			entity = new UrlEncodedFormEntity(paramList, encoding);
+		} 
+		catch (UnsupportedEncodingException e1) 
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		post.setEntity(entity);
+		
+		String responseString = null;
+		boolean isConnect = false;
+		while (isConnect == false)
+		{
+			try 
+			{
+				responseString = httpClinet.execute(post, responseHandler);
+				responseString = new String(responseString.getBytes("ISO-8859-1"), encoding);
+				isConnect = true;
+			} 
+			
+			catch (Exception e) 
+			{
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				System.out.println("Connection Timed out!");
+				//e.printStackTrace();
+				sleep(3000);
+			}
+		}
+		
+		return responseString;
+	}
+	
+	
 	
 	/**
 	 * post directly with data (use NO request parameter!)
@@ -202,6 +256,17 @@ public class HttpUtil {
 //		}
 //		
 //		return null;
+	}
+	private static void sleep(int number)
+	{
+		try
+		{
+			Thread.sleep(number);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 }
 
