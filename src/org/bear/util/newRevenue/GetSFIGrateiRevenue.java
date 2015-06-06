@@ -15,7 +15,8 @@ import org.bear.util.HttpUtil;
  */
 public class GetSFIGrateiRevenue implements GetSFIContent 
 {
-	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth)
+	public void getContent(String stockID, String stockName, String startYear, String startMonth,
+			               String endYear, String endMonth)
 	{
     	RevenueParser parser = new RevenueParser();
 		String url = "http://www.sfi.org.tw/newsfi/intdb/single/sfis211b1.asp";
@@ -36,6 +37,6 @@ public class GetSFIGrateiRevenue implements GetSFIContent
 	public static void main(String args[])
 	{
 		GetSFIContent getContent = new GetSFIGrateiRevenue();
-		getContent.getContent("8077", "2014", "05", "2014", "08");
+		getContent.getContent("8077", null, "2014", "05", "2014", "08");
 	}
 }
