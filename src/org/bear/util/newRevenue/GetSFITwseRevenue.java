@@ -15,7 +15,8 @@ import org.bear.util.HttpUtil;
  */
 public class GetSFITwseRevenue implements GetSFIContent
 {
-	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth)
+	public void getContent(String stockID, String stockName, String startYear, String startMonth,
+            String endYear, String endMonth)
 	{
     	RevenueParser parser = new RevenueParser();
 		String url = "http://www.sfi.org.tw/newsfi/intdb/single/sfis112b1.asp";
