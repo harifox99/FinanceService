@@ -15,7 +15,11 @@ import org.bear.util.GetURLContentBase;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
+/**
+ * 證交所(上市公司)平均價與週轉率 
+ * @author edward
+ *
+ */
 public class GetTwseIndividualIndex extends GetURLContentBase implements GetSFIContent 
 {	
 	RevenueDao dao;
@@ -32,8 +36,8 @@ public class GetTwseIndividualIndex extends GetURLContentBase implements GetSFIC
 		urlString = urlString + year + "_F3_1_10_" + stockID + ".php?STK_NO=" + stockID + "&myear=" + year;
 	}
 	@Override
-	public void getContent(String stockID, String startYear, String startMonth,
-			String endYear, String endMonth) 
+	public void getContent(String stockID, String stockName, String startYear, String startMonth,
+            			   String endYear, String endMonth)
 	{
 		this.setUrlString(stockID, startYear);
 		List<Element> elementList = super.getContent();
