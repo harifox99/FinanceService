@@ -8,15 +8,15 @@ import org.bear.datainput.GetSFIContent;
 import org.bear.parser.sfi.GretaiParser;
 import org.bear.util.HttpUtil;
 /**
- * 
+ * 櫃臺個股月成交資訊與週轉率
  * @author edward
  *
  */
 public class GretaiIndividualIndex implements GetSFIContent {
 
 	@Override
-	public void getContent(String stockID, String startYear, String startMonth,
-			String endYear, String endMonth) 
+	public void getContent(String stockID, String stockName, String startYear, String startMonth,
+			   			   String endYear, String endMonth)
 	{
 		GretaiParser parser = new GretaiParser();		
 		String url = "http://www.tpex.org.tw/web/stock/statistics/monthly/print_st44.php?l=zh-tw";
@@ -38,7 +38,7 @@ public class GretaiIndividualIndex implements GetSFIContent {
     {
     	//GetSFIPrice revenue = new GetSFIPrice();
 		GretaiIndividualIndex revenue = new GretaiIndividualIndex();
-    	revenue.getContent("1256", "2013", "12", null, null);
+    	revenue.getContent("1256", null, "2013", "12", null, null);
     }
 
 }
