@@ -6,7 +6,11 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import org.bear.entity.RevenueEntity;
-
+/**
+ * Parse證券期貨發展基金會的上市公司成交價格資訊
+ * @author edward
+ *
+ */
 public class PriceParser extends RevenueParserBase
 {
 	public void getTableContent(Element element) 
@@ -56,7 +60,10 @@ public class PriceParser extends RevenueParserBase
 						openIndex = content;
 						//第一筆不紀錄，僅將本月收盤價當作下一個月開盤價	
 						if (i != 1)
-							entityList.add(entity);
+						{
+							//entityList.add(entity);
+							dao.updatePrice(stockID, entity);
+						}
 					}
 					else
 						continue;
@@ -65,9 +72,8 @@ public class PriceParser extends RevenueParserBase
 				{
 					ex.printStackTrace();
 				}				
-			}
-			
+			}			
 		}
-		dao.insertBatch(entityList);
+		//dao.insertBatch(entityList);
 	}
 }
