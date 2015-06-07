@@ -1,17 +1,17 @@
 package org.bear.main;
 import java.util.Date;
 import java.util.List;
-
 import org.bear.constant.CbcIndexConstant;
-import org.bear.constant.CepdIndexConstant;
 import org.bear.dao.*;
 import org.bear.datainput.ImportMacroEconomic;
 import org.bear.entity.MacroEconomicEntity;
-import org.bear.parser.taiwanMacro.CepdParser;
 import org.bear.parser.taiwanMacro.TwseIndex;
 import org.bear.util.ParseFile;
 import org.bear.util.cbc.GetCbcMoney;
 import org.bear.util.cbc.GetDemandDeposit;
+import org.bear.util.cbc.GetNdcData;
+import org.bear.util.cbc.GetNdcSignalData;
+import org.bear.util.cbc.GetStockValue;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -28,12 +28,13 @@ public class BuildMacroEconomicData extends ParseFile
 	{
 		// TODO Auto-generated method stub
 		String startYear = "2014";
-		String startMonth = "7";
-		String endYear = "2014";
-		String endMonth = "7";
+		String startMonth = "8";
+		String endYear = "2015";
+		String endMonth = "4";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
+		/* 經建會改名國發會，程式跟著改...2015/05/30...以後盡量去政府統計資料庫
 		CepdParser parser = new CepdParser();
 		parser.setStartDate(startYear + "," + startMonth);
 		parser.setEndDate(endYear + "," + endMonth);
@@ -44,17 +45,27 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.setUrl(CepdIndexConstant.CEPD_LIST[i], CepdIndexConstant.CEPD_MAP[i]);
 			parser.getConnection();
 			parser.parse(10);
-		}
+		}*/
+		//總經指標		
+		GetNdcData getNdcData = new GetNdcData(); 
+		getNdcData.setDao(dao);
+		getNdcData.getContent(CbcIndexConstant.STAT_DB_HASH.get("2014M08"), CbcIndexConstant.STAT_DB_HASH.get("2015M04"));
+		GetNdcSignalData getNdcSignalData = new GetNdcSignalData(); 
+		getNdcSignalData.setDao(dao);
+		getNdcSignalData.getContent(CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2014M08"), CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M04"));
+		//台股市值
+		GetStockValue getStockValue = new GetStockValue();
+		getStockValue.setDao(dao);
+		getStockValue.getContent(CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2014M08"),
+								 CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2015M04"));
 		//貨幣
 		GetCbcMoney money = new GetCbcMoney();
 		money.setDao(dao);
-		money.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M07"));
-		
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("2014M08"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
 		//活期儲蓄存款
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2013M04"), CbcIndexConstant.MONTH_HASH.get("2014M07"));
-		
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2014M08"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
 		//TWSE
 		TwseIndex twseIndex = new TwseIndex();
 		twseIndex.setDao(dao);
