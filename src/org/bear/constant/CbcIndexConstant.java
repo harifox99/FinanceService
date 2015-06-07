@@ -41,6 +41,12 @@ public class CbcIndexConstant
 	public static final HashMap<String, Integer> STAT_DB_HASH = new HashMap<String, Integer>();
 	static
 	{
+		STAT_DB_HASH.put("2014M08", 572);	
+		STAT_DB_HASH.put("2014M09", 573);	
+		STAT_DB_HASH.put("2015M10", 574);	
+		STAT_DB_HASH.put("2014M11", 575);	
+		STAT_DB_HASH.put("2014M12", 576);	
+		STAT_DB_HASH.put("2015M01", 577);	
 		STAT_DB_HASH.put("2015M02", 578);	
 		STAT_DB_HASH.put("2015M03", 579);	
 		STAT_DB_HASH.put("2015M04", 580);	
