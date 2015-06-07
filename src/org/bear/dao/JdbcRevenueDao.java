@@ -245,6 +245,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		String dateString = dateFormat.format(date);
 		String sql = "update OperatingRevenue set openIndex = '" + entity.getOpenIndex() + "', highIndex = '" + entity.getHighIndex() +
 		"', lowIndex = '" + entity.getLowIndex() + "', closeIndex = '" + entity.getCloseIndex() + "', averageIndex = '" + entity.getAverageIndex() +
+		"', turnoverRatio = '" + entity.getTurnoverRatio() +
 		"' where stockID = '" + stockID + "' and yearMonth = '" + dateString + "'";
 		this.getSimpleJdbcTemplate().update(sql);
 		
