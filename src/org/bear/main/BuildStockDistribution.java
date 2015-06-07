@@ -27,7 +27,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
 	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
-		String[] dateString = {"20140901"};
+		String[] dateString = {"20150529"};
 		
 		for (int i = 0; i < dateString.length; i++)
 		{
