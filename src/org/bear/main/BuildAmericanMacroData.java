@@ -13,7 +13,11 @@ import org.bear.parser.fred.FredEconomicUrl;
 import org.bear.util.ParseFile;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
+/**
+ * 美國總經指標，記得改catagory.observation_init的起始值
+ * @author edward
+ *
+ */
 public class BuildAmericanMacroData extends ParseFile
 {
 	/**
