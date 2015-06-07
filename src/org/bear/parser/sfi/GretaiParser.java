@@ -98,7 +98,8 @@ public class GretaiParser extends RevenueParserBase
 						entity.setCloseIndex(gretaiPriceEntity.getCloseIndex());
 						if (this.checkPrice(entity) == true)
 						{						
-							entityList.add(entity);
+							//entityList.add(entity);
+							dao.updatePrice(stockID, entity);
 						}
 						
 						else
@@ -117,7 +118,7 @@ public class GretaiParser extends RevenueParserBase
 				}		
 			}
 		}
-		dao.insertBatch(entityList);
+		//dao.insertBatch(entityList);
 	}
 	private boolean checkPrice(RevenueEntity entity)
 	{
