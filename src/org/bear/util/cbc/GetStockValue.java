@@ -39,7 +39,7 @@ public class GetStockValue extends GetStatDbData {
 		//paramList.add(new BasicNameValuePair("stubceller", "0"));
 		//paramList.add(new BasicNameValuePair("headceller", "0"));		
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
-		System.out.println(responseString);
+		//System.out.println(responseString);
 		SimpleParser stockValueParser = new SimpleParser();
 		stockValueParser.setResponseString(responseString);
 		stockValueParser.setDao(dao);

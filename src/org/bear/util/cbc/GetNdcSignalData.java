@@ -26,7 +26,7 @@ public class GetNdcSignalData extends NewGetStatDbData
 		this.classdir = "../PXfile/EconomicStatistics/";
 		this.setParameter();
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
-		System.out.println(responseString);
+		//System.out.println(responseString);
 		SimpleParser ndcSignalParser = new SimpleParser();
 		ndcSignalParser.setResponseString(responseString);
 		ndcSignalParser.setDao(dao);

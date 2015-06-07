@@ -43,7 +43,7 @@ public class GetNdcData extends GetStatDbData
 		//paramList.add(new BasicNameValuePair("stubceller", "0"));
 		//paramList.add(new BasicNameValuePair("headceller", "0"));		
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
-		System.out.println(responseString);
+		//System.out.println(responseString);
 		NdcParser ndcParser = new NdcParser();
 		ndcParser.setResponseString(responseString);
 		ndcParser.setDao(dao);
