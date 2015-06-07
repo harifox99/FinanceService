@@ -49,23 +49,24 @@ public class BuildMacroEconomicData extends ParseFile
 		//總經指標		
 		GetNdcData getNdcData = new GetNdcData(); 
 		getNdcData.setDao(dao);
-		getNdcData.getContent(CbcIndexConstant.STAT_DB_HASH.get("2014M08"), CbcIndexConstant.STAT_DB_HASH.get("2015M04"));
+		getNdcData.getContent(CbcIndexConstant.STAT_DB_HASH.get("2015M03"), CbcIndexConstant.STAT_DB_HASH.get("2015M04"));
+		//景氣燈號
 		GetNdcSignalData getNdcSignalData = new GetNdcSignalData(); 
 		getNdcSignalData.setDao(dao);
-		getNdcSignalData.getContent(CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2014M08"), CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M04"));
+		getNdcSignalData.getContent(CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M03"), CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M04"));
 		//台股市值
 		GetStockValue getStockValue = new GetStockValue();
 		getStockValue.setDao(dao);
-		getStockValue.getContent(CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2014M08"),
+		getStockValue.getContent(CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2015M03"),
 								 CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2015M04"));
 		//貨幣
 		GetCbcMoney money = new GetCbcMoney();
 		money.setDao(dao);
-		money.getContent(CbcIndexConstant.MONTH_HASH.get("2014M08"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("2015M03"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
 		//活期儲蓄存款
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2014M08"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2015M03"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
 		//TWSE
 		TwseIndex twseIndex = new TwseIndex();
 		twseIndex.setDao(dao);
