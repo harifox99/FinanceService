@@ -32,6 +32,7 @@ public class SimpleParser extends CbcParser
 			{				
 				resultElement = tdList.get(j);
 				String content = resultElement.getContent().toString().trim();
+				content = content.replace(",", "");
 				try
 				{
 					if (j == 0)
