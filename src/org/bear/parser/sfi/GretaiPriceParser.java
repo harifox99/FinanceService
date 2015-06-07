@@ -3,7 +3,11 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import org.bear.entity.GretaiPriceEntity;
-
+/**
+ * 擷取上櫃公司當月的開盤價與收盤價
+ * @author edward
+ *
+ */
 public class GretaiPriceParser extends RevenueParserBase 
 {
 	GretaiPriceEntity entity;
