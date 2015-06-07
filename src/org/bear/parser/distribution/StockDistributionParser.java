@@ -51,7 +51,10 @@ public class StockDistributionParser extends DistributionParserBase
 					{
 						entity.setStockID(stockID);
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");						
-						Date date = dateFormat.parse(this.convertMonth());
+						//Date date = dateFormat.parse(this.convertMonth());
+						String month = dateString.substring(4, 6);
+						String year = dateString.substring(0, 4);
+						Date date = dateFormat.parse(year + month);
 						entity.setYearMonth(date);
 					}
 					//1±i¥H¤U
@@ -244,6 +247,7 @@ public class StockDistributionParser extends DistributionParserBase
 		}
 		dao.insert(entity);
 	}
+	/*
 	private String convertMonth()
 	{
 		String month = dateString.substring(4, 6);
@@ -260,5 +264,5 @@ public class StockDistributionParser extends DistributionParserBase
 			intMonth--;
 			return year + String.valueOf(intMonth);
 		}
-	}
+	}*/
 }
