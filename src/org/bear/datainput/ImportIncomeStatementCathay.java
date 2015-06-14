@@ -18,11 +18,11 @@ public class ImportIncomeStatementCathay extends ImportStockIDData
 		try
 		{							
 			int idleTime = 0;
-			
+			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] seasons = {"01", "02"};
+				String[] seasons = {"01", "02", "03", "04"};
 				String[] years = {"2014"};
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
@@ -40,14 +40,14 @@ public class ImportIncomeStatementCathay extends ImportStockIDData
 					idleTime--;
 					j--;
 				}
-				Thread.sleep(3000);	
+				Thread.sleep(FinancialReport.sleepTime);	
 				idleTime++;
-			}
-			/*
-			for (int j = 1102; j < wrapperList.size(); j++)
+			}*/
+			
+			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 1;
-				String[] years = {"2013"};
+				String[] years = {"2014"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
@@ -55,9 +55,9 @@ public class ImportIncomeStatementCathay extends ImportStockIDData
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, true);
 				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, true, years, seasons, expectedNum, true);
 				incomeStatementYear.parse(2);
-				Thread.sleep(3000);	
+				Thread.sleep(FinancialReport.sleepTime);	
 				idleTime++;
-			}*/
+			}
 		}
 		catch (Exception ex)
 		{
