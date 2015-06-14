@@ -13,28 +13,28 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 		try
 		{			
 			int idleTime = 0;
-			//年資料	
-			/*
-			for (int i = 1361; i < wrapperList.size(); i++)
+			//年資料				
+			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = 1;
-				String[] years = {"2013"};
+				String[] years = {"2014"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(i).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, true);
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, true, expectedNum, true);
 				cashFlowsParser.parse(2);
-				Thread.sleep(3000);		
+				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}*/
-			
+			}
+			/*
 			//季資料
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] seasons = {"01","02"};
 				String[] years = {"2014"};
+				String[] seasons = {"01", "02", "03", "04"};				
+
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("2850"))
 					//continue;
@@ -51,9 +51,9 @@ public class ImportCashFlowsCathay extends ImportStockIDData
 					idleTime--;
 					i--;
 				}
-				Thread.sleep(3000);		
+				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}
+			}*/
 		}
 		catch (Exception ex)
 		{
