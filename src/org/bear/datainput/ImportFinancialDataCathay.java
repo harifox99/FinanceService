@@ -27,7 +27,7 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 	//其他財務資料DAO
 	FinancialDataDao dao;
 	FinancialDataEntity entity;
-	int expectedNum = FinancialReport.expectedNum;;
+	int expectedNum = 1;
 	public void insertBatchList()
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -43,7 +43,7 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 				/***********/
 				this.setFinancialData(stockID, true);
 				/***********/
-				Thread.sleep(3000);		
+				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
 			}			
 		}
@@ -80,7 +80,8 @@ public class ImportFinancialDataCathay extends ImportStockIDData
 				entity.setCashDiv(0.0);
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
-			if (entity.year.equals("2013"))
+			//只要當年的
+			if (entity.year.equals("2014"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
