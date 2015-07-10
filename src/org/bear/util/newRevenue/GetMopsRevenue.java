@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.bear.constant.FinancialReport;
 import org.bear.datainput.GetSFIContent;
 import org.bear.parser.sfi.MopsF_Parser;
 import org.bear.parser.sfi.MopsRevenueParser;
@@ -30,26 +31,48 @@ public class GetMopsRevenue implements GetSFIContent {
 		paramList.add(new BasicNameValuePair("year", StringUtil.convertChineseYear(startYear)));
 		paramList.add(new BasicNameValuePair("month", startMonth));
 		paramList.add(new BasicNameValuePair("firstin", "true"));
-		String responseString = HttpUtil.sendWithRetry(url, paramList, 1, "UTF-8");				
-		if (stockName.startsWith("F-"))
+		boolean isSuccessful = false;
+		while (isSuccessful == false)
 		{
-			MopsF_Parser parser = new MopsF_Parser();
-			parser.setResponseString(responseString);
-			parser.setStockID(stockID);
-			parser.setYear(startYear);
-			parser.setMonth(startMonth);
-			parser.parse(2);
-		}
-		else
-		{
-			MopsRevenueParser parser = new MopsRevenueParser();
-			parser.setResponseString(responseString);
-			parser.setStockID(stockID);
-			parser.setYear(startYear);
-			parser.setMonth(startMonth);
-			parser.parse(3);
-		}
-		
+			try
+			{
+				String responseString = HttpUtil.sendWithRetry(url, paramList, 1, "UTF-8");				
+				if (stockName.startsWith("F-"))
+				{
+					MopsF_Parser parser = new MopsF_Parser();
+					parser.setResponseString(responseString);
+					parser.setStockID(stockID);
+					parser.setYear(startYear);
+					parser.setMonth(startMonth);
+					parser.parseRepeat(2);
+				}
+				else
+				{
+					MopsRevenueParser parser = new MopsRevenueParser();
+					parser.setResponseString(responseString);
+					parser.setStockID(stockID);
+					parser.setYear(startYear);
+					parser.setMonth(startMonth);
+					parser.parseRepeat(3);
+				}
+				isSuccessful = true;
+			}
+			catch (IndexOutOfBoundsException ex)
+			{
+				System.out.println(stockID + ": 查無此股票營收資訊, 重新擷取!");
+				isSuccessful = false;
+				//System.exit(0);
+				try 
+				{
+					Thread.sleep(FinancialReport.sleepTime * 5);
+				} 
+				catch (InterruptedException e) 
+				{
+					// TODO Auto-generated catch block
+					System.out.println(stockID + ": 重新查詢營收發生中斷!");
+				}
+			}
+		}				
 	}
 
 }
