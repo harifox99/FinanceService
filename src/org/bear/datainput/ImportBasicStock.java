@@ -20,7 +20,7 @@ public class ImportBasicStock extends ParseFile
 		ArrayList <BasicStockWrapper> list = new ArrayList <BasicStockWrapper>();
 		try
 		{			
-			reader = new BufferedReader(new FileReader("data/StockID.csv"));
+			reader = new BufferedReader(new FileReader("data/StockID2.csv"));
 			//上市公司
 			while((readData = reader.readLine()) != null)
 			{
@@ -38,11 +38,13 @@ public class ImportBasicStock extends ParseFile
 				}			
 			}
 			//上櫃公司
-			reader = new BufferedReader(new FileReader("data/Gretai.csv"));
+			reader = new BufferedReader(new FileReader("data/Gretai2.csv"));
 			while((readData = reader.readLine()) != null)
 			{
-				if (this.intRowIndex++ == 0)
-					continue;
+				if (readData.equals(",,,,"))
+					break;
+				else if (this.intRowIndex++ == 0)
+					continue;				
 				else
 				{
 					System.out.println(this.intRowIndex);
