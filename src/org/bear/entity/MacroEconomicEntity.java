@@ -34,6 +34,8 @@ public class MacroEconomicEntity
 	String generalIndexYoy;
 	String confidence;
 	String exportOrder;
+	String stockValue;
+	String m1bTotalEnd;
 	public String getTwseOpen() {
 		return twseOpen;
 	}
@@ -191,6 +193,18 @@ public class MacroEconomicEntity
 	}
 	public void setExportOrder(String exportOrder) {
 		this.exportOrder = exportOrder;
+	}
+	public String getStockValue() {
+		return stockValue;
+	}
+	public void setStockValue(String stockValue) {
+		this.stockValue = stockValue;
+	}
+	public String getM1bTotalEnd() {
+		return m1bTotalEnd;
+	}
+	public void setM1bTotalEnd(String m1bTotalEnd) {
+		this.m1bTotalEnd = m1bTotalEnd;
 	}	
 	
 }
