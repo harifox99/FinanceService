@@ -48,6 +48,13 @@ public abstract class RevenueParserBase {
 		}
 	}
 	
+	public void parseRepeat(int tableIndex) throws IndexOutOfBoundsException{
+		Source source = new Source(responseString);
+		//System.out.println(source.toString());
+		elementList = source.getAllElements(HTMLElementName.TABLE);
+		this.getTableContent(elementList.get(tableIndex));
+	}
+	
 	public List<Element> getElementList() {
 		return elementList;
 	}
