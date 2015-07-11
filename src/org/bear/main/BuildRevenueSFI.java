@@ -18,7 +18,7 @@ public class BuildRevenueSFI {
 		String endMonth = "6";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
-		/* 上市/上櫃營收資訊 (公開資訊觀測站) */
+		/* 上市/上櫃營收資訊 (公開資訊觀測站)，僅用startYear and startMonth */
 		getContent = new GetMopsRevenue();
 		sfi.insertBatchList(startYear, StringUtil.addZeroMonth(startMonth), endYear, endMonth, getContent);
 		/* 上市營收資訊 (證券期貨發展基金會) */
