@@ -15,7 +15,7 @@ public class BuildRevenueSFI {
 		String startYear = "2015";
 		String startMonth = "5";
 		String endYear = "2015";
-		String endMonth = "5";
+		String endMonth = "6";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 上市/上櫃營收資訊 (公開資訊觀測站) */
