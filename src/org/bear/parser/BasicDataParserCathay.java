@@ -35,6 +35,10 @@ public class BasicDataParserCathay extends ParserBase
 	 * 本益比
 	 */
 	double per;
+	/**
+	 * 股本
+	 */
+	String capital;
 	public BasicDataParserCathay(List<Element> elementList, String stockID)
 	{
 		this.elementList = elementList;
@@ -107,6 +111,13 @@ public class BasicDataParserCathay extends ParserBase
 						per = StringUtil.setPointLength(per);
 					}
 				}
+				else if (content.contains("股本"))
+				{
+					resultElement = tdList.get(j+1);
+					content = resultElement.getContent().toString();
+					content = content.replaceAll(",", "");
+					capital = content;
+				}
 				/*
 				//如果查無本益比，則以同業平均本益比代替
 				else if (content.equals("同業平均本益比"))
@@ -156,4 +167,11 @@ public class BasicDataParserCathay extends ParserBase
 	public void setPer(double per) {
 		this.per = per;
 	}
+	public String getCapital() {
+		return capital;
+	}
+	public void setCapital(String capital) {
+		this.capital = capital;
+	}
+	
 }
