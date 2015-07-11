@@ -32,12 +32,14 @@ public class GetMopsRevenue implements GetSFIContent {
 		paramList.add(new BasicNameValuePair("month", startMonth));
 		paramList.add(new BasicNameValuePair("firstin", "true"));
 		boolean isSuccessful = false;
-		while (isSuccessful == false)
+		int loopIndex = 0;
+		while (isSuccessful == false && loopIndex++ < 10)
 		{
+			String responseString = null;
 			try
 			{
-				String responseString = HttpUtil.sendWithRetry(url, paramList, 1, "UTF-8");				
-				if (stockName.startsWith("F-"))
+				responseString = HttpUtil.sendWithRetry(url, paramList, 1, "UTF-8");				
+				if (stockName.startsWith("F"))
 				{
 					MopsF_Parser parser = new MopsF_Parser();
 					parser.setResponseString(responseString);
@@ -60,11 +62,14 @@ public class GetMopsRevenue implements GetSFIContent {
 			catch (IndexOutOfBoundsException ex)
 			{
 				System.out.println(stockID + ": 查無此股票營收資訊, 重新擷取!");
+				System.out.println(responseString);
 				isSuccessful = false;
+				if (responseString.contains("外國發行人免申報本項資訊"))
+					break;
 				//System.exit(0);
 				try 
 				{
-					Thread.sleep(FinancialReport.sleepTime * 5);
+					Thread.sleep(FinancialReport.sleepTime * 6);
 				} 
 				catch (InterruptedException e) 
 				{
