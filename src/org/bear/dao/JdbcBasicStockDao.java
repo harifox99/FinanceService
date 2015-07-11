@@ -42,4 +42,12 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		return wrapperList;
 	}
 
+	@Override
+	public void updateCapital(String stockID, String capital) {
+		// TODO Auto-generated method stub
+		String sql = "update StockData set capital = '" + capital +
+		"' where stockID = '" + stockID + "'";
+		this.getSimpleJdbcTemplate().update(sql);
+	}
+
 }
