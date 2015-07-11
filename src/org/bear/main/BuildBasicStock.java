@@ -59,8 +59,8 @@ public class BuildBasicStock {
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao dao = (BasicStockDao)context.getBean("basicStockDao");
-		//list = new ImportBasicStock().getBasicStockList();
-		//dao.insertBatch(list);
+		list = new ImportBasicStock().getBasicStockList();
+		dao.insertBatch(list);
 		/***** Â^¨úªÑ¥» *****/
 		List <BasicStockWrapper> wrapperList = dao.findAllData();
 		for (int i = 0; i < wrapperList.size(); i++)
