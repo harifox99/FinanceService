@@ -5,6 +5,8 @@ import java.util.List;
 import org.bear.dao.BasicStockDao;
 import org.bear.datainput.ImportBasicStock;
 import org.bear.entity.BasicStockWrapper;
+import org.bear.parser.BasicDataParserCathay;
+import org.bear.util.GetURLCathayBasicData;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -14,7 +16,7 @@ public class BuildBasicStock {
 	 * @param args
 	 */
 	List <BasicStockWrapper> list;
-	public static void main(String[] args) 
+	public static void main(String[] args) throws InterruptedException
 	{
 		// TODO Auto-generated method stub
 		new BuildBasicStock().insertBatch();
@@ -53,11 +55,23 @@ public class BuildBasicStock {
 		 * 6.5 每個月20號董監持股
 		 ************/
 	}
-	public void insertBatch()
+	public void insertBatch() throws InterruptedException
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao dao = (BasicStockDao)context.getBean("basicStockDao");
-		list = new ImportBasicStock().getBasicStockList();
-		dao.insertBatch(list);
+		//list = new ImportBasicStock().getBasicStockList();
+		//dao.insertBatch(list);
+		/***** 擷取股本 *****/
+		List <BasicStockWrapper> wrapperList = dao.findAllData();
+		for (int i = 0; i < wrapperList.size(); i++)
+		{
+			String stockID = wrapperList.get(i).getStockID();
+			GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
+			BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
+			parser.parse(2);
+			dao.updateCapital(stockID, parser.getCapital());
+			System.out.println("stockID: " + stockID + ", index: " + i);
+			Thread.sleep(1000);
+		}
 	}
 }
