@@ -43,11 +43,12 @@ public class PerfectAnalysis
 	 * @param expectedGrossProfitRatio 期望的毛利率
 	 * @param operatingProfitRatio 期望的營業利益率
 	 * @param expectedPe 期望的PE
+	 * @param isMinusGrowthFilter 過濾零成長標的
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
 			int demandGrossProfit, int demandOperatingProfitRatio, int demandEps,
-			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe)
+			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe, boolean isMinusGrowthFilter)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -222,16 +223,19 @@ public class PerfectAnalysis
 			calculateList = new ArrayList<List<String>>();
 			
 			//至少要有N期營收是正的
-			for (int i = 0; i < perfectList.size(); i++)
+			if (isMinusGrowthFilter == true)
 			{
-				if (this.checkPlusRevenue(perfectList.get(i), yoyTotalMonth+1, yoyTotalMonth-1))
+				for (int i = 0; i < perfectList.size(); i++)
 				{
-					calculateList.add(perfectList.get(i));
+					if (this.checkPlusRevenue(perfectList.get(i), yoyTotalMonth+1, yoyTotalMonth-1))
+					{
+						calculateList.add(perfectList.get(i));
+					}
 				}
+				//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
+				perfectList = calculateList;
+				calculateList = new ArrayList<List<String>>();
 			}
-			//把所有符合期望的資料calculateList重新塞回perfectList，並以perfectList內的資料作進一步篩選
-			perfectList = calculateList;
-			calculateList = new ArrayList<List<String>>();
 			
 			//期望本益比
 			for (int i = 0; i < perfectList.size(); i++)
