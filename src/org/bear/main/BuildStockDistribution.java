@@ -3,7 +3,7 @@ import java.util.List;
 import org.bear.dao.JdbcStockDistributionDao;
 import org.bear.dao.JdbcStockTypeDao;
 import org.bear.dao.JdbcThreeBigDao;
-import org.bear.datainput.ImportStockIDData;
+import org.bear.datainput.ImportStockID;
 import org.bear.parser.distribution.Gretai3BigParser;
 import org.bear.util.distribution.GetGretai3Big;
 import org.bear.util.distribution.StockDistribution;
@@ -11,7 +11,7 @@ import org.bear.util.distribution.GetTwse3Big;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class BuildStockDistribution extends ImportStockIDData
+public class BuildStockDistribution extends ImportStockID
 {
 	public static void main(String[] args) 
 	{
@@ -22,7 +22,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		String startYear = "2014";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		JdbcStockDistributionDao stockDistributionDao = (JdbcStockDistributionDao)context.getBean("stockDistributionDao");
-		JdbcStockTypeDao stockTypedao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
+		JdbcStockTypeDao stockTypeDao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
 		JdbcThreeBigDao threeBigDao = (JdbcThreeBigDao)context.getBean("threeBigDao");
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
@@ -45,7 +45,7 @@ public class BuildStockDistribution extends ImportStockIDData
 		
 		//證交所三大法人增減
 		String[] monthList = {"07", "08"};
-		List<Integer> typeIdList = stockTypedao.findAllData();
+		List<Integer> typeIdList = stockTypeDao.findAllData();
 		for (int i = 0; i < typeIdList.size(); i++)
 		{
 			for (int j = 0; j < monthList.length; j++)
