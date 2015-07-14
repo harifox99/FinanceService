@@ -10,11 +10,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author edward
  * 去資料庫擷取所有股票代碼
  */
-public class ImportStockIDData 
+public class ImportStockID 
 {
 	BasicStockDao basicStockDao;
 	protected List <BasicStockWrapper> wrapperList;
-	public ImportStockIDData()
+	public ImportStockID()
 	{
 		//擷取所有股票代碼
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
