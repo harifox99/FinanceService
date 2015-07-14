@@ -20,7 +20,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author edward
  *
  */
-public class ImportFinancialDataCathay extends ImportStockIDData 
+public class ImportFinancialDataCathay extends ImportStockID 
 {
 	//將elementList轉成可以儲存至DB的資料
 	List <FinancialDataEntity> entityList;
