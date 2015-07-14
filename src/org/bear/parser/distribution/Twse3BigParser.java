@@ -6,11 +6,12 @@ import java.util.List;
 
 import org.bear.dao.JdbcThreeBigDao;
 import org.bear.entity.ThreeBigEntity;
+import org.bear.parser.EasyParserBase;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 
-public class Twse3BigParser extends DistributionParserBase{
+public class Twse3BigParser extends EasyParserBase{
 	String dateString;
 	JdbcThreeBigDao threeBigDao;
 	
