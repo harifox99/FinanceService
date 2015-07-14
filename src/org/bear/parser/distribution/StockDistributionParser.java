@@ -6,8 +6,9 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import org.bear.dao.StockDistributionDao;
 import org.bear.entity.StockDistributionEntity;
+import org.bear.parser.EasyParserBase;
 
-public class StockDistributionParser extends DistributionParserBase
+public class StockDistributionParser extends EasyParserBase
 {
 	StockDistributionDao dao;
 	String stockID;
