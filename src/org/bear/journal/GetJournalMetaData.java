@@ -2,7 +2,7 @@ package org.bear.journal;
 
 import java.util.List;
 
-import org.bear.dao.JdbcCommonMetaDataDao;
+import org.bear.dao.CommonMetaDataDao;
 import org.bear.journal.wrapper.CommonJournalMetaWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -13,7 +13,7 @@ public class GetJournalMetaData
 		// TODO Auto-generated method stub
 		List <CommonJournalMetaWrapper> list;
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		JdbcCommonMetaDataDao dao = (JdbcCommonMetaDataDao)context.getBean("basicCommonMetaDataDao");	
+		CommonMetaDataDao dao = (CommonMetaDataDao)context.getBean("basicCommonMetaDataDao");	
 		list = dao.getAppoachList();		
 		return list;
 	}
@@ -25,7 +25,7 @@ public class GetJournalMetaData
 		// TODO Auto-generated method stub
 		List <CommonJournalMetaWrapper> list;
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		JdbcCommonMetaDataDao dao = (JdbcCommonMetaDataDao)context.getBean("basicCommonMetaDataDao");	
+		CommonMetaDataDao dao = (CommonMetaDataDao)context.getBean("basicCommonMetaDataDao");	
 		list = dao.getReasonList();		
 		return list;
 	}
