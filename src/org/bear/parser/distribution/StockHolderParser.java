@@ -2,9 +2,9 @@ package org.bear.parser.distribution;
 import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
-import org.bear.dao.JdbcThreeBigDao;
+import org.bear.dao.ThreeBigDao;
 public class StockHolderParser {
-	JdbcThreeBigDao threeBigDao;
+	ThreeBigDao threeBigDao;
 	List<Element> elementList;
 	String dateString;
 	public String getDateString() {
@@ -15,11 +15,11 @@ public class StockHolderParser {
 		this.dateString = dateString;
 	}
 
-	public JdbcThreeBigDao getThreeBigDao() {
+	public ThreeBigDao getThreeBigDao() {
 		return threeBigDao;
 	}
 
-	public void setThreeBigDao(JdbcThreeBigDao threeBigDao) {
+	public void setThreeBigDao(ThreeBigDao threeBigDao) {
 		this.threeBigDao = threeBigDao;
 	}
 
