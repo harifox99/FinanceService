@@ -3,8 +3,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bear.dao.JdbcStockDistributionDao;
-import org.bear.dao.JdbcThreeBigDao;
+import org.bear.dao.StockDistributionDao;
+import org.bear.dao.ThreeBigDao;
 import org.bear.entity.StockDistributionEntity;
 import org.bear.journal.wrapper.DistributionWrapper;
 import org.springframework.context.ApplicationContext;
@@ -12,8 +12,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class DistributionAnalysis 
 {
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-	JdbcStockDistributionDao stockDistributionDao = (JdbcStockDistributionDao)context.getBean("stockDistributionDao");
-	JdbcThreeBigDao threeBigDao = (JdbcThreeBigDao)context.getBean("threeBigDao");
+	StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
+	ThreeBigDao threeBigDao = (ThreeBigDao)context.getBean("threeBigDao");
 	public List<DistributionWrapper> getDistribution(String stockID, int duration)
 	{		
 		List <DistributionWrapper> distributionWrapperList = new ArrayList<DistributionWrapper>();
