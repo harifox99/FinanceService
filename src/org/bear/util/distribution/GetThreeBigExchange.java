@@ -19,6 +19,7 @@ public class GetThreeBigExchange
 	String date;
 	int stockBranch;
 	String exchanger;
+	String url;
 	public ThreeBigExchangeDao getDao() {
 		return dao;
 	}
@@ -42,17 +43,22 @@ public class GetThreeBigExchange
 	}
 	public void setExchanger(String exchanger) {
 		this.exchanger = exchanger;
+	}	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public void getContent(String date)
 	{
 		ThreeBigExchangeParser parser = new ThreeBigExchangeParser();
 		parser.setDao(dao);
-		String url = "http://www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U.php";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("qdate", date));
 		paramList.add(new BasicNameValuePair("sorting", "by_issue"));
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
-		System.out.println(responseString);
+		//System.out.println(responseString);
 		parser.setResponseString(responseString);
 		parser.setDate(date);
 		parser.setExchanger(exchanger);
