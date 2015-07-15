@@ -50,7 +50,7 @@ public class GetTwseThreeBigExchange
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public void getContent(String date)
+	public void getContent()
 	{
 		TwseThreeBigExchangeParser parser = new TwseThreeBigExchangeParser();
 		parser.setDao(dao);
