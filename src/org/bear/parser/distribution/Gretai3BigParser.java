@@ -3,15 +3,14 @@ package org.bear.parser.distribution;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 
-import org.bear.dao.JdbcThreeBigDao;
+import org.bear.dao.ThreeBigDao;
 import org.bear.entity.ThreeBigEntity;
 
 public class Gretai3BigParser {
-	JdbcThreeBigDao threeBigDao;
+	ThreeBigDao threeBigDao;
 	String dateString;
 	List<Element> elementList;
 	
@@ -23,11 +22,11 @@ public class Gretai3BigParser {
 		this.elementList = elementList;
 	}
 
-	public JdbcThreeBigDao getThreeBigDao() {
+	public ThreeBigDao getThreeBigDao() {
 		return threeBigDao;
 	}
 
-	public void setThreeBigDao(JdbcThreeBigDao threeBigDao) {
+	public void setThreeBigDao(ThreeBigDao threeBigDao) {
 		this.threeBigDao = threeBigDao;
 	}
 
