@@ -1,5 +1,6 @@
 package org.bear.parser;
 
+import java.net.URL;
 import java.util.List;
 
 import net.htmlparser.jericho.Element;
@@ -8,6 +9,7 @@ import net.htmlparser.jericho.Source;
 
 public abstract class EasyParserBase {
 	public String responseString;
+	public String url;
 	List<Element> elementList = null;
 	public void parse(int tableIndex) {
 		Source source = new Source(responseString);
@@ -22,7 +24,19 @@ public abstract class EasyParserBase {
 			System.out.println("查無此股票籌碼資訊!");
 		}
 	}
-	
+	public void getConnection()
+	{
+		Source source = null;
+		try
+		{
+			source = new Source(new URL(url));
+			elementList = source.getAllElements(HTMLElementName.TABLE);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 	public String getResponseString() {
 		return responseString;
 	}
@@ -30,6 +44,12 @@ public abstract class EasyParserBase {
 	public void setResponseString(String responseString) {
 		this.responseString = responseString;
 	}
-
+	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public abstract void getTableContent(Element element);
 }
