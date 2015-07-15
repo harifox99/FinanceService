@@ -3,8 +3,7 @@ package org.bear.parser.distribution;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import org.bear.dao.JdbcThreeBigDao;
+import org.bear.dao.ThreeBigDao;
 import org.bear.entity.ThreeBigEntity;
 import org.bear.parser.EasyParserBase;
 
@@ -13,13 +12,13 @@ import net.htmlparser.jericho.HTMLElementName;
 
 public class Twse3BigParser extends EasyParserBase{
 	String dateString;
-	JdbcThreeBigDao threeBigDao;
+	ThreeBigDao threeBigDao;
 	
-	public JdbcThreeBigDao getThreeBigDao() {
+	public ThreeBigDao getThreeBigDao() {
 		return threeBigDao;
 	}
 
-	public void setThreeBigDao(JdbcThreeBigDao threeBigDao) {
+	public void setThreeBigDao(ThreeBigDao threeBigDao) {
 		this.threeBigDao = threeBigDao;
 	}
 
