@@ -93,7 +93,8 @@ public class ThreeBigExchangeParser extends EasyParserBase
 					}
 					else if (j == 5)//Quantity
 					{
-						int quantity = Integer.parseInt(content);
+						//股數->張數
+						int quantity = Integer.parseInt(content)/1000;
 						if (FinancialReport.maxNumber < rankNumber)
 						{
                             if (quantity < 0 && isMinusData == false)
