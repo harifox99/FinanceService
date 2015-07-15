@@ -6,14 +6,14 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.ThreeBigExchangeDao;
-import org.bear.parser.ThreeBigExchangeParser;
+import org.bear.parser.TwseThreeBigExchangeParser;
 import org.bear.util.HttpUtil;
 /**
  * 設定URL，擷取三大法人買賣超資料
  * @author edward
  *
  */
-public class GetThreeBigExchange 
+public class GetTwseThreeBigExchange 
 {
 	ThreeBigExchangeDao dao;	
 	String date;
@@ -52,7 +52,7 @@ public class GetThreeBigExchange
 	}
 	public void getContent(String date)
 	{
-		ThreeBigExchangeParser parser = new ThreeBigExchangeParser();
+		TwseThreeBigExchangeParser parser = new TwseThreeBigExchangeParser();
 		parser.setDao(dao);
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("qdate", date));
