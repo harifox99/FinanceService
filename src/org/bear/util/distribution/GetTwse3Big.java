@@ -5,19 +5,19 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.bear.dao.JdbcThreeBigDao;
+import org.bear.dao.ThreeBigDao;
 import org.bear.parser.distribution.Twse3BigParser;
 import org.bear.util.HttpUtil;
 
 public class GetTwse3Big 
 {
-	JdbcThreeBigDao threeBigDao;
+	ThreeBigDao threeBigDao;
 	
-	public JdbcThreeBigDao getThreeBigDao() {
+	public ThreeBigDao getThreeBigDao() {
 		return threeBigDao;
 	}
 
-	public void setThreeBigDao(JdbcThreeBigDao threeBigDao) {
+	public void setThreeBigDao(ThreeBigDao threeBigDao) {
 		this.threeBigDao = threeBigDao;
 	}
 
