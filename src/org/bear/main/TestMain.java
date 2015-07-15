@@ -45,6 +45,7 @@ public class TestMain extends ParseFile
 					System.out.println(year[i] + "-" + month[intRowIndex-1]);
 				}				
 			}
+			reader.close();
 		}
 		catch (Exception ex)
 		{
