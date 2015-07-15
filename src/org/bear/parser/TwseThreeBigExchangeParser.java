@@ -15,7 +15,7 @@ import net.htmlparser.jericho.HTMLElementName;
  * @author edward
  *
  */
-public class ThreeBigExchangeParser extends EasyParserBase
+public class TwseThreeBigExchangeParser extends EasyParserBase
 {	
 	ThreeBigExchangeDao dao;	
 	String date;
