@@ -32,7 +32,7 @@ public class BuildMacroEconomicData extends ParseFile
 		String endYear = "2015";
 		String endMonth = "4";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		JdbcMacroEconomicDao dao = (JdbcMacroEconomicDao)context.getBean("macroEconomicDao");
+		MacroEconomicDao dao = (MacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
 		/* 經建會改名國發會，程式跟著改...2015/05/30...以後盡量去政府統計資料庫
 		CepdParser parser = new CepdParser();
