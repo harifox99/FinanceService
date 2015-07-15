@@ -1,5 +1,5 @@
 package org.bear.main;
-import org.bear.dao.JdbcThreeBigDao;
+import org.bear.dao.ThreeBigDao;
 import org.bear.parser.distribution.StockHolderParser;
 import org.bear.util.StringUtil;
 import org.bear.util.distribution.StockHolderDistribution;
@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class BuildSupervisor 
 {
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-	JdbcThreeBigDao threeBigDao = (JdbcThreeBigDao)context.getBean("threeBigDao");
+	ThreeBigDao threeBigDao = (ThreeBigDao)context.getBean("threeBigDao");
 	public static void main(String[] args) 
 	{
 		new BuildSupervisor();
