@@ -1,8 +1,6 @@
 package org.bear.main;
 import java.util.List;
-import org.bear.dao.JdbcStockDistributionDao;
-import org.bear.dao.JdbcStockTypeDao;
-import org.bear.dao.JdbcThreeBigDao;
+import org.bear.dao.*;
 import org.bear.datainput.ImportStockID;
 import org.bear.parser.distribution.Gretai3BigParser;
 import org.bear.util.distribution.GetGretai3Big;
@@ -21,9 +19,9 @@ public class BuildStockDistribution extends ImportStockID
 	{
 		String startYear = "2014";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-		JdbcStockDistributionDao stockDistributionDao = (JdbcStockDistributionDao)context.getBean("stockDistributionDao");
-		JdbcStockTypeDao stockTypeDao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
-		JdbcThreeBigDao threeBigDao = (JdbcThreeBigDao)context.getBean("threeBigDao");
+		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
+		StockTypeDao stockTypeDao = (StockTypeDao)context.getBean("stockTypeDao");
+		ThreeBigDao threeBigDao = (ThreeBigDao)context.getBean("threeBigDao");
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
 	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
