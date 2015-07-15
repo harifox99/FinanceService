@@ -1,6 +1,6 @@
 package org.bear.main;
 import org.bear.dao.ThreeBigExchangeDao;
-import org.bear.util.GetThreeBigExchange;
+import org.bear.util.distribution.GetThreeBigExchange;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
