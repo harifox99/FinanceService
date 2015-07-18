@@ -1,6 +1,12 @@
 package org.bear.main;
+
+import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.parser.TpexThreeBigExchangeParser;
+import org.bear.parser.TwseThreeBigAmountParser;
+import org.bear.util.StringUtil;
+import org.bear.util.distribution.GetTaifexLot;
+import org.bear.util.distribution.GetTaifexTopTen;
 import org.bear.util.distribution.GetTwseThreeBigExchange;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,12 +22,18 @@ public class BuildThreeBigExchange {
 	 */
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	ThreeBigExchangeDao threeBigExchangeDao = (ThreeBigExchangeDao)context.getBean("threeBigExchangeDao");
+	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
-		String date = "104/07/15";
-		String url;
+		String date = "104/07/16";
+		//把民國轉換成西元
+		String[] dateArray = date.split("/");
+		String westenDate = StringUtil.convertYear(dateArray[0]);
+		westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
+		String url;		
 		BuildThreeBigExchange exchange = new BuildThreeBigExchange();
+		/*
 		//上市，外資
 		url = "http://www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U.php";
 		exchange.buildTwse(date, 1, "外資", url);
@@ -42,7 +54,17 @@ public class BuildThreeBigExchange {
 		//上櫃，投信，賣超
 		url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=sell&d=" + date;
 		exchange.buildTpex(date, 2, "投信", url);	
-		
+		*/
+		//證交所，三大法人買賣超金額
+		url = "http://www.twse.com.tw/ch/trading/fund/BFI82U/BFI82U_print.php?begin_date=" + westenDate.replace("/", "") + 
+			  "&end_date=" + westenDate.replace("/", "") + "&report_type=day&language=ch";
+		exchange.buildJuristicAmountInfo(westenDate, url);
+		//期交所，外資未平倉口數
+		url = "http://www.taifex.com.tw/chinese/3/7_12_3_tbl.asp";
+		exchange.buildTaiFexLot(westenDate, url);
+		//期交所前十大法人未沖銷部位
+		url = "http://www.taifex.com.tw/chinese/3/7_8.asp";
+		exchange.buildTopTen(westenDate, url);
 	}
 	/**
 	 * 
@@ -71,5 +93,32 @@ public class BuildThreeBigExchange {
 		parser.getConnection();
 		parser.parse();
 	}
-
+	public void buildJuristicAmountInfo(String date, String url)
+	{
+		//證交所三大法人買賣超金額
+		TwseThreeBigAmountParser parser = new TwseThreeBigAmountParser();
+		parser.setDao(juristicDailyReportDao);
+		parser.setUrl(url);
+		parser.setDate(date);
+		parser.getConnection();
+		parser.parse();
+	}
+	public void buildTaiFexLot(String date, String url)
+	{
+		//期交所外資未平倉口數
+		GetTaifexLot getTaiFexForeignerLot = new GetTaifexLot();
+		getTaiFexForeignerLot.setDao(juristicDailyReportDao);
+		getTaiFexForeignerLot.setUrl(url);
+		getTaiFexForeignerLot.setDate(date);
+		getTaiFexForeignerLot.getContent();
+	}
+	public void buildTopTen(String date, String url)
+	{
+		GetTaifexTopTen getTaifexTopTen = new GetTaifexTopTen();
+		getTaifexTopTen.setDao(juristicDailyReportDao);
+		getTaifexTopTen.setUrl(url);
+		getTaifexTopTen.setDate(date);
+		getTaifexTopTen.getContent();
+		
+	}
 }
