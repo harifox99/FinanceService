@@ -9,6 +9,7 @@ public class BasicStockWrapper
 	String stockName;
 	int stockType;
 	int stockBranch;
+	double capital;
 	public String getStockID() {
 		return stockID;
 	}
@@ -33,4 +34,11 @@ public class BasicStockWrapper
 	public void setStockBranch(int stockBranch) {
 		this.stockBranch = stockBranch;
 	}
+	public double getCapital() {
+		return capital;
+	}
+	public void setCapital(double capital) {
+		this.capital = capital;
+	}
+	
 }
