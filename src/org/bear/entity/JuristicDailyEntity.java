@@ -19,27 +19,35 @@ public class JuristicDailyEntity {
 	/**
 	 * 期交所外資未平倉口數
 	 */
-	int lot;
+	int totalLot;
 	/**
 	 * 十大法人未沖銷部位，當月，買方
 	 */
-	int bigTenLotBuyMonth;
+	int topTenLotBuyMonth;
 	/**
 	 * 十大法人未沖銷部位，所有，買方
 	 */
-	int bigTenLotBuyTotal;
+	int topTenLotBuyTotal;
 	/**
 	 * 十大法人未沖銷部位，當月，賣方
 	 */
-	int bigTenLotSellMonth;
+	int topTenLotSellMonth;
 	/**
 	 * 十大法人未沖銷部位，所有，賣方
 	 */
-	int bigTenLotSellTotal;
+	int topTenLotSellTotal;
 	/**
 	 * 小台指外資未平倉口數
+	 */	
+	int totalSmallLot;
+	/**
+	 * 外資新增台指期口數
 	 */
-	int smallLot;
+	int newLot;
+	/**
+	 * 外資新增小台指口數
+	 */
+	int newSmallLot;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -52,41 +60,53 @@ public class JuristicDailyEntity {
 	public void setAmount(long amount) {
 		this.amount = amount;
 	}
-	public int getLot() {
-		return lot;
+	public int getTopTenLotBuyMonth() {
+		return topTenLotBuyMonth;
 	}
-	public void setLot(int lot) {
-		this.lot = lot;
+	public void setTopTenLotBuyMonth(int topTenLotBuyMonth) {
+		this.topTenLotBuyMonth = topTenLotBuyMonth;
 	}
-	public int getBigTenLotBuyMonth() {
-		return bigTenLotBuyMonth;
+	public int getTopTenLotBuyTotal() {
+		return topTenLotBuyTotal;
 	}
-	public void setBigTenLotBuyMonth(int bigTenLotBuyMonth) {
-		this.bigTenLotBuyMonth = bigTenLotBuyMonth;
+	public void setTopTenLotBuyTotal(int topTenLotBuyTotal) {
+		this.topTenLotBuyTotal = topTenLotBuyTotal;
 	}
-	public int getBigTenLotBuyTotal() {
-		return bigTenLotBuyTotal;
+	public int getTopTenLotSellMonth() {
+		return topTenLotSellMonth;
 	}
-	public void setBigTenLotBuyTotal(int bigTenLotBuyTotal) {
-		this.bigTenLotBuyTotal = bigTenLotBuyTotal;
+	public void setTopTenLotSellMonth(int topTenLotSellMonth) {
+		this.topTenLotSellMonth = topTenLotSellMonth;
 	}
-	public int getBigTenLotSellMonth() {
-		return bigTenLotSellMonth;
+	public int getTopTenLotSellTotal() {
+		return topTenLotSellTotal;
 	}
-	public void setBigTenLotSellMonth(int bigTenLotSellMonth) {
-		this.bigTenLotSellMonth = bigTenLotSellMonth;
+	public void setTopTenLotSellTotal(int topTenLotSellTotal) {
+		this.topTenLotSellTotal = topTenLotSellTotal;
 	}
-	public int getBigTenLotSellTotal() {
-		return bigTenLotSellTotal;
+	public int getTotalLot() {
+		return totalLot;
 	}
-	public void setBigTenLotSellTotal(int bigTenLotSellTotal) {
-		this.bigTenLotSellTotal = bigTenLotSellTotal;
+	public void setTotalLot(int totalLot) {
+		this.totalLot = totalLot;
 	}
-	public int getSmallLot() {
-		return smallLot;
+	public int getTotalSmallLot() {
+		return totalSmallLot;
 	}
-	public void setSmallLot(int smallLot) {
-		this.smallLot = smallLot;
+	public void setTotalSmallLot(int totalSmallLot) {
+		this.totalSmallLot = totalSmallLot;
 	}
+	public int getNewLot() {
+		return newLot;
+	}
+	public void setNewLot(int newLot) {
+		this.newLot = newLot;
+	}
+	public int getNewSmallLot() {
+		return newSmallLot;
+	}
+	public void setNewSmallLot(int newSmallLot) {
+		this.newSmallLot = newSmallLot;
+	}	
 	
 }
