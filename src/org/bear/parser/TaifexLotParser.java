@@ -56,7 +56,7 @@ public class TaifexLotParser extends EasyParserBase {
 							content = content.replace(",", "");
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
-							entity.setLot(Integer.parseInt(content));
+							entity.setTotalLot(Integer.parseInt(content));
 						}
 						else if (i == 14 && j == 11)//外資未平倉小台指餘額
 						{
@@ -64,8 +64,25 @@ public class TaifexLotParser extends EasyParserBase {
 							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
 							String content = resultElement.getContent().toString().trim();	
 							content = content.replace(",", "");
-							entity.setSmallLot(Integer.parseInt(content));							
+							entity.setTotalSmallLot(Integer.parseInt(content));							
 						}
+						else if (i == 5 && j == 5)//外資新增台指期口數
+						{
+							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
+							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
+							String content = resultElement.getContent().toString().trim();	
+							content = content.replace(",", "");
+							entity.setNewLot(Integer.parseInt(content));							
+						}
+						else if (i == 14 && j == 5)//外資新增小台指口數
+						{
+							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
+							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
+							String content = resultElement.getContent().toString().trim();	
+							content = content.replace(",", "");
+							entity.setNewSmallLot(Integer.parseInt(content));							
+						}
+						
 					}
 					catch (Exception ex)
 					{
@@ -74,7 +91,9 @@ public class TaifexLotParser extends EasyParserBase {
 				}
 			}
 		}	
-		dao.update("Lot", entity.getLot(), date);
-		dao.update("SmallLot", entity.getSmallLot(), date);
+		dao.update("TotalLot", entity.getTotalLot(), date);
+		dao.update("TotalSmallLot", entity.getTotalSmallLot(), date);
+		dao.update("NewLot", entity.getNewLot(), date);
+		dao.update("NewSmallLot", entity.getNewSmallLot(), date);
 	}
 }
