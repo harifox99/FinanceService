@@ -11,7 +11,7 @@ import org.bear.util.StringUtil;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 /**
- * 擷取三大法人買賣超資料Parser
+ * 擷取三大法人買賣超個股資料Parser
  * @author edward
  *
  */
