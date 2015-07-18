@@ -3,12 +3,12 @@ package org.bear.entity;
 import java.util.Date;
 
 public class ThreeBigExchangeEntity {
-	Date exchangeDate;
-	String stockID;
-	int rank;
-	int stockBranch;
+	public Date exchangeDate;
+	public String stockID;
+	public int rank;
+	public int stockBranch;
 	int quantity;
-	String exchanger;
+	public String exchanger;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
