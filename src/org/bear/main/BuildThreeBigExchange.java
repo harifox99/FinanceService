@@ -25,46 +25,50 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args) 
 	{
+		//String[] date = {"104/07/06", "104/07/07", "104/07/08", "104/07/09"};
+		String[] date = {"104/07/13", "104/07/14", "104/07/15", "104/07/16", "104/07/17"};
 		// TODO Auto-generated method stub
-		String date = "104/07/16";
-		//把民國轉換成西元
-		String[] dateArray = date.split("/");
-		String westenDate = StringUtil.convertYear(dateArray[0]);
-		westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
-		String url;		
-		BuildThreeBigExchange exchange = new BuildThreeBigExchange();
-		/*
-		//上市，外資
-		url = "http://www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U.php";
-		exchange.buildTwse(date, 1, "外資", url);
-		//上市，投信
-		url = "http://www.twse.com.tw/ch/trading/fund/TWT44U/TWT44U.php";
-		exchange.buildTwse(date, 1, "投信", url);		
-		//上櫃，外資，買超
-		url = "http://www.tpex.org.tw/web/stock/3insti/qfii_trading/forgtr_print.php?l=zh-tw&t=D&type=buy&d=" +
-		date + "&s=0,asc,1";
-		exchange.buildTpex(date, 2, "外資", url);	
-		//上櫃，外資，賣超
-		url = "http://www.tpex.org.tw/web/stock/3insti/qfii_trading/forgtr_print.php?l=zh-tw&t=D&type=sell&d=" +
-		date + "&s=0,asc,1";		
-		exchange.buildTpex(date, 2, "外資", url);	
-		//上櫃，投信，買超
-		url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=buy&d=" + date;
-		exchange.buildTpex(date, 2, "投信", url);	
-		//上櫃，投信，賣超
-		url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=sell&d=" + date;
-		exchange.buildTpex(date, 2, "投信", url);	
-		*/
-		//證交所，三大法人買賣超金額
-		url = "http://www.twse.com.tw/ch/trading/fund/BFI82U/BFI82U_print.php?begin_date=" + westenDate.replace("/", "") + 
-			  "&end_date=" + westenDate.replace("/", "") + "&report_type=day&language=ch";
-		exchange.buildJuristicAmountInfo(westenDate, url);
-		//期交所，外資未平倉口數
-		url = "http://www.taifex.com.tw/chinese/3/7_12_3_tbl.asp";
-		exchange.buildTaiFexLot(westenDate, url);
-		//期交所前十大法人未沖銷部位
-		url = "http://www.taifex.com.tw/chinese/3/7_8.asp";
-		exchange.buildTopTen(westenDate, url);
+		for (int i = 0; i < date.length; i++)
+		{
+			//把民國轉換成西元
+			String[] dateArray = date[i].split("/");
+			String westenDate = StringUtil.convertYear(dateArray[0]);
+			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
+			String url;		
+			BuildThreeBigExchange exchange = new BuildThreeBigExchange();	
+			
+			//上市，外資
+			url = "http://www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U.php";
+			exchange.buildTwse(date[i], 1, "外資", url);
+			//上市，投信
+			url = "http://www.twse.com.tw/ch/trading/fund/TWT44U/TWT44U.php";
+			exchange.buildTwse(date[i], 1, "投信", url);	
+			//上櫃，外資，買超
+			url = "http://www.tpex.org.tw/web/stock/3insti/qfii_trading/forgtr_print.php?l=zh-tw&t=D&type=buy&d=" +
+			date[i] + "&s=0,asc,1";
+			exchange.buildTpex(date[i], 2, "外資", url);	
+			//上櫃，外資，賣超
+			url = "http://www.tpex.org.tw/web/stock/3insti/qfii_trading/forgtr_print.php?l=zh-tw&t=D&type=sell&d=" +
+			date[i] + "&s=0,asc,1";		
+			exchange.buildTpex(date[i], 2, "外資", url);	
+			//上櫃，投信，買超
+			url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=buy&d=" + date[i];
+			exchange.buildTpex(date[i], 2, "投信", url);	
+			//上櫃，投信，賣超
+			url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=sell&d=" + date[i];
+			exchange.buildTpex(date[i], 2, "投信", url);	
+			
+			//證交所，三大法人買賣超金額
+			url = "http://www.twse.com.tw/ch/trading/fund/BFI82U/BFI82U_print.php?begin_date=" + westenDate.replace("/", "") + 
+				  "&end_date=" + westenDate.replace("/", "") + "&report_type=day&language=ch";
+			exchange.buildJuristicAmountInfo(westenDate, url);
+			//期交所，外資未平倉口數
+			url = "http://www.taifex.com.tw/chinese/3/7_12_3_tbl.asp";
+			exchange.buildTaiFexLot(westenDate, url);
+			//期交所前十大法人未沖銷部位
+			url = "http://www.taifex.com.tw/chinese/3/7_8.asp";
+			exchange.buildTopTen(westenDate, url);
+		}
 	}
 	/**
 	 * 
