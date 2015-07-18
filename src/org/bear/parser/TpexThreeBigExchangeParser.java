@@ -8,7 +8,7 @@ import org.bear.constant.FinancialReport;
 import org.bear.entity.ThreeBigExchangeEntity;
 import org.bear.util.StringUtil;
 /**
- * 擷取櫃買三大法人買賣超資料
+ * 擷取櫃買三大法人買賣超個股資料
  * @author edward
  *
  */
