@@ -77,4 +77,8 @@
 		class="org.bear.dao.JdbcThreeBigExchangeDao">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	<bean id="juristicDailyReportDao"
+		class="org.bear.dao.JdbcJuristicDailyReportDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
