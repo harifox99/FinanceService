@@ -1,9 +1,14 @@
 package org.bear.financeAnalysis;
 import java.util.*;
 
+import org.bear.dao.BasicStockDao;
 import org.bear.dao.JuristicDailyReportDao;
+import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.JuristicDailyEntity;
 import org.bear.entity.JuristicDailyReport;
+import org.bear.entity.ThreeBigExchangeEntity;
+import org.bear.entity.ThreeBigExchangeReport;
+import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
@@ -15,8 +20,10 @@ public class JuristicAnalysis
 {
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
+	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	List<JuristicDailyEntity> list;
 	List<JuristicDailyReport> reportList;
+	List<ThreeBigExchangeEntity> threeBigList;
 	public List<JuristicDailyReport> getJuristicReport(int size)
 	{
 		list = juristicDailyReportDao.findLatestData(size);
@@ -160,5 +167,41 @@ public class JuristicAnalysis
 		int thisMonth = entity.getTopTenLotBuyMonth() - entity.getTopTenLotSellMonth();
 		int total = entity.getTopTenLotBuyTotal() - entity.getTopTenLotSellTotal();
 		return total - thisMonth;
+	}
+	/**
+	 * 個股法人籌碼分析
+	 * @param stockID
+	 * @param size
+	 * @return
+	 */
+	public List<ThreeBigExchangeReport> getThreeBigStock(String stockID, int size)
+	{
+		threeBigList = juristicDailyReportDao.findSingleStock(stockID ,size);
+		List<ThreeBigExchangeReport> reportList = new ArrayList<ThreeBigExchangeReport>();
+		for (int i = 0; i < threeBigList.size(); i++)
+		{
+			ThreeBigExchangeReport report = new ThreeBigExchangeReport();
+			report.setExchangeDate(threeBigList.get(i).getExchangeDate());
+			report.setExchanger(threeBigList.get(i).getExchanger());
+			report.setQuantity(threeBigList.get(i).getQuantity());
+			report.setRank(threeBigList.get(i).getRank());
+			report.setStockBranch(threeBigList.get(i).getStockBranch());
+			report.setStockID(threeBigList.get(i).getStockID());
+			BasicStockWrapper basicStock = basicStockDao.findBasicData(stockID);
+			report.setStockName(basicStock.getStockName());
+			report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
+			report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
+			reportList.add(report);
+		}
+		return reportList;
+	}
+	private String getCapitalSize(double capital)
+	{
+		if (capital > 100)
+			return "大型股";
+		else if (capital < 100 && capital > 40)
+			return "中型股";
+		else
+			return "小型股";
 	}
 }
