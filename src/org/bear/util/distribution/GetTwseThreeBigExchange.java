@@ -9,7 +9,7 @@ import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.parser.TwseThreeBigExchangeParser;
 import org.bear.util.HttpUtil;
 /**
- * 設定URL，擷取三大法人買賣超資料
+ * 設定URL，擷取三大法人買賣超個股資料
  * @author edward
  *
  */
