@@ -34,25 +34,25 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 							content = content.replace(",", "");
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
-							entity.setBigTenLotBuyMonth(Integer.parseInt(this.retrivelData(content)));
+							entity.setTopTenLotBuyMonth(Integer.parseInt(this.retrivelData(content)));
 						}
 						else if (i == 4 && j == 7)//台指期當月契約賣方
 						{
 							String content = resultElement.getContent().toString().trim();	
 							content = content.replace(",", "");					
-							entity.setBigTenLotSellMonth(Integer.parseInt(this.retrivelData(content)));					
+							entity.setTopTenLotSellMonth(Integer.parseInt(this.retrivelData(content)));					
 						}
 						else if (i == 5 && j == 3)//台指期所有契約買方
 						{
 							String content = resultElement.getContent().toString().trim();	
 							content = content.replace(",", "");					
-							entity.setBigTenLotBuyTotal(Integer.parseInt(this.retrivelData(content)));					
+							entity.setTopTenLotBuyTotal(Integer.parseInt(this.retrivelData(content)));					
 						}
 						else if (i == 5 && j == 7)//台指期所有契約賣方
 						{
 							String content = resultElement.getContent().toString().trim();	
 							content = content.replace(",", "");					
-							entity.setBigTenLotSellTotal(Integer.parseInt(this.retrivelData(content)));					
+							entity.setTopTenLotSellTotal(Integer.parseInt(this.retrivelData(content)));					
 						}
 					}
 					catch (Exception ex)
@@ -62,10 +62,10 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 				}
 			}
 		}	
-		dao.update("BigTenLotBuyMonth", entity.getBigTenLotBuyMonth(), date);
-		dao.update("BigTenLotBuyTotal", entity.getBigTenLotBuyTotal(), date);
-		dao.update("BigTenLotSellMonth", entity.getBigTenLotSellMonth(), date);
-		dao.update("BigTenLotSellTotal", entity.getBigTenLotSellTotal(), date);
+		dao.update("TopTenLotBuyMonth", entity.getTopTenLotBuyMonth(), date);
+		dao.update("TopTenLotBuyTotal", entity.getTopTenLotBuyTotal(), date);
+		dao.update("TopTenLotSellMonth", entity.getTopTenLotSellMonth(), date);
+		dao.update("TopTenLotSellTotal", entity.getTopTenLotSellTotal(), date);
 	}
 	private String retrivelData(String content)
 	{
