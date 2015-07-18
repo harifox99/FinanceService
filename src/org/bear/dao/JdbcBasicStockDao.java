@@ -2,7 +2,6 @@ package org.bear.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bear.entity.BasicStockWrapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -48,6 +47,14 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		String sql = "update StockData set capital = '" + capital +
 		"' where stockID = '" + stockID + "'";
 		this.getSimpleJdbcTemplate().update(sql);
+	}
+
+	@Override
+	public BasicStockWrapper findBasicData(String stockID) {
+		// TODO Auto-generated method stub
+		String sql = "select * from StockData where stockID = ?";
+		BasicStockWrapper entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(BasicStockWrapper.class), stockID);
+		return entity;
 	}
 
 }

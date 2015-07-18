@@ -11,4 +11,5 @@ public interface BasicStockDao
 	//列出上市(branchType=1)或上櫃(branchType=2)股票
 	public List<BasicStockWrapper> findStockTypeData(String stockBranch);
 	public void updateCapital(String stcokID, String capital);
+	public BasicStockWrapper findBasicData(String stockID);
 }
