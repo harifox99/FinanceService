@@ -140,4 +140,11 @@ public class JdbcMacroEconomicDao extends SimpleJdbcDaoSupport implements MacroE
 		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
 		return result;
 	}
+	@Override
+	public int update(String indexName, String indexValue, String date) {
+		// TODO Auto-generated method stub
+		String sql = "UPDATE MacroEconomics SET " + indexName + " = ? where yearMonth = '" + date + "'";
+		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
+		return result;
+	}
 }
