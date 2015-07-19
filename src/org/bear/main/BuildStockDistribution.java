@@ -1,11 +1,7 @@
 package org.bear.main;
-import java.util.List;
 import org.bear.dao.*;
 import org.bear.datainput.ImportStockID;
-import org.bear.parser.distribution.Gretai3BigParser;
-import org.bear.util.distribution.GetGretai3Big;
 import org.bear.util.distribution.StockDistribution;
-import org.bear.util.distribution.GetTwse3Big;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
