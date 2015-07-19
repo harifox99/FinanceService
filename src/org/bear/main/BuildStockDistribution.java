@@ -17,15 +17,15 @@ public class BuildStockDistribution extends ImportStockID
 	}
 	public BuildStockDistribution()
 	{
-		String startYear = "2014";
+		//String startYear = "2014";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
-		StockTypeDao stockTypeDao = (StockTypeDao)context.getBean("stockTypeDao");
-		ThreeBigDao threeBigDao = (ThreeBigDao)context.getBean("threeBigDao");
+		//StockTypeDao stockTypeDao = (StockTypeDao)context.getBean("stockTypeDao");
+		//ThreeBigDao threeBigDao = (ThreeBigDao)context.getBean("threeBigDao");
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
 	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
-		String[] dateString = {"20150529"};
+		String[] dateString = {"20150626"};
 		
 		for (int i = 0; i < dateString.length; i++)
 		{
@@ -40,7 +40,7 @@ public class BuildStockDistribution extends ImportStockID
 					dateString[i].substring(0, 4), dateString[i].substring(4, 8), null, null);
 			}
 		}
-		
+		/*
 		//證交所三大法人增減
 		String[] monthList = {"07", "08"};
 		List<Integer> typeIdList = stockTypeDao.findAllData();
@@ -72,7 +72,7 @@ public class BuildStockDistribution extends ImportStockID
 			parser.setDateString(startYear + monthList[i]);
 			parser.parse(0);
 		}
-		
+		*/
 		
 	}
 }
