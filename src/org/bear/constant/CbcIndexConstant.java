@@ -34,6 +34,7 @@ public class CbcIndexConstant
 		MONTH_HASH.put("2015M02", 644);	
 		MONTH_HASH.put("2015M03", 645);	
 		MONTH_HASH.put("2015M04", 646);	
+		MONTH_HASH.put("2015M05", 647);	
 	}	
 	/**
 	 * 總經指標
@@ -49,7 +50,8 @@ public class CbcIndexConstant
 		STAT_DB_HASH.put("2015M01", 577);	
 		STAT_DB_HASH.put("2015M02", 578);	
 		STAT_DB_HASH.put("2015M03", 579);	
-		STAT_DB_HASH.put("2015M04", 580);	
+		STAT_DB_HASH.put("2015M04", 580);
+		STAT_DB_HASH.put("2015M05", 581);
 	}
 	/**
 	 * 台股市值
