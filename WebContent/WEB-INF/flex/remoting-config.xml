@@ -84,4 +84,9 @@
             <source>org.bear.financeAnalysis.PerfectAnalysis</source>
         </properties>
     </destination>
+    <destination id="juristicAnalysis">
+        <properties>
+            <source>org.bear.financeAnalysis.JuristicAnalysis</source>
+        </properties>
+    </destination>
 </service>
