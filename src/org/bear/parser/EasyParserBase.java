@@ -10,7 +10,7 @@ import net.htmlparser.jericho.Source;
 public abstract class EasyParserBase {
 	public String responseString;
 	public String url;
-	List<Element> elementList = null;
+	public List<Element> elementList = null;
 	public void parse(int tableIndex) {
 		Source source = new Source(responseString);
 		//System.out.println(source.toString());
