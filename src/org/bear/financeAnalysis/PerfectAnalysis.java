@@ -43,12 +43,15 @@ public class PerfectAnalysis
 	 * @param expectedGrossProfitRatio 期望的毛利率
 	 * @param operatingProfitRatio 期望的營業利益率
 	 * @param expectedPe 期望的PE
-	 * @param isMinusGrowthFilter 過濾零成長標的
+	 * @param isMinusRevenueGrowth 過濾營收零成長標的
+	 * @param isMinusProfitGrowth 過濾毛利/營業利益/稅前淨利成長標的 
+	 * (這個值如果為true，則最新一季的毛利/營業利益/稅前淨利一定要為正數，反之則不需要符合此條件)
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
 			int demandGrossProfit, int demandOperatingProfitRatio, int demandEps,
-			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe, boolean isMinusGrowthFilter)
+			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe, 
+			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -213,7 +216,7 @@ public class PerfectAnalysis
 				//System.out.println("stockID: " + stockID);
 				List<IncomeStatementEntity> entity = incomeStatementDao.findDataByLatest(maxSeasons+1, stockID);
 				//營業利益
-				if (checkProfitYoy(entity, demandOperatingProfit, 1, incomeStatementDao))
+				if (checkProfitYoy(entity, demandOperatingProfit, 1, incomeStatementDao, isMinusProfitGrowth))
 				{
 					calculateList.add(perfectList.get(i));
 				}
@@ -223,7 +226,7 @@ public class PerfectAnalysis
 			calculateList = new ArrayList<List<String>>();
 			
 			//至少要有N期營收是正的
-			if (isMinusGrowthFilter == true)
+			if (isMinusRevenueGrowth == true)
 			{
 				for (int i = 0; i < perfectList.size(); i++)
 				{
@@ -558,7 +561,8 @@ public class PerfectAnalysis
 		return rateList;
 	}
 	private boolean checkProfitYoy(List<IncomeStatementEntity> entity, 
-			int expectedRate, int type, IncomeStatementDao incomeStatementDao)
+			int expectedRate, int type, IncomeStatementDao incomeStatementDao,
+			boolean isMinusProfitGrowth)
 	{	
 		double thisSeason = 0;
 		double lastSeason = 0;
@@ -588,8 +592,8 @@ public class PerfectAnalysis
 					if (thisSeason == 0)
 					{
 						thisSeason = (double)entity.get(i).getGrossProfit();
-						//最新一季的資料要 > 0
-						if (thisSeason < 0)
+						//最新一季的資料要  > 0
+						if (isMinusProfitGrowth == true && thisSeason < 0)
 							return false;
 					}
 					lastSeason = (double)lastEntity.getGrossProfit();
@@ -599,8 +603,8 @@ public class PerfectAnalysis
 					if (thisSeason == 0)
 					{
 						thisSeason = (double)entity.get(i).getOperatingIncome();
-						//最新一季的資料要 > 0
-						if (thisSeason < 0)
+						//最新一季的資料要  > 0
+						if (isMinusProfitGrowth == true && thisSeason < 0)
 							return false;
 					}
 					lastSeason = (double)lastEntity.getOperatingIncome();
@@ -610,8 +614,8 @@ public class PerfectAnalysis
 					if (thisSeason == 0)
 					{
 						thisSeason = (double)entity.get(i).getPreTaxIncome();
-						//最新一季的資料要 > 0
-						if (thisSeason < 0)
+						//最新一季的資料要  > 0
+						if (isMinusProfitGrowth == true && thisSeason < 0)
 							return false;
 					}
 					lastSeason = (double)lastEntity.getPreTaxIncome();
