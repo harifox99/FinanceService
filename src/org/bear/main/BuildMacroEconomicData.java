@@ -21,16 +21,13 @@ public class BuildMacroEconomicData extends ParseFile
 	 * 改startYear, startMonth, endYear, endMonth
 	 * 改CbcIndexConstant.MONTH_HASH.get("201XMXX")
 	 * 用經建會、中央銀行與證券期貨發展基金會的資料建立總經指標、貨幣資料與大盤指數
+	 * 記得改初始日期
 	 * @param args
 	 */
 	List <MacroEconomicEntity> list;
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
-		String startYear = "2014";
-		String startMonth = "8";
-		String endYear = "2015";
-		String endMonth = "4";
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		MacroEconomicDao dao = (MacroEconomicDao)context.getBean("macroEconomicDao");
 		//CEPD
@@ -46,31 +43,33 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.getConnection();
 			parser.parse(10);
 		}*/
+		
 		//總經指標		
 		GetNdcData getNdcData = new GetNdcData(); 
 		getNdcData.setDao(dao);
-		getNdcData.getContent(CbcIndexConstant.STAT_DB_HASH.get("2015M03"), CbcIndexConstant.STAT_DB_HASH.get("2015M04"));
+		getNdcData.getContent(CbcIndexConstant.STAT_DB_HASH.get("2015M04"), CbcIndexConstant.STAT_DB_HASH.get("2015M05"));
 		//景氣燈號
 		GetNdcSignalData getNdcSignalData = new GetNdcSignalData(); 
 		getNdcSignalData.setDao(dao);
-		getNdcSignalData.getContent(CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M03"), CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M04"));
+		getNdcSignalData.getContent(CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M04"), CbcIndexConstant.MACRO_ECONOMIC_SIGNAL.get("2015M05"));
 		//台股市值
 		GetStockValue getStockValue = new GetStockValue();
 		getStockValue.setDao(dao);
-		getStockValue.getContent(CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2015M03"),
-								 CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2015M04"));
+		getStockValue.getContent(CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2015M04"),
+								 CbcIndexConstant.STAT_STOCK_VALUE_HASH.get("2015M05"));
 		//貨幣
 		GetCbcMoney money = new GetCbcMoney();
 		money.setDao(dao);
-		money.getContent(CbcIndexConstant.MONTH_HASH.get("2015M03"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
+		money.getContent(CbcIndexConstant.MONTH_HASH.get("2015M04"), CbcIndexConstant.MONTH_HASH.get("2015M05"));		
 		//活期儲蓄存款
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2015M03"), CbcIndexConstant.MONTH_HASH.get("2015M04"));		
-		//TWSE
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get("2015M04"), CbcIndexConstant.MONTH_HASH.get("2015M05"));
+			
+		//TWSE，用Yahoo的
 		TwseIndex twseIndex = new TwseIndex();
 		twseIndex.setDao(dao);
-		twseIndex.getContent(startYear, startMonth, endYear, endMonth);
+		twseIndex.getContent();
 	}
 	public void insertBatch()
 	{
