@@ -33,6 +33,8 @@ public class RedRabbitRevenueAnalysis
 			{
 				RedRabbitWrapper wrapper = new RedRabbitWrapper();	
 				String stockID = stockIdList.get(i).getStockID();
+				//if (!stockID.equals("1417"))
+					//continue;
 				debug = stockID;
 				int currentRevenue = 0;
 				//紅兔指標至少要14個月才能計算
@@ -48,13 +50,13 @@ public class RedRabbitRevenueAnalysis
 						currentRevenue = entityList.get(j).getRevenue();
 						wrapper.setOneYearHigh(1);
 					}
-					else
+					else 
 					{
-						if (currentRevenue < entityList.get(j).getRevenue());
+						if (currentRevenue < entityList.get(j).getRevenue())										
 						{
 							wrapper.setOneYearHigh(0);
-							break;
-						}						
+							break;										
+						}
 					}
 				}	
 				
@@ -70,7 +72,7 @@ public class RedRabbitRevenueAnalysis
 					}
 					else
 					{
-						if (currentRevenue < entityList.get(j).getRevenue());
+						if (currentRevenue < entityList.get(j).getRevenue())
 						{
 							wrapper.setSixYearHigh(0);
 							break;
@@ -98,7 +100,8 @@ public class RedRabbitRevenueAnalysis
 					}
 				}
 				//將List排序後得到分數，最高得2分，次高得一分，否則0分
-				Collections.sort(sortedRevenue);
+				//Collections.sort(sortedRevenue);
+				Collections.sort(sortedRevenue, Collections.reverseOrder());
 				int index = 0;
 				for (Integer revenue : sortedRevenue) 
 				{
@@ -144,7 +147,8 @@ public class RedRabbitRevenueAnalysis
 					}
 				}
 				//將List排序後得到分數，最高得2分，次高得一分，否則0分
-				Collections.sort(sortedRevenue);
+				//Collections.sort(sortedRevenue);
+				Collections.sort(sortedRevenue, Collections.reverseOrder());
 				index = 0;
 				for (Integer revenue : sortedRevenue) 
 				{
@@ -172,37 +176,37 @@ public class RedRabbitRevenueAnalysis
 				}
 				//過去一年累計營收創下六年新高	
 				//過去一年累計營收YoY創下六年新高
-				sortedRevenue = new ArrayList<Integer>();
-				int oneYearAccumulation = 0;
-				double currentYoy = 0;
+				List<Long> sortedAccumulationRevenue = new ArrayList<Long>();
+				long oneYearAccumulation = 0;
+				
 				for (int j = 0; j < entityList.size() - 1; j++)
 				{				
 					oneYearAccumulation += entityList.get(j).getRevenue();
-					if (j%11 == 0)
+					if (j%12 == 11)
 					{
-						sortedRevenue.add(oneYearAccumulation);
+						sortedAccumulationRevenue.add(oneYearAccumulation);
 						oneYearAccumulation = 0;
 					}					
 				}
 				List<Double> yoyList = new ArrayList<Double>();
-				for (int j = 0; j < sortedRevenue.size()-1; j++)
-				{
-					if (j == 0)
-						currentYoy = sortedRevenue.get(j);
-					double yoy = (double)sortedRevenue.get(j)/sortedRevenue.get(j+1);
+				for (int j = 0; j < sortedAccumulationRevenue.size()-1; j++)
+				{					
+					double yoy = (double)sortedAccumulationRevenue.get(j)/sortedAccumulationRevenue.get(j+1);
 					yoyList.add(yoy);
 				}
 				index = 0;
 				//過去一年累計營收YoY創下六年新高
+				double currentYoy = 0;
 				for (Double yoy : yoyList) 
 				{
 					if (index == 0)
 					{
+						currentYoy = yoy;
 						wrapper.setSixYearAccumulationYoyHigh(1);
 					}
 					else
 					{
-						if (currentYoy < yoy);
+						if (currentYoy < yoy)
 						{
 							wrapper.setSixYearAccumulationYoyHigh(0);
 							break;
@@ -212,15 +216,17 @@ public class RedRabbitRevenueAnalysis
 				}
 				//過去一年累計營收創下六年新高
 				index = 0;
-				for (Integer accumulation: sortedRevenue)
+				long currentAccumulation = 0;
+				for (Long accumulation: sortedAccumulationRevenue)
 				{
 					if (index == 0)
 					{
+						currentAccumulation = accumulation;
 						wrapper.setSixYearAccumulationHigh(1);
 					}
 					else
 					{
-						if (currentYoy < accumulation);
+						if (currentAccumulation < accumulation)
 						{
 							wrapper.setSixYearAccumulationHigh(0);
 							break;
@@ -240,7 +246,7 @@ public class RedRabbitRevenueAnalysis
 					}
 					else
 					{
-						if (currentRevenue < entityList.get(j).getRevenue());
+						if (currentRevenue < entityList.get(j).getRevenue())
 						{
 							wrapper.setConsecutive3MRevenueGrow(0);
 							break;
@@ -257,7 +263,7 @@ public class RedRabbitRevenueAnalysis
 					}
 					else
 					{
-						if (currentYoy < (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue());
+						if (currentYoy < (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue())
 						{
 							wrapper.setConsecutive3MYoyGrow(0);
 							break;
@@ -274,7 +280,7 @@ public class RedRabbitRevenueAnalysis
 					}
 					else
 					{
-						if (currentYoy < (double)entityList.get(j).getAccumulation()/entityList.get(j).getLastAccumulation());
+						if (currentYoy < (double)entityList.get(j).getAccumulation()/entityList.get(j).getLastAccumulation())
 						{
 							wrapper.setConsecutive3MAccumuYoyGrow(0);
 							break;
