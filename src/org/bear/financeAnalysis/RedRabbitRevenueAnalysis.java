@@ -33,8 +33,12 @@ public class RedRabbitRevenueAnalysis
 			{
 				RedRabbitWrapper wrapper = new RedRabbitWrapper();	
 				String stockID = stockIdList.get(i).getStockID();
-				//if (!stockID.equals("1417"))
-					//continue;
+				/*
+				if (!stockID.equals("1314") && !stockID.equals("1201") && !stockID.equals("1203") &&
+					!stockID.equals("1213") && !stockID.equals("1215") && !stockID.equals("1216") &&
+					!stockID.equals("1217") && !stockID.equals("1218") && !stockID.equals("1227") &&
+					!stockID.equals("1231") && !stockID.equals("1234") && !stockID.equals("1234") )
+					continue;*/
 				debug = stockID;
 				int currentRevenue = 0;
 				//紅兔指標至少要14個月才能計算
@@ -255,19 +259,20 @@ public class RedRabbitRevenueAnalysis
 				}		
 				//連三月單月YoY成長
 				for (int j = 0; j < entityList.size(); j++)
-				{
+				{					
 					if (j == 0)
-					{
+					{			
 						currentYoy = (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue();
 						wrapper.setConsecutive3MYoyGrow(1);
 					}
+					else if (currentYoy < (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue())
+					{
+						wrapper.setConsecutive3MYoyGrow(0);
+						break;
+					}	
 					else
 					{
-						if (currentYoy < (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue())
-						{
-							wrapper.setConsecutive3MYoyGrow(0);
-							break;
-						}						
+						currentYoy = (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue();
 					}
 				}
 				//連三月累計YoY成長
@@ -278,13 +283,14 @@ public class RedRabbitRevenueAnalysis
 						currentYoy = (double)entityList.get(j).getAccumulation()/entityList.get(j).getLastAccumulation();
 						wrapper.setConsecutive3MAccumuYoyGrow(1);
 					}
+					else if (currentYoy < (double)entityList.get(j).getAccumulation()/entityList.get(j).getLastAccumulation())
+					{
+						wrapper.setConsecutive3MAccumuYoyGrow(0);
+						break;
+					}						
 					else
 					{
-						if (currentYoy < (double)entityList.get(j).getAccumulation()/entityList.get(j).getLastAccumulation())
-						{
-							wrapper.setConsecutive3MAccumuYoyGrow(0);
-							break;
-						}						
+						currentYoy = (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue();
 					}
 				}		
 				//本月MoM>去年同期MoM
