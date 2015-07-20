@@ -67,10 +67,12 @@ public class PerfectAnalysis
 		try
 		{			
 			columnNameList.add("股票代碼");
+			columnNameList.add("股票名稱");
 			calculateList = new ArrayList<List<String>>();
 			for (int i = 0; i < stockList.size(); i++)
 			{
 				String stockID = stockList.get(i).getStockID();
+				String stockName = stockList.get(i).getStockName();
 				//if (!stockID.equals("1715"))
 					//continue;
 				//System.out.println("stockID: " + stockID);
@@ -88,6 +90,7 @@ public class PerfectAnalysis
 				{					
 					yoyList = ReverseUtil.reverse(yoyList);					
 					yoyList.add(0, stockID);
+					yoyList.add(1, stockName);
 					//把經過第一關檢驗的股票代碼先暫存起來，第二關就不用掃瞄所有股票了
 					perfectList.add(yoyList);				
 				}
