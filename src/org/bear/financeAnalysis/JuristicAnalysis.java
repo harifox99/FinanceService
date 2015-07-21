@@ -22,12 +22,11 @@ public class JuristicAnalysis
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	List<JuristicDailyEntity> list;
-	List<JuristicDailyReport> reportList;
 	List<ThreeBigExchangeEntity> threeBigList;
 	public List<JuristicDailyReport> getJuristicReport(int size)
 	{
 		list = juristicDailyReportDao.findLatestData(size);
-		reportList = new ArrayList<JuristicDailyReport>();
+		List<JuristicDailyReport> reportList = new ArrayList<JuristicDailyReport>();
 		try
 		{
 			for (int i = 0; i < list.size(); i++)
@@ -203,5 +202,47 @@ public class JuristicAnalysis
 			return "中型股";
 		else
 			return "小型股";
+	}
+	/**
+	 * 搜尋某日台股三大法人買賣超個股前N名
+	 * @param date
+	 * @return
+	 */
+	public List<ThreeBigExchangeReport> getTopTenInfo(String date, int rank)
+	{
+		List<ThreeBigExchangeReport> reportList = new ArrayList<ThreeBigExchangeReport>();
+		threeBigList = juristicDailyReportDao.findTopSingleStock(date, rank);
+		for (int i = 0; i < threeBigList.size(); i++)
+		{
+			ThreeBigExchangeReport report = new ThreeBigExchangeReport();
+			report.setExchangeDate(threeBigList.get(i).getExchangeDate());
+			report.setExchanger(threeBigList.get(i).getExchanger());
+			report.setQuantity(threeBigList.get(i).getQuantity());
+			report.setRank(threeBigList.get(i).getRank());
+			report.setStockBranch(threeBigList.get(i).getStockBranch());
+			report.setStockID(threeBigList.get(i).getStockID());
+			BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
+			report.setStockName(basicStock.getStockName());
+			report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
+			report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
+			reportList.add(report);
+		}
+		threeBigList = juristicDailyReportDao.findLastSingleStock(date, rank);
+		for (int i = 0; i < threeBigList.size(); i++)
+		{
+			ThreeBigExchangeReport report = new ThreeBigExchangeReport();
+			report.setExchangeDate(threeBigList.get(i).getExchangeDate());
+			report.setExchanger(threeBigList.get(i).getExchanger());
+			report.setQuantity(threeBigList.get(i).getQuantity());
+			report.setRank(threeBigList.get(i).getRank());
+			report.setStockBranch(threeBigList.get(i).getStockBranch());
+			report.setStockID(threeBigList.get(i).getStockID());
+			BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
+			report.setStockName(basicStock.getStockName());
+			report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
+			report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
+			reportList.add(report);
+		}
+		return reportList;
 	}
 }
