@@ -53,4 +53,25 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID);
 		return entityList;
 	}
+
+	@Override
+	public List<ThreeBigExchangeEntity> findTopSingleStock(String date, int rank) {
+		List <ThreeBigExchangeEntity> entityList = null;
+		String sql = "select * from ThreeBigExchange where date = ? and rank <= " +
+		rank + " ORDER BY rank";
+		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date);
+		return entityList;
+	}
+
+	@Override
+	public List<ThreeBigExchangeEntity> findLastSingleStock(String date, int rank) 
+	{
+		List <ThreeBigExchangeEntity> entityList = null;
+		String sql = "select * from ThreeBigExchange where date = ? and rank < 0 and rank >= -" +
+		rank + " ORDER BY rank";
+		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date);
+		return entityList;
+	}
+
+	
 }
