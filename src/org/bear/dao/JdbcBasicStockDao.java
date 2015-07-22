@@ -52,9 +52,16 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 	@Override
 	public BasicStockWrapper findBasicData(String stockID) {
 		// TODO Auto-generated method stub
-		String sql = "select * from StockData where stockID = ?";
-		BasicStockWrapper entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(BasicStockWrapper.class), stockID);
-		return entity;
+		try
+		{
+			String sql = "select * from StockData where stockID = ?";
+			BasicStockWrapper entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(BasicStockWrapper.class), stockID);
+			return entity;
+		}
+		catch (Exception ex)
+		{
+			return null;
+		}
 	}
 
 }
