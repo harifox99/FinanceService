@@ -530,6 +530,19 @@ public class DateTimeFactory {
 		}
 		return this.changeStrToDate(type, qDateBeginStr);
 	}
+	/**
+	 * 判斷是否是假日
+	 * @return
+	 */
+	public boolean isHoliday(Date date)
+	{
+		SimpleDateFormat date2DayFormat = new SimpleDateFormat("E");
+	    String day = date2DayFormat.format(date);
+	    if (day.equals("星期六") || day.equals("星期日"))
+	    	return true;
+	    else
+	    	return false;
+	}
 	
 	public static void main(String[] args) 
 	{
