@@ -224,6 +224,8 @@ public class JuristicAnalysis
 		//Searching for past 2 day
 		for (int i = 0; i < reportList.size(); i++)
 		{
+			//if (!reportList.get(i).getStockID().equals("2324"))
+				//continue;
 			if (atMap.get(reportList.get(i).getStockID()) == null)
 			{
 				DateTimeFactory dateTimeFactory = new DateTimeFactory();
@@ -239,7 +241,8 @@ public class JuristicAnalysis
 				while (dateTimeFactory.isHoliday(javaDate))
 					javaDate = dateTimeFactory.addDay(javaDate, -1);
 				List<ThreeBigExchangeEntity> beforeYesterdayList = juristicDailyReportDao.findStockByDate(dateTimeFactory.getDateTimetoString(javaDate, 3), reportList.get(i).getStockID());
-				if (yesterdayList == null && beforeYesterdayList == null)
+				if ((yesterdayList == null || yesterdayList.size() == 0) && 
+					(beforeYesterdayList == null || beforeYesterdayList.size() == 0))
 					continue;
 				else //重新抓取今天有上榜的stockID
 				{				
