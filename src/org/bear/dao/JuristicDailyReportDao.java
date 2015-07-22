@@ -15,5 +15,4 @@ public interface JuristicDailyReportDao {
 	public List<JuristicDailyEntity> findLatestData(int size);
 	public List<ThreeBigExchangeEntity> findSingleStock(String stockID, int size);
 	public List<ThreeBigExchangeEntity> findTopSingleStock(String date, int rank);
-	public List<ThreeBigExchangeEntity> findLastSingleStock(String date, int rank);
 }
