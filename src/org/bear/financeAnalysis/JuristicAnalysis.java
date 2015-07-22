@@ -23,6 +23,11 @@ public class JuristicAnalysis
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	List<JuristicDailyEntity> list;
 	List<ThreeBigExchangeEntity> threeBigList;
+	/**
+	 * 台股風向球
+	 * @param index
+	 * @return
+	 */
 	public List<JuristicDailyReport> getJuristicReport(int size)
 	{
 		list = juristicDailyReportDao.findLatestData(size);
@@ -214,30 +219,16 @@ public class JuristicAnalysis
 		threeBigList = juristicDailyReportDao.findTopSingleStock(date, rank);
 		for (int i = 0; i < threeBigList.size(); i++)
 		{
+			BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
+			if (basicStock == null)
+				continue;
 			ThreeBigExchangeReport report = new ThreeBigExchangeReport();
 			report.setExchangeDate(threeBigList.get(i).getExchangeDate());
 			report.setExchanger(threeBigList.get(i).getExchanger());
 			report.setQuantity(threeBigList.get(i).getQuantity());
 			report.setRank(threeBigList.get(i).getRank());
 			report.setStockBranch(threeBigList.get(i).getStockBranch());
-			report.setStockID(threeBigList.get(i).getStockID());
-			BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
-			report.setStockName(basicStock.getStockName());
-			report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
-			report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
-			reportList.add(report);
-		}
-		threeBigList = juristicDailyReportDao.findLastSingleStock(date, rank);
-		for (int i = 0; i < threeBigList.size(); i++)
-		{
-			ThreeBigExchangeReport report = new ThreeBigExchangeReport();
-			report.setExchangeDate(threeBigList.get(i).getExchangeDate());
-			report.setExchanger(threeBigList.get(i).getExchanger());
-			report.setQuantity(threeBigList.get(i).getQuantity());
-			report.setRank(threeBigList.get(i).getRank());
-			report.setStockBranch(threeBigList.get(i).getStockBranch());
-			report.setStockID(threeBigList.get(i).getStockID());
-			BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
+			report.setStockID(threeBigList.get(i).getStockID());			
 			report.setStockName(basicStock.getStockName());
 			report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
 			report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
