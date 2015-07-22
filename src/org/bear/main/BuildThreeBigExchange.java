@@ -25,8 +25,8 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args) 
 	{
-		//String[] date = {"104/07/06", "104/07/07", "104/07/08", "104/07/09"};
-		String[] date = {"104/07/13", "104/07/14", "104/07/15", "104/07/16", "104/07/17"};
+		String[] date = {"104/07/20"};
+		//String[] date = {"104/07/13", "104/07/14", "104/07/15", "104/07/16", "104/07/17"};
 		// TODO Auto-generated method stub
 		for (int i = 0; i < date.length; i++)
 		{
