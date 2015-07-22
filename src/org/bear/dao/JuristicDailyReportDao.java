@@ -13,6 +13,7 @@ public interface JuristicDailyReportDao {
 	public void insert(JuristicDailyEntity entity); 
 	public int update(String indexName, int indexValue, String date); 
 	public List<JuristicDailyEntity> findLatestData(int size);
-	public List<ThreeBigExchangeEntity> findSingleStock(String stockID, int size);
+	public List<ThreeBigExchangeEntity> findStockBySize(String stockID, int size);
 	public List<ThreeBigExchangeEntity> findTopSingleStock(String date, int rank);
+	public List<ThreeBigExchangeEntity> findStockByDate(String date, String stockID);
 }

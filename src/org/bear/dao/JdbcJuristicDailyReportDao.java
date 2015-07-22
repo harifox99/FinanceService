@@ -46,7 +46,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 	}
 
 	@Override
-	public List<ThreeBigExchangeEntity> findSingleStock(String stockID, int size) {
+	public List<ThreeBigExchangeEntity> findStockBySize(String stockID, int size) {
 		// TODO Auto-generated method stub
 		List <ThreeBigExchangeEntity> entityList = null;
 		String sql = "select top " + size + " * from ThreeBigExchange where stockID = ? ORDER BY ExchangeDate desc";
@@ -68,6 +68,23 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+		}
+		return entityList;
+	}
+
+	@Override
+	public List<ThreeBigExchangeEntity> findStockByDate(String date, String stockID) 
+	{
+		List <ThreeBigExchangeEntity> entityList = null;
+		try
+		{			
+			String sql = "select * from ThreeBigExchange where exchangeDate = ? and stockID = ?";			
+			System.out.println(sql);
+			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date, stockID);
+		}
+		catch (Exception ex)
+		{
+			return null;
 		}
 		return entityList;
 	}
