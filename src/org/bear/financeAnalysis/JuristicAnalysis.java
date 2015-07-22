@@ -216,82 +216,79 @@ public class JuristicAnalysis
 	 */
 	public List<ThreeBigExchangeReport> getTopTenInfo(String date, int rank)
 	{
+		HashMap<String, Boolean> atMap = new HashMap<String, Boolean>();
 		List<ThreeBigExchangeReport> reportList = new ArrayList<ThreeBigExchangeReport>();
 		List<ThreeBigExchangeReport> filterList = new ArrayList<ThreeBigExchangeReport>();
 		threeBigList = juristicDailyReportDao.findTopSingleStock(date, rank);
-		for (int i = 0; i < threeBigList.size(); i++)
-		{
-			BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
-			if (basicStock == null)
-				continue;
-			ThreeBigExchangeReport report = new ThreeBigExchangeReport();
-			report.setExchangeDate(threeBigList.get(i).getExchangeDate());
-			report.setExchanger(threeBigList.get(i).getExchanger());
-			report.setQuantity(threeBigList.get(i).getQuantity());
-			report.setRank(threeBigList.get(i).getRank());
-			report.setStockBranch(threeBigList.get(i).getStockBranch());
-			report.setStockID(threeBigList.get(i).getStockID());			
-			report.setStockName(basicStock.getStockName());
-			report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
-			report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
-			reportList.add(report);
-		}
+		reportList.addAll(this.converter(threeBigList));
 		//Searching for past 2 day
 		for (int i = 0; i < reportList.size(); i++)
 		{
-			DateTimeFactory dateTimeFactory = new DateTimeFactory();
-			Date javaDate = dateTimeFactory.changeStrToDate(3, date);
-			javaDate = dateTimeFactory.addDay(javaDate, -1);
-			List<ThreeBigExchangeEntity> yesterdayList = juristicDailyReportDao.findStockByDate(dateTimeFactory.getDateTimetoString(javaDate, 3), reportList.get(i).getStockID());
-			javaDate = dateTimeFactory.addDay(javaDate, -1);
-			List<ThreeBigExchangeEntity> beforeYesterdayList = juristicDailyReportDao.findStockByDate(dateTimeFactory.getDateTimetoString(javaDate, 3), reportList.get(i).getStockID());
-			if (yesterdayList == null && beforeYesterdayList == null)
-				continue;
-			if (yesterdayList != null)
+			if (atMap.get(reportList.get(i).getStockID()) == null)
 			{
-				for (int j = 0; j < 0; j++)
-				{
-					ThreeBigExchangeReport report = new ThreeBigExchangeReport();
-					report.setExchangeDate(threeBigList.get(i).getExchangeDate());
-					report.setExchanger(threeBigList.get(i).getExchanger());
-					report.setQuantity(threeBigList.get(i).getQuantity());
-					report.setRank(threeBigList.get(i).getRank());
-					report.setStockBranch(threeBigList.get(i).getStockBranch());
-					report.setStockID(threeBigList.get(i).getStockID());
-					BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
-					if (basicStock == null)
-					{
-						System.out.println("AAA");
-					}
-					report.setStockName(basicStock.getStockName());
-					report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
-					report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
-					filterList.add(report);
+				DateTimeFactory dateTimeFactory = new DateTimeFactory();
+				Date javaDate = dateTimeFactory.changeStrToDate(3, date);
+				//昨天的資料
+				javaDate = dateTimeFactory.addDay(javaDate, -1);
+				//遇假日則再往前一天
+				while (dateTimeFactory.isHoliday(javaDate))
+					javaDate = dateTimeFactory.addDay(javaDate, -1);
+				List<ThreeBigExchangeEntity> yesterdayList = juristicDailyReportDao.findStockByDate(dateTimeFactory.getDateTimetoString(javaDate, 3), reportList.get(i).getStockID());
+				javaDate = dateTimeFactory.addDay(javaDate, -1);
+				//遇假日則再往前一天
+				while (dateTimeFactory.isHoliday(javaDate))
+					javaDate = dateTimeFactory.addDay(javaDate, -1);
+				List<ThreeBigExchangeEntity> beforeYesterdayList = juristicDailyReportDao.findStockByDate(dateTimeFactory.getDateTimetoString(javaDate, 3), reportList.get(i).getStockID());
+				if (yesterdayList == null && beforeYesterdayList == null)
+					continue;
+				else //重新抓取今天有上榜的stockID
+				{				
+					List<ThreeBigExchangeEntity> todayList = juristicDailyReportDao.findStockByDate(date, reportList.get(i).getStockID());				
+					filterList.addAll(this.converter(todayList));				
 				}
-			}
-			if (beforeYesterdayList == null)
-			{
-				for (int j = 0; j < 0; j++)
+				if (yesterdayList != null)
 				{
-					ThreeBigExchangeReport report = new ThreeBigExchangeReport();
-					report.setExchangeDate(threeBigList.get(i).getExchangeDate());
-					report.setExchanger(threeBigList.get(i).getExchanger());
-					report.setQuantity(threeBigList.get(i).getQuantity());
-					report.setRank(threeBigList.get(i).getRank());
-					report.setStockBranch(threeBigList.get(i).getStockBranch());
-					report.setStockID(threeBigList.get(i).getStockID());
-					BasicStockWrapper basicStock = basicStockDao.findBasicData(threeBigList.get(i).getStockID());
-					if (basicStock == null)
-					{
-						System.out.println("BBB");
-					}
-					report.setStockName(basicStock.getStockName());
-					report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
-					report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
-					filterList.add(report);
+					filterList.addAll(this.converter(yesterdayList));		
 				}
+				if (beforeYesterdayList != null)
+				{
+					filterList.addAll(this.converter(beforeYesterdayList));
+				}
+				atMap.put(reportList.get(i).getStockID(), true);
 			}
 		}
 		return filterList;
 	}
+	private List<ThreeBigExchangeReport> converter(List<ThreeBigExchangeEntity> list)
+	{
+		List<ThreeBigExchangeReport> filterList = new ArrayList<ThreeBigExchangeReport>();
+		try
+		{			
+			for (int j = 0; j < list.size(); j++)
+			{
+				BasicStockWrapper basicStock = basicStockDao.findBasicData(list.get(j).getStockID());
+				if (basicStock == null)
+					continue;
+				ThreeBigExchangeReport report = new ThreeBigExchangeReport();				
+				report.setExchangeDate(list.get(j).getExchangeDate());
+				report.setExchanger(list.get(j).getExchanger());
+				report.setQuantity(list.get(j).getQuantity());
+				report.setRank(list.get(j).getRank());
+				report.setStockBranch(list.get(j).getStockBranch());
+				report.setStockID(list.get(j).getStockID());		
+				report.setStockName(basicStock.getStockName());
+				report.setCompanySize(this.getCapitalSize(basicStock.getCapital()));
+				report.setCapital(StringUtil.setPointLength(basicStock.getCapital(), 2));
+				filterList.add(report);
+			}
+			return filterList;
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 }
