@@ -92,10 +92,10 @@ public class JuristicAnalysis
 		else if (this.pastNewLot(newLot, index) == -1 && amount < -bigAmount)
 			message = "偏空機率高";
 		//突然大增5000口以上多單，或大增5倍以上多單
-		else if (newLot > 5000 || this.compareRatio(totalLot, index))
+		else if (newLot > 5000 || (this.compareRatio(totalLot, index) && totalLot > 0))
 			message = "大盤隔日走多機率非常高";
 		//由正轉負至少5000口，或大增5倍以上空單
-		else if (totalLot < -5000 || this.compareRatio(totalLot, index))
+		else if (totalLot < -5000 || (this.compareRatio(totalLot, index) && totalLot < 0))
 			message = "大盤隔日走空機率非常高";
 		else
 			message = "無法判斷";
