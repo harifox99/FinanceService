@@ -48,6 +48,22 @@ public class JuristicDailyEntity {
 	 * 外資新增小台指口數
 	 */
 	int newSmallLot;
+	/**
+	 * 自營商賣權餘額
+	 */
+	int dealerPut;
+	/**
+	 * 自營商買權餘額
+	 */
+	int dealerCall;
+	/**
+	 * 台股收盤指數
+	 */
+	double twseIndex;
+	/**
+	 * 漲跌幅
+	 */
+	double change;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -107,6 +123,30 @@ public class JuristicDailyEntity {
 	}
 	public void setNewSmallLot(int newSmallLot) {
 		this.newSmallLot = newSmallLot;
+	}
+	public int getDealerPut() {
+		return dealerPut;
+	}
+	public void setDealerPut(int dealerPut) {
+		this.dealerPut = dealerPut;
+	}
+	public int getDealerCall() {
+		return dealerCall;
+	}
+	public void setDealerCall(int dealerCall) {
+		this.dealerCall = dealerCall;
+	}
+	public double getChange() {
+		return change;
+	}
+	public void setChange(double change) {
+		this.change = change;
+	}
+	public double getTwseIndex() {
+		return twseIndex;
+	}
+	public void setTwseIndex(double twseIndex) {
+		this.twseIndex = twseIndex;
 	}	
 	
 }
