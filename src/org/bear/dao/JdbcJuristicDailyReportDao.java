@@ -24,7 +24,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		catch (Exception ex)
 		{
 			//ex.printStackTrace();
-			System.out.println("Insert Error!");
+			System.out.println("Insert JuristicDailyEntity Error!");
 		}
 	}
 
@@ -87,6 +87,13 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 			return null;
 		}
 		return entityList;
+	}
+
+	@Override
+	public int update(String indexName, double indexValue, String date) {
+		String sql = "UPDATE JuristicDailyReport SET " + indexName + " = ? where Exchangedate = '" + date + "'";
+		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
+		return result;
 	}
 	
 }
