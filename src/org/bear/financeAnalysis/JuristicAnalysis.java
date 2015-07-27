@@ -109,7 +109,7 @@ public class JuristicAnalysis
 	 * @param index
 	 * @return
 	 */
-	private int pastNewLot(int totalLot, int index)
+	private int pastNewLot(int newLot, int index)
 	{
 		try
 		{
@@ -117,9 +117,9 @@ public class JuristicAnalysis
 			int yesterdayNewLot = yesterdayEntity.getNewLot() + yesterdayEntity.getNewSmallLot()/4;
 			JuristicDailyEntity beforeYesterdayEntity = list.get(index+2);
 			int beforeYesterdayNewLot = beforeYesterdayEntity.getNewLot() + beforeYesterdayEntity.getNewSmallLot()/4;
-			if (totalLot > 1500 && yesterdayNewLot > 1500 && beforeYesterdayNewLot > 1500)
+			if (newLot > 1500 && yesterdayNewLot > 1500 && beforeYesterdayNewLot > 1500)
 				return 1;
-			if (totalLot < -1500 && yesterdayNewLot < -1500 && beforeYesterdayNewLot < -1500)
+			if (newLot < -1500 && yesterdayNewLot < -1500 && beforeYesterdayNewLot < -1500)
 				return -1;
 			else 
 				return 0;
