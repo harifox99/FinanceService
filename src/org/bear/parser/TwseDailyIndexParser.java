@@ -48,6 +48,15 @@ public class TwseDailyIndexParser extends TaifexLotParser {
 							content = content.replace(",", "");	
 							entity.setChange(Double.parseDouble(content));				
 						}
+						else if (j == 4)
+						{
+							resultElement = tdList.get(j);				
+							String content = resultElement.getContent().toString().trim();
+							double data = Double.parseDouble(content);
+							if (data < 0)
+								entity.setChange(entity.getChange() * -1);
+									
+						}
 						
 					}
 					catch (Exception ex)
