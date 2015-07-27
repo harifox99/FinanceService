@@ -21,8 +21,8 @@ public class JdbcThreeBigExchangeDao extends SimpleJdbcDaoSupport implements Thr
 		}
 		catch (Exception ex)
 		{
-			//ex.printStackTrace();
-			System.out.println("Insert Error!");
+			ex.printStackTrace();
+			System.out.println("Insert ThreeBigExchangeEntity Error!");
 		}
 
 	}
