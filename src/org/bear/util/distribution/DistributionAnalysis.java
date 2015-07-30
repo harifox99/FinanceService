@@ -47,7 +47,7 @@ public class DistributionAnalysis
 			//distributionList.get(i).getD800000() - distributionList.get(i+1).getD800000());
 			//大股東
 			wrapper.setMajorShareholders(
-			distributionList.get(i).getD600000() - distributionList.get(i+1).getD600000() +
+			//distributionList.get(i).getD600000() - distributionList.get(i+1).getD600000() +
 			distributionList.get(i).getD800000() - distributionList.get(i+1).getD800000() + 
 			distributionList.get(i).getD1000000() - distributionList.get(i+1).getD1000000());
 			//三大法人
