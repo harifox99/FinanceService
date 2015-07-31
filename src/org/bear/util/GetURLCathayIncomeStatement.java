@@ -5,15 +5,15 @@ package org.bear.util;
 
 /**
  * @author edward
- * 國泰網站的損益表URL
+ * 玉山網站的損益表URL
  */
 public class GetURLCathayIncomeStatement extends GetURLContentBase 
 {
 	public GetURLCathayIncomeStatement(String stockID, boolean isYear)
 	{
-		urlHeaderSeason = "http://dj.mybank.com.tw/z/zc/zcq/zcq_";
-		urlHeaderYear = "http://dj.mybank.com.tw/z/zc/zcq/zcqa/zcqa_";
-		urlFooter = ".asp.htm";
+		urlHeaderSeason = "http://www.esunsec.com.tw/z/zc/zcq/zcq.djhtm?A=";		
+		urlHeaderYear = "http://www.esunsec.com.tw/z/zc/zcq/zcqa/zcqa.djhtm?A=";		
+		urlFooter = "";
 		if (isYear)
 			this.urlString = urlHeaderYear + stockID + urlFooter;
 		else
