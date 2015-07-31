@@ -79,7 +79,7 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 						title = AccountTitle.PreTaxIncome;
 					else if (content.equals("本期稅後淨利"))
 						title = AccountTitle.NetIncome;
-					else if (content.contains("每股盈餘"))
+					else if (content.contains("每股盈餘") && !content.contains("稀釋"))
 						title = AccountTitle.EPS;
 					else if (content.equals("期別") || content.equals("年"))
 						title = AccountTitle.SEASON;
