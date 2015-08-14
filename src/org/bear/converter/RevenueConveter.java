@@ -49,7 +49,7 @@ public class RevenueConveter
 			wrapper.setHighIndex(entity.getHighIndex());
 			wrapper.setLowIndex(entity.getLowIndex());
 			wrapper.setCloseIndex(entity.getCloseIndex());
-			wrapper.setTurnoverRatio(Double.parseDouble(entity.getTurnoverRatio()));
+			//wrapper.setTurnoverRatio(Double.parseDouble(entity.getTurnoverRatio()));
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM"); 
 			wrapper.setYearMonth(dateFormat.format(entity.getYearMonth()));
 			mapLastMonthRevenue.put(stockID, entity.getRevenue());
