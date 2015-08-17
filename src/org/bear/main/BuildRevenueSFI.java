@@ -13,7 +13,7 @@ public class BuildRevenueSFI {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String startYear = "2015";
-		String startMonth = "6";
+		String startMonth = "7";
 		String endYear = "2015";
 		String endMonth = "7";
 		GetSFIContent getContent;
