@@ -7,7 +7,7 @@ import org.bear.util.newRevenue.GetSFITwseRevenue;
 import org.bear.util.newRevenue.GetTwseIndividualIndex;
 import org.bear.util.newRevenue.GretaiIndividualIndex;
 
-public class ImportPriceSFI extends ImportStockIDData
+public class ImportPriceSFI extends ImportStockID
 {
 	public void insertBatchList(String startYear, String startMonth, String endYear, String endMonth, GetSFIContent sfi)
 	{
@@ -20,8 +20,6 @@ public class ImportPriceSFI extends ImportStockIDData
 			{
 				String stockID = wrapperList.get(j).getStockID();
 				String stockName = wrapperList.get(j).getStockName();
-				//if (!stockID.equals("1256"))
-					//continue;
 				int stockBranch = wrapperList.get(j).getStockBranch();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");	
 				idleTime++;
@@ -29,7 +27,7 @@ public class ImportPriceSFI extends ImportStockIDData
 					continue;
 				else if (sfi instanceof GretaiIndividualIndex && stockBranch == 1)
 					continue;
-				else if (sfi instanceof GetHinetStockPrice && stockBranch == 1)
+				else if (sfi instanceof GetHinetStockPrice)
 				{
 					sfi.getContent(stockID, stockName, startYear, startMonth, endYear, endMonth);
 					Thread.sleep(sleepTime);
