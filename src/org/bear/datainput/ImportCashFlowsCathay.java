@@ -36,8 +36,8 @@ public class ImportCashFlowsCathay extends ImportStockID
 				String[] years = {"2015"};
 				String[] seasons = {"01", "02"};				
 				String stockID = wrapperList.get(i).getStockID();
-				//if (!stockID.equals("1526"))
-					//continue;
+				if (!stockID.equals("4912"))
+					continue;
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, false, expectedNum, true);

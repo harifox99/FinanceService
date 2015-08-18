@@ -24,8 +24,8 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				String[] seasons = {"01", "02"};
 				String[] years = {"2015"};
 				String stockID = wrapperList.get(j).getStockID();
-				//if (!stockID.equals("1526"))
-					//continue;					
+				if (!stockID.equals("4912"))
+					continue;					
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				//季資料
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, false);
