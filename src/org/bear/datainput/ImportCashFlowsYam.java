@@ -5,7 +5,7 @@ import org.bear.util.*;
  * @author edward
  * 去蕃薯藤網站抓現金流量表
  */
-public class ImportCashFlowsYam extends ImportStockIDData
+public class ImportCashFlowsYam extends ImportStockID
 {					
 	public void insertBatchList()
 	{
