@@ -3,7 +3,7 @@ import java.util.HashMap;
 import org.bear.parser.RevenueParserYam;
 import org.bear.util.GetURLYamRevenue;
 
-public class ImportRevenueYam extends ImportStockIDData
+public class ImportRevenueYam extends ImportStockID
 {					
 	//¶}½L«ü¼Æ
 	HashMap <String, String> mapOpenIndex;
