@@ -35,6 +35,8 @@ public class CbcIndexConstant
 		MONTH_HASH.put("2015M03", 645);	
 		MONTH_HASH.put("2015M04", 646);	
 		MONTH_HASH.put("2015M05", 647);	
+		MONTH_HASH.put("2015M06", 648);
+		MONTH_HASH.put("2015M07", 649);	
 	}	
 	/**
 	 * 總經指標
@@ -52,6 +54,8 @@ public class CbcIndexConstant
 		STAT_DB_HASH.put("2015M03", 579);	
 		STAT_DB_HASH.put("2015M04", 580);
 		STAT_DB_HASH.put("2015M05", 581);
+		STAT_DB_HASH.put("2015M06", 582);
+		STAT_DB_HASH.put("2015M07", 583);
 	}
 	/**
 	 * 台股市值
@@ -280,6 +284,8 @@ public class CbcIndexConstant
 		STAT_STOCK_VALUE_HASH.put("2015M03", 219);
 		STAT_STOCK_VALUE_HASH.put("2015M04", 220);
 		STAT_STOCK_VALUE_HASH.put("2015M05", 221);
+		STAT_STOCK_VALUE_HASH.put("2015M06", 222);
+		STAT_STOCK_VALUE_HASH.put("2015M07", 223);
 	}
 	
 	/* 貨幣 */
@@ -558,7 +564,8 @@ public class CbcIndexConstant
 		MACRO_ECONOMIC_SIGNAL.put("2015M03", 663);
 		MACRO_ECONOMIC_SIGNAL.put("2015M04", 664);
 		MACRO_ECONOMIC_SIGNAL.put("2015M05", 665);
-
+		MACRO_ECONOMIC_SIGNAL.put("2015M06", 666);
+		MACRO_ECONOMIC_SIGNAL.put("2015M07", 667);
 	}
 	
 }
