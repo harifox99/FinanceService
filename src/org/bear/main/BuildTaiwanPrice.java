@@ -13,9 +13,9 @@ public class BuildTaiwanPrice {
 		// TODO Auto-generated method stub
 		
 		String startYear = "2015";
-		String startMonth = "6";
+		String startMonth = "7";
 		String year = "2015";
-		String month = "6";
+		String month = "7";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 上市公司價格資訊...證券期貨發展基金會自2015/1/1，不再提供載客服務 */
