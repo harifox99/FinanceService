@@ -81,6 +81,7 @@ public class JdbcMacroEconomicDao extends SimpleJdbcDaoSupport implements MacroE
 			//用證券劃撥餘額來儲存(台股市值/m1b)
 			int value = Integer.parseInt(element.getStockValue())/Integer.parseInt(element.getM1bTotalEnd());
 			element.setStockMoneyNumber(value);
+			element.setPbRatio(element.getPbRatio()*100);
 		}
 		return entityList;
 	}
