@@ -36,6 +36,7 @@ public class MacroEconomicEntity
 	String exportOrder;
 	String stockValue;
 	String m1bTotalEnd;
+	double pbRatio;
 	public String getTwseOpen() {
 		return twseOpen;
 	}
@@ -205,6 +206,12 @@ public class MacroEconomicEntity
 	}
 	public void setM1bTotalEnd(String m1bTotalEnd) {
 		this.m1bTotalEnd = m1bTotalEnd;
+	}
+	public double getPbRatio() {
+		return pbRatio;
+	}
+	public void setPbRatio(double pbRatio) {
+		this.pbRatio = pbRatio;
 	}	
 	
 }
