@@ -11,6 +11,7 @@ import org.bear.util.cbc.GetCbcMoney;
 import org.bear.util.cbc.GetDemandDeposit;
 import org.bear.util.cbc.GetNdcData;
 import org.bear.util.cbc.GetNdcSignalData;
+import org.bear.util.cbc.GetPbRatio;
 import org.bear.util.cbc.GetStockValue;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -43,8 +44,9 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.getConnection();
 			parser.parse(10);
 		}*/
-		String startDateValue = "2015M06";
-		String endDateValue = "2015M06";
+		String startDateValue = "2015M07";
+		String endDateValue = "2015M07";
+		
 		//總經指標		
 		GetNdcData getNdcData = new GetNdcData(); 
 		getNdcData.setDao(dao);
@@ -65,12 +67,15 @@ public class BuildMacroEconomicData extends ParseFile
 		//活期儲蓄存款
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
-		deposit.getContent(CbcIndexConstant.MONTH_HASH.get(startDateValue), CbcIndexConstant.MONTH_HASH.get(endDateValue));
-			
+		deposit.getContent(CbcIndexConstant.MONTH_HASH.get(startDateValue), CbcIndexConstant.MONTH_HASH.get(endDateValue));			
 		//TWSE，用Yahoo的
 		TwseIndex twseIndex = new TwseIndex();
 		twseIndex.setDao(dao);
 		twseIndex.getContent();
+		//台股股價淨值比
+		GetPbRatio pbRatio = new GetPbRatio();
+		pbRatio.setDao(dao);
+		pbRatio.getContent(CbcIndexConstant.STOCK_PB_RATIO.get(startDateValue), CbcIndexConstant.STOCK_PB_RATIO.get(endDateValue));
 	}
 	public void insertBatch()
 	{
