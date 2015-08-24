@@ -21,7 +21,7 @@ public class TaifexOptionParser extends TaifexLotParser
 		JuristicDailyEntity entity = new JuristicDailyEntity();
 		for (int i = 0; i < trList.size(); i++)
 		{
-			if (i == 3 || i == 6)
+			if (i == 3 || i == 6 || i == 5 || i == 8)
 			{				
 				Element trElement = trList.get(i);
 				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
@@ -39,12 +39,26 @@ public class TaifexOptionParser extends TaifexLotParser
 							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setDealerCall(Integer.parseInt(content));
 						}
+						else if (i == 5 && j == 12)//外資未平倉買權
+						{
+							resultElement = tdList.get(j);				
+							String content = resultElement.getContent().toString().trim();		
+							content = content.replace(",", "");
+							entity.setForeignerCall(Integer.parseInt(content));
+						}
 						else if (i == 6 && j == 13)//自營商未平倉賣權
 						{
 							resultElement = tdList.get(j);				
 							String content = resultElement.getContent().toString().trim();		
 							content = content.replace(",", "");	
 							entity.setDealerPut(Integer.parseInt(content));							
+						}
+						else if (i == 8 && j == 12)//外資未平倉賣權
+						{
+							resultElement = tdList.get(j);				
+							String content = resultElement.getContent().toString().trim();		
+							content = content.replace(",", "");	
+							entity.setForeignerPut(Integer.parseInt(content));							
 						}
 						
 					}
@@ -57,5 +71,7 @@ public class TaifexOptionParser extends TaifexLotParser
 		}	
 		dao.update("dealerPut", entity.getDealerPut(), date);
 		dao.update("dealerCall", entity.getDealerCall(), date);
+		dao.update("foreignerPut", entity.getForeignerPut(), date);
+		dao.update("foreignerCall", entity.getForeignerCall(), date);
 	}
 }
