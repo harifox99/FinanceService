@@ -64,6 +64,14 @@ public class JuristicDailyEntity {
 	 * 漲跌幅
 	 */
 	double change;
+	/**
+	 * 外資賣權餘額
+	 */
+	int foreignerPut;
+	/**
+	 * 外資買權餘額
+	 */
+	int foreignerCall;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -147,6 +155,18 @@ public class JuristicDailyEntity {
 	}
 	public void setTwseIndex(double twseIndex) {
 		this.twseIndex = twseIndex;
+	}
+	public int getForeignerPut() {
+		return foreignerPut;
+	}
+	public void setForeignerPut(int foreignerPut) {
+		this.foreignerPut = foreignerPut;
+	}
+	public int getForeignerCall() {
+		return foreignerCall;
+	}
+	public void setForeignerCall(int foreignerCall) {
+		this.foreignerCall = foreignerCall;
 	}	
 	
 }
