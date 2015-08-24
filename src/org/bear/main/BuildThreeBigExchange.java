@@ -31,7 +31,10 @@ public class BuildThreeBigExchange {
 		//String[] date = {"104/07/06", "104/07/07", "104/07/08", "104/07/09"};
 		//String[] date = {"104/07/13", "104/07/14", "104/07/15", "104/07/16", "104/07/17"};
 		//String[] date = {"104/07/20", "104/07/21", "104/07/22", "104/07/23", "104/07/24"};
-		String[] date = {"104/08/17"};
+		//String[] date = {"104/07/27", "104/07/28", "104/07/29", "104/07/30", "104/07/31"};
+		//String[] date = {"104/08/03", "104/08/04", "104/08/05", "104/08/06", "104/08/07"};
+		//String[] date = {"104/08/10", "104/08/11", "104/08/12", "104/08/13", "104/08/14"};
+		String[] date = {"104/08/17", "104/08/18", "104/08/19", "104/08/20", "104/08/21"};
 		// TODO Auto-generated method stub
 		for (int i = 0; i < date.length; i++)
 		{
@@ -41,7 +44,6 @@ public class BuildThreeBigExchange {
 			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
 			String url;		
 			BuildThreeBigExchange exchange = new BuildThreeBigExchange();	
-			
 			//上市，外資
 			url = "http://www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U.php";
 			exchange.buildTwse(date[i], 1, "外資", url);			
@@ -61,7 +63,7 @@ public class BuildThreeBigExchange {
 			exchange.buildTpex(date[i], 2, "投信", url);	
 			//上櫃，投信，賣超
 			url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=sell&d=" + date[i];
-			exchange.buildTpex(date[i], 2, "投信", url);				
+			exchange.buildTpex(date[i], 2, "投信", url);	
 			//證交所，三大法人買賣超金額
 			url = "http://www.twse.com.tw/ch/trading/fund/BFI82U/BFI82U_print.php?begin_date=" + westenDate.replace("/", "") + 
 				  "&end_date=" + westenDate.replace("/", "") + "&report_type=day&language=ch";
@@ -72,7 +74,7 @@ public class BuildThreeBigExchange {
 			//期交所前十大法人未沖銷部位
 			url = "http://www.taifex.com.tw/chinese/3/7_8.asp";
 			exchange.buildTopTen(westenDate, url);
-			//期交所自營商未平倉餘額
+			//期交所外資/自營商未平倉餘額
 			url = "http://www.taifex.com.tw/chinese/3/7_12_5.asp";
 			exchange.buildOption(westenDate, url);
 			//大盤指數
