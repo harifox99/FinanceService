@@ -49,6 +49,8 @@ public class JuristicAnalysis
 				report.setTopTenLotSellTotal(entity.getTopTenLotSellTotal());
 				report.setDealerCall(entity.getDealerCall());
 				report.setDealerPut(entity.getDealerPut());
+				report.setForeignerCall(entity.getForeignerCall());
+				report.setForeignerPut(entity.getForeignerPut());
 				report.setTwseIndex(StringUtil.setPointLength(entity.getTwseIndex()));
 				report.setChange(StringUtil.setPointLength(entity.getChange()));
 				report.setTotalLot(entity.getTotalLot());
