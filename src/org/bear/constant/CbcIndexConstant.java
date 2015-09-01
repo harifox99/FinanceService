@@ -63,6 +63,7 @@ public class CbcIndexConstant
 	public static final HashMap<String, Integer> STAT_STOCK_VALUE_HASH = new HashMap<String, Integer>();
 	static
 	{
+		/*
 		STAT_STOCK_VALUE_HASH.put("1997M01", 1);
 		STAT_STOCK_VALUE_HASH.put("1997M02", 2);
 		STAT_STOCK_VALUE_HASH.put("1997M03", 3);
@@ -285,7 +286,8 @@ public class CbcIndexConstant
 		STAT_STOCK_VALUE_HASH.put("2015M04", 220);
 		STAT_STOCK_VALUE_HASH.put("2015M05", 221);
 		STAT_STOCK_VALUE_HASH.put("2015M06", 222);
-		STAT_STOCK_VALUE_HASH.put("2015M07", 223);
+		*/
+		STAT_STOCK_VALUE_HASH.put("2015M07", 339);
 	}
 	
 	/* ³f¹ô */
