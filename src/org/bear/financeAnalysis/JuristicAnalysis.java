@@ -39,7 +39,7 @@ public class JuristicAnalysis
 			{			
 				JuristicDailyReport report = new JuristicDailyReport();
 				JuristicDailyEntity entity = list.get(i);
-				report.setAmount(entity.getAmount());
+				report.setAmount(entity.getAmount()/1000000);
 				report.setExchangeDate(entity.getExchangeDate());
 				report.setNewLot(entity.getNewLot());
 				report.setNewSmallLot(entity.getNewSmallLot());
