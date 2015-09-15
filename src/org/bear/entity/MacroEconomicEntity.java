@@ -36,6 +36,7 @@ public class MacroEconomicEntity
 	String exportOrder;
 	String stockValue;
 	String m1bTotalEnd;
+	String nonTrendIndex;
 	double pbRatio;
 	public String getTwseOpen() {
 		return twseOpen;
@@ -212,6 +213,12 @@ public class MacroEconomicEntity
 	}
 	public void setPbRatio(double pbRatio) {
 		this.pbRatio = pbRatio;
+	}
+	public String getNonTrendIndex() {
+		return nonTrendIndex;
+	}
+	public void setNonTrendIndex(String nonTrendIndex) {
+		this.nonTrendIndex = nonTrendIndex;
 	}	
 	
 }
