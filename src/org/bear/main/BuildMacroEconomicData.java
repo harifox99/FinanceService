@@ -5,6 +5,7 @@ import org.bear.constant.CbcIndexConstant;
 import org.bear.dao.*;
 import org.bear.datainput.ImportMacroEconomic;
 import org.bear.entity.MacroEconomicEntity;
+import org.bear.parser.NdcParser;
 import org.bear.parser.taiwanMacro.TwseIndex;
 import org.bear.util.ParseFile;
 import org.bear.util.cbc.GetCbcMoney;
@@ -44,9 +45,10 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.getConnection();
 			parser.parse(10);
 		}*/
+		
 		String startDateValue = "2015M07";
 		String endDateValue = "2015M07";
-		
+		String date = "2015-07-01";
 		//總經指標		
 		GetNdcData getNdcData = new GetNdcData(); 
 		getNdcData.setDao(dao);
@@ -76,6 +78,10 @@ public class BuildMacroEconomicData extends ParseFile
 		GetPbRatio pbRatio = new GetPbRatio();
 		pbRatio.setDao(dao);
 		pbRatio.getContent(CbcIndexConstant.STOCK_PB_RATIO.get(startDateValue), CbcIndexConstant.STOCK_PB_RATIO.get(endDateValue));
+		//領先指標不含趨勢
+		NdcParser parser = new NdcParser();
+		parser.setDao(dao);
+		parser.parse(date);		
 	}
 	public void insertBatch()
 	{
