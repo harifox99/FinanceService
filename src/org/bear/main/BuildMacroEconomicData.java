@@ -10,6 +10,7 @@ import org.bear.parser.taiwanMacro.TwseIndex;
 import org.bear.util.ParseFile;
 import org.bear.util.cbc.GetCbcMoney;
 import org.bear.util.cbc.GetDemandDeposit;
+import org.bear.util.cbc.GetExportOrder;
 import org.bear.util.cbc.GetNdcData;
 import org.bear.util.cbc.GetNdcSignalData;
 import org.bear.util.cbc.GetPbRatio;
@@ -81,7 +82,12 @@ public class BuildMacroEconomicData extends ParseFile
 		//領先指標不含趨勢
 		NdcParser parser = new NdcParser();
 		parser.setDao(dao);
-		parser.parse(date);		
+		parser.parse(date);
+		//外銷訂單年增率
+		GetExportOrder GetExportOrder = new GetExportOrder();
+		GetExportOrder.setDao(dao);
+		GetExportOrder.getContent(CbcIndexConstant.EXPORT_ORDER.get(startDateValue), CbcIndexConstant.EXPORT_ORDER.get(endDateValue));
+		
 	}
 	public void insertBatch()
 	{
