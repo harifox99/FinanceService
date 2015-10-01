@@ -60,7 +60,7 @@ public class NdcParser
 		                	Element firstDateElement = (Element)listOfDatas.item(k);
 		                	NodeList textFNList = firstDateElement.getChildNodes();
 		                	String data = ((Node)textFNList.item(0)).getNodeValue().trim();
-		                	System.out.println("Data : " + ((Node)textFNList.item(0)).getNodeValue().trim());
+		                	//System.out.println("Data : " + ((Node)textFNList.item(0)).getNodeValue().trim());
 		                	if (j == 0)
 		                		date = data.substring(0, 10);
 		                	if (j == 2 && date.equals(startDate))		                		
