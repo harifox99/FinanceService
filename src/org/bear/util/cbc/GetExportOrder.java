@@ -38,7 +38,7 @@ public class GetExportOrder extends GetStatDbData
 		paramList.add(new BasicNameValuePair("hasAggregno", "0"));	
 		paramList.add(new BasicNameValuePair("pxkonv", "asp1"));
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
-		System.out.println(responseString);
+		//System.out.println(responseString);
 		SimpleParser parser = new SimpleParser();
 		parser.setTableName("ExportOrder");
 		parser.setDao(dao);
