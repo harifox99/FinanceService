@@ -7,12 +7,15 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 
-public abstract class EasyParserBase {
+public abstract class EasyParserBase
+{
 	public String responseString;
 	public String url;
 	public List<Element> elementList = null;
-	public void parse(int tableIndex) {
-		Source source = new Source(responseString);
+	Source source;
+	public void parse(int tableIndex) 
+	{
+		source = new Source(responseString);
 		//System.out.println(source.toString());
 		try
 		{
@@ -26,7 +29,6 @@ public abstract class EasyParserBase {
 	}
 	public void getConnection()
 	{
-		Source source = null;
 		try
 		{
 			source = new Source(new URL(url));
@@ -50,6 +52,12 @@ public abstract class EasyParserBase {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public Source getSource() {
+		return source;
+	}
+	public void setSource(Source source) {
+		this.source = source;
 	}
 	public abstract void getTableContent(Element element);
 }
