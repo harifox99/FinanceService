@@ -9,9 +9,10 @@ import net.htmlparser.jericho.HTMLElementName;
  * @author edward
  *
  */
-public class TwseDailyIndexParser extends TaifexLotParser {
-
-	public void getTableContent(Element element) {
+public class TwseDailyIndexParser extends TaifexLotParser 
+{
+	public void getTableContent(Element element) 
+	{
 		// TODO Auto-generated method stub
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);
 		JuristicDailyEntity entity = new JuristicDailyEntity();
@@ -69,5 +70,4 @@ public class TwseDailyIndexParser extends TaifexLotParser {
 		dao.update("TwseIndex", entity.getTwseIndex(), year);
 		dao.update("Change", entity.getChange(), year);
 	}
-
 }
