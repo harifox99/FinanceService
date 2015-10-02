@@ -33,9 +33,9 @@ public class TwseDailyDataParser extends TaifexLotParser
 						if (j == 0)//日期
 						{
 							if (!this.date.equals(content))
-								continue; 
+								break; 
 						}
-						if (j == 2)//成交金額
+						else if (j == 2)//成交金額
 						{
 							long volumn = Long.parseLong(content)/1000000;
 							entity.setVolumn((int)volumn);									
@@ -55,11 +55,12 @@ public class TwseDailyDataParser extends TaifexLotParser
 						ex.printStackTrace();
 					}
 				}
-			}
+				dao.update("TwseIndex", entity.getTwseIndex(), date);
+				dao.update("Change", entity.getChange(), date);
+				dao.update("volumn", entity.getVolumn(), date);
+			}			
 		}	
-		dao.update("TwseIndex", entity.getTwseIndex(), date);
-		dao.update("Change", entity.getChange(), date);
-		dao.update("volumn", entity.getVolumn(), date);
+		
 	}
 	public void parse()
 	{		
