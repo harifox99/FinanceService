@@ -72,6 +72,10 @@ public class JuristicDailyEntity {
 	 * 外資買權餘額
 	 */
 	int foreignerCall;
+	/**
+	 * 成交量
+	 */
+	int volumn;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -167,6 +171,11 @@ public class JuristicDailyEntity {
 	}
 	public void setForeignerCall(int foreignerCall) {
 		this.foreignerCall = foreignerCall;
-	}	
-	
+	}
+	public int getVolumn() {
+		return volumn;
+	}
+	public void setVolumn(int volumn) {
+		this.volumn = volumn;
+	}		
 }
