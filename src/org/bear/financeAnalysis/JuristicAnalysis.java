@@ -299,29 +299,80 @@ public class JuristicAnalysis
 			return null;
 		}
 	}
-	public PriceVolumnEntity getEighteenDayInfo(int size)
+	/**
+	 * 
+	 * @param days 擷取天數
+	 * @param size 均量
+	 * @return
+	 */
+	public List<PriceVolumnEntity> getEighteenDayInfo(int days, int size)
 	{
-		PriceVolumnEntity entity = new PriceVolumnEntity();
-		list = juristicDailyReportDao.findLatestData(size);
-		int volumn = 0;
-		double change = 0;
-		for (int i = 0; i < size; i++)
+		List<PriceVolumnEntity> volumnList = new ArrayList<PriceVolumnEntity>();		
+		list = juristicDailyReportDao.findLatestData(size+days);		
+		for (int i = 0; i < days; i++)
 		{
-			volumn += list.get(i).getVolumn();
-			change += list.get(i).getChange();
+			int volumn = 0;
+			double twseIndex = 0;
+			//當天的量價資訊
+			PriceVolumnEntity entity = new PriceVolumnEntity();
+			entity.setPrice(StringUtil.setPointLength(list.get(i).getTwseIndex()));
+			entity.setVolumn(list.get(i).getVolumn());
+			entity.setExchangeDate(list.get(i).getExchangeDate());
+			entity.setChange(StringUtil.setPointLength(list.get(i).getChange()));
+			//size(通常是18)天平均的量價資訊
+			for (int j = 0; j < size; j++)
+			{
+				volumn += list.get(i+j).getVolumn();
+				twseIndex += list.get(i+j).getTwseIndex();								
+			}
+			volumn = volumn/size;
+			twseIndex = twseIndex/size;
+			entity.setAveragePrice(StringUtil.setPointLength(twseIndex));
+			entity.setAverageVolumn(volumn);
+			this.priceColumnComment(volumnList);
+			volumnList.add(entity);
+		}		
+		return volumnList;
+	}
+	private void priceColumnComment(List<PriceVolumnEntity> list)
+	{
+		for (int i = 0; i < list.size(); i++)
+		{
+			PriceVolumnEntity entity = list.get(i);
+			if (entity.getPrice() > entity.getAveragePrice() &&
+				entity.getVolumn() > entity.getAverageVolumn())
+			{
+				list.get(i).setTrend("中多");
+				list.get(i).setDirection("多");
+				list.get(i).setPolicy("回檔多單進場");				
+			}
+			else if (entity.getPrice() > entity.getAveragePrice() &&
+					entity.getVolumn() < entity.getAverageVolumn())
+			{
+				list.get(i).setTrend("多方震盪");
+				list.get(i).setDirection("多");
+				list.get(i).setPolicy("漲多多單出場");	
+			}
+			else if (entity.getPrice() < entity.getAveragePrice() &&
+					entity.getVolumn() > entity.getAverageVolumn())
+			{
+				list.get(i).setTrend("空方震盪");
+				list.get(i).setDirection("空");
+				list.get(i).setPolicy("反彈空單進場");	
+			}
+			else if (entity.getPrice() < entity.getAveragePrice() &&
+					entity.getVolumn() < entity.getAverageVolumn())
+			{
+				list.get(i).setTrend("中空");
+				list.get(i).setDirection("空");
+				list.get(i).setPolicy("跌多空單出場");	
+			}
 		}
-		volumn = volumn/size;
-		change = change/size;
-		entity.setAveragePrice(StringUtil.setPointLength(change));
-		entity.setAverageVolumn(volumn);
-		list = juristicDailyReportDao.findLatestData(1);
-		entity.setPrice(StringUtil.setPointLength(list.get(0).getChange()));
-		entity.setVolumn(list.get(0).getVolumn());
-		return entity;
+		//return list;
 	}
 	public static void main(String args[])
 	{
 		JuristicAnalysis analysis = new JuristicAnalysis();
-		analysis.getEighteenDayInfo(18);
+		analysis.getEighteenDayInfo(30, 18);
 	}
 }
