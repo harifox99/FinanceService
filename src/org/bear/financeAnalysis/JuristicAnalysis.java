@@ -6,6 +6,7 @@ import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.JuristicDailyEntity;
 import org.bear.entity.JuristicDailyReport;
+import org.bear.entity.PriceVolumnEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
 import org.bear.entity.ThreeBigExchangeReport;
 import org.bear.util.DateTimeFactory;
@@ -298,6 +299,29 @@ public class JuristicAnalysis
 			return null;
 		}
 	}
-	
-	
+	public PriceVolumnEntity getEighteenDayInfo(int size)
+	{
+		PriceVolumnEntity entity = new PriceVolumnEntity();
+		list = juristicDailyReportDao.findLatestData(size);
+		int volumn = 0;
+		double change = 0;
+		for (int i = 0; i < size; i++)
+		{
+			volumn += list.get(i).getVolumn();
+			change += list.get(i).getChange();
+		}
+		volumn = volumn/size;
+		change = change/size;
+		entity.setAveragePrice(StringUtil.setPointLength(change));
+		entity.setAverageVolumn(volumn);
+		list = juristicDailyReportDao.findLatestData(1);
+		entity.setPrice(StringUtil.setPointLength(list.get(0).getChange()));
+		entity.setVolumn(list.get(0).getVolumn());
+		return entity;
+	}
+	public static void main(String args[])
+	{
+		JuristicAnalysis analysis = new JuristicAnalysis();
+		analysis.getEighteenDayInfo(18);
+	}
 }
