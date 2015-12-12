@@ -32,12 +32,12 @@ public class ImportCashFlowsCathay extends ImportStockID
 			//季資料
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
-				int expectedNum = 2;
+				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2015"};
-				String[] seasons = {"01", "02"};				
+				String[] seasons = {"03"};				
 				String stockID = wrapperList.get(i).getStockID();
-				if (!stockID.equals("4912"))
-					continue;
+				//if (!stockID.equals("4912"))
+					//continue;
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, false, expectedNum, true);
