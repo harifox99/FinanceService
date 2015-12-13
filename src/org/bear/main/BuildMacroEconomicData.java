@@ -47,9 +47,9 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.parse(10);
 		}*/
 		
-		String startDateValue = "2015M08";
-		String endDateValue = "2015M08";
-		String date = "2015-08-01";
+		String startDateValue = "2015M09";
+		String endDateValue = "2015M09";
+		String date = "2015-09-01";
 		//總經指標		
 		GetNdcData getNdcData = new GetNdcData(); 
 		getNdcData.setDao(dao);
