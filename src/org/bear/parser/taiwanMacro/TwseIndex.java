@@ -13,7 +13,7 @@ import org.bear.parser.EasyParserBase;
  */
 public class TwseIndex extends EasyParserBase
 {
-	private String url = "http://finance.yahoo.com/q/hp?s=%5ETWII&a=03&b=1&c=2015&d=07&e=31&f=2015&g=m";
+	private String url = "http://finance.yahoo.com/q/hp?s=%5ETWII&a=03&b=1&c=2015&d=10&e=31&f=2015&g=m";
 	MacroEconomicDao dao;
 	public MacroEconomicDao getDao() {
 		return dao;
