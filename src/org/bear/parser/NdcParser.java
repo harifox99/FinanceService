@@ -61,9 +61,9 @@ public class NdcParser
 		                	NodeList textFNList = firstDateElement.getChildNodes();
 		                	String data = ((Node)textFNList.item(0)).getNodeValue().trim();
 		                	//System.out.println("Data : " + ((Node)textFNList.item(0)).getNodeValue().trim());
-		                	if (j == 0)
+		                	if (j == 0 && data.length() >= 10)
 		                		date = data.substring(0, 10);
-		                	if (j == 2 && date.equals(startDate))		                		
+		                	if (j == 2 && date != null && date.equals(startDate))		                		
 		                		dao.update("NonTrendIndex", data, date);
 		                	
 		                }
