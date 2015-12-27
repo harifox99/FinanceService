@@ -76,6 +76,10 @@ public class JuristicDailyEntity {
 	 * 成交量
 	 */
 	int volumn;
+	/**
+	 * 外資借券
+	 */
+	int stockLending;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -177,5 +181,12 @@ public class JuristicDailyEntity {
 	}
 	public void setVolumn(int volumn) {
 		this.volumn = volumn;
+	}
+	public int getStockLending() {
+		return stockLending;
+	}
+	public void setStockLending(int stockLending) {
+		this.stockLending = stockLending;
 	}		
+	
 }
