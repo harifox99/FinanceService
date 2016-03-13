@@ -13,6 +13,7 @@ import org.bear.parser.fred.FredEconomicUrl;
 import org.bear.util.ParseFile;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.bear.util.DateTimeFactory;
 /**
  * 美國總經指標，記得改catagory.observation_init的起始值
  * @author edward
@@ -88,7 +89,16 @@ public class BuildAmericanMacroData extends ParseFile
 					{				
 						int result;						
 						if (catagoryList[i].equals("CPIAUCSL"))
-							result = dao.update("CPI", entry.getValue(), entry.getKey());						
+							result = dao.update("CPI", entry.getValue(), entry.getKey());
+						//密西根大學消費者信心指數，本指數往後退一個月（即2月指標填到1月）
+						else if (catagoryList[i].equals("UMCSENT"))
+						{
+							String dateString = entry.getKey();
+							DateTimeFactory factory = new DateTimeFactory();
+							Date date = factory.addMonth(factory.changeStrToDate(3, dateString), -1);
+							dateString = factory.getDateTimetoString(date, 3);
+							result = dao.update("UMCSENT", entry.getValue(), dateString);
+						}
 						else
 							result = dao.update(catagoryList[i], entry.getValue(), entry.getKey());
 					    if (result <= 0)
