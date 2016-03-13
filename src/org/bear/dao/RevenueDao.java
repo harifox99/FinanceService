@@ -23,4 +23,5 @@ public interface RevenueDao
 	public void updatePrice(String stockID, RevenueEntity entity);
 	public void update(String stockID, String turnoverRatio, String averageIndex, Date date);
 	public int update(String indexName, String indexValue, Date date, String stockID);
+	public int update(String sql);
 }

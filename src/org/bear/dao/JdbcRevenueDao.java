@@ -250,4 +250,11 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		this.getSimpleJdbcTemplate().update(sql);
 		
 	}
+
+	@Override
+	public int update(String sql) {
+		// TODO Auto-generated method stub
+		int result = this.getSimpleJdbcTemplate().update(sql);
+		return result;
+	}
 }
