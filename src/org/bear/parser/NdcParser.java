@@ -25,7 +25,7 @@ public class NdcParser
 	{
 		this.dao = dao;
 	}
-	public void parse(String startDate)
+	public void parse()
 	{
 		try
     	{
@@ -33,8 +33,9 @@ public class NdcParser
 	        factory.setNamespaceAware(true);
 	        DocumentBuilder builder = factory.newDocumentBuilder();
 	        Document doc = builder.parse(url);
-	        NodeList listOfRows = doc.getElementsByTagName("Row");	     
-	        for(int i = 1; i < listOfRows.getLength(); i++) 
+	        NodeList listOfRows = doc.getElementsByTagName("Row");	
+	        //總共有5個表，我只要第一個，對不起，這是爛招
+	        for(int i = 1; i < listOfRows.getLength()/5; i++) 
 	        {
 	        	Node rowNode = listOfRows.item(i);
 	        	if(rowNode.getNodeType() == Node.ELEMENT_NODE) 
@@ -60,10 +61,10 @@ public class NdcParser
 		                	Element firstDateElement = (Element)listOfDatas.item(k);
 		                	NodeList textFNList = firstDateElement.getChildNodes();
 		                	String data = ((Node)textFNList.item(0)).getNodeValue().trim();
-		                	//System.out.println("Data : " + ((Node)textFNList.item(0)).getNodeValue().trim());
+		                	System.out.println("Data : " + ((Node)textFNList.item(0)).getNodeValue().trim());
 		                	if (j == 0 && data.length() >= 10)
 		                		date = data.substring(0, 10);
-		                	if (j == 2 && date != null && date.equals(startDate))		                		
+		                	if (j == 2 && date != null)		                		
 		                		dao.update("NonTrendIndex", data, date);
 		                	
 		                }
@@ -79,6 +80,6 @@ public class NdcParser
 	public static void main(String args[])
 	{
 		NdcParser parser = new NdcParser();
-		parser.parse("");
+		parser.parse();
 	}
 }
