@@ -49,7 +49,7 @@ public class BuildMacroEconomicData extends ParseFile
 		
 		String startDateValue = "2015M09";
 		String endDateValue = "2015M09";
-		String date = "2015-09-01";
+		//String date = "";
 		//總經指標		
 		GetNdcData getNdcData = new GetNdcData(); 
 		getNdcData.setDao(dao);
@@ -82,7 +82,7 @@ public class BuildMacroEconomicData extends ParseFile
 		//領先指標不含趨勢
 		NdcParser parser = new NdcParser();
 		parser.setDao(dao);
-		parser.parse(date);
+		parser.parse();
 		//外銷訂單年增率
 		GetExportOrder GetExportOrder = new GetExportOrder();
 		GetExportOrder.setDao(dao);
