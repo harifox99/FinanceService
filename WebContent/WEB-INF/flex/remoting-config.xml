@@ -89,4 +89,9 @@
             <source>org.bear.financeAnalysis.JuristicAnalysis</source>
         </properties>
     </destination>
+    <destination id="redRabbitChart">
+        <properties>
+            <source>org.bear.financeAnalysis.RedRabbitChart</source>
+        </properties>
+    </destination>
 </service>
