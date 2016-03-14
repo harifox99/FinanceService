@@ -8,7 +8,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class RedRabbitChart 
 {
-
 	JdbcRevenueDao jdbcRevenueDao;
 	final int fiveYears = 60;
 	final int latestMonth = 6;
