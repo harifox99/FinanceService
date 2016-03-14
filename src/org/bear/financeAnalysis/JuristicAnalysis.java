@@ -59,6 +59,7 @@ public class JuristicAnalysis
 				report.setForeignerComment(this.foreignerComment(i));
 				report.setTopTenMonthDiff(this.topTenMonthDiff(entity));
 				report.setTopTenNextDiff(this.topTenNextDiff(entity));
+				report.setStockLending(entity.getStockLending());
 				reportList.add(report);
 			}			
 		}
