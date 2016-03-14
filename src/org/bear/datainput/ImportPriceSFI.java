@@ -20,6 +20,12 @@ public class ImportPriceSFI extends ImportStockID
 			{
 				String stockID = wrapperList.get(j).getStockID();
 				String stockName = wrapperList.get(j).getStockName();
+				if (!stockID.equals("8934"))
+				{
+					continue;
+				}
+				System.out.print(j);
+
 				int stockBranch = wrapperList.get(j).getStockBranch();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");	
 				idleTime++;
