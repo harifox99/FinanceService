@@ -32,11 +32,11 @@ public class JuristicAnalysis
 	 */
 	public List<JuristicDailyReport> getJuristicReport(int size)
 	{
-		list = juristicDailyReportDao.findLatestData(size);
+		list = juristicDailyReportDao.findLatestData(size+1);
 		List<JuristicDailyReport> reportList = new ArrayList<JuristicDailyReport>();
 		try
 		{
-			for (int i = 0; i < list.size(); i++)
+			for (int i = 0; i < size; i++)
 			{			
 				JuristicDailyReport report = new JuristicDailyReport();
 				JuristicDailyEntity entity = list.get(i);
@@ -59,7 +59,11 @@ public class JuristicAnalysis
 				report.setForeignerComment(this.foreignerComment(i));
 				report.setTopTenMonthDiff(this.topTenMonthDiff(entity));
 				report.setTopTenNextDiff(this.topTenNextDiff(entity));
-				report.setStockLending(entity.getStockLending());
+				//借券餘額如果增加，則顯示為正；反之顯示為負 (Flex要顯示色彩用)
+				if (entity.getStockLending() > list.get(i+1).getStockLending())
+					report.setStockLending(entity.getStockLending());
+				else
+					report.setStockLending(-entity.getStockLending());
 				reportList.add(report);
 			}			
 		}
