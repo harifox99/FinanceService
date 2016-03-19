@@ -4,9 +4,15 @@ import java.util.*;
 
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.JdbcRevenueDao;
+import org.bear.dao.StockDistributionDao;
 import org.bear.entity.BasicStockWrapper;
+import org.bear.entity.RedRabbitStockWrapper;
 import org.bear.entity.RedRabbitWrapper;
 import org.bear.entity.RevenueEntity;
+import org.bear.entity.StockDistributionEntity;
+import org.bear.parser.BasicDataParserCathay;
+import org.bear.util.GetURLCathayBasicData;
+import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -314,6 +320,196 @@ public class RedRabbitRevenueAnalysis
 			ex.printStackTrace();
 		}
 		return redRabitWrapper;
+	}
+	/**
+	 * 紅兔營收+籌碼選股法
+	 * @param revenueCheck 是否以營收篩選
+	 * @param totalMonth 過去M個月
+	 * @param selectedMonth 有N個月的營收符合條件
+	 * @param retailCheck 是否以散戶賣超篩選
+	 * @param totalRetail 過去M個月
+	 * @param selectedRetail 有N個月散戶賣超
+	 * @param majorShareholderCheck 是否以大股東買超篩選 
+	 * @param totalMajorShareholder 過去M個月
+	 * @param selectedMajorShareholder 有N個月大股東買超
+	 * @return
+	 */
+	public List<RedRabbitStockWrapper> getAdvancedRedRabbit(boolean revenueCheck, int totalMonth, int selectedMonth,
+			boolean retailCheck, int totalRetail, int selectedRetail,
+			boolean majorShareholderCheck, int totalMajorShareholder, int selectedMajorShareholder)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
+		basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
+		jdbcRevenueDao = (JdbcRevenueDao)context.getBean("revenueDao");
+		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
+		List<RedRabbitStockWrapper> wrapperList = new ArrayList<RedRabbitStockWrapper>();
+		//原始資料
+		List<BasicStockWrapper> stockIdList = basicStockDao.findAllData();	
+		//符合條件的資料
+		List<BasicStockWrapper> conditionalList;
+		//暫時的計算結果
+		List<BasicStockWrapper> calculateList = new ArrayList<BasicStockWrapper>();
+		conditionalList = stockIdList;
+		try
+		{
+			//營收創下歷年同期新高
+			if (revenueCheck == true)
+			{
+				for (int i = 0; i < conditionalList.size(); i++)
+				{
+					String stockID = conditionalList.get(i).getStockID();
+					List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
+					//實際成長的月份數
+					int growMonth = 0;									
+					for (int j = 0; j < totalMonth; j++)
+					{
+						int revenue = entityList.get(j).getRevenue();
+						int lastRevenue = 0;
+						String date = entityList.get(j).getYearMonth().toString().substring(5, 10);
+						String lastDate = "";
+						//連續比較5年的同月分資料
+						for (int k = 1; k < 6; k++)
+						{
+							//資料不足5年，無法計算，結束迴圈
+							if (entityList.size() <= j+k*oneYear)
+								break;
+							lastRevenue = entityList.get(j+k*oneYear).getRevenue();
+							if (revenue == 0 || lastRevenue == 0)
+								break;
+							lastDate = entityList.get(j+k*oneYear).getYearMonth().toString().substring(5, 10);					
+							//月分資料不合 (假設目前的日子是2016-03-01，理論上去年同期是03-01，如果月份資料不是03-01，則終止程式)
+							if (!date.equals(lastDate))
+							{
+								System.out.println("stockID: " + stockID);
+								System.exit(0);
+							}
+							if (revenue < lastRevenue)
+								break;
+							if (k == 5)
+								growMonth++;
+						}					
+					}
+					if (growMonth >= selectedMonth)
+					{
+						calculateList.add(conditionalList.get(i));
+					}
+				}				
+				conditionalList = calculateList;
+				calculateList = new ArrayList<BasicStockWrapper>();
+			}
+			//散戶賣超
+			if (retailCheck == true)
+			{
+				for (int i = 0; i < conditionalList.size(); i++)
+				{
+					String stockID = conditionalList.get(i).getStockID();					
+					//System.out.println("stockID: " + stockID);
+					//if (!stockID.equals("1110"))
+						//continue;
+					List <StockDistributionEntity> distributionList = stockDistributionDao.latest(stockID, totalRetail);
+					//實際成長的月份數
+					int growMonth = 0;
+					for (int j = 0; j < distributionList.size()-1; j++)
+					{
+						long retailInvestor = 
+						distributionList.get(j).getD1() - distributionList.get(j+1).getD1() +
+						distributionList.get(j).getD1000() - distributionList.get(j+1).getD1000() +
+						distributionList.get(j).getD5000() - distributionList.get(j+1).getD5000() +
+						distributionList.get(j).getD10000() - distributionList.get(j+1).getD10000() +
+						distributionList.get(j).getD15000() - distributionList.get(j+1).getD15000() +
+						distributionList.get(j).getD20000() - distributionList.get(j+1).getD20000() +
+						distributionList.get(j).getD30000() - distributionList.get(j+1).getD30000() +
+						distributionList.get(j).getD40000() - distributionList.get(j+1).getD40000() +
+						distributionList.get(j).getD50000() - distributionList.get(j+1).getD50000();
+						if (retailInvestor < 0)
+							growMonth++;
+					}
+					if (growMonth >= selectedRetail)
+					{
+						calculateList.add(conditionalList.get(i));
+					}
+				}
+				conditionalList = calculateList;
+				calculateList = new ArrayList<BasicStockWrapper>();
+			}
+			//大股東買超
+			if (majorShareholderCheck == true)
+			{
+				for (int i = 0; i < conditionalList.size(); i++)
+				{
+					String stockID = conditionalList.get(i).getStockID();
+					List <StockDistributionEntity> distributionList = stockDistributionDao.latest(stockID, totalMajorShareholder);
+					//實際成長的月份數
+					int growMonth = 0;
+					for (int j = 0; j < distributionList.size()-1; j++)
+					{
+						long majorShareHolder =
+						distributionList.get(j).getD800000() - distributionList.get(j+1).getD800000() + 
+						distributionList.get(j).getD1000000() - distributionList.get(j+1).getD1000000();
+						if (majorShareHolder > 0)
+							growMonth++;
+					}
+					if (growMonth >= selectedMajorShareholder)
+					{
+						calculateList.add(conditionalList.get(i));
+					}
+				}
+				conditionalList = calculateList;
+			}
+			/****************
+			 * 重組資料		
+			 */
+			for (int i = 0; i < conditionalList.size(); i++)
+			{
+				String stockID = conditionalList.get(i).getStockID();
+				String stockName = conditionalList.get(i).getStockName();
+				RedRabbitStockWrapper wrapper = new RedRabbitStockWrapper();
+				wrapper.setStockID(stockID);
+				wrapper.setStockName(stockName);
+				List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
+				if (i == conditionalList.size() - 1)
+					System.out.println("stockID: " + stockID);
+				for (int j = 0; j < 6; j++)
+				{
+					double yoy;
+					yoy = (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue()-1;
+					yoy = yoy*100;
+					yoy = StringUtil.setPointLength(yoy, 2);					
+					switch (j)
+					{
+						case 0: 					
+							wrapper.setLatestMonth(yoy);
+							break;
+						case 1:	
+							wrapper.setLastMonth(yoy);
+							break;
+						case 2:
+							wrapper.setBeforeLastMonth(yoy);
+							break;
+						case 3:
+							wrapper.setThreeMonthAgo(yoy);
+							break;
+						case 4:
+							wrapper.setFourMonthAgo(yoy);
+							break;
+						case 5:
+							wrapper.setFiveMonthAgo(yoy);
+							break;
+					}
+				}
+				//Add PE Ratio
+				GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
+				BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
+				parser.parse(2);
+				wrapper.setPe(parser.getPer());
+				wrapperList.add(wrapper);							
+			}
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return wrapperList;
 	}
 	
 }
