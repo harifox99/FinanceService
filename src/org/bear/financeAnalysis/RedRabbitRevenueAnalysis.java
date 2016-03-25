@@ -39,6 +39,7 @@ public class RedRabbitRevenueAnalysis
 			{
 				RedRabbitWrapper wrapper = new RedRabbitWrapper();	
 				String stockID = stockIdList.get(i).getStockID();
+				String stockName = stockIdList.get(i).getStockName();
 				/*
 				if (!stockID.equals("1314") && !stockID.equals("1201") && !stockID.equals("1203") &&
 					!stockID.equals("1213") && !stockID.equals("1215") && !stockID.equals("1216") &&
@@ -310,6 +311,7 @@ public class RedRabbitRevenueAnalysis
 				else
 					wrapper.setMomGrow(0);			
 				wrapper.setStockID(stockID);	
+				wrapper.setStockName(stockName);
 				redRabitWrapper.add(wrapper);
 			}
 			
