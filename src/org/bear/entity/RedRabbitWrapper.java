@@ -2,6 +2,7 @@ package org.bear.entity;
 
 public class RedRabbitWrapper {
 	String stockID;
+	String stockName;
 	//本月營收創六年以來新高
 	int sixYearHigh;
 	//創近一年新高
@@ -107,4 +108,11 @@ public class RedRabbitWrapper {
 	public void setStockID(String stockID) {
 		this.stockID = stockID;
 	}
+	public String getStockName() {
+		return stockName;
+	}
+	public void setStockName(String stockName) {
+		this.stockName = stockName;
+	}
+	
 }
