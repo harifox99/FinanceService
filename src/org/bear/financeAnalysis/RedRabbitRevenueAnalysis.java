@@ -469,8 +469,8 @@ public class RedRabbitRevenueAnalysis
 				wrapper.setStockID(stockID);
 				wrapper.setStockName(stockName);
 				List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
-				if (i == conditionalList.size() - 1)
-					System.out.println("stockID: " + stockID);
+				//if (i == conditionalList.size() - 1)
+					//System.out.println("stockID: " + stockID);
 				for (int j = 0; j < 6; j++)
 				{
 					double yoy;
