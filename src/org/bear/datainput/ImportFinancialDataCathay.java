@@ -65,7 +65,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 		//每年配發股息
 		GetURLCathayCashDiv urlCashDiv = new GetURLCathayCashDiv(stockID);
 		CashDivParserCathay cashDivParser = new CashDivParserCathay(urlCashDiv.getContent(), stockID);
-		cashDivParser.parse(3);
+		cashDivParser.parse(2);
 		HashMap <String, Double> mapCashDiv = cashDivParser.getCashDivData();
 		HashMap <String, Double> mapNav = navParser.getNavData();
 		for (int k = 0; k < mapNav.size(); k++)
@@ -81,7 +81,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
 			//只要當年的
-			if (entity.year.equals("2014"))
+			if (entity.year.equals("2015"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
