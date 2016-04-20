@@ -38,7 +38,7 @@ public class CashDivParserCathay extends ParserBase {
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);
 		for (int i = 0; i < trList.size(); i++)
 		{
-			if (i == 0)
+			if (i < 3)
 				continue;
 			Element trElement = trList.get(i);
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
