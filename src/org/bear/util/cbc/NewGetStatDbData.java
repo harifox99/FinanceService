@@ -8,22 +8,22 @@ import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.MacroEconomicDao;
 
 public class NewGetStatDbData {
-	String url;
-	String valdavarden2;
-	String valdavarden3;
-	int endDateValue;
-	int startDateValue;
+	protected String url;
+	protected String valdavarden2;
+	protected String valdavarden3;
+	protected int endDateValue;
+	protected int startDateValue;
 	/**
 	 * 表格種類
 	 */
-	String matrix;
-	String[] values2;
-	String[] values3;
-	String hasAggregno; 
-	String root;
-	String classdir;
-	List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-	MacroEconomicDao dao;	
+	protected String matrix;
+	protected String[] values2;
+	protected String[] values3;
+	protected String hasAggregno; 
+	protected String root;
+	protected String classdir;
+	protected List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+	protected MacroEconomicDao dao;	
 	public void setData(String key, String value)
 	{
 		paramList.add(new BasicNameValuePair(key, value));
