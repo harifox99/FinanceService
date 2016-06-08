@@ -43,7 +43,7 @@ public class NdcParser extends CbcParser
 						dateString = content;
 						dao.insertBatch(list);
 					}
-					else if (j == 3 || j == 6)
+					else if (j > 3)
 					{
 						continue;
 					}
