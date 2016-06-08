@@ -5,6 +5,6 @@ public class CepdIndexConstant {
 	public static final String[] CEPD_LIST = {"SR0001", "SR0002", "SR0010", "SR0011", "SR0013", "SR0005", "SR0001", "SR0007"};
 	public static final String[] CEPD_NAME = {"GeneralIndex", "SixMonthLeadIndex", "InventoryIndex", "OverworkTime", "SemiIndex", "LightSignal", "GeneralIndexYoY", "ExportOrder"};
 	public static final String[] CEPD_MAP = {"it01", "it01", "it01", "it01", "it01", "it02", "it01", "it02"};
-	/* 中國民國統計資訊網->國家發展委員會->總經指標  */
-	public static final String[] NDC_MAP = {"GeneralIndex", "GeneralIndexYoY", "", "ExportOrder", "SemiIndex"};
+	/* 中國民國統計資訊網->景氣指標統計  */
+	public static final String[] NDC_MAP = {"GeneralIndex", "NonTrendIndex", "LightSignal"};
 }
