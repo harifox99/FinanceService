@@ -13,6 +13,10 @@ public class GetURLContent
 		this.urlString = urlString;
 		this.urlString += "yearseason=" + yearseason + "&co_id=" + co_id;
 	}
+	public GetURLContent(String urlString)
+	{
+		this.urlString = urlString;
+	}
 	public BufferedReader getContent()
 	{
 		boolean isConnect = false;
