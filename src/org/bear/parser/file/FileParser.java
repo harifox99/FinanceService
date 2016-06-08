@@ -2,7 +2,7 @@ package org.bear.parser.file;
 
 import java.io.*;
 /**
- * 可直接擷取下載的檔案資料
+ * 可直接擷取下載檔案的資料
  * @author edward
  *
  */
