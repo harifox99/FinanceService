@@ -10,6 +10,7 @@ import org.bear.parser.taiwanMacro.TwseIndex;
 import org.bear.util.ParseFile;
 import org.bear.util.cbc.GetCbcMoney;
 import org.bear.util.cbc.GetDemandDeposit;
+import org.bear.util.cbc.GetExportOrder;
 import org.bear.util.cbc.GetPbRatio;
 import org.bear.util.cbc.GetStockValue;
 import org.springframework.context.ApplicationContext;
@@ -44,14 +45,14 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.parse(10);
 		}*/
 		
-		String startDateValue = "2016M03";
+		String startDateValue = "2016M02";
 		String endDateValue = "2016M04";
 		//String date = "";
 		//總經指標，政府統計資料網三不五時就在改程式，20160608，廢棄不用		
 		//GetNdcData getNdcData = new GetNdcData(); 
 		//getNdcData.setDao(dao);
 		//getNdcData.getContent(CbcIndexConstant.STAT_DB_HASH.get(startDateValue), CbcIndexConstant.STAT_DB_HASH.get(endDateValue));
-		//總經指標
+		//領先指標/領先指標不含趨勢/景氣燈號
 		GetLeadingIndex getLeadingIndex = new GetLeadingIndex();
 		getLeadingIndex.setDao(dao);
 		getLeadingIndex.getContent(CbcIndexConstant.STAT_DB_HASH.get(startDateValue), CbcIndexConstant.STAT_DB_HASH.get(endDateValue));
@@ -84,10 +85,10 @@ public class BuildMacroEconomicData extends ParseFile
 		//NdcParser parser = new NdcParser();
 		//parser.setDao(dao);
 		//parser.parse();
-		//外銷訂單年增率，Open Data更新速度太慢，哭哭，不好用
-		//GetExportOrder GetExportOrder = new GetExportOrder();
-		//GetExportOrder.setDao(dao);
-		//GetExportOrder.getContent(CbcIndexConstant.EXPORT_ORDER.get(startDateValue), CbcIndexConstant.EXPORT_ORDER.get(endDateValue));
+		//外銷訂單年增率
+		GetExportOrder GetExportOrder = new GetExportOrder();
+		GetExportOrder.setDao(dao);
+		GetExportOrder.getContent(CbcIndexConstant.EXPORT_ORDER.get(startDateValue), CbcIndexConstant.EXPORT_ORDER.get(endDateValue));
 		
 	}
 	public void insertBatch()
