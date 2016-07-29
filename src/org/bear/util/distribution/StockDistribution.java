@@ -10,6 +10,17 @@ import org.bear.util.HttpUtil;
 public class StockDistribution 
 {
 	StockDistributionDao dao;
+	/**
+	 * 集保股權因為是週資料，所以有時當月的資料要去下個月去抓 (7月的資料要去8月抓)，所以由此參數，來決定月資料要不要減1
+	 * 抓到8月的資料 (但其實是7月的資料後)，減1後儲存
+	 */
+	boolean isCurrentMonth;
+	public boolean isCurrentMonth() {
+		return isCurrentMonth;
+	}
+	public void setCurrentMonth(boolean isCurrentMonth) {
+		this.isCurrentMonth = isCurrentMonth;
+	}
 	public StockDistributionDao getDao() {
 		return dao;
 	}
@@ -21,6 +32,7 @@ public class StockDistribution
 		StockDistributionParser parser = new StockDistributionParser();
 		parser.setDao(dao);
 		parser.setStockID(stockID);
+		parser.setCurrentMonth(isCurrentMonth);
 		parser.setDateString(startYear + startMonth);
 		String url = "http://www.tdcc.com.tw/smWeb/QryStock.jsp";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
