@@ -14,6 +14,7 @@ public class StockDistributionParser extends EasyParserBase
 	String stockID;
 	String dateString;
 	List<Element> elementList = null;
+	boolean isCurrentMonth;
 	public StockDistributionDao getDao() {
 		return dao;
 	}
@@ -31,6 +32,12 @@ public class StockDistributionParser extends EasyParserBase
 	}
 	public void setDateString(String dateString) {
 		this.dateString = dateString;
+	}
+	public boolean isCurrentMonth() {
+		return isCurrentMonth;
+	}
+	public void setCurrentMonth(boolean isCurrentMonth) {
+		this.isCurrentMonth = isCurrentMonth;
 	}
 	public void getTableContent(Element element) 
 	{
@@ -52,11 +59,19 @@ public class StockDistributionParser extends EasyParserBase
 					{
 						entity.setStockID(stockID);
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");						
-						//Date date = dateFormat.parse(this.convertMonth());
-						String month = dateString.substring(4, 6);
-						String year = dateString.substring(0, 4);
-						Date date = dateFormat.parse(year + month);
-						entity.setYearMonth(date);
+						if (isCurrentMonth)
+						{
+							String month = dateString.substring(4, 6);
+							String year = dateString.substring(0, 4);
+							Date date = dateFormat.parse(year + month);
+							entity.setYearMonth(date);
+						}
+						else
+						{
+							Date date = dateFormat.parse(this.convertMonth());
+							entity.setYearMonth(date);
+						}
+						
 					}
 					//1±i¥H¤U
 					else if (i == 1)
@@ -248,7 +263,7 @@ public class StockDistributionParser extends EasyParserBase
 		}
 		dao.insert(entity);
 	}
-	/*
+	
 	private String convertMonth()
 	{
 		String month = dateString.substring(4, 6);
@@ -265,5 +280,5 @@ public class StockDistributionParser extends EasyParserBase
 			intMonth--;
 			return year + String.valueOf(intMonth);
 		}
-	}*/
+	}
 }
