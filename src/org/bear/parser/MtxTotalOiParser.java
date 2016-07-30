@@ -34,7 +34,7 @@ public class MtxTotalOiParser extends TaifexLotParser
 						resultElement = tdList.get(j);				
 						String content = resultElement.getContent().toString().trim();		
 						content = content.replace(",", "");
-						dao.update("Retail_Mtx", "InstitutionalMtx", Integer.parseInt(content), date);
+						dao.update("Retail_Mtx", "TotalMtx", Integer.parseInt(content), date);
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 						entity.setExchangeDate(dateFormat.parse(date));
 					}
