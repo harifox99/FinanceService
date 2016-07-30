@@ -103,8 +103,8 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		try
 		{
 			String sql = "insert into Retail_Mtx " +
-			"(TotalMtx, ExchangeDate) values " +
-			"(:totalMtx, :exchangeDate)";
+			"(InstitutionalMtx, ExchangeDate) values " +
+			"(:institutionalMtx, :exchangeDate)";
 			//System.out.println("sql: " + sql);
 			SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(entity);
 			this.getSimpleJdbcTemplate().update(sql, parameterSource);
