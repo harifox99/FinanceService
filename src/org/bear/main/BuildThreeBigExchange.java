@@ -2,10 +2,13 @@ package org.bear.main;
 
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
+import org.bear.parser.TaifexLotParser;
+import org.bear.parser.TaifexMtxParser;
 import org.bear.parser.TpexThreeBigExchangeParser;
 import org.bear.parser.TwseDailyDataParser;
 import org.bear.parser.TwseThreeBigAmountParser;
 import org.bear.util.StringUtil;
+import org.bear.util.distribution.GetMtxTotalOi;
 import org.bear.util.distribution.GetTaifexLot;
 import org.bear.util.distribution.GetTaifexOption;
 import org.bear.util.distribution.GetTaifexTopTen;
@@ -79,8 +82,14 @@ public class BuildThreeBigExchange {
 		//String[] date = {"105/05/16", "105/05/17", "105/05/18", "105/05/19", "105/05/20"};
 		//String[] date = {"105/05/23", "105/05/24", "105/05/25", "105/05/26", "105/05/27"};
 		//String[] date = {"105/05/30", "105/05/31"};
-		String[] date = {"105/06/01", "105/06/02", "105/06/03", "105/06/04", "105/06/06", "105/06/07", "105/06/08"};
-		// TODO Auto-generated method stub
+		//String[] date = {"105/06/01", "105/06/02", "105/06/03", "105/06/04", "105/06/06", "105/06/07", "105/06/08"};
+		//String[] date = {"105/06/13", "105/06/14", "105/06/15", "105/06/16", "105/06/17"};
+		//String[] date = {"105/06/27", "105/06/28", "105/06/29", "105/06/30"};
+		//String[] date = {"105/07/04", "105/07/05", "105/07/06", "105/07/07", "105/07/01"};
+		//String[] date = {"105/07/11", "105/07/12", "105/07/13", "105/07/14", "105/07/15"};
+		//String[] date = {"105/07/19", "105/07/20", "105/07/21", "105/07/22"};
+		//String[] date = {"105/07/25", "105/07/26", "105/07/27", "105/07/28", "105/07/29"};
+		String[] date = {"105/07/29"};
 		for (int i = 0; i < date.length; i++)
 		{
 			//把民國轉換成西元
@@ -89,8 +98,7 @@ public class BuildThreeBigExchange {
 			String westenYear = westenDate;
 			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
 			String url;		
-			BuildThreeBigExchange exchange = new BuildThreeBigExchange();	
-			
+			BuildThreeBigExchange exchange = new BuildThreeBigExchange();				
 			//上市，外資
 			url = "http://www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U.php";
 			exchange.buildTwse(date[i], 1, "外資", url);			
@@ -117,7 +125,7 @@ public class BuildThreeBigExchange {
 			exchange.buildJuristicAmountInfo(westenDate, url);
 			//期交所，外資未平倉口數
 			url = "http://www.taifex.com.tw/chinese/3/7_12_3_tbl.asp";
-			exchange.buildTaiFexLot(westenDate, url);
+			exchange.buildTaiFexLot(westenDate, url, "", new TaifexLotParser(), 1);
 			//期交所前十大法人未沖銷部位
 			url = "http://www.taifex.com.tw/chinese/3/7_8.asp";
 			exchange.buildTopTen(westenDate, url);
@@ -136,6 +144,12 @@ public class BuildThreeBigExchange {
 			//外資借券
 			url = "http://www.twse.com.tw/ch/trading/exchange/TWT93U/TWT93U.php";
 			exchange.buildStockLending(date[i], url);
+			//小台三大法人未平倉口數
+			url = "http://www.taifex.com.tw/chinese/3/7_12_3.asp";
+			exchange.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 3);
+			//小台未平倉餘額
+			url = "http://www.taifex.com.tw/chinese/3/3_1_1.asp";
+			exchange.buildMtxOi(westenDate, url);
 		}
 	}
 	/**
@@ -175,13 +189,16 @@ public class BuildThreeBigExchange {
 		parser.getConnection();
 		parser.parse();
 	}
-	public void buildTaiFexLot(String date, String url)
+	public void buildTaiFexLot(String date, String url, String commodityId, TaifexLotParser parser, int tableIndex)
 	{
 		//期交所外資未平倉口數
 		GetTaifexLot getTaiFexForeignerLot = new GetTaifexLot();
 		getTaiFexForeignerLot.setDao(juristicDailyReportDao);
 		getTaiFexForeignerLot.setUrl(url);
 		getTaiFexForeignerLot.setDate(date);
+		getTaiFexForeignerLot.setCommodityId(commodityId);
+		getTaiFexForeignerLot.setParser(parser);
+		getTaiFexForeignerLot.setTableIndex(tableIndex);
 		getTaiFexForeignerLot.getContent();
 	}
 	public void buildTopTen(String date, String url)
@@ -231,5 +248,14 @@ public class BuildThreeBigExchange {
 		stockLending.setUrl(url);
 		stockLending.setDate(date);
 		stockLending.getContent();
+	}
+	//小台未平倉餘額
+	public void buildMtxOi(String date, String url)
+	{
+		GetMtxTotalOi getMtxTotalOi = new GetMtxTotalOi();
+		getMtxTotalOi.setDao(juristicDailyReportDao);
+		getMtxTotalOi.setDate(date);
+		getMtxTotalOi.setUrl(url);
+		getMtxTotalOi.getContent();
 	}
 }
