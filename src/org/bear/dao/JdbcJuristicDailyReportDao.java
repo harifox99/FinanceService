@@ -1,6 +1,7 @@
 package org.bear.dao;
 import java.util.List;
 import org.bear.entity.JuristicDailyEntity;
+import org.bear.entity.RetailInvestorsEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -94,6 +95,33 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		String sql = "UPDATE JuristicDailyReport SET " + indexName + " = ? where Exchangedate = '" + date + "'";
 		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
 		return result;
+	}
+
+	@Override
+	public void insert(RetailInvestorsEntity entity) 
+	{
+		try
+		{
+			String sql = "insert into Retail_Mtx " +
+			"(TotalMtx, ExchangeDate) values " +
+			"(:totalMtx, :exchangeDate)";
+			//System.out.println("sql: " + sql);
+			SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(entity);
+			this.getSimpleJdbcTemplate().update(sql, parameterSource);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			System.out.println("Insert RetailInvestorsEntity Error!");
+		}
+	}
+
+	@Override
+	public int update(String tableName, String indexName, int indexValue, String date)
+	{
+		String sql = "UPDATE " + tableName + " SET " + indexName + " = ? where Exchangedate = '" + date + "'";
+		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
+		return result;		
 	}
 	
 }
