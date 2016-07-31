@@ -19,6 +19,10 @@ public class RetailInvestorsEntity {
 	 * 小台指未平倉餘額
 	 */
 	int totalMtx;
+	/**
+	 * 散戶指標比率
+	 */
+	double retailRate;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -36,5 +40,11 @@ public class RetailInvestorsEntity {
 	}
 	public void setTotalMtx(int totalMtx) {
 		this.totalMtx = totalMtx;
+	}
+	public double getRetailRate() {
+		return retailRate;
+	}
+	public void setRetailRate(double retailRate) {
+		this.retailRate = retailRate;
 	}
 }
