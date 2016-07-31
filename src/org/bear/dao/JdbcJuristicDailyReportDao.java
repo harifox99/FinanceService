@@ -1,4 +1,5 @@
 package org.bear.dao;
+import java.util.Date;
 import java.util.List;
 import org.bear.entity.JuristicDailyEntity;
 import org.bear.entity.RetailInvestorsEntity;
@@ -122,6 +123,28 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		String sql = "UPDATE " + tableName + " SET " + indexName + " = ? where Exchangedate = '" + date + "'";
 		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
 		return result;		
+	}
+
+	/**
+	 * 查詢散戶指標
+	 */
+	@Override
+	public List<RetailInvestorsEntity> findRetailInvestors(int size) {
+		List <RetailInvestorsEntity> entityList = null;
+		String sql = "select top " + size + " * from Retail_Mtx";
+		//System.out.println("SQL: " + sql);
+		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(RetailInvestorsEntity.class));
+		return entityList;
+	}
+	/**
+	 * 用日期查詢法人日報
+	 */
+	@Override
+	public JuristicDailyEntity findByDate(Date exchangeDate) 
+	{
+		String sql = "select * from JuristicDailyReport where exchangeDate = '" + exchangeDate + "'";
+		JuristicDailyEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
+		return entity;
 	}
 	
 }
