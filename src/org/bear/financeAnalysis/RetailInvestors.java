@@ -30,6 +30,7 @@ public class RetailInvestors
 			//擷取大盤指數
 			JuristicDailyEntity entity = juristicDailyReportDao.findByDate(listRetail.get(i).getExchangeDate());
 			listRetail.get(i).setTwseIndex(entity.getTwseIndex());
+			listRetail.get(i).setAxisDate(listRetail.get(i).getExchangeDate().toString());
 		}
 		return listRetail;
 	}

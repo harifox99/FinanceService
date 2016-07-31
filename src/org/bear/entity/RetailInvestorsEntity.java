@@ -27,6 +27,10 @@ public class RetailInvestorsEntity {
 	 * 收盤價
 	 */
 	double twseIndex;
+	/**
+	 * 座標用的日期
+	 */
+	String axisDate;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -57,4 +61,11 @@ public class RetailInvestorsEntity {
 	public void setTwseIndex(double twseIndex) {
 		this.twseIndex = twseIndex;
 	}
+	public String getAxisDate() {
+		return axisDate;
+	}
+	public void setAxisDate(String axisDate) {
+		this.axisDate = axisDate;
+	}
+	
 }
