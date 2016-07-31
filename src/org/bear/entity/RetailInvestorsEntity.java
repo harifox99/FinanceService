@@ -23,6 +23,10 @@ public class RetailInvestorsEntity {
 	 * 散戶指標比率
 	 */
 	double retailRate;
+	/**
+	 * 收盤價
+	 */
+	double twseIndex;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -46,5 +50,11 @@ public class RetailInvestorsEntity {
 	}
 	public void setRetailRate(double retailRate) {
 		this.retailRate = retailRate;
+	}
+	public double getTwseIndex() {
+		return twseIndex;
+	}
+	public void setTwseIndex(double twseIndex) {
+		this.twseIndex = twseIndex;
 	}
 }
