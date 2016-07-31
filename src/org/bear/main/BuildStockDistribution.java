@@ -21,7 +21,7 @@ public class BuildStockDistribution extends ImportStockID
 		//集保庫存資料
 		//String[] dateString = {"20121001", "20121101", "20121203", "20130102", "20130201", "20130301", 
 	    //"20130401", "20130502", "20130603", "20130701", "20130801", "20130902", "20131001"};
-		String[] dateString = {"20160701"};
+		String[] dateString = {"20160729"};
 		//String[] dateString = {"20150430", "20150529", "20150626", "20150731"};
 		//String[] dateString = {"20150401", "20150302", "20150202", "20150105"};
 		//String[] dateString = {"20141201", "20141103", "20141001", "20140901"};
@@ -30,12 +30,12 @@ public class BuildStockDistribution extends ImportStockID
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				//if (!wrapperList.get(j).getStockID().equals("8420"))
+				//if (!wrapperList.get(j).getStockID().equals("3577"))
 					//continue;
 				System.out.println("StockID: " + wrapperList.get(j).getStockID() + ", " + j);
 				StockDistribution stockDistribution = new StockDistribution();
 				stockDistribution.setDao(stockDistributionDao);
-				stockDistribution.setCurrentMonth(false);
+				stockDistribution.setCurrentMonth(true);
 				stockDistribution.getContent(wrapperList.get(j).getStockID(), 
 					dateString[i].substring(0, 4), dateString[i].substring(4, 8), null, null);
 			}
