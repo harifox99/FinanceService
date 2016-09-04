@@ -45,8 +45,8 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.parse(10);
 		}*/
 		
-		String startDateValue = "2016M02";
-		String endDateValue = "2016M04";
+		String startDateValue = "2016M05";
+		String endDateValue = "2016M07";
 		//String date = "";
 		//總經指標，政府統計資料網三不五時就在改程式，20160608，廢棄不用		
 		//GetNdcData getNdcData = new GetNdcData(); 
@@ -73,10 +73,6 @@ public class BuildMacroEconomicData extends ParseFile
 		GetDemandDeposit deposit = new GetDemandDeposit();
 		deposit.setDao(dao);
 		deposit.getContent(CbcIndexConstant.MONTH_HASH.get(startDateValue), CbcIndexConstant.MONTH_HASH.get(endDateValue));			
-		//TWSE，用Yahoo的
-		TwseIndex twseIndex = new TwseIndex();
-		twseIndex.setDao(dao);
-		twseIndex.getContent();
 		//台股股價淨值比
 		GetPbRatio pbRatio = new GetPbRatio();
 		pbRatio.setDao(dao);
@@ -89,6 +85,12 @@ public class BuildMacroEconomicData extends ParseFile
 		GetExportOrder GetExportOrder = new GetExportOrder();
 		GetExportOrder.setDao(dao);
 		GetExportOrder.getContent(CbcIndexConstant.EXPORT_ORDER.get(startDateValue), CbcIndexConstant.EXPORT_ORDER.get(endDateValue));
+		//TWSE，用Yahoo的
+		TwseIndex twseIndex = new TwseIndex();
+		twseIndex.setDao(dao);
+		twseIndex.getContent(startDateValue);
+		twseIndex.getContent("2016M06");
+		twseIndex.getContent(endDateValue);
 		
 	}
 	public void insertBatch()
