@@ -12,7 +12,7 @@ import net.htmlparser.jericho.Source;
  */
 public class CbcParser 
 {
-	MacroEconomicDao dao;
+	protected MacroEconomicDao dao;
 	public String responseString;
 	List<Element> elementList = null;
 	public String getResponseString() {
