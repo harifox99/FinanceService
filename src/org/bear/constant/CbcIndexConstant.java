@@ -46,6 +46,10 @@ public class CbcIndexConstant
 		MONTH_HASH.put("2016M02", 656);
 		MONTH_HASH.put("2016M03", 657);
 		MONTH_HASH.put("2016M04", 658);
+		MONTH_HASH.put("2016M05", 659);
+		MONTH_HASH.put("2016M06", 660);
+		MONTH_HASH.put("2016M07", 661);
+		MONTH_HASH.put("2016M04", 662);
 	}	
 	/**
 	 * 總經指標
@@ -74,6 +78,10 @@ public class CbcIndexConstant
 		STAT_DB_HASH.put("2016M02", 410);
 		STAT_DB_HASH.put("2016M03", 411);
 		STAT_DB_HASH.put("2016M04", 412);
+		STAT_DB_HASH.put("2016M05", 413);
+		STAT_DB_HASH.put("2016M06", 414);
+		STAT_DB_HASH.put("2016M07", 415);
+		STAT_DB_HASH.put("2016M08", 416);
 	}
 	/**
 	 * 台股市值
@@ -315,6 +323,10 @@ public class CbcIndexConstant
 		STAT_STOCK_VALUE_HASH.put("2016M02", 346);
 		STAT_STOCK_VALUE_HASH.put("2016M03", 347);
 		STAT_STOCK_VALUE_HASH.put("2016M04", 348);
+		STAT_STOCK_VALUE_HASH.put("2016M05", 349);
+		STAT_STOCK_VALUE_HASH.put("2016M06", 350);
+		STAT_STOCK_VALUE_HASH.put("2016M07", 351);
+		STAT_STOCK_VALUE_HASH.put("2016M08", 352);
 	}
 	
 	/* 貨幣 */
@@ -604,6 +616,10 @@ public class CbcIndexConstant
 		MACRO_ECONOMIC_SIGNAL.put("2016M02", 674);
 		MACRO_ECONOMIC_SIGNAL.put("2016M03", 675);
 		MACRO_ECONOMIC_SIGNAL.put("2016M04", 676);
+		MACRO_ECONOMIC_SIGNAL.put("2016M05", 677);
+		MACRO_ECONOMIC_SIGNAL.put("2016M06", 678);
+		MACRO_ECONOMIC_SIGNAL.put("2016M07", 679);
+		MACRO_ECONOMIC_SIGNAL.put("2016M08", 680);
 	}
 	/* 台股股價淨值比 */
 	public static final HashMap<String, Integer> STOCK_PB_RATIO = new HashMap<String, Integer>();
@@ -822,6 +838,10 @@ public class CbcIndexConstant
 		STOCK_PB_RATIO.put("2016M02", 211);
 		STOCK_PB_RATIO.put("2016M03", 212);
 		STOCK_PB_RATIO.put("2016M04", 213);
+		STOCK_PB_RATIO.put("2016M05", 214);
+		STOCK_PB_RATIO.put("2016M06", 215);
+		STOCK_PB_RATIO.put("2016M07", 216);
+		STOCK_PB_RATIO.put("2016M08", 217);
 	}
 	/* 出口訂單 */
 	public static final HashMap<String, Integer> EXPORT_ORDER = new HashMap<String, Integer>();
@@ -1107,5 +1127,9 @@ public class CbcIndexConstant
 		EXPORT_ORDER.put("2016M02", 386);
 		EXPORT_ORDER.put("2016M03", 387);
 		EXPORT_ORDER.put("2016M04", 388);
+		EXPORT_ORDER.put("2016M05", 389);
+		EXPORT_ORDER.put("2016M06", 390);
+		EXPORT_ORDER.put("2016M07", 391);
+		EXPORT_ORDER.put("2016M08", 392);
 	}
 }
