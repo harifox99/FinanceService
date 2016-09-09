@@ -62,6 +62,17 @@ public class StringUtil
 		number = Double.parseDouble(formatter.format(number));
 		return number;
 	}
+	public static String setPointLength(String number, int length)
+	{
+		String decimal = "##.";
+		for (int i = 0; i < length; i++)
+		{
+			decimal = decimal + "#";
+		}
+		NumberFormat formatter = new DecimalFormat(decimal);
+		number = formatter.format(Double.parseDouble(number));
+		return number;
+	}
 	/**
 	 * ºë½Tªºdouble´îªk
 	 * @param v1
