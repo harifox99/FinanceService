@@ -1,6 +1,8 @@
 package org.bear.parser.file;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 可直接擷取下載檔案的資料
  * @author edward
@@ -8,7 +10,7 @@ import java.io.*;
  */
 public class FileParser 
 {
-	public void getResponse(BufferedReader reader)
+	public void printResponse(BufferedReader reader)
 	{
 		try 
 		{    
@@ -23,5 +25,21 @@ public class FileParser
 		catch (Exception ignored) 
 		{}
 	}
-	
+	public List<String> getResponse(BufferedReader reader)
+	{
+		List<String> listData = new ArrayList<String>();
+		try 
+		{    
+		    // Get the response
+		    String line;
+		    while ((line = reader.readLine()) != null) 
+		    {
+		    	listData.add(line);
+		    }
+		    reader.close();
+		} 
+		catch (Exception ignored) 
+		{}
+		return listData;
+	}
 }
