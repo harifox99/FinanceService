@@ -5,21 +5,23 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.bear.parser.TwseDailyIndexParser;
+import org.bear.parser.TwseDailyDataParser;
 import org.bear.util.HttpUtil;
 /**
- * 台股每日指數資料
+ * 台股每日指數&成交量資料
  * @author edward
  *
  */
-public class TwseDailyIndex extends GetTaifexLot {
+public class TwseDailyIndex extends GetTaifexLot 
+{
 	public void getContent()
 	{
-		TwseDailyIndexParser parser = new TwseDailyIndexParser();		
+		TwseDailyDataParser parser = new TwseDailyDataParser();
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		paramList.add(new BasicNameValuePair("selecType", "ms"));
-		paramList.add(new BasicNameValuePair("qdate", date));
-		String responseString = HttpUtil.send(url, paramList, 1, "big5");
+		String[] dateArray = date.split("/");
+		paramList.add(new BasicNameValuePair("query_year", dateArray[0]));
+		paramList.add(new BasicNameValuePair("query_month", dateArray[1]));
+		String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
 		parser.setResponseString(responseString);
 		parser.setDao(dao);
 		parser.setDate(date);
