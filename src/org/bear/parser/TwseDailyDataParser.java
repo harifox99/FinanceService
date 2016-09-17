@@ -27,8 +27,8 @@ public class TwseDailyDataParser extends TaifexLotParser
 				{	
 					try
 					{				
-						resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);				
-						String content = resultElement.getContent().toString().trim();
+						resultElement = tdList.get(j);				
+						String content = resultElement.getContent().toString().trim();	
 						content = content.replace(",", "");
 						if (j == 0)//¤é´Á
 						{
@@ -64,6 +64,6 @@ public class TwseDailyDataParser extends TaifexLotParser
 	}
 	public void parse()
 	{		
-		this.getTableContent(elementList.get(7));
+		this.getTableContent(elementList.get(0));
 	}
 }
