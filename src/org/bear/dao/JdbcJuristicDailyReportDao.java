@@ -1,4 +1,5 @@
 package org.bear.dao;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.bear.entity.JuristicDailyEntity;
@@ -131,9 +132,10 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 	@Override
 	public List<RetailInvestorsEntity> findRetailInvestors(int size) {
 		List <RetailInvestorsEntity> entityList = null;
-		String sql = "select top " + size + " * from Retail_Mtx";
+		String sql = "select top " + size + " * from Retail_Mtx order by exchangeDate desc";
 		//System.out.println("SQL: " + sql);
 		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(RetailInvestorsEntity.class));
+		Collections.reverse(entityList);
 		return entityList;
 	}
 	/**
