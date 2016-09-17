@@ -89,13 +89,14 @@ public class BuildThreeBigExchange {
 		//String[] date = {"105/07/11", "105/07/12", "105/07/13", "105/07/14", "105/07/15"};
 		//String[] date = {"105/07/19", "105/07/20", "105/07/21", "105/07/22"};
 		//String[] date = {"105/07/25", "105/07/26", "105/07/27", "105/07/28", "105/07/29"};
-		String[] date = {"105/08/10"};
+		String[] date = {"105/09/12", "105/09/13", "105/09/14"};
+		//String[] date = {"105/09/05", "105/09/06", "105/09/07", "105/09/08", "105/09/09", "105/09/10"};
 		for (int i = 0; i < date.length; i++)
 		{
 			//把民國轉換成西元
 			String[] dateArray = date[i].split("/");
 			String westenDate = StringUtil.convertYear(dateArray[0]);
-			String westenYear = westenDate;
+			//String westenYear = westenDate;
 			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
 			String url;		
 			BuildThreeBigExchange exchange = new BuildThreeBigExchange();				
@@ -132,15 +133,15 @@ public class BuildThreeBigExchange {
 			//期交所外資/自營商未平倉餘額
 			url = "http://www.taifex.com.tw/chinese/3/7_12_5.asp";
 			exchange.buildOption(westenDate, url);
-			//大盤指數
-			//url = "http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX.php";
-			//exchange.buildIndex(date[i], url);			
 			//大盤指數&成交量
-			url = "http://www.twse.com.tw/en/trading/exchange/FMTQIK/genpage/Report";
-			url = url + westenYear + dateArray[1] + "/" + westenYear + dateArray[1] + "_F3_1_2.php?STK_NO=&myear=" + 
-			westenYear + "&mmon=" + dateArray[1];
+			url = "http://www.twse.com.tw/en/trading/exchange/FMTQIK/FMTQIK.php";
+			exchange.buildIndex(westenDate, url);	
 			System.out.println(url);
-			exchange.buildVolumn(westenDate, url);
+			//大盤指數&成交量
+			//url = "http://www.twse.com.tw/en/trading/exchange/FMTQIK/genpage/Report";
+			//url = url + westenYear + dateArray[1] + "/" + westenYear + dateArray[1] + "_F3_1_2.php?STK_NO=&myear=" + 
+			//westenYear + "&mmon=" + dateArray[1];			
+			//exchange.buildVolumn(westenDate, url);
 			//外資借券
 			url = "http://www.twse.com.tw/ch/trading/exchange/TWT93U/TWT93U.php";
 			exchange.buildStockLending(date[i], url);
@@ -227,8 +228,7 @@ public class BuildThreeBigExchange {
 		twseDailyIndex.setDao(juristicDailyReportDao);
 		twseDailyIndex.setUrl(url);
 		twseDailyIndex.setDate(date);
-		twseDailyIndex.getContent();
-		
+		twseDailyIndex.getContent();		
 	}
 	//上市指數，漲跌幅，成交量
 	public void buildVolumn(String date, String url)
