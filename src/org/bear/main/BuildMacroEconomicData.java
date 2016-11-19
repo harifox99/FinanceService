@@ -45,8 +45,8 @@ public class BuildMacroEconomicData extends ParseFile
 			parser.parse(10);
 		}*/
 		
-		String startDateValue = "2016M05";
-		String endDateValue = "2016M07";
+		String startDateValue = "2016M08";
+		String endDateValue = "2016M09";
 		//String date = "";
 		//總經指標，政府統計資料網三不五時就在改程式，20160608，廢棄不用		
 		//GetNdcData getNdcData = new GetNdcData(); 
@@ -89,7 +89,7 @@ public class BuildMacroEconomicData extends ParseFile
 		TwseIndex twseIndex = new TwseIndex();
 		twseIndex.setDao(dao);
 		twseIndex.getContent(startDateValue);
-		twseIndex.getContent("2016M06");
+		twseIndex.getContent("2016M08");
 		twseIndex.getContent(endDateValue);
 		
 	}
