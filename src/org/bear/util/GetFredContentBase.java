@@ -8,7 +8,7 @@ public class GetFredContentBase {
 	//public final String api_key = "ed82409405be66fda627007e4c5d77b1";
 	public final String api_key = "25ae66455e84654c9e958d6a14c8673e";
 	public final String limit = "1000";
-	public final String observation_init = "2016-05-01";
+	public final String observation_init = "2016-07-01";
 	String file_type = "txt";
 	protected String urlStringHeader = "https://api.stlouisfed.org/fred/series/observations?";
 	protected String urlString = "";
