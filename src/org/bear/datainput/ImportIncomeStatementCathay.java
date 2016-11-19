@@ -21,7 +21,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] seasons = {"01", "02"};
+				String[] seasons = {"01", "02", "03"};
 				String[] years = {"2016"};
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
