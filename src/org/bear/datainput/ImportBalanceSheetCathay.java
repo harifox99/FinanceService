@@ -22,7 +22,7 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2016"};
-				String[] seasons = {"01", "02"};				
+				String[] seasons = {"01", "02", "03"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
