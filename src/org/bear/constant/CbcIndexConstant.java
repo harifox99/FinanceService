@@ -49,7 +49,8 @@ public class CbcIndexConstant
 		MONTH_HASH.put("2016M05", 659);
 		MONTH_HASH.put("2016M06", 660);
 		MONTH_HASH.put("2016M07", 661);
-		MONTH_HASH.put("2016M04", 662);
+		MONTH_HASH.put("2016M08", 662);
+		MONTH_HASH.put("2016M09", 663);
 	}	
 	/**
 	 * 總經指標
@@ -82,6 +83,7 @@ public class CbcIndexConstant
 		STAT_DB_HASH.put("2016M06", 414);
 		STAT_DB_HASH.put("2016M07", 415);
 		STAT_DB_HASH.put("2016M08", 416);
+		STAT_DB_HASH.put("2016M09", 417);
 	}
 	/**
 	 * 台股市值
@@ -327,6 +329,7 @@ public class CbcIndexConstant
 		STAT_STOCK_VALUE_HASH.put("2016M06", 350);
 		STAT_STOCK_VALUE_HASH.put("2016M07", 351);
 		STAT_STOCK_VALUE_HASH.put("2016M08", 352);
+		STAT_STOCK_VALUE_HASH.put("2016M09", 353);
 	}
 	
 	/* 貨幣 */
@@ -620,6 +623,7 @@ public class CbcIndexConstant
 		MACRO_ECONOMIC_SIGNAL.put("2016M06", 678);
 		MACRO_ECONOMIC_SIGNAL.put("2016M07", 679);
 		MACRO_ECONOMIC_SIGNAL.put("2016M08", 680);
+		MACRO_ECONOMIC_SIGNAL.put("2016M09", 681);
 	}
 	/* 台股股價淨值比 */
 	public static final HashMap<String, Integer> STOCK_PB_RATIO = new HashMap<String, Integer>();
@@ -842,6 +846,7 @@ public class CbcIndexConstant
 		STOCK_PB_RATIO.put("2016M06", 215);
 		STOCK_PB_RATIO.put("2016M07", 216);
 		STOCK_PB_RATIO.put("2016M08", 217);
+		STOCK_PB_RATIO.put("2016M09", 218);
 	}
 	/* 出口訂單 */
 	public static final HashMap<String, Integer> EXPORT_ORDER = new HashMap<String, Integer>();
@@ -1131,5 +1136,6 @@ public class CbcIndexConstant
 		EXPORT_ORDER.put("2016M06", 390);
 		EXPORT_ORDER.put("2016M07", 391);
 		EXPORT_ORDER.put("2016M08", 392);
+		EXPORT_ORDER.put("2016M09", 393);
 	}
 }
