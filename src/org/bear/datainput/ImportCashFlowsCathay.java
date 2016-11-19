@@ -34,7 +34,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2016"};
-				String[] seasons = {"01", "02"};				
+				String[] seasons = {"01", "02", "03"};				
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))
 					//continue;
