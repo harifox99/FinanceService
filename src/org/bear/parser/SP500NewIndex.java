@@ -18,7 +18,8 @@ public class SP500NewIndex
 {
 	GetURLContent content;
 	FileParser fileParser;
-	private String url = "http://chart.finance.yahoo.com/table.csv?s=^GSPC&a=8&b=9&c=2015&d=8&e=9&f=2016&g=m&ignore=.csv";
+	private String url = "http://chart.finance.yahoo.com/table.csv?s=^GSPC&a=10&b=19&c=2015&d=10&e=19&f=2016&g=m&ignore=.csv";
+	//private String url = "http://chart.finance.yahoo.com/table.csv?s=^GSPC&a=8&b=9&c=2015&d=8&e=9&f=2016&g=m&ignore=.csv";
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	AmericanMacroPantherDao pantherDao = (AmericanMacroPantherDao)context.getBean("americanMacroPantherDao");
 	PMIndexDao pmiDao = (PMIndexDao)context.getBean("pmIndexDao");
