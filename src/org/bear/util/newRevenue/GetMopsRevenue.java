@@ -38,8 +38,12 @@ public class GetMopsRevenue implements GetSFIContent {
 			String responseString = null;
 			try
 			{
-				responseString = HttpUtil.sendWithRetry(url, paramList, 1, "UTF-8");				
-				if (stockName.startsWith("F"))
+				responseString = HttpUtil.sendWithRetry(url, paramList, 1, "UTF-8");	
+				if (responseString.contains("資料庫中查無需求資料"))
+				{
+					break;
+				}
+				else if (stockName.startsWith("F"))
 				{
 					MopsF_Parser parser = new MopsF_Parser();
 					parser.setResponseString(responseString);
