@@ -643,7 +643,7 @@ public class PerfectAnalysis
 	{
 		int counter = 0;
 		//過去totalNum個月要有expectNum個月，其營收YoY大於0 
-		for (int i = 1; i <= totalNum; i++)
+		for (int i = 2; i < totalNum+2; i++)
 		{
 			if (Double.parseDouble(revenue.get(i)) > 0)
 				counter++;
@@ -652,7 +652,7 @@ public class PerfectAnalysis
 			return true;
 		counter = 0;
 		//最後expectNum-1個月，其營收YoY都要大於0
-		for (int i = expectNum+1; i <= totalNum; i++)
+		for (int i = totalNum-expectNum+3; i < totalNum+2; i++)
 		{
 			if (Double.parseDouble(revenue.get(i)) > 0)
 				counter++;
