@@ -20,6 +20,7 @@ import org.bear.util.GetTpexPbeRatio;
 import org.bear.util.GetTwsePbeRatio;
 import org.bear.util.GetURLCathayBasicData;
 import org.bear.util.ReverseUtil;
+import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -443,9 +444,15 @@ public class PerfectAnalysis
 		parser.parse(2);
 		PeterLynchWrapper wrapper = new PeterLynchWrapper();
 		/* P/E Ratio */
-		wrapper.setPer(hashPer.get(stockID));
+		//wrapper.setPer(hashPer.get(stockID));
 		/* P/B Ratio */
-		wrapper.setPbr(hashPbr.get(stockID));
+		//wrapper.setPbr(hashPbr.get(stockID));
+		/* P/E Ratio */
+		wrapper.setPer(parser.getPer());
+		/* P/B Ratio */
+		double ratioNumber;
+		ratioNumber = StringUtil.setPointLength(parser.getPrice() / parser.getNav());
+		wrapper.setPbr(ratioNumber);
 		//Price
 		//ratioNumber = StringUtil.setPointLength(parser.getPrice());
 		//wrapper.setPrice(ratioNumber);
