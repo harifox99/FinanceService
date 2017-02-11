@@ -1,6 +1,9 @@
 package org.bear.util;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -28,6 +31,7 @@ public class GetURLContentBase
 			Source source = null;
 			try
 			{
+				CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
 				source = new Source(new URL(urlString));
 				elementList = source.getAllElements(HTMLElementName.TABLE);
 				isConnect = true;
@@ -39,6 +43,7 @@ public class GetURLContentBase
 			catch(ProtocolException pex)
 			{
 				System.out.println("網路問題");
+				//pex.printStackTrace();
 				isConnect = false;
 				try
 				{
