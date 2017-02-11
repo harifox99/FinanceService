@@ -12,6 +12,13 @@ public class TpexPbeParser extends EasyParserBase
 {
 	HashMap<String, Double> hashPer = new HashMap<String, Double>();
 	HashMap<String, Double> hashPbr = new HashMap<String, Double>();
+	public HashMap<String, Double> getHashPer() {
+		return hashPer;
+	}
+
+	public HashMap<String, Double> getHashPbr() {
+		return hashPbr;
+	}
 	@Override
 	public void getTableContent(Element element) {
 		Element resultElement = null;

@@ -35,6 +35,8 @@ public class GetTpexPbeRatio {
 		parser.setUrl(url + date);
 		parser.getConnection();
 		parser.parse();
+		hashPer = parser.getHashPer();
+		hashPbr = parser.getHashPbr();
 	}
 	public static void main(String args[])
 	{
