@@ -15,8 +15,10 @@ import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.IncomeStatementEntity;
 import org.bear.entity.PeterLynchWrapper;
 import org.bear.entity.RevenueEntity;
+import org.bear.parser.BasicDataParserCathay;
 import org.bear.util.GetTpexPbeRatio;
 import org.bear.util.GetTwsePbeRatio;
+import org.bear.util.GetURLCathayBasicData;
 import org.bear.util.ReverseUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -436,9 +438,9 @@ public class PerfectAnalysis
 			HashMap<String, Double> hashPer, HashMap<String, Double> hashPbr)
 	{
 		/* ­pºâP/E Ratio, P/B Ratio, ªÑ»ù */
-		//GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
-		//BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
-		//parser.parse(2);
+		GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
+		BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
+		parser.parse(2);
 		PeterLynchWrapper wrapper = new PeterLynchWrapper();
 		/* P/E Ratio */
 		wrapper.setPer(hashPer.get(stockID));
