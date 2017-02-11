@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bear.dao.BasicStockDao;
@@ -14,10 +15,9 @@ import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.IncomeStatementEntity;
 import org.bear.entity.PeterLynchWrapper;
 import org.bear.entity.RevenueEntity;
-import org.bear.parser.BasicDataParserCathay;
-import org.bear.util.GetURLCathayBasicData;
+import org.bear.util.GetTpexPbeRatio;
+import org.bear.util.GetTwsePbeRatio;
 import org.bear.util.ReverseUtil;
-import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -66,6 +66,18 @@ public class PerfectAnalysis
 		//掃瞄符合期望的YoY
 		try
 		{			
+			//Get PE/PB Ratio
+			String date = "106/02/10";
+			GetTwsePbeRatio twseRatio = new GetTwsePbeRatio();
+			GetTpexPbeRatio tpexRatio = new GetTpexPbeRatio();
+			twseRatio.setDate(date);
+			twseRatio.getContent();
+			tpexRatio.setDate(date);
+			tpexRatio.getContent();
+			HashMap<String, Double> hashPer = twseRatio.getHashPer();
+			HashMap<String, Double> hashPbr = twseRatio.getHashPbr();
+			hashPer.putAll(tpexRatio.getHashPer());
+			hashPbr.putAll(tpexRatio.getHashPbr());
 			columnNameList.add("股票代碼");
 			columnNameList.add("股票名稱");
 			calculateList = new ArrayList<List<String>>();
@@ -247,19 +259,19 @@ public class PerfectAnalysis
 			for (int i = 0; i < perfectList.size(); i++)
 			{
 				String stockID = perfectList.get(i).get(0);		
-				PeterLynchWrapper wrapper = this.checkPeRatio(expectedPe, stockID);		
+				PeterLynchWrapper wrapper = this.checkPeRatio(expectedPe, stockID, hashPer, hashPbr);		
 				if (i == 0)
 				{
 					columnNameList.add("本益比");
 					columnNameList.add("股價淨值比");
-					columnNameList.add("股價");
+					//columnNameList.add("股價");
 				}
 				if (wrapper != null)
 				{
 					//把PE, PB Ratio直接附在營業利益率後面
 					perfectList.get(i).add(String.valueOf(wrapper.getPer()));
 					perfectList.get(i).add(String.valueOf(wrapper.getPbr()));
-					perfectList.get(i).add(String.valueOf(wrapper.getPrice()));
+					//perfectList.get(i).add(String.valueOf(wrapper.getPrice()));
 					//所有符合期望的資料暫存在calculateList
 					calculateList.add(perfectList.get(i));
 				}
@@ -420,22 +432,21 @@ public class PerfectAnalysis
 		}
 		return true;
 	}
-	private PeterLynchWrapper checkPeRatio(int expectedPe, String stockID)
+	private PeterLynchWrapper checkPeRatio(int expectedPe, String stockID, 
+			HashMap<String, Double> hashPer, HashMap<String, Double> hashPbr)
 	{
 		/* 計算P/E Ratio, P/B Ratio, 股價 */
-		GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
-		BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
-		parser.parse(2);
+		//GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
+		//BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
+		//parser.parse(2);
 		PeterLynchWrapper wrapper = new PeterLynchWrapper();
 		/* P/E Ratio */
-		wrapper.setPer(parser.getPer());
+		wrapper.setPer(hashPer.get(stockID));
 		/* P/B Ratio */
-		double ratioNumber;
-		ratioNumber = StringUtil.setPointLength(parser.getPrice() / parser.getNav());
-		wrapper.setPbr(ratioNumber);
+		wrapper.setPbr(hashPbr.get(stockID));
 		//Price
-		ratioNumber = StringUtil.setPointLength(parser.getPrice());
-		wrapper.setPrice(ratioNumber);
+		//ratioNumber = StringUtil.setPointLength(parser.getPrice());
+		//wrapper.setPrice(ratioNumber);
 		if (expectedPe > wrapper.getPer())
 			return wrapper;
 		else
