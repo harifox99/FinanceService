@@ -10,8 +10,8 @@ import org.bear.entity.RedRabbitStockWrapper;
 import org.bear.entity.RedRabbitWrapper;
 import org.bear.entity.RevenueEntity;
 import org.bear.entity.StockDistributionEntity;
-import org.bear.parser.BasicDataParserCathay;
-import org.bear.util.GetURLCathayBasicData;
+import org.bear.util.GetTpexPbeRatio;
+import org.bear.util.GetTwsePbeRatio;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -461,6 +461,18 @@ public class RedRabbitRevenueAnalysis
 			/****************
 			 * 重組資料		
 			 */
+			//PE Ratio
+			String date = "106/02/10";
+			GetTwsePbeRatio twseRatio = new GetTwsePbeRatio();
+			GetTpexPbeRatio tpexRatio = new GetTpexPbeRatio();
+			twseRatio.setDate(date);
+			twseRatio.getContent();
+			tpexRatio.setDate(date);
+			tpexRatio.getContent();
+			HashMap<String, Double> hashPer = twseRatio.getHashPer();
+			//HashMap<String, Double> hashPbr = twseRatio.getHashPbr();
+			hashPer.putAll(tpexRatio.getHashPer());
+			//hashPbr.putAll(tpexRatio.getHashPbr());
 			for (int i = 0; i < conditionalList.size(); i++)
 			{
 				String stockID = conditionalList.get(i).getStockID();
@@ -500,10 +512,10 @@ public class RedRabbitRevenueAnalysis
 					}
 				}
 				//Add PE Ratio
-				GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
-				BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
-				parser.parse(2);
-				wrapper.setPe(parser.getPer());
+				//GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
+				//BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
+				//parser.parse(2);				
+				wrapper.setPe(hashPer.get(stockID));
 				wrapperList.add(wrapper);							
 			}
 		}
