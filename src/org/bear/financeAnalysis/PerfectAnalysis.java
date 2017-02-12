@@ -275,7 +275,7 @@ public class PerfectAnalysis
 					//所有符合期望的資料暫存在calculateList
 					calculateList.add(perfectList.get(i));
 				}
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
 			}
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
@@ -439,8 +439,9 @@ public class PerfectAnalysis
 		//GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
 		//BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
 		//parser.parse(2);
+		System.out.println("stockID: " + stockID);
 		PeterLynchWrapper wrapper = new PeterLynchWrapper();
-		/* P/E Ratio */
+		/* P/E Ratio */		
 		wrapper.setPer(hashPer.get(stockID));
 		/* P/B Ratio */
 		wrapper.setPbr(hashPbr.get(stockID));
