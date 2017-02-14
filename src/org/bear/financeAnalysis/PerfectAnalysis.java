@@ -46,12 +46,13 @@ public class PerfectAnalysis
 	 * @param isMinusRevenueGrowth 過濾營收零成長標的
 	 * @param isMinusProfitGrowth 過濾毛利/營業利益/稅前淨利成長標的 
 	 * (這個值如果為true，則最新一季的毛利/營業利益/稅前淨利一定要為正數，反之則不需要符合此條件)
+	 * @param peDate 證交所本益比(日期)
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
 			int demandGrossProfit, int demandOperatingProfitRatio, int demandEps,
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe, 
-			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth)
+			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth, String peDate)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -67,12 +68,12 @@ public class PerfectAnalysis
 		try
 		{			
 			//Get PE/PB Ratio
-			String date = "106/02/10";
+			//String date = "106/02/10";
 			GetTwsePbeRatio twseRatio = new GetTwsePbeRatio();
 			GetTpexPbeRatio tpexRatio = new GetTpexPbeRatio();
-			twseRatio.setDate(date);
+			twseRatio.setDate(peDate);
 			twseRatio.getContent();
-			tpexRatio.setDate(date);
+			tpexRatio.setDate(peDate);
 			tpexRatio.getContent();
 			HashMap<String, Double> hashPer = twseRatio.getHashPer();
 			HashMap<String, Double> hashPbr = twseRatio.getHashPbr();
