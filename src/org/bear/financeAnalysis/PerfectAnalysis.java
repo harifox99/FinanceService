@@ -18,6 +18,7 @@ import org.bear.entity.RevenueEntity;
 import org.bear.util.GetTpexPbeRatio;
 import org.bear.util.GetTwsePbeRatio;
 import org.bear.util.ReverseUtil;
+import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -109,7 +110,16 @@ public class PerfectAnalysis
 				}
 			}		
 			calculateList = new ArrayList<List<String>>();
-			
+			//三個月營收平均
+			columnNameList.add("三個月平均營收");
+			for (int i = 0; i < perfectList.size(); i++)
+			{
+				double average = Double.parseDouble(perfectList.get(i).get(4)) + 
+				Double.parseDouble(perfectList.get(i).get(5)) + Double.parseDouble(perfectList.get(i).get(6));
+				average = average/3;
+				average = StringUtil.setPointLength(average);
+				perfectList.get(i).add(String.valueOf(average));
+			}
 			//毛利率季增數
 			for (int i = 0; i < perfectList.size(); i++)
 			{				
