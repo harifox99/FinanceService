@@ -21,8 +21,8 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 
 	public void insertBatch(List<BasicStockWrapper> entity) {
 		// TODO Auto-generated method stub
-		String sql = "insert into StockData(StockID, StockName, StockType, StockBranch) " + 
-		"values (:stockID, :stockName, :stockType, :stockBranch)";
+		String sql = "insert into StockData(StockID, StockName, StockType, StockBranch, Enabled) " + 
+		"values (:stockID, :stockName, :stockType, :stockBranch, :enabled)";
 		List <SqlParameterSource> parameters = new ArrayList <SqlParameterSource>();
 		for (BasicStockWrapper iterator:entity)
 		{

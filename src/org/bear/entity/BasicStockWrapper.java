@@ -10,6 +10,7 @@ public class BasicStockWrapper
 	int stockType;
 	int stockBranch;
 	double capital;
+	int enabled;
 	public String getStockID() {
 		return stockID;
 	}
@@ -40,5 +41,10 @@ public class BasicStockWrapper
 	public void setCapital(double capital) {
 		this.capital = capital;
 	}
-	
+	public int getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
 }
