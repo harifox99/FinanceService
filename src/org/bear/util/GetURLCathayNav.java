@@ -12,7 +12,7 @@ public class GetURLCathayNav extends GetURLContentBase
 	public GetURLCathayNav(String stockID, boolean isYear)
 	{
 		urlHeaderSeason = "";		                 
-		urlHeaderYear = "http://www.esunsec.com.tw/z/zc/zcr/zcra/zcra.djhtm?A=";
+		urlHeaderYear = "http://sjmain.esunsec.com.tw/z/zc/zcr/zcra/zcra.djhtm?A=";
 		urlFooter = "";
 		if (isYear)
 			this.urlString = urlHeaderYear + stockID + urlFooter;
