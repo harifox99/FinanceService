@@ -13,12 +13,12 @@ public class ImportCashFlowsCathay extends ImportStockID
 		try
 		{			
 			int idleTime = 0;
-			//年資料				
+			//年資料	
 			/*
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
-				int expectedNum = 8;
-				String[] years = {"2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014"};
+				int expectedNum = 1;
+				String[] years = {"2016"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(i).getStockID();
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
@@ -27,14 +27,13 @@ public class ImportCashFlowsCathay extends ImportStockID
 				cashFlowsParser.parse(2);
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}*/
-			
+			}*/			
 			//季資料
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2016"};
-				String[] seasons = {"01", "02", "03"};				
+				String[] seasons = {"01"};				
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))
 					//continue;
