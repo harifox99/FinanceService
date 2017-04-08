@@ -17,12 +17,11 @@ public class ImportBalanceSheetCathay extends ImportStockID
 		try
 		{		
 			int idleTime = 0;
-			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2016"};
-				String[] seasons = {"01", "02", "03"};				
+				String[] seasons = {"01"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
@@ -42,12 +41,12 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				}
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}	
+			}
 			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 8;
-				String[] years = {"2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014"};
+				int expectedNum = 2;
+				String[] years = {"2015", "2016"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");				
