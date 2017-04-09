@@ -4,6 +4,7 @@ import java.util.List;
 
 public class RoeYearWrapper {
 	String stockID;
+	String stockName;
 	List<Double> roeList;
 	int roeSize;
 	String year;
@@ -30,6 +31,12 @@ public class RoeYearWrapper {
 	}
 	public void setYear(String year) {
 		this.year = year;
+	}
+	public String getStockName() {
+		return stockName;
+	}
+	public void setStockName(String stockName) {
+		this.stockName = stockName;
 	}
 	
 }
