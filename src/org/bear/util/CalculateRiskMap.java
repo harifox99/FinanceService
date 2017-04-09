@@ -31,7 +31,6 @@ public class CalculateRiskMap
 		List <RiskMapWrapper> riskMapList = null;
 		try
 		{
-			String initYear = "2004";
 			ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 			//戈玻璽杜
 			BalanceSheetDao balanceSheetDao = (BalanceSheetDao)context.getBean("basicBalanceSheetDao");
@@ -47,15 +46,15 @@ public class CalculateRiskMap
 			List <FinancialDataEntity> financialList;
 			/***********************************************/
 			riskMapList = new ArrayList<RiskMapWrapper>();
-			balanceSheetList = balanceSheetDao.findDataByYear(stockID, initYear);
-			incomeStatementList = incomeStatementDao.findDataByYear(stockID, initYear);
-			financialList = financialDao.findDataByYear(stockID, initYear);
+			balanceSheetList = balanceSheetDao.findDataByYear(stockID, year);
+			incomeStatementList = incomeStatementDao.findDataByYear(stockID, year);
+			financialList = financialDao.findDataByYear(stockID, year);
 			/**********************************************/
 			//狥舦痲
 			int lastEquity = 0;
 			double ratioNumber = 0;
 			//キАΜ絃基
-			double averagePrice = 0;
+			//double averagePrice = 0;
 			//程蔼基
 			double maxPrice = 0;
 			//程基
@@ -71,6 +70,9 @@ public class CalculateRiskMap
 			String currentYear;
 			//狦⊿Τ犁Μ戈癟...ぃ笵и糶ぐ或...犁Μ戈羆
 			int misCount = 0;
+			GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
+			BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
+			parser.parse(2);	
 			for (int i = 0; i < balanceSheetList.size(); i++)
 			{
 				wrapper = new RiskMapWrapper();
@@ -80,9 +82,9 @@ public class CalculateRiskMap
 				}
 				else
 				{
-					maxPrice = 0;
-					minPrice = 2000;
-					averagePrice = 0;
+					//maxPrice = 0;
+					//minPrice = 2000;
+					//averagePrice = 0;
 					currentYear = balanceSheetList.get(i).getYear();
 					//ROE
 					ratioNumber = (double) incomeStatementList.get(i).getNetIncome() / ((lastEquity+balanceSheetList.get(i).getStockholdersEquity())/2) * 100;
@@ -97,6 +99,7 @@ public class CalculateRiskMap
 						misCount++;
 						continue;
 					}
+					/*
 					for (int j = 0; j < revenueEntityList.size(); j++)
 					{
 						//キАΜ絃基
@@ -107,14 +110,15 @@ public class CalculateRiskMap
 						//程基
 						if (minPrice > Double.parseDouble(revenueEntityList.get(j).getLowIndex()))
 							minPrice = Double.parseDouble(revenueEntityList.get(j).getLowIndex());	
-					}
-					averagePrice = averagePrice / 12;
-					averagePrice = StringUtil.setPointLength(averagePrice);
-					wrapper.setAveragePrice(averagePrice);
-					wrapper.setMaxPrice(maxPrice);
-					wrapper.setMinPrice(minPrice);
+					}*/
+									
+					maxPrice = parser.getMaxPrice();
+					minPrice = parser.getMinPrice();
+					wrapper.setAveragePrice(parser.getPrice());
+					wrapper.setMaxPrice(parser.getMaxPrice());
+					wrapper.setMinPrice(parser.getMinPrice());
 					//基瞓ゑ
-				    double pbr = averagePrice/wrapper.getNav();
+				    double pbr = parser.getPrice()/wrapper.getNav();
 				    pbr = StringUtil.setPointLength(pbr);
 				    wrapper.setPbr(pbr);
 				    //程蔼基瞓ゑ
@@ -170,9 +174,9 @@ public class CalculateRiskMap
 			ratioNumber = StringUtil.setPointLength(ratioNumber);
 			wrapper.setRoe(ratioNumber);
 			//–瞓
-			GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
-			BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
-			parser.parse(2);
+			//GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
+			//BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
+			//parser.parse(2);
 			wrapper.setNav(parser.getNav());
 			//程蔼基
 			wrapper.setMaxPrice(parser.getMaxPrice());
