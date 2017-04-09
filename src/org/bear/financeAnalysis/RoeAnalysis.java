@@ -1,12 +1,16 @@
 package org.bear.financeAnalysis;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bear.dao.BalanceSheetDao;
 import org.bear.dao.BasicStockDao;
+import org.bear.dao.FinancialDataDao;
 import org.bear.dao.IncomeStatementDao;
 import org.bear.entity.BuffettAnalysisWrapper;
+import org.bear.entity.FinancialDataEntity;
 import org.bear.entity.RoeYearWrapper;
 import org.bear.entity.BalanceSheetEntity;
 import org.bear.entity.BasicStockWrapper;
@@ -26,6 +30,9 @@ public class RoeAnalysis
 	//損益表
 	IncomeStatementDao incomeStatementDao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
 	List <IncomeStatementEntity> incomeStatementList;
+	//財務指標
+	FinancialDataDao financialDao = (FinancialDataDao)context.getBean("basicFinancialDataDao");
+	List <FinancialDataEntity> financialList;
 	/**
 	 * 用此程式來篩選，過去N個年度，期望至少有M年，符合期望的ROE，例如：
 	 * 希望過去10年，有8年，其期望的ROE > 15%，則
@@ -41,19 +48,25 @@ public class RoeAnalysis
 	{
 		List<BasicStockWrapper> stockList = dao.findAllData();
 		List<RoeYearWrapper> roeYearList = new ArrayList<RoeYearWrapper>();
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy");
+	    Date now = new Date();
+	    int initYear = Integer.parseInt(sdfDate.format(now)) - totalYear;
 		try
-		{
+		{			
 			for (int i = 0; i < stockList.size(); i++)
 			{
-				String stockID = "";
-				stockID = stockList.get(i).getStockID();					
-				//if (!stockID.equals("1733"))
-					//continue;
+				String stockID = stockList.get(i).getStockID();
+				String stockName = stockList.get(i).getStockName();
+				if (!stockID.equals("2330"))
+					continue;				
+				financialList = financialDao.findDataByYear(stockID, String.valueOf(initYear));
 				balanceSheetList = balanceSheetDao.findDataByYear(stockID);
 				incomeStatementList = incomeStatementDao.findDataByYear(stockID);
 				if (incomeStatementList.size() != balanceSheetList.size())
 					continue;
 				if (incomeStatementList.size() < totalYear)
+					continue;
+				if (financialList.size() < totalYear)
 					continue;
 				RoeYearWrapper wrapper = new RoeYearWrapper();
 				wrapper.setRoeSize(totalYear);
@@ -63,6 +76,7 @@ public class RoeAnalysis
 					if (j == incomeStatementList.size() - totalYear)
 					{
 						wrapper.setStockID(stockID);
+						wrapper.setStockName(stockName);
 						wrapper.setYear(incomeStatementList.get(j).getYear());
 					}
 					double roe = (double)incomeStatementList.get(j).getNetIncome() / balanceSheetList.get(j).getStockholdersEquity();				
@@ -78,7 +92,7 @@ public class RoeAnalysis
 			ex.printStackTrace();
 		}
 		if (!discountRate.equals(""))
-			roeYearList = this.getExpectedRate(roeYearList, Integer.parseInt(discountRate));
+			roeYearList = this.getExpectedRate(roeYearList, Integer.parseInt(discountRate), totalYear, initYear);
 		return roeYearList;
 	}
 	private boolean checkExpectedRoe(List<Double> roeList, int demandRoe, int demandYear)
@@ -101,7 +115,7 @@ public class RoeAnalysis
 	 * @param stockList
 	 * @param expectedRate
 	 */
-	private List<RoeYearWrapper> getExpectedRate (List<RoeYearWrapper> stockList, double expectedRate)
+	private List<RoeYearWrapper> getExpectedRate (List<RoeYearWrapper> stockList, double expectedRate, int totalYear, int initYear)
 	{
 		BuffettAnalysis buffettAnalysis = new BuffettAnalysis();
 		expectedRate = expectedRate/100;
@@ -109,7 +123,7 @@ public class RoeAnalysis
 		for (int i = 0; i < stockList.size(); i++)
 		{
 			//System.out.println("StockID: " + stockList.get(i).getStockID());
-			BuffettAnalysisWrapper wrapper = buffettAnalysis.getBuffettAnalysis(stockList.get(i).getStockID());		
+			BuffettAnalysisWrapper wrapper = buffettAnalysis.getBuffettAnalysis(stockList.get(i).getStockID(), totalYear, initYear);		
 			double expectedPrice = buffettAnalysis.expectedRate(expectedRate, wrapper.getReasonablePrice());
 			expectedPrice = StringUtil.setPointLength(expectedPrice);
 			if (wrapper.getPrice() < expectedPrice)
