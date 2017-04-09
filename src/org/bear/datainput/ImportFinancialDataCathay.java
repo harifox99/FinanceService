@@ -7,7 +7,7 @@ import java.util.*;
 import org.bear.constant.FinancialReport;
 import org.bear.dao.FinancialDataDao;
 import org.bear.entity.FinancialDataEntity;
-import org.bear.parser.CashDivParserCathay;
+import org.bear.parser.CashDivParserJsoup;
 import org.bear.parser.NAVParserCathay;
 import org.bear.util.GetURLCathayCashDiv;
 import org.bear.util.GetURLCathayNav;
@@ -39,6 +39,8 @@ public class ImportFinancialDataCathay extends ImportStockID
 			{
 				entityList = new ArrayList <FinancialDataEntity>();
 				String stockID = wrapperList.get(j).getStockID();
+				//if (!stockID.equals("2239"))
+					//continue;
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				/***********/
 				this.setFinancialData(stockID, true);
@@ -64,9 +66,14 @@ public class ImportFinancialDataCathay extends ImportStockID
 		navParser.parse(2);
 		//每年配發股息
 		GetURLCathayCashDiv urlCashDiv = new GetURLCathayCashDiv(stockID);
-		CashDivParserCathay cashDivParser = new CashDivParserCathay(urlCashDiv.getContent(), stockID);
-		cashDivParser.parse(2);
-		HashMap <String, Double> mapCashDiv = cashDivParser.getCashDivData();
+		/** 國泰/玉山的網頁，其實是精誠資訊，HTML有問題，所以換Parser
+		  CashDivParserCathay cashDivParser = new CashDivParserCathay(urlCashDiv.getContent(), stockID);
+		  cashDivParser.parse(2);		
+		  HashMap <String, Double> mapCashDiv = cashDivParser.getCashDivData();
+		 */
+		CashDivParserJsoup jsoup = new CashDivParserJsoup(urlCashDiv.getUrlString());
+		jsoup.Parsing(7);
+		HashMap <String, Double> mapCashDiv = jsoup.getCashDivData();
 		HashMap <String, Double> mapNav = navParser.getNavData();
 		for (int k = 0; k < mapNav.size(); k++)
 		{
@@ -77,11 +84,14 @@ public class ImportFinancialDataCathay extends ImportStockID
 			entity.setNav(mapNav.get(year));
 			entity.setStockID(stockID);
 			if (mapCashDiv.get(year) == null)
-				entity.setCashDiv(0.0);
+			{
+				continue;
+				//entity.setCashDiv(0.0);
+			}
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
 			//只要當年的
-			if (entity.year.equals("2015"))
+			if (entity.year.equals("2015") || entity.year.equals("2016") || entity.year.equals("2014"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
