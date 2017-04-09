@@ -3,7 +3,6 @@
  */
 package org.bear.financeAnalysis;
 import java.util.List;
-
 import org.bear.dao.FinancialDataDao;
 import org.bear.entity.BuffettAnalysisWrapper;
 import org.bear.entity.FinancialDataEntity;
@@ -28,14 +27,19 @@ public class BuffettAnalysis
 	final int arraySize = 6;
 	public BuffettAnalysisWrapper getBuffettAnalysis(String stockID)
 	{
+		BuffettAnalysisWrapper wrapper = this.getBuffettAnalysis(stockID, 8, 2008);
+		return wrapper;
+	}
+	public BuffettAnalysisWrapper getBuffettAnalysis(String stockID, int totalYear, int year)
+	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		FinancialDataDao dao = (FinancialDataDao)context.getBean("basicFinancialDataDao");
-		entityList = dao.findDataByYear(stockID, "2002");
+		entityList = dao.findDataByYear(stockID, String.valueOf(year));
 		//預設本益比
 		final int per = 12;
 		wrapper = new BuffettAnalysisWrapper();
 		CalculateRiskMap riskMap = new CalculateRiskMap();
-		riskMapWrapperList = riskMap.getRiskMap(stockID, null);
+		riskMapWrapperList = riskMap.getRiskMap(stockID, String.valueOf(year));
 		//預期ROE
 		double roeRecently = 0;
 		double roeFiveYears = 0;
