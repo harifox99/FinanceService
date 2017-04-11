@@ -43,7 +43,7 @@ public class GetMopsRevenue implements GetSFIContent {
 				{
 					break;
 				}
-				else if (stockName.startsWith("F"))
+				else if (stockName.startsWith("F") || stockName.endsWith("KY"))
 				{
 					MopsF_Parser parser = new MopsF_Parser();
 					parser.setResponseString(responseString);
