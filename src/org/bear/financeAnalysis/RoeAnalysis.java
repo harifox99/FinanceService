@@ -57,8 +57,8 @@ public class RoeAnalysis
 			{
 				String stockID = stockList.get(i).getStockID();
 				String stockName = stockList.get(i).getStockName();
-				if (!stockID.equals("2330"))
-					continue;				
+				//if (!stockID.equals("2330"))
+					//continue;				
 				financialList = financialDao.findDataByYear(stockID, String.valueOf(initYear));
 				balanceSheetList = balanceSheetDao.findDataByYear(stockID);
 				incomeStatementList = incomeStatementDao.findDataByYear(stockID);
