@@ -70,6 +70,8 @@ public class GetMopsRevenue implements GetSFIContent {
 				isSuccessful = false;
 				if (responseString.contains("外國發行人免申報本項資訊"))
 					break;
+				if (responseString.contains("前至採用IFRSs前之開立發票及營業收入資訊查詢"))
+					break;
 				//System.exit(0);
 				try 
 				{
