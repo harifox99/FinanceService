@@ -12,7 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class ImportStockID 
 {
-	BasicStockDao basicStockDao;
+	protected BasicStockDao basicStockDao;
 	protected List <BasicStockWrapper> wrapperList;
 	public ImportStockID()
 	{
