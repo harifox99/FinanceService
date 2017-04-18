@@ -38,20 +38,21 @@ public class GetTwsePbeRatio {
 	{
 		TwsePbeParser parser = new TwsePbeParser();
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		paramList.add(new BasicNameValuePair("input_date", date));
+		paramList.add(new BasicNameValuePair("qdate", date));
 		paramList.add(new BasicNameValuePair("select2", "ALL"));
-		paramList.add(new BasicNameValuePair("order", "STKNO"));
-		String responseString = HttpUtil.send(url, paramList, 1, "Big5");
+		paramList.add(new BasicNameValuePair("Sort_kind", "STKNO"));
+		paramList.add(new BasicNameValuePair("download", ""));
+		String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
 		//System.out.println(responseString);
 		parser.setResponseString(responseString);
-		parser.parse(8);
+		parser.parse(0);
 		hashPer = parser.getHashPer();
 		hashPbr = parser.getHashPbr();
 	}
 	public static void main(String args[])
 	{
 		GetTwsePbeRatio ratio = new GetTwsePbeRatio();
-		ratio.setDate("106/02/10");
+		ratio.setDate("106/04/18");
 		ratio.getContent();
 	}
 }
