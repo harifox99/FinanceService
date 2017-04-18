@@ -334,11 +334,13 @@ public class RedRabbitRevenueAnalysis
 	 * @param majorShareholderCheck 是否以大股東買超篩選 
 	 * @param totalMajorShareholder 過去M個月
 	 * @param selectedMajorShareholder 有N個月大股東買超
+	 * @param peDate 證交所本益比(日期)
 	 * @return
 	 */
 	public List<RedRabbitStockWrapper> getAdvancedRedRabbit(boolean revenueCheck, int totalMonth, int selectedMonth,
 			boolean retailCheck, int totalRetail, int selectedRetail,
-			boolean majorShareholderCheck, int totalMajorShareholder, int selectedMajorShareholder)
+			boolean majorShareholderCheck, int totalMajorShareholder, 
+			int selectedMajorShareholder, String peDate)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -462,12 +464,12 @@ public class RedRabbitRevenueAnalysis
 			 * 重組資料		
 			 */
 			//PE Ratio
-			String date = "106/02/10";
+			//String date = "106/02/10";
 			GetTwsePbeRatio twseRatio = new GetTwsePbeRatio();
 			GetTpexPbeRatio tpexRatio = new GetTpexPbeRatio();
-			twseRatio.setDate(date);
+			twseRatio.setDate(peDate);
 			twseRatio.getContent();
-			tpexRatio.setDate(date);
+			tpexRatio.setDate(peDate);
 			tpexRatio.getContent();
 			HashMap<String, Double> hashPer = twseRatio.getHashPer();
 			//HashMap<String, Double> hashPbr = twseRatio.getHashPbr();
