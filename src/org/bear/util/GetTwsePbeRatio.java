@@ -33,7 +33,10 @@ public class GetTwsePbeRatio {
 	public void getContent()
 	{
 		TwsePbeParser parser = new TwsePbeParser();
-		parser.setUrl(url + date);
+		//民國轉西元
+		String[] dateArray = date.split("/");
+		String year = StringUtil.convertYear(dateArray[0]);
+		parser.setUrl(url + year + dateArray[1] + dateArray[2]);
 		parser.getConnection();
 		parser.parse();
 		/*

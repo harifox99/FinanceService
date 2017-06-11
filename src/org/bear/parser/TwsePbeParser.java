@@ -31,14 +31,14 @@ public class TwsePbeParser extends EasyParserBase
 		{
 			Element trElement = trList.get(i);
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
-			String stockId = null;
+			String stockId = "";
 			for (int j = 0; j < tdList.size(); j++)
 			{
 				resultElement = tdList.get(j);
 				String content = resultElement.getContent().toString();
 				//content = StringUtil.eraseSpecialChar(content);
 				if (j == 0)
-					stockId = content;
+					stockId = content.trim();
 				else if (j == 4)
 				{
 					double per;
