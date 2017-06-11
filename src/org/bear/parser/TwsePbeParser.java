@@ -69,5 +69,8 @@ public class TwsePbeParser extends EasyParserBase
 			}
 		}
 	}
-
+	public void parse()
+	{		
+		this.getTableContent(elementList.get(0));
+	}
 }

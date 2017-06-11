@@ -35,7 +35,7 @@ public class GetTwsePbeRatio {
 		TwsePbeParser parser = new TwsePbeParser();
 		parser.setUrl(url + date);
 		parser.getConnection();
-		parser.parse(0);
+		parser.parse();
 		/*
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("qdate", date));
@@ -52,7 +52,7 @@ public class GetTwsePbeRatio {
 	public static void main(String args[])
 	{
 		GetTwsePbeRatio ratio = new GetTwsePbeRatio();
-		ratio.setDate("106/04/18");
+		ratio.setDate("20170609");
 		ratio.getContent();
 	}
 }
