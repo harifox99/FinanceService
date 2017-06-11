@@ -1,11 +1,6 @@
 package org.bear.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.bear.parser.TwsePbeParser;
 /**
  * √“•Ê©“PE Ratio and PB Ratio
@@ -16,7 +11,8 @@ public class GetTwsePbeRatio {
 	HashMap<String, Double> hashPer;
 	HashMap<String, Double> hashPbr;
 	GetURLContent content;
-	String url = "http://www.twse.com.tw/ch/trading/exchange/BWIBBU/BWIBBU_d.php";
+	//String url = "http://www.twse.com.tw/ch/trading/exchange/BWIBBU/BWIBBU_d.php";
+	String url = "http://www.twse.com.tw/exchangeReport/BWIBBU_d?response=html&selectType=ALL&date=";
 	String date;
 	public String getDate() {
 		return date;
@@ -37,6 +33,10 @@ public class GetTwsePbeRatio {
 	public void getContent()
 	{
 		TwsePbeParser parser = new TwsePbeParser();
+		parser.setUrl(url + date);
+		parser.getConnection();
+		parser.parse(0);
+		/*
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("qdate", date));
 		paramList.add(new BasicNameValuePair("select2", "ALL"));
@@ -45,7 +45,7 @@ public class GetTwsePbeRatio {
 		String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
 		//System.out.println(responseString);
 		parser.setResponseString(responseString);
-		parser.parse(0);
+		parser.parse(0);*/
 		hashPer = parser.getHashPer();
 		hashPbr = parser.getHashPbr();
 	}
