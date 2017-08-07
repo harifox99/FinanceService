@@ -4,6 +4,7 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import org.bear.entity.JuristicDailyEntity;
+import org.bear.util.StringUtil;
 /**
  * 上市指數，漲跌幅，成交量Parser
  * @author edward
@@ -16,6 +17,9 @@ public class TwseDailyDataParser extends TaifexLotParser
 		// TODO Auto-generated method stub
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);
 		JuristicDailyEntity entity = new JuristicDailyEntity();
+		//把西元轉換成民國
+		String chineseDate = StringUtil.convertChineseYear(date.substring(0, 4));
+		chineseDate = chineseDate + "/" + date.substring(4, 6) + "/" + date.substring(6, 8);
 		for (int i = 0; i < trList.size(); i++)
 		{
 			if (i > 1)
@@ -29,10 +33,10 @@ public class TwseDailyDataParser extends TaifexLotParser
 					{				
 						resultElement = tdList.get(j);				
 						String content = resultElement.getContent().toString().trim();	
-						content = content.replace(",", "");
+						content = content.replace(",", "");						
 						if (j == 0)//日期
 						{
-							if (!this.date.equals(content))
+							if (!chineseDate.equals(content))
 								break; 
 						}
 						else if (j == 2)//成交金額
@@ -55,12 +59,12 @@ public class TwseDailyDataParser extends TaifexLotParser
 						ex.printStackTrace();
 					}
 				}
-				dao.update("TwseIndex", entity.getTwseIndex(), date);
-				dao.update("Change", entity.getChange(), date);
-				dao.update("volumn", entity.getVolumn(), date);
+				
 			}			
 		}	
-		
+		dao.update("TwseIndex", entity.getTwseIndex(), date);
+		dao.update("Change", entity.getChange(), date);
+		dao.update("volumn", entity.getVolumn(), date);
 	}
 	public void parse()
 	{		
