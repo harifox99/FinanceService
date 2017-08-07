@@ -1,12 +1,9 @@
 package org.bear.parser;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
-import org.bear.constant.FinancialReport;
 import org.bear.entity.ThreeBigExchangeEntity;
-import org.bear.util.StringUtil;
 /**
  * 擷取櫃買三大法人買賣超個股資料
  * @author edward
@@ -18,48 +15,51 @@ public class TpexThreeBigExchangeParser extends TwseThreeBigExchangeParser
 	{
 		// TODO Auto-generated method stub
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);		
-		int rankNumber = 0;		
 		for (int i = 0; i < trList.size(); i++)
 		{
 			if (i < 2)
 				continue;
-			ThreeBigExchangeEntity entity = new ThreeBigExchangeEntity();
-			rankNumber++;
+			//外資
+			ThreeBigExchangeEntity foreigner = new ThreeBigExchangeEntity();
+			//投信
+			ThreeBigExchangeEntity mutualFund  = new ThreeBigExchangeEntity();
 			Element trElement = trList.get(i);
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
 			Element resultElement = null;
 			for (int j = 0; j < tdList.size(); j++)
 			{	
-				if (FinancialReport.maxNumber < rankNumber || tdList.size() < 5)			                    
-					continue;										
 				try
 				{											
 					resultElement = tdList.get(j);				
 					String content = resultElement.getContent().toString().trim();	
 					content = content.replace(",", "");
-					if (j == 0)//Rank
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					if (j == 0)//Stock ID
 					{
-						entity.setRank(Integer.parseInt(content));
+						foreigner.setStockID(content);
+						foreigner.setStockBranch(this.getStockBranch());
+						foreigner.setRank(0);						
+						foreigner.setExchangeDate(dateFormat.parse(date));
+						mutualFund.setStockID(content);
+						mutualFund.setStockBranch(this.getStockBranch());
+						mutualFund.setRank(0);
+						mutualFund.setExchangeDate(dateFormat.parse(date));
 					}
-					else if (j == 1)//Stock ID
+					else if (j == 4)//外資買賣超
 					{
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-						//把民國轉換成西元
-						String[] dateArray = date.split("/");
-						String year = StringUtil.convertYear(dateArray[0]);
-						year = year + "/" + dateArray[1] + "/" + dateArray[2];
-						Date dateClass = dateFormat.parse(year);
-						entity.setExchangeDate(dateClass);
-						entity.setStockID(content);
-						entity.setExchanger(exchanger);						
-						entity.setStockBranch(stockBranch);
+						//股數->張數
+						int quantity = Integer.parseInt(content);
+						foreigner.setQuantity(quantity/1000);
+						foreigner.setExchanger("外資");
+						dao.insert(foreigner);
 					}
-					else if (j == 5)//Quantity
+					else if (j == 7)//投信買賣超
 					{
-						int quantity = Integer.parseInt(content);						
-						entity.setQuantity(quantity);
-						entity.setRank(rankNumber);
-						dao.insert(entity);						
+						//股數->張數
+						int quantity = Integer.parseInt(content);
+						mutualFund.setQuantity(quantity/1000);
+						mutualFund.setExchanger("投信");
+						dao.insert(mutualFund);
 					}
 				}
 				catch (Exception ex)
