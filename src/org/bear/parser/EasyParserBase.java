@@ -60,4 +60,8 @@ public abstract class EasyParserBase
 		this.source = source;
 	}
 	public abstract void getTableContent(Element element);
+	public void parseHttpGet(int index)
+	{		
+		this.getTableContent(elementList.get(index));
+	}
 }
