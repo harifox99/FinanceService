@@ -52,7 +52,7 @@ public class TwseThreeBigAmountParser extends EasyParserBase
 					if (j == 3)//Stock ID
 					{
 						long amount = Long.parseLong(content);
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 						entity.setExchangeDate(dateFormat.parse(date));
 						entity.setAmount(amount);
 						dao.insert(entity);						
@@ -65,10 +65,6 @@ public class TwseThreeBigAmountParser extends EasyParserBase
 			}
 			
 		}			
-	}
-	public void parse()
-	{		
-		this.getTableContent(elementList.get(2));
 	}
 
 }

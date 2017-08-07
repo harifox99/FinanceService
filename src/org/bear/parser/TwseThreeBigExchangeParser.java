@@ -1,13 +1,8 @@
 package org.bear.parser;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
-import org.bear.constant.FinancialReport;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.entity.*;
-import org.bear.util.StringUtil;
-
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 /**
@@ -58,15 +53,14 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 	{
 		// TODO Auto-generated method stub
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);		
-		int rankNumber = 0;
-		//判斷是否讀取到賣超資料
-		boolean isMinusData = false;
 		for (int i = 0; i < trList.size(); i++)
 		{
 			if (i < 2)
 				continue;
-			ThreeBigExchangeEntity entity = new ThreeBigExchangeEntity();
-			rankNumber++;
+			//外資
+			ThreeBigExchangeEntity foreigner = new ThreeBigExchangeEntity();
+			//投信
+			ThreeBigExchangeEntity mutualFund  = new ThreeBigExchangeEntity();
 			Element trElement = trList.get(i);
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
 			Element resultElement = null;
@@ -77,39 +71,33 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 					resultElement = tdList.get(j);				
 					String content = resultElement.getContent().toString().trim();	
 					content = content.replace(",", "");
-					if (j == 1)//Stock ID
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+					if (j == 0)//Stock ID
 					{
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-						//把民國轉換成西元
-						String[] dateArray = date.split("/");
-						String year = StringUtil.convertYear(dateArray[0]);
-						year = year + "/" + dateArray[1] + "/" + dateArray[2];
-						Date dateClass = dateFormat.parse(year);
-						entity.setExchangeDate(dateClass);
-						entity.setStockID(content);
-						entity.setExchanger(exchanger);
-						
-						entity.setStockBranch(stockBranch);
+						foreigner.setStockID(content);
+						foreigner.setStockBranch(1);
+						foreigner.setRank(0);						
+						foreigner.setExchangeDate(dateFormat.parse(date));
+						mutualFund.setStockID(content);
+						mutualFund.setStockBranch(1);
+						mutualFund.setRank(0);
+						mutualFund.setExchangeDate(dateFormat.parse(date));
 					}
-					else if (j == 5)//Quantity
+					else if (j == 4)//外資買賣超
 					{
 						//股數->張數
-						int quantity = Integer.parseInt(content)/1000;
-						if (FinancialReport.maxNumber < rankNumber)
-						{
-                            if (quantity < 0 && isMinusData == false)
-							{
-								rankNumber = 1;
-								isMinusData = true;
-							}
-							else
-							{
-								break;
-							}
-						}
-						entity.setQuantity(quantity);
-						entity.setRank(rankNumber);
-						dao.insert(entity);
+						int quantity = Integer.parseInt(content);
+						foreigner.setQuantity(quantity/1000);
+						foreigner.setExchanger("外資");
+						dao.insert(foreigner);
+					}
+					else if (j == 7)//投信買賣超
+					{
+						//股數->張數
+						int quantity = Integer.parseInt(content);
+						mutualFund.setQuantity(quantity/1000);
+						mutualFund.setExchanger("投信");
+						dao.insert(mutualFund);
 					}
 				}
 				catch (Exception ex)
@@ -119,5 +107,9 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 			}
 			
 		}			
+	}
+	public void parse(int index)
+	{		
+		this.getTableContent(elementList.get(index));
 	}
 }
