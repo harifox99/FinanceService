@@ -2,7 +2,6 @@ package org.bear.parser;
 import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
-import org.bear.util.StringUtil;
 
 public class TwseStockLendingParser extends TaifexLotParser 
 {
@@ -15,15 +14,11 @@ public class TwseStockLendingParser extends TaifexLotParser
 		Element resultElement = null;
 		try
 		{				
-			resultElement = tdList.get(11);
+			resultElement = tdList.get(12);
 			String content = resultElement.getContent().toString().trim();
 			content = content.replace(",", "");				   
 			long stockLending = Long.parseLong(content)/1000;	
-			//把民國轉換成西元
-			String[] dateArray = date.split("/");
-			String year = StringUtil.convertYear(dateArray[0]);
-			year = year + "/" + dateArray[1] + "/" + dateArray[2];	
-			dao.update("StockLending",(int)stockLending, year);
+			dao.update("StockLending",(int)stockLending, date);
 		}
 		catch (Exception ex)
 		{
