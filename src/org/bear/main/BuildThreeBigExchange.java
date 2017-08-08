@@ -1,20 +1,18 @@
 package org.bear.main;
-
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.parser.TaifexLotParser;
 import org.bear.parser.TaifexMtxParser;
 import org.bear.parser.TpexThreeBigExchangeParser;
 import org.bear.parser.TwseDailyDataParser;
+import org.bear.parser.TwseStockLendingParser;
 import org.bear.parser.TwseThreeBigAmountParser;
 import org.bear.util.StringUtil;
 import org.bear.util.distribution.GetMtxTotalOi;
 import org.bear.util.distribution.GetTaifexLot;
 import org.bear.util.distribution.GetTaifexOption;
 import org.bear.util.distribution.GetTaifexTopTen;
-import org.bear.util.distribution.GetTwseStockLending;
 import org.bear.util.distribution.GetTwseThreeBigExchange;
-import org.bear.util.distribution.TwseDailyIndex;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
@@ -32,27 +30,8 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args) 
 	{
-		//String[] date = {"104/07/01", "104/07/02", "104/07/03"};
-		//String[] date = {"104/07/06", "104/07/07", "104/07/08", "104/07/09"};
-		//String[] date = {"104/07/13", "104/07/14", "104/07/15", "104/07/16", "104/07/17"};
-		//String[] date = {"104/07/20", "104/07/21", "104/07/22", "104/07/23", "104/07/24"};
-		//String[] date = {"105/11/21", "105/11/22", "105/11/23", "105/11/24", "105/11/25"};
-		//String[] date = {"105/12/12", "105/12/13", "105/12/14", "105/12/15", "105/12/16"};
-		//String[] date = {"105/12/19", "105/12/20", "105/12/21", "105/12/22", "105/12/23"};
-		//String[] date = {"105/12/26", "105/12/27", "105/12/28", "105/12/29", "105/12/30"};
-		//String[] date = {"106/03/03", "106/02/03"};
-		//String[] date = {"106/01/09", "106/01/10", "106/01/11", "106/01/12", "106/01/13"};
-		//String[] date = {"106/01/16", "106/01/17", "106/01/18", "106/01/19", "106/01/20"};
-		//String[] date = {"106/01/23", "106/01/24", "106/01/25", "106/01/26", "106/01/27"};
-		//String[] date = {"106/02/06", "106/02/07", "106/02/08", "106/02/09", "106/02/10"};
-		//String[] date = {"106/02/13", "106/02/14", "106/02/15", "106/02/16", "106/02/17"};
-		//String[] date = {"106/02/20", "106/02/21", "106/02/22", "106/02/23", "106/02/24"};
-		//String[] date = {"106/03/01", "106/03/02", "106/03/03"};
-		//String[] date = {"106/03/06", "106/03/07", "106/03/08", "106/03/09", "106/03/10"};
-		//String[] date = {"106/03/13", "106/03/14", "106/03/15", "106/03/16", "106/03/17"};
-		//String[] date = {"106/03/20", "106/03/21", "106/03/22", "106/03/23", "106/03/24"};
 		//String[] date = {"106/03/27", "106/03/28", "106/03/29", "106/03/30", "106/03/31"};
-		String[] date = {"106/04/11"};
+		String[] date = {"106/05/31", "106/06/01", "106/06/02", "106/06/03"};
 		for (int i = 0; i < date.length; i++)
 		{
 			//把民國轉換成西元
@@ -62,30 +41,15 @@ public class BuildThreeBigExchange {
 			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
 			String url;		
 			BuildThreeBigExchange exchange = new BuildThreeBigExchange();				
-			//上市，外資
-			url = "http://www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U.php";
-			exchange.buildTwse(date[i], 1, "外資", url);			
-			//上市，投信
-			url = "http://www.twse.com.tw/ch/trading/fund/TWT44U/TWT44U.php";
-			exchange.buildTwse(date[i], 1, "投信", url);	
-			//上櫃，外資，買超
-			url = "http://www.tpex.org.tw/web/stock/3insti/qfii_trading/forgtr_print.php?l=zh-tw&t=D&type=buy&d=" +
-			date[i] + "&s=0,asc,1";
-			exchange.buildTpex(date[i], 2, "外資", url);	
-			//上櫃，外資，賣超
-			url = "http://www.tpex.org.tw/web/stock/3insti/qfii_trading/forgtr_print.php?l=zh-tw&t=D&type=sell&d=" +
-			date[i] + "&s=0,asc,1";		
-			exchange.buildTpex(date[i], 2, "外資", url);	
-			//上櫃，投信，買超
-			url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=buy&d=" + date[i];
-			exchange.buildTpex(date[i], 2, "投信", url);	
-			//上櫃，投信，賣超
-			url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=sell&d=" + date[i];
-			exchange.buildTpex(date[i], 2, "投信", url);	
+			//上市，外資&投信
+			url = "http://www.tse.com.tw/fund/T86?response=html";
+			exchange.buildTwse(westenDate.replace("/", ""), 1, url);
+			//上櫃，外資&投信
+			url = "http://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_print.php?l=en-us&se=EW&t=D&d=";
+			exchange.buildTpex(westenDate, 2, url);	
 			//證交所，三大法人買賣超金額
-			url = "http://www.twse.com.tw/ch/trading/fund/BFI82U/BFI82U_print.php?begin_date=" + westenDate.replace("/", "") + 
-				  "&end_date=" + westenDate.replace("/", "") + "&report_type=day&language=ch";
-			exchange.buildJuristicAmountInfo(westenDate, url);
+			url = "http://www.tse.com.tw/fund/BFI82U?response=html";
+			exchange.buildJuristicAmountInfo(westenDate.replace("/", ""), url);
 			//期交所，外資未平倉口數
 			url = "http://www.taifex.com.tw/chinese/3/7_12_3_tbl.asp";
 			exchange.buildTaiFexLot(westenDate, url, "", new TaifexLotParser(), 1);
@@ -96,8 +60,8 @@ public class BuildThreeBigExchange {
 			url = "http://www.taifex.com.tw/chinese/3/7_12_5.asp";
 			exchange.buildOption(westenDate, url);
 			//大盤指數&成交量
-			url = "http://www.twse.com.tw/en/trading/exchange/FMTQIK/FMTQIK.php";
-			exchange.buildIndex(westenDate, url);	
+			url = "http://www.tse.com.tw/exchangeReport/FMTQIK?response=html";
+			exchange.buildIndex(westenDate.replace("/", ""), url);	
 			System.out.println(url);
 			//大盤指數&成交量
 			//url = "http://www.twse.com.tw/en/trading/exchange/FMTQIK/genpage/Report";
@@ -105,39 +69,37 @@ public class BuildThreeBigExchange {
 			//westenYear + "&mmon=" + dateArray[1];			
 			//exchange.buildVolumn(westenDate, url);
 			//外資借券
-			url = "http://www.twse.com.tw/ch/trading/exchange/TWT93U/TWT93U.php";
-			exchange.buildStockLending(date[i], url);
+			url = "http://www.twse.com.tw/exchangeReport/TWT93U?response=html";
+			exchange.buildStockLending(westenDate.replace("/", ""), url);
 			//小台三大法人未平倉口數
 			url = "http://www.taifex.com.tw/chinese/3/7_12_3.asp";
 			exchange.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 3);
 			//小台未平倉餘額
 			url = "http://www.taifex.com.tw/chinese/3/3_1_1.asp";
 			exchange.buildMtxOi(westenDate, url);
+			System.out.println(url);
 		}
 	}
 	/**
 	 * 
 	 * @param date Exchange Date
-	 * @param stockBranch 1:上市/2:上櫃
 	 * @param exchanger 三大法人種類 
 	 */
-	public void buildTwse(String date, int stockBranch, String exchanger, String url)
+	public void buildTwse(String date, int stockBranch, String url)
 	{		
 		GetTwseThreeBigExchange getThreeBigExchange = new GetTwseThreeBigExchange();
 		getThreeBigExchange.setDao(threeBigExchangeDao);
-		getThreeBigExchange.setExchanger(exchanger);
 		getThreeBigExchange.setStockBranch(stockBranch);
-		getThreeBigExchange.setUrl(url);
 		getThreeBigExchange.setDate(date);
+		getThreeBigExchange.setUrl(url);
 		getThreeBigExchange.getContent();
 	}
-	public void buildTpex(String date, int stockBranch, String exchanger, String url)
+	public void buildTpex(String date, int stockBranch, String url)
 	{
 		TpexThreeBigExchangeParser parser = new TpexThreeBigExchangeParser();
 		parser.setDao(threeBigExchangeDao);
-		parser.setExchanger(exchanger);
 		parser.setStockBranch(stockBranch);
-		parser.setUrl(url);
+		parser.setUrl(url + date);
 		parser.setDate(date);
 		parser.getConnection();
 		parser.parse();
@@ -147,10 +109,10 @@ public class BuildThreeBigExchange {
 		//證交所三大法人買賣超金額
 		TwseThreeBigAmountParser parser = new TwseThreeBigAmountParser();
 		parser.setDao(juristicDailyReportDao);
-		parser.setUrl(url);
+		parser.setUrl(url + "&dayDate=" + date);
 		parser.setDate(date);
 		parser.getConnection();
-		parser.parse();
+		parser.parseHttpGet(0);
 	}
 	public void buildTaiFexLot(String date, String url, String commodityId, TaifexLotParser parser, int tableIndex)
 	{
@@ -186,11 +148,12 @@ public class BuildThreeBigExchange {
 	public void buildIndex(String date, String url)
 	{
 		//上市指數
-		TwseDailyIndex twseDailyIndex = new TwseDailyIndex();
-		twseDailyIndex.setDao(juristicDailyReportDao);
-		twseDailyIndex.setUrl(url);
-		twseDailyIndex.setDate(date);
-		twseDailyIndex.getContent();		
+		TwseDailyDataParser parser = new TwseDailyDataParser();
+		parser.setDao(juristicDailyReportDao);
+		parser.setUrl(url + "&date=" + date);
+		parser.setDate(date);
+		parser.getConnection();
+		parser.parseHttpGet(0);
 	}
 	//上市指數，漲跌幅，成交量
 	public void buildVolumn(String date, String url)
@@ -205,11 +168,12 @@ public class BuildThreeBigExchange {
 	//外資借券
 	public void buildStockLending(String date, String url)
 	{
-		GetTwseStockLending stockLending = new GetTwseStockLending();			
-		stockLending.setDao(juristicDailyReportDao);
-		stockLending.setUrl(url);
-		stockLending.setDate(date);
-		stockLending.getContent();
+		TwseStockLendingParser parser = new TwseStockLendingParser();
+		parser.setDao(juristicDailyReportDao);
+		parser.setUrl(url + "&date=" + date);
+		parser.setDate(date);
+		parser.getConnection();
+		parser.parseHttpGet(0);
 	}
 	//小台未平倉餘額
 	public void buildMtxOi(String date, String url)
