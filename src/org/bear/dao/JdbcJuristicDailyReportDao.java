@@ -1,10 +1,14 @@
 package org.bear.dao;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.bear.entity.JuristicDailyEntity;
 import org.bear.entity.RetailInvestorsEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
@@ -152,11 +156,34 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 	@Override
 	public List<ThreeBigExchangeEntity> findStockBySize(String stockID, int size, String buyer) 
 	{
-		// TODO Auto-generated method stub
-		List <ThreeBigExchangeEntity> entityList = null;
-		String sql = "select top " + size + " * from ThreeBigExchange where stockID = ? and exchanger = ? ORDER BY ExchangeDate desc";
-		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID, buyer);
+		List <ThreeBigExchangeEntity> entityList = new ArrayList<ThreeBigExchangeEntity>();
+		// TODO Auto-generated method stub		
+		String sql = "select top (" + size + ")"  + " exchangeDate from ThreeBigExchange where StockID = '2330' and exchanger = '¥~¸ê' order by ExchangeDate desc";		
+		List<String> exchangeDateList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(String.class));
+		for (int i = 0; i < exchangeDateList.size(); i++)
+		{
+			try
+			{	
+				sql = "select * from ThreeBigExchange where stockID = ? and exchanger = ? and exchangeDate = ? ORDER BY ExchangeDate desc";
+				ThreeBigExchangeEntity data = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID, buyer, exchangeDateList.get(i));
+				entityList.add(data);
+			}
+			catch (EmptyResultDataAccessException ex)
+			{
+				ThreeBigExchangeEntity emptyDate = new ThreeBigExchangeEntity();
+				emptyDate.setStockID(stockID);
+				emptyDate.setExchanger(buyer);	
+				try
+				{
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					emptyDate.setExchangeDate(dateFormat.parse(exchangeDateList.get(i)));
+					emptyDate.setQuantity(0);
+					entityList.add(emptyDate);			
+				}
+				catch (ParseException parseEx)
+				{}
+			}
+		}
 		return entityList;
 	}
-	
 }
