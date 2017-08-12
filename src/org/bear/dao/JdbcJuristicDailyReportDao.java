@@ -148,5 +148,15 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		JuristicDailyEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
 		return entity;
 	}
+
+	@Override
+	public List<ThreeBigExchangeEntity> findStockBySize(String stockID, int size, String buyer) 
+	{
+		// TODO Auto-generated method stub
+		List <ThreeBigExchangeEntity> entityList = null;
+		String sql = "select top " + size + " * from ThreeBigExchange where stockID = ? and exchanger = ? ORDER BY ExchangeDate desc";
+		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID, buyer);
+		return entityList;
+	}
 	
 }
