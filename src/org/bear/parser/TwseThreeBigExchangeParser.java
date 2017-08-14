@@ -61,9 +61,12 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 			ThreeBigExchangeEntity foreigner = new ThreeBigExchangeEntity();
 			//投信
 			ThreeBigExchangeEntity mutualFund  = new ThreeBigExchangeEntity();
+			//兩大=外資+投信
+			ThreeBigExchangeEntity twoBig  = new ThreeBigExchangeEntity();
 			Element trElement = trList.get(i);
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
 			Element resultElement = null;
+			int twoBigQuantity = 0;
 			for (int j = 0; j < tdList.size(); j++)
 			{	
 				try
@@ -71,7 +74,7 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 					resultElement = tdList.get(j);				
 					String content = resultElement.getContent().toString().trim();	
 					content = content.replace(",", "");
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");				
 					if (j == 0)//Stock ID
 					{
 						foreigner.setStockID(content);
@@ -82,14 +85,19 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 						mutualFund.setStockBranch(1);
 						mutualFund.setRank(0);
 						mutualFund.setExchangeDate(dateFormat.parse(date));
+						twoBig.setStockID(content);
+						twoBig.setStockBranch(1);
+						twoBig.setRank(0);						
+						twoBig.setExchangeDate(dateFormat.parse(date));						
 					}
 					else if (j == 4)//外資買賣超
 					{
 						//股數->張數
 						int quantity = Integer.parseInt(content);
 						foreigner.setQuantity(quantity/1000);
-						foreigner.setExchanger("外資");
+						foreigner.setExchanger("外資");						
 						dao.insert(foreigner);
+						twoBigQuantity = quantity/1000;
 					}
 					else if (j == 7)//投信買賣超
 					{
@@ -98,6 +106,10 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 						mutualFund.setQuantity(quantity/1000);
 						mutualFund.setExchanger("投信");
 						dao.insert(mutualFund);
+						//兩大
+						twoBig.setQuantity(quantity/1000 + twoBigQuantity);
+						twoBig.setExchanger("兩大");
+						dao.insert(twoBig);
 					}
 				}
 				catch (Exception ex)
