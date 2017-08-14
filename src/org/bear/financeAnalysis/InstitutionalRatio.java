@@ -115,7 +115,9 @@ public class InstitutionalRatio
 	    	entity.setInfo(order);
 	    	listInstitutionalEntity.add(entity);
 	    }	
-		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);		
+		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
+		this.consecutiveExchange(listInvestmentEntity, days, "投信", maxSize);		
+		this.consecutiveExchange(listInstitutionalEntity, days, "兩大", maxSize);		
 		listAllEntity.add(listForeignerEntity);
 		listAllEntity.add(listInvestmentEntity);
 		listAllEntity.add(listInstitutionalEntity);
