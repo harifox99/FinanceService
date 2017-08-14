@@ -4,6 +4,7 @@ import java.util.*;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
+import org.bear.entity.InstitutionalEntity;
 import org.bear.entity.JuristicDailyEntity;
 import org.bear.entity.JuristicDailyReport;
 import org.bear.entity.PriceVolumnEntity;
@@ -375,6 +376,19 @@ public class JuristicAnalysis
 		}
 		//return list;
 	}
+	/**
+	 * 計算投本比 (投信)，外本比 (外資)，兩本比 (兩大)
+	 * @param days
+	 * @param accumulation
+	 * @param maxSize
+	 * @return
+	 */
+	public List<List<InstitutionalEntity>> getOrder(int days, int accumulation, int maxSize)
+	{
+		InstitutionalRatio ratio = new InstitutionalRatio();
+		return ratio.getOrder(days, accumulation, maxSize);		
+	}	
+	
 	public static void main(String args[])
 	{
 		JuristicAnalysis analysis = new JuristicAnalysis();
