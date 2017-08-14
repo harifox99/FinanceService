@@ -30,7 +30,7 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args) 
 	{
-		String[] date = {"106/08/09"};
+		String[] date = {"106/08/14"};
 		for (int i = 0; i < date.length; i++)
 		{
 			//把民國轉換成西元
