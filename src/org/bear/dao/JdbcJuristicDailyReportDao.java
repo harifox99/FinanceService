@@ -1,5 +1,4 @@
 package org.bear.dao;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -152,36 +151,38 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		JuristicDailyEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
 		return entity;
 	}
-
+	/**
+	 * 得到某支股票的交易資料 (誰買的, 交易日期, 哪支股票, 成交量)
+	 * stockID 股票代碼
+	 * size 要查詢幾天的交易日
+	 * buyer 交易人
+	 */
 	@Override
 	public List<ThreeBigExchangeEntity> findStockBySize(String stockID, int size, String buyer) 
 	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		List <ThreeBigExchangeEntity> entityList = new ArrayList<ThreeBigExchangeEntity>();
-		// TODO Auto-generated method stub		
-		String sql = "select top (" + size + ")"  + " exchangeDate from ThreeBigExchange where StockID = '2330' and exchanger = '外資' order by ExchangeDate desc";		
-		List<String> exchangeDateList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(String.class));
+		// TODO Auto-generated method stub	
+		//TSMC一定會有交易資料，透過TSMC取得過去的交易日期
+		String sql = "select top (" + size + ")"  + " * from ThreeBigExchange where StockID = '2330' and exchanger = '外資' order by ExchangeDate desc";		
+		List<ThreeBigExchangeEntity> exchangeDateList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class));
 		for (int i = 0; i < exchangeDateList.size(); i++)
 		{
 			try
 			{	
+				String dateString = dateFormat.format(exchangeDateList.get(i).getExchangeDate());
 				sql = "select * from ThreeBigExchange where stockID = ? and exchanger = ? and exchangeDate = ? ORDER BY ExchangeDate desc";
-				ThreeBigExchangeEntity data = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID, buyer, exchangeDateList.get(i));
-				entityList.add(data);
+				ThreeBigExchangeEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID, buyer, dateString);
+				entityList.add(entity);
 			}
 			catch (EmptyResultDataAccessException ex)
 			{
 				ThreeBigExchangeEntity emptyDate = new ThreeBigExchangeEntity();
 				emptyDate.setStockID(stockID);
 				emptyDate.setExchanger(buyer);	
-				try
-				{
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-					emptyDate.setExchangeDate(dateFormat.parse(exchangeDateList.get(i)));
-					emptyDate.setQuantity(0);
-					entityList.add(emptyDate);			
-				}
-				catch (ParseException parseEx)
-				{}
+				emptyDate.setExchangeDate(exchangeDateList.get(i).getExchangeDate());
+				emptyDate.setQuantity(0);
+				entityList.add(emptyDate);						
 			}
 		}
 		return entityList;
