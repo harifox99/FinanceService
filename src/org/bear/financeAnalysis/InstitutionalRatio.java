@@ -1,12 +1,19 @@
 package org.bear.financeAnalysis;
 
 import java.util.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.InstitutionalEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
+import org.bear.util.HttpUtil;
 import org.bear.util.StringUtil;
+import org.jsoup.Jsoup;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
@@ -58,7 +65,7 @@ public class InstitutionalRatio
 		mapInstitutional = new TreeMap<String, Double>();
 		ValueComparator institutionVC = new ValueComparator(mapInstitutional);
 		TreeMap<String, Double> sortedInstitutional = new TreeMap<String, Double>(institutionVC);
-		for (int i = 0; i < listStock.size(); i++)
+		for (int i = 0; i < 60; i++)
 		{
 			//if (!listStock.get(i).getStockID().equals("2421"))
 				//continue;
@@ -118,6 +125,7 @@ public class InstitutionalRatio
 		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
 		this.consecutiveExchange(listInvestmentEntity, days, "投信", maxSize);		
 		this.consecutiveExchange(listInstitutionalEntity, days, "兩大", maxSize);		
+		this.majorHolder(listInstitutionalEntity, maxSize, "20170818");		
 		listAllEntity.add(listForeignerEntity);
 		listAllEntity.add(listInvestmentEntity);
 		listAllEntity.add(listInstitutionalEntity);
@@ -218,6 +226,28 @@ public class InstitutionalRatio
     	    entity.setName(name);
     	}    	
     	System.out.println("");
+    }
+    private void majorHolder(List<InstitutionalEntity> list, int maxSize, String dateString)
+    {
+    	final int startTrIndex = 12;
+    	for (int i = 0; i < maxSize; i++)
+    	{
+    		String url = "http://www.tdcc.com.tw/smWeb/QryStock.jsp";
+    		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+    		paramList.add(new BasicNameValuePair("SCA_DATE", dateString));
+    		paramList.add(new BasicNameValuePair("SqlMethod", "StockNo"));
+    		paramList.add(new BasicNameValuePair("StockNo", list.get(i).getStockID()));
+    		paramList.add(new BasicNameValuePair("sub", "查詢"));
+    		String responseString = HttpUtil.send(url, paramList, 1, "big5");
+    		Document doc = Jsoup.parse(responseString);
+    		Elements tr = doc.select("tr");
+    		for (int j = startTrIndex; j < startTrIndex + 3; j++)
+	        {
+		        Element td = tr.get(j);
+		        Elements tdList = td.select("td");
+		        System.out.println(tdList.get(3).text());		      
+	        }
+    	}
     }
 }
 class ValueComparator implements Comparator<String> 
