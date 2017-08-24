@@ -26,7 +26,7 @@ public class CashDivParserJsoup extends ParserBase
 	{
         // TODO Auto-generated method stub
 		String url = "http://sjmain.esunsec.com.tw/z/zc/zcc/zcc.djhtm?A=1101";
-        new CashDivParserJsoup(url).Parsing(7);
+        new CashDivParserJsoup(url).parsing(7);
     }
 	public CashDivParserJsoup(String urlString)
 	{		
@@ -35,7 +35,7 @@ public class CashDivParserJsoup extends ParserBase
 		listYear = new ArrayList <String>();
 		listCashDiv = new ArrayList <Double>();
 	}
-    public void Parsing(int startTrIndex)
+    public void parsing(int startTrIndex)
     {
     	try
     	{

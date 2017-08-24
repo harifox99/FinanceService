@@ -72,7 +72,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 		  HashMap <String, Double> mapCashDiv = cashDivParser.getCashDivData();
 		 */
 		CashDivParserJsoup jsoup = new CashDivParserJsoup(urlCashDiv.getUrlString());
-		jsoup.Parsing(7);
+		jsoup.parsing(7);
 		HashMap <String, Double> mapCashDiv = jsoup.getCashDivData();
 		HashMap <String, Double> mapNav = navParser.getNavData();
 		for (int k = 0; k < mapNav.size(); k++)
