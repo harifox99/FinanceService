@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.bear.constant.FinancialReport;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
@@ -38,7 +39,7 @@ public class InstitutionalRatio
 	 * @param accumulation 以累積幾日來排名
 	 * @param maxSize 最多顯示幾筆股票資料
 	 */
-	public List<List<InstitutionalEntity>> getOrder(int days, int accumulation, int maxSize)
+	public List<List<InstitutionalEntity>> getOrder(int days, int accumulation, int maxSize, String date)
 	{
 		List<BasicStockWrapper> listStock = basicStockDao.findAllData();
 		//外資個股買賣超佔股本比
@@ -65,7 +66,7 @@ public class InstitutionalRatio
 		mapInstitutional = new TreeMap<String, Double>();
 		ValueComparator institutionVC = new ValueComparator(mapInstitutional);
 		TreeMap<String, Double> sortedInstitutional = new TreeMap<String, Double>(institutionVC);
-		for (int i = 0; i < 60; i++)
+		for (int i = 0; i < listStock.size(); i++)
 		{
 			//if (!listStock.get(i).getStockID().equals("2421"))
 				//continue;
@@ -125,7 +126,9 @@ public class InstitutionalRatio
 		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
 		this.consecutiveExchange(listInvestmentEntity, days, "投信", maxSize);		
 		this.consecutiveExchange(listInstitutionalEntity, days, "兩大", maxSize);		
-		this.majorHolder(listInstitutionalEntity, maxSize, "20170818");		
+		this.majorHolder(listForeignerEntity, maxSize, date);	
+		this.majorHolder(listInvestmentEntity, maxSize, date);	
+		this.majorHolder(listInstitutionalEntity, maxSize, date);	
 		listAllEntity.add(listForeignerEntity);
 		listAllEntity.add(listInvestmentEntity);
 		listAllEntity.add(listInstitutionalEntity);
@@ -227,26 +230,72 @@ public class InstitutionalRatio
     	}    	
     	System.out.println("");
     }
+    /**
+     * 擷取集保大戶資料
+     * @param list
+     * @param maxSize
+     * @param dateString
+     */
     private void majorHolder(List<InstitutionalEntity> list, int maxSize, String dateString)
     {
+    	//400大戶從第12行開始
     	final int startTrIndex = 12;
     	for (int i = 0; i < maxSize; i++)
     	{
+    		InstitutionalEntity entity = list.get(i);
     		String url = "http://www.tdcc.com.tw/smWeb/QryStock.jsp";
     		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
     		paramList.add(new BasicNameValuePair("SCA_DATE", dateString));
     		paramList.add(new BasicNameValuePair("SqlMethod", "StockNo"));
     		paramList.add(new BasicNameValuePair("StockNo", list.get(i).getStockID()));
     		paramList.add(new BasicNameValuePair("sub", "查詢"));
-    		String responseString = HttpUtil.send(url, paramList, 1, "big5");
-    		Document doc = Jsoup.parse(responseString);
-    		Elements tr = doc.select("tr");
-    		for (int j = startTrIndex; j < startTrIndex + 3; j++)
-	        {
-		        Element td = tr.get(j);
-		        Elements tdList = td.select("td");
-		        System.out.println(tdList.get(3).text());		      
-	        }
+    		boolean isSuccessful = false;
+    		while (isSuccessful == false)
+    		{
+    			//400張
+    			double totalRatio = 0;
+    			//800張
+    			double eightHundredRatio = 0;
+	    		try
+	    		{
+	    			String responseString = HttpUtil.send(url, paramList, 1, "big5");
+	    			Document doc = Jsoup.parse(responseString);
+	    			Element table = doc.select("table").get(7);
+		    		Elements tr = table.select("tr");
+		    		//400-600, 600-800, 800-1000, 1000+ (共4份資料)
+		    		for (int j = startTrIndex; j < startTrIndex + 4; j++)
+			        {
+				        Element td = tr.get(j);
+				        Elements tdList = td.select("td");
+				        double ratio = Double.parseDouble(tdList.get(4).text());	
+				        ratio = StringUtil.setPointLength(ratio);
+				        totalRatio = totalRatio + ratio;
+				        if (j == startTrIndex+2)
+				        	eightHundredRatio = ratio;
+				        if (j == startTrIndex+3)
+				        {
+				        	entity.setThousand(ratio);
+				        	entity.setEightHundred(StringUtil.setPointLength(ratio+eightHundredRatio));
+				        }
+			        }
+		    		entity.setFourHundred(StringUtil.setPointLength(totalRatio));
+	    			isSuccessful = true;
+	    		}
+	    		//集保很容易發生Http Error
+	    		catch (Exception ex)
+	    		{
+	    			try 
+					{
+						Thread.sleep(FinancialReport.sleepTime * 6);
+					} 
+					catch (InterruptedException e) 
+					{
+						// TODO Auto-generated catch block
+						System.out.println(list.get(i).getStockID() + ": 重新查詢營收發生中斷!");
+					}
+	    		}
+	    		
+    		}
     	}
     }
 }
