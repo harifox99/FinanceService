@@ -27,6 +27,18 @@ public class InstitutionalEntity {
 	 * 쫁붙
 	 */
 	String name;
+	/**
+	 * 400켲쨓ㅱ
+	 */
+	double fourHundred;
+	/**
+	 * 800켲쨓ㅱ
+	 */
+	double eightHundred;
+	/**
+	 * 쨊켲쨓ㅱ
+	 */
+	double thousand;
 	public String getStockID() {
 		return stockID;
 	}
@@ -56,5 +68,24 @@ public class InstitutionalEntity {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public double getFourHundred() {
+		return fourHundred;
+	}
+	public void setFourHundred(double fourHundred) {
+		this.fourHundred = fourHundred;
+	}
+	public double getEightHundred() {
+		return eightHundred;
+	}
+	public void setEightHundred(double eightHundred) {
+		this.eightHundred = eightHundred;
+	}
+	public double getThousand() {
+		return thousand;
+	}
+	public void setThousand(double thousand) {
+		this.thousand = thousand;
 	}	
+	
 }

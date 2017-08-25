@@ -383,10 +383,10 @@ public class JuristicAnalysis
 	 * @param maxSize
 	 * @return
 	 */
-	public List<List<InstitutionalEntity>> getOrder(int days, int accumulation, int maxSize)
+	public List<List<InstitutionalEntity>> getOrder(int days, int accumulation, int maxSize, String date)
 	{
 		InstitutionalRatio ratio = new InstitutionalRatio();
-		return ratio.getOrder(days, accumulation, maxSize);		
+		return ratio.getOrder(days, accumulation, maxSize, date);		
 	}	
 	
 	public static void main(String args[])
