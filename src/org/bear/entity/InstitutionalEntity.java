@@ -39,6 +39,10 @@ public class InstitutionalEntity {
 	 * 千張大戶
 	 */
 	double thousand;
+	/**
+	 * 股本
+	 */
+	double capital;
 	public String getStockID() {
 		return stockID;
 	}
@@ -86,6 +90,11 @@ public class InstitutionalEntity {
 	}
 	public void setThousand(double thousand) {
 		this.thousand = thousand;
+	}
+	public double getCapital() {
+		return capital;
+	}
+	public void setCapital(double capital) {
+		this.capital = capital;
 	}	
-	
 }
