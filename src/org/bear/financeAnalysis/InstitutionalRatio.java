@@ -68,6 +68,7 @@ public class InstitutionalRatio
 		//ValueComparator institutionVC = new ValueComparator(mapInstitutional);
 		//TreeMap<String, Double> sortedInstitutional = new TreeMap<String, Double>(institutionVC);
 		for (int i = 0; i < listStock.size(); i++)
+		//for (int i = 0; i < 60; i++)
 		{
 			//if (!listStock.get(i).getStockID().equals("2421"))
 				//continue;
@@ -229,6 +230,9 @@ public class InstitutionalRatio
     	    //¦WºÙ
     	    String name = basicEntity.getStockName();
     	    entity.setName(name);
+    	    //ªÑ¥»
+    	    double capital = basicEntity.getCapital();
+    	    entity.setCapital(StringUtil.setPointLength(capital));
     	}    	
     	System.out.println("");
     }
