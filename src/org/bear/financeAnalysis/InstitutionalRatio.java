@@ -28,8 +28,8 @@ public class InstitutionalRatio
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
-	//List<InstitutionalEntity> listAllEntity = new ArrayList<InstitutionalEntity>();
-	List<List<InstitutionalEntity>> listAllEntity = new ArrayList<List<InstitutionalEntity>>();
+	List<InstitutionalEntity> listAllEntity = new ArrayList<InstitutionalEntity>();
+	//List<List<InstitutionalEntity>> listAllEntity = new ArrayList<List<InstitutionalEntity>>();
 	Map<String, Double> mapForeigner;	 
 	Map<String, Double> mapInvestment;
 	Map<String, Double> mapInstitutional;
@@ -39,7 +39,8 @@ public class InstitutionalRatio
 	 * @param accumulation 以累積幾日來排名
 	 * @param maxSize 最多顯示幾筆股票資料
 	 */
-	public List<List<InstitutionalEntity>> getOrder(int days, int accumulation, int maxSize, String date)
+	public List<InstitutionalEntity> getOrder(int days, int accumulation, 
+			int maxSize, String date, String buyer)
 	{
 		List<BasicStockWrapper> listStock = basicStockDao.findAllData();
 		//外資個股買賣超佔股本比
@@ -47,41 +48,41 @@ public class InstitutionalRatio
 		//外資每日買賣超資料
 		List<ThreeBigExchangeEntity> listForeigner;
 		//投信個股買賣超佔股本比
-		Map<String, List<Double>> investmentStockRatio = new HashMap<String, List<Double>>();	
+		//Map<String, List<Double>> investmentStockRatio = new HashMap<String, List<Double>>();	
 		//投信每日買賣超資料
-		List<ThreeBigExchangeEntity> listInvestment;
+		//List<ThreeBigExchangeEntity> listInvestment;
 		//兩大個股買賣超佔股本比
-		Map<String, List<Double>> institutionalStockRatio = new HashMap<String, List<Double>>();
+		//Map<String, List<Double>> institutionalStockRatio = new HashMap<String, List<Double>>();
 		//兩大每日買賣超資料
-		List<ThreeBigExchangeEntity> listInstitutional;		
+		//List<ThreeBigExchangeEntity> listInstitutional;		
 		//排序外資
 		mapForeigner = new HashMap<String, Double>();
 		ValueComparator foreignerVC = new ValueComparator(mapForeigner);
 		TreeMap<String, Double> sortedForeigner = new TreeMap<String, Double>(foreignerVC);
 		//排序投信
-		mapInvestment = new HashMap<String, Double>();
-		ValueComparator investmentVC = new ValueComparator(mapInvestment);
-		TreeMap<String, Double> sortedInvestment = new TreeMap<String, Double>(investmentVC);
+		//mapInvestment = new HashMap<String, Double>();
+		//ValueComparator investmentVC = new ValueComparator(mapInvestment);
+		//TreeMap<String, Double> sortedInvestment = new TreeMap<String, Double>(investmentVC);
 		//兩大排序
-		mapInstitutional = new TreeMap<String, Double>();
-		ValueComparator institutionVC = new ValueComparator(mapInstitutional);
-		TreeMap<String, Double> sortedInstitutional = new TreeMap<String, Double>(institutionVC);
+		//mapInstitutional = new TreeMap<String, Double>();
+		//ValueComparator institutionVC = new ValueComparator(mapInstitutional);
+		//TreeMap<String, Double> sortedInstitutional = new TreeMap<String, Double>(institutionVC);
 		for (int i = 0; i < listStock.size(); i++)
 		{
 			//if (!listStock.get(i).getStockID().equals("2421"))
 				//continue;
 			//得到該股票的外資交易資料
-			listForeigner = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, "外資");		
+			listForeigner = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, buyer);		
 			List<Double> ratioList = this.computeAccumulateCapitalRatio(listStock.get(i).getStockID(), listForeigner, listStock.get(i).getCapital(), mapForeigner, accumulation);
 			foreignerStockRatio.put(listStock.get(i).getStockID(), ratioList);
 			//得到該股票的投信交易資料
-			listInvestment = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, "投信");			
-			ratioList = this.computeAccumulateCapitalRatio(listStock.get(i).getStockID(), listInvestment, listStock.get(i).getCapital(), mapInvestment, accumulation);
-			investmentStockRatio.put(listStock.get(i).getStockID(), ratioList);
+			//listInvestment = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, "投信");			
+			//ratioList = this.computeAccumulateCapitalRatio(listStock.get(i).getStockID(), listInvestment, listStock.get(i).getCapital(), mapInvestment, accumulation);
+			//investmentStockRatio.put(listStock.get(i).getStockID(), ratioList);
 			//得到該股票的兩大交易資料
-			listInstitutional = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, "兩大");			
-			ratioList = this.computeAccumulateCapitalRatio(listStock.get(i).getStockID(), listInstitutional, listStock.get(i).getCapital(), mapInstitutional, accumulation);
-			institutionalStockRatio.put(listStock.get(i).getStockID(), ratioList);
+			//listInstitutional = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, "兩大");			
+			//ratioList = this.computeAccumulateCapitalRatio(listStock.get(i).getStockID(), listInstitutional, listStock.get(i).getCapital(), mapInstitutional, accumulation);
+			//institutionalStockRatio.put(listStock.get(i).getStockID(), ratioList);
 		}		
 		Iterator<String> it;
 		//外資排序
@@ -98,6 +99,7 @@ public class InstitutionalRatio
 	    	listForeignerEntity.add(entity);
 	    }
 		//投信排序
+		/*
 		List<InstitutionalEntity> listInvestmentEntity = new ArrayList<InstitutionalEntity>();	
 		sortedInvestment.putAll(mapInvestment);
 		it = sortedInvestment.keySet().iterator();
@@ -122,17 +124,17 @@ public class InstitutionalRatio
 	    	entity.setStockID(stockID);
 	    	entity.setInfo(order);
 	    	listInstitutionalEntity.add(entity);
-	    }	
+	    }*/
 		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
-		this.consecutiveExchange(listInvestmentEntity, days, "投信", maxSize);		
-		this.consecutiveExchange(listInstitutionalEntity, days, "兩大", maxSize);		
+		//this.consecutiveExchange(listInvestmentEntity, days, "投信", maxSize);		
+		//this.consecutiveExchange(listInstitutionalEntity, days, "兩大", maxSize);		
 		this.majorHolder(listForeignerEntity, maxSize, date);	
-		this.majorHolder(listInvestmentEntity, maxSize, date);	
-		this.majorHolder(listInstitutionalEntity, maxSize, date);	
-		listAllEntity.add(listForeignerEntity);
-		listAllEntity.add(listInvestmentEntity);
-		listAllEntity.add(listInstitutionalEntity);
-		return listAllEntity;
+		//this.majorHolder(listInvestmentEntity, maxSize, date);	
+		//this.majorHolder(listInstitutionalEntity, maxSize, date);	
+		//listAllEntity.add(listForeignerEntity);
+		//listAllEntity.add(listInvestmentEntity);
+		//listAllEntity.add(listInstitutionalEntity);
+		return listForeignerEntity;
 	}
     public static void main(String[] args) 
     {	    	    
@@ -286,6 +288,7 @@ public class InstitutionalRatio
 	    		{
 	    			try 
 					{
+	    				System.out.println("StockID:" + list.get(i).getStockID());
 						Thread.sleep(FinancialReport.sleepTime * 6);
 					} 
 					catch (InterruptedException e) 
