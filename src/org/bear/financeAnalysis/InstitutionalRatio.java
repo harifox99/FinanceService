@@ -256,7 +256,9 @@ public class InstitutionalRatio
     		paramList.add(new BasicNameValuePair("StockNo", list.get(i).getStockID()));
     		paramList.add(new BasicNameValuePair("sub", "查詢"));
     		boolean isSuccessful = false;
-    		while (isSuccessful == false)
+    		//集保填錯日期就GG了，所以要設Counter
+    		int count = 15;
+    		while (isSuccessful == false && count-- > 0)
     		{
     			//400張
     			double totalRatio = 0;
