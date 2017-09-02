@@ -13,6 +13,8 @@ public class StockDistribution
 	/**
 	 * 集保股權因為是週資料，所以有時當月的資料要去下個月去抓 (7月的資料要去8月抓)，所以由此參數，來決定月資料要不要減1
 	 * 抓到8月的資料 (但其實是7月的資料後)，減1後儲存
+	 * isCurrentMonth = false, 轉換月份
+	 * isCurrentMonth = true,  不轉換月份
 	 */
 	boolean isCurrentMonth;
 	public boolean isCurrentMonth() {
