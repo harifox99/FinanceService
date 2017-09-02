@@ -34,7 +34,10 @@ public class TpexPbeParser extends EasyParserBase
 				String content = resultElement.getContent().toString();
 				//content = StringUtil.eraseSpecialChar(content);
 				if (j == 0)
+				{
 					stockId = content;
+					System.out.println(stockId);					
+				}
 				else if (j == 2)
 				{
 					double per;
@@ -52,8 +55,18 @@ public class TpexPbeParser extends EasyParserBase
 				else if (j == 5)
 				{
 					double pbr;
-					pbr = Double.parseDouble(content);
-					hashPbr.put(stockId, pbr);
+					//pbr = Double.parseDouble(content);
+					//hashPbr.put(stockId, pbr);
+					if (content.equals("N/A"))
+					{
+						pbr = -1;
+						hashPbr.put(stockId, pbr);
+					}
+					else
+					{
+						pbr = Double.parseDouble(content);
+						hashPbr.put(stockId, pbr);
+					}
 				}
 									
 			}
