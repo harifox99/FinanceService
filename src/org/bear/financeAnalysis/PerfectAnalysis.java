@@ -451,18 +451,25 @@ public class PerfectAnalysis
 		//BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
 		//parser.parse(2);
 		System.out.println("stockID: " + stockID);
-		PeterLynchWrapper wrapper = new PeterLynchWrapper();
-		/* P/E Ratio */		
-		wrapper.setPer(hashPer.get(stockID));
-		/* P/B Ratio */
-		wrapper.setPbr(hashPbr.get(stockID));
-		//Price
-		//ratioNumber = StringUtil.setPointLength(parser.getPrice());
-		//wrapper.setPrice(ratioNumber);
-		if (expectedPe > wrapper.getPer())
-			return wrapper;
-		else
+		try
+		{
+			PeterLynchWrapper wrapper = new PeterLynchWrapper();
+			/* P/E Ratio */		
+			wrapper.setPer(hashPer.get(stockID));
+			/* P/B Ratio */
+			wrapper.setPbr(hashPbr.get(stockID));
+			//Price
+			//ratioNumber = StringUtil.setPointLength(parser.getPrice());
+			//wrapper.setPrice(ratioNumber);
+			if (expectedPe > wrapper.getPer())
+				return wrapper;
+			else
+				return null;
+		}
+		catch (NullPointerException ex)
+		{
 			return null;
+		}
 	}
 	private void addColumnName(Date yearMonth, String comment)
 	{
