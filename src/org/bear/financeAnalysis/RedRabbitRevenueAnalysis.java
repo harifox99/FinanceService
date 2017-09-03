@@ -516,8 +516,11 @@ public class RedRabbitRevenueAnalysis
 				//Add PE Ratio
 				//GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
 				//BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
-				//parser.parse(2);				
-				wrapper.setPe(hashPer.get(stockID));
+				//parser.parse(2);	
+				if (hashPer.get(stockID) == null)
+					wrapper.setPe(0);
+				else
+					wrapper.setPe(hashPer.get(stockID));
 				wrapperList.add(wrapper);							
 			}
 		}
