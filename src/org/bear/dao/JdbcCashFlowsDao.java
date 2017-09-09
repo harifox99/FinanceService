@@ -73,4 +73,19 @@ public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsD
 			this.getSimpleJdbcTemplate().update(sql, parameterSource);
 		}		
 	}
+
+	@Override
+	/**
+	 * 查詢最近num季，自由現金流
+	 * 
+	 */
+	public List<CashFlowsEntity> findLatest(String stockID, int num) 
+	{
+		// TODO Auto-generated method stub
+		List <CashFlowsEntity> wrapperList = null;
+		String sql = "select top (" + num + ") * from StatementOfCashFlow where stockid = '" + 
+		stockID + "' and seasons <> '00' order by year desc, seasons desc";
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
+		return wrapperList;
+	}
 }

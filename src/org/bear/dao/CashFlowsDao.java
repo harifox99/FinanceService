@@ -9,4 +9,5 @@ public interface CashFlowsDao
 	public void insert(CashFlowsEntity cashFlowsEntity);
 	public void insertWithCheck(CashFlowsEntity cashFlowsEntity);
 	public List<CashFlowsEntity> findDataByYear(String stockID, String year);
+	public List<CashFlowsEntity> findLatest(String stockID, int num);
 }
