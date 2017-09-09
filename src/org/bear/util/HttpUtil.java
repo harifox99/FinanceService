@@ -112,7 +112,8 @@ public class HttpUtil {
 		catch (ClientProtocolException e) 
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Request Timeout in HttpUtil.java");
 		} 
 		catch (IOException e) 
 		{
