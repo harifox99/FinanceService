@@ -9,12 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bear.dao.BasicStockDao;
+import org.bear.dao.CashFlowsDao;
 import org.bear.dao.IncomeStatementDao;
 import org.bear.dao.RevenueDao;
 import org.bear.entity.BasicStockWrapper;
+import org.bear.entity.CashFlowsEntity;
 import org.bear.entity.IncomeStatementEntity;
 import org.bear.entity.PeterLynchWrapper;
 import org.bear.entity.RevenueEntity;
+import org.bear.parser.TpexPriceParser;
+import org.bear.parser.TwsePriceParser;
 import org.bear.util.GetTpexPbeRatio;
 import org.bear.util.GetTwsePbeRatio;
 import org.bear.util.ReverseUtil;
@@ -47,18 +51,27 @@ public class PerfectAnalysis
 	 * @param isMinusRevenueGrowth 過濾營收零成長標的
 	 * @param isMinusProfitGrowth 過濾毛利/營業利益/稅前淨利成長標的 
 	 * (這個值如果為true，則最新一季的毛利/營業利益/稅前淨利一定要為正數，反之則不需要符合此條件)
-	 * @param peDate 證交所本益比(日期)
+	 * @param isFreeCashFlow 過去8季自由現金流總和 
+	 * @param isOperatingCashFlow 過去8季營運現金流，至少5季 > 0
+	 * @param isNonOperating 業外收入佔稅前淨利比，過去5年在+-20%之內
+	 * @param isComparePrice 過濾近期漲幅已達(%)
+	 * @param priceRate 漲幅比例
+	 * @param peDate 證交所本益比/股價 (日期)
+	 * @param compareDate 某個時間股價 (通常是6個月)
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
 			int demandGrossProfit, int demandOperatingProfitRatio, int demandEps,
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe, 
-			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth, String peDate)
+			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth, 
+			boolean isFreeCashFlow, boolean isOperatingCashFlow, boolean isNonOperating,
+			boolean isComparePrice, int priceRate, String peDate, String compareDate)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 		RevenueDao revenueDao = (RevenueDao)context.getBean("revenueDao");
 		IncomeStatementDao incomeStatementDao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
+		CashFlowsDao cashFlowsDao = (CashFlowsDao)context.getBean("basicCashFlowsDao");
 		//股票列表
 		List<BasicStockWrapper> stockList = basicStockDao.findAllData();
 		//最終結果
@@ -290,7 +303,150 @@ public class PerfectAnalysis
 			}
 			perfectList = calculateList;
 			calculateList = new ArrayList<List<String>>();
-						
+			//過濾營建業
+			for (int i = 0; i < perfectList.size(); i++)
+			{
+				String stockID = perfectList.get(i).get(0);
+				BasicStockWrapper entity = basicStockDao.findBasicData(stockID);
+				if (entity.getStockType() != 14)
+				{
+					calculateList.add(perfectList.get(i));
+				}
+			}
+			perfectList = calculateList;
+			calculateList = new ArrayList<List<String>>();
+			//isFreeCashFlow 過去8季自由現金流總和 
+			if (isFreeCashFlow == true)
+			{
+				int num = 8;
+				for (int i = 0; i < perfectList.size(); i++)
+				{
+					String stockID = perfectList.get(i).get(0);
+					List <CashFlowsEntity> wrapperList = cashFlowsDao.findLatest(stockID, num);
+					if (this.checkFreeCashFlow(wrapperList, num))
+						calculateList.add(perfectList.get(i));
+				}
+				perfectList = calculateList;
+				calculateList = new ArrayList<List<String>>();
+			}
+			
+			//isOperatingCashFlow 過去8季營運現金流，至少5季 > 0
+			if (isOperatingCashFlow == true)
+			{
+				int num = 8;
+				for (int i = 0; i < perfectList.size(); i++)
+				{
+					String stockID = perfectList.get(i).get(0);
+					List <CashFlowsEntity> wrapperList = cashFlowsDao.findLatest(stockID, num);
+					if (this.checkOperatingCashFlow(wrapperList, num, 5))
+						calculateList.add(perfectList.get(i));
+				}
+				perfectList = calculateList;
+				calculateList = new ArrayList<List<String>>();
+			}
+			
+			//isNonOperating 業外收入佔稅前淨利比，過去5年在+-20%之內
+			if (isNonOperating == true)
+			{
+				int num = 5;
+				for (int i = 0; i < perfectList.size(); i++)
+				{
+					String stockID = perfectList.get(i).get(0);
+					List <IncomeStatementEntity> wrapperList = incomeStatementDao.findDataByLatestYear(num, stockID);
+					if (this.checkNonOperating(wrapperList, num))
+						calculateList.add(perfectList.get(i));
+				}				
+				perfectList = calculateList;
+				calculateList = new ArrayList<List<String>>();
+			}
+			
+			//檢視近期漲幅，上市
+			if (isComparePrice == true)
+			{
+				//計算最新股價
+				String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
+				TwsePriceParser parser = new TwsePriceParser();
+				//民國轉西元
+				String[] dateArray = peDate.split("/");
+				String year = StringUtil.convertYear(dateArray[0]);
+				parser.setUrl(url + year + dateArray[1] + dateArray[2]);
+				parser.getConnection();
+				parser.parse(4);
+				HashMap<String, Double> hashPrice = parser.getHashPrice();
+				//計算某個日子股價 (通常是半年)
+				parser = new TwsePriceParser();
+				parser.setUrl(url + compareDate.replace("/", ""));
+				parser.getConnection();
+				parser.parse(4);
+				HashMap<String, Double> previousPrice = parser.getHashPrice();				
+				columnNameList.add(year + dateArray[1] + dateArray[2] + "\r\n" + "最新股價");
+				columnNameList.add(compareDate.replace("/", "") + "\r\n" + "股價");
+				//計算股價上漲幅度
+				for (int i = 0; i < perfectList.size(); i++)
+				{
+					String stockID = perfectList.get(i).get(0);
+					try
+					{
+						double rate = (double)hashPrice.get(stockID)/previousPrice.get(stockID) * 100 - 100;
+						if (rate < priceRate)
+						{							
+							perfectList.get(i).add(String.valueOf(previousPrice.get(stockID)));
+							perfectList.get(i).add(String.valueOf(hashPrice.get(stockID)));							
+							calculateList.add(perfectList.get(i));
+						}
+					}
+					catch (NullPointerException ex)
+					{
+						System.out.println("Stock price null: " + stockID);
+						calculateList.add(perfectList.get(i));
+					}
+				}
+				perfectList = calculateList;
+				calculateList = new ArrayList<List<String>>();
+			}
+			
+			//檢視近期漲幅，上櫃
+			if (isComparePrice == true)
+			{
+				//計算最新股價
+				String url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+				TpexPriceParser parser = new TpexPriceParser();
+				parser.setUrl(url + peDate);
+				parser.getConnection();
+				parser.parse(0);
+				HashMap<String, Double> hashPrice = parser.getHashPrice();
+				//計算某個日子股價 (通常是半年)
+				parser = new TpexPriceParser();
+				//西元轉民國
+				String[] dateArray = compareDate.split("/");
+				String year = StringUtil.convertChineseYear(dateArray[0]);
+				parser.setUrl(url + year + "/" + dateArray[1] + "/" + dateArray[2]);
+				parser.getConnection();
+				parser.parse(0);
+				HashMap<String, Double> previousPrice = parser.getHashPrice();	
+				//計算股價上漲幅度
+				for (int i = 0; i < perfectList.size(); i++)
+				{
+					String stockID = perfectList.get(i).get(0);
+					try
+					{
+						double rate = (double)hashPrice.get(stockID)/previousPrice.get(stockID) * 100 - 100;
+						if (rate < priceRate)
+						{							
+							perfectList.get(i).add(String.valueOf(previousPrice.get(stockID)));
+							perfectList.get(i).add(String.valueOf(hashPrice.get(stockID)));							
+							calculateList.add(perfectList.get(i));
+						}
+					}
+					catch (NullPointerException ex)
+					{
+						System.out.println("Stock price null: " + stockID);
+						calculateList.add(perfectList.get(i));
+					}
+				}
+				perfectList = calculateList;
+				calculateList = new ArrayList<List<String>>();
+			}			
 		}
 		catch (Exception ex)
 		{
@@ -688,6 +844,69 @@ public class PerfectAnalysis
 				counter++;
 		}
 		if (counter >= expectNum-1)
+			return true;
+		else
+			return false;
+	}
+	/**
+	 * 過去8季自由現金流總和 > 0, 資料不足 return true
+	 * @param wrapperList
+	 * @return
+	 */
+	private boolean checkFreeCashFlow(List<CashFlowsEntity> wrapperList, int num)
+	{
+		if (wrapperList == null || wrapperList.size() < num)
+			return true;
+		int freeCashFlow = 0;
+		for (int i = 0; i < wrapperList.size(); i++)
+		{
+			freeCashFlow = freeCashFlow + wrapperList.get(i).getFreeCashFlow();
+		}
+		if (freeCashFlow > 0)
+			return true;
+		else
+			return false;
+	}
+	/**
+	 * 去8季營運現金流，至少5季 > 0, 資料不足 return true
+	 * @param wrapperList
+	 * @param totalNum
+	 * @param ExceptedNum
+	 * @return
+	 */
+	private boolean checkOperatingCashFlow(List<CashFlowsEntity> wrapperList, int totalNum, int ExceptedNum)
+	{
+		if (wrapperList == null || wrapperList.size() < totalNum)
+			return true;
+		int operatingCashFlowPositiveNum = 0;
+		for (int i = 0; i < wrapperList.size(); i++)
+		{
+			if (wrapperList.get(i).getOperatingActivity() > 0)
+				operatingCashFlowPositiveNum++;
+		}
+		if (operatingCashFlowPositiveNum >= ExceptedNum)
+			return true;
+		else
+			return false;
+	}
+	/**
+	 * 業外收入佔稅前淨利比，過去5年在+-20%之內, 資料不足 return true
+	 * @param wrapperList
+	 * @param num
+	 * @return
+	 */
+	private boolean checkNonOperating(List<IncomeStatementEntity> wrapperList, int num)	
+	{
+		if (wrapperList == null || wrapperList.size() < num)
+			return true;
+		double ratioNumber = 0;
+		for (int i = 0; i < wrapperList.size(); i++)
+		{
+			double number = (double) (wrapperList.get(i).getNonOperatingRevenue() - wrapperList.get(i).getNonOperatingExpense()) * 100 / wrapperList.get(i).getPreTaxIncome();
+			ratioNumber = ratioNumber + number;
+		}
+		ratioNumber = ratioNumber/num;
+		if (ratioNumber > -20 && ratioNumber < 20)
 			return true;
 		else
 			return false;
