@@ -130,4 +130,18 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		return entity;
 	}
 
+	@Override
+	/**
+	 * 查詢最近num年，損益資料
+	 */
+	public List<IncomeStatementEntity> findDataByLatestYear(int size,
+			String stockID) {
+		List <IncomeStatementEntity> wrapperList = null;
+		String sql = "select top " + size + " * from incomeStatement where stockID = '" +
+		stockID + "' and seasons = '00' order by YEAR desc";
+		//System.out.println("SQL: " + sql);
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		return wrapperList;
+	}
+
 }
