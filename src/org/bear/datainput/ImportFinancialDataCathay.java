@@ -39,7 +39,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			{
 				entityList = new ArrayList <FinancialDataEntity>();
 				String stockID = wrapperList.get(j).getStockID();
-				//if (!stockID.equals("2239"))
+				//if (!stockID.equals("2437"))
 					//continue;
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				/***********/
@@ -91,7 +91,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
 			//只要當年的
-			if (entity.year.equals("2015") || entity.year.equals("2016") || entity.year.equals("2014"))
+			if (entity.year.equals("2016"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
