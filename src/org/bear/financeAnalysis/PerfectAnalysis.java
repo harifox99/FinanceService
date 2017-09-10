@@ -378,9 +378,9 @@ public class PerfectAnalysis
 				parser.setUrl(url + compareDate.replace("/", ""));
 				parser.getConnection();
 				parser.parse(4);
-				HashMap<String, Double> previousPrice = parser.getHashPrice();				
-				columnNameList.add(year + dateArray[1] + dateArray[2] + "\r\n" + "程穝基");
+				HashMap<String, Double> previousPrice = parser.getHashPrice();
 				columnNameList.add(compareDate.replace("/", "") + "\r\n" + "基");
+				columnNameList.add(year + dateArray[1] + dateArray[2] + "\r\n" + "程穝基");				
 				//璸衡基害碩
 				for (int i = 0; i < perfectList.size(); i++)
 				{
