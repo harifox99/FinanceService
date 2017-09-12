@@ -43,6 +43,10 @@ public class InstitutionalEntity {
 	 * 股本
 	 */
 	double capital;
+	/**
+	 * 收盤價
+	 */
+	double price;
 	public String getStockID() {
 		return stockID;
 	}
@@ -96,5 +100,11 @@ public class InstitutionalEntity {
 	}
 	public void setCapital(double capital) {
 		this.capital = capital;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}	
 }

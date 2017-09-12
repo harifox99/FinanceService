@@ -1,6 +1,7 @@
 package org.bear.financeAnalysis;
 
 import java.util.*;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -12,6 +13,8 @@ import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.InstitutionalEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
+import org.bear.parser.TpexPriceParser;
+import org.bear.parser.TwsePriceParser;
 import org.bear.util.HttpUtil;
 import org.bear.util.StringUtil;
 import org.jsoup.Jsoup;
@@ -34,13 +37,19 @@ public class InstitutionalRatio
 	Map<String, Double> mapInvestment;
 	Map<String, Double> mapInstitutional;
 	/**
-	 * 查詢過去
+	 * 
 	 * @param days 查詢幾天
 	 * @param accumulation 以累積幾日來排名
 	 * @param maxSize 最多顯示幾筆股票資料
+	 * @param date 本益比日期
+	 * @param buyer 外資/投信
+	 * @param priceDate 股價（日期）
+	 * @param capital 股本
+	 * @param capital 期望股價
+	 * @return
 	 */
 	public List<InstitutionalEntity> getOrder(int days, int accumulation, 
-			int maxSize, String date, String buyer)
+			int maxSize, String date, String buyer, String priceDate, double capital, double price)
 	{
 		List<BasicStockWrapper> listStock = basicStockDao.findAllData();
 		//外資個股買賣超佔股本比
@@ -126,15 +135,11 @@ public class InstitutionalRatio
 	    	entity.setInfo(order);
 	    	listInstitutionalEntity.add(entity);
 	    }*/
+		listForeignerEntity = this.checkCapital(listForeignerEntity, capital);
+		this.getPrice(listForeignerEntity, priceDate);
+		listForeignerEntity = this.checkPrice(listForeignerEntity, price);
 		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
-		//this.consecutiveExchange(listInvestmentEntity, days, "投信", maxSize);		
-		//this.consecutiveExchange(listInstitutionalEntity, days, "兩大", maxSize);		
 		this.majorHolder(listForeignerEntity, maxSize, date);	
-		//this.majorHolder(listInvestmentEntity, maxSize, date);	
-		//this.majorHolder(listInstitutionalEntity, maxSize, date);	
-		//listAllEntity.add(listForeignerEntity);
-		//listAllEntity.add(listInvestmentEntity);
-		//listAllEntity.add(listInstitutionalEntity);
 		return listForeignerEntity;
 	}
     public static void main(String[] args) 
@@ -179,6 +184,42 @@ public class InstitutionalRatio
     		}
     	}
     	return ratioList;
+    }
+    
+    /**
+     * 過濾股本
+     * @param list
+     * @param exceptedCapital
+     */
+    private List<InstitutionalEntity> checkCapital(List<InstitutionalEntity> list, double exceptedCapital)
+    {
+    	List<InstitutionalEntity> capitalList = new ArrayList <InstitutionalEntity>();
+    	for (int i = 0; i < list.size(); i++)
+    	{
+    		String stockID = list.get(i).getStockID();
+    		BasicStockWrapper basicEntity = basicStockDao.findBasicData(stockID);
+    		double capital = basicEntity.getCapital();
+    		if (capital <= exceptedCapital)
+    			capitalList.add(list.get(i));
+    	}
+    	return capitalList;
+    }
+    /**
+     * 過濾股價
+     * @param list
+     * @param exceptedPrice
+     * @return
+     */
+    private List<InstitutionalEntity> checkPrice(List<InstitutionalEntity> list, double exceptedPrice)
+    {
+    	List<InstitutionalEntity> capitalList = new ArrayList <InstitutionalEntity>();
+    	for (int i = 0; i < list.size(); i++)
+    	{
+    		double price = list.get(i).getPrice();
+    		if (price <= exceptedPrice)
+    			capitalList.add(list.get(i));
+    	}
+    	return capitalList;
     }
     
     /**
@@ -306,6 +347,44 @@ public class InstitutionalRatio
 	    		
     		}
     	}
+    }
+    
+    /**
+     * 得到最新股價
+     * @param list
+     * @param maxSize
+     * @param dateString
+     */
+    private void getPrice(List<InstitutionalEntity> list, String dateString)
+    {
+    	//證交所
+    	String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
+		TwsePriceParser twseParser = new TwsePriceParser();
+		twseParser.setUrl(url + dateString);
+		twseParser.getConnection();
+		twseParser.parse(4);
+		HashMap<String, Double> hashPrice = twseParser.getHashPrice();	
+		//櫃買
+		url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+		TpexPriceParser tpexParser = new TpexPriceParser();
+		String year = dateString.substring(0, 4);
+		dateString = StringUtil.convertChineseYear(year) + "/" + dateString.substring(4, 6) + "/" + dateString.substring(6, 8);
+		tpexParser.setUrl(url + dateString);
+		tpexParser.getConnection();
+		tpexParser.parse(0);
+		hashPrice.putAll(tpexParser.getHashPrice());
+		for (int i = 0; i < list.size(); i++)
+		{
+			InstitutionalEntity entity = list.get(i);
+			try
+			{
+				entity.setPrice(hashPrice.get(entity.getStockID()));
+			}
+			catch (NullPointerException ex)
+			{
+				entity.setPrice(0);
+			}
+		}
     }
 }
 class ValueComparator implements Comparator<String> 
