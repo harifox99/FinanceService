@@ -5,7 +5,7 @@ package org.bear.dao;
 
 import java.util.List;
 import org.bear.journal.wrapper.CommonJournalMetaWrapper;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
@@ -21,7 +21,7 @@ public class JdbcCommonMetaDataDao extends SimpleJdbcDaoSupport implements Commo
 		// TODO Auto-generated method stub
 		List <CommonJournalMetaWrapper> wrapperList = null;
 		String sql = "select * from approach";
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CommonJournalMetaWrapper.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(CommonJournalMetaWrapper.class));
 		return wrapperList;
 	}
 
@@ -32,7 +32,7 @@ public class JdbcCommonMetaDataDao extends SimpleJdbcDaoSupport implements Commo
 		// TODO Auto-generated method stub
 		List <CommonJournalMetaWrapper> wrapperList = null;
 		String sql = "select * from transaction_reason";
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CommonJournalMetaWrapper.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(CommonJournalMetaWrapper.class));
 		return wrapperList;
 	}
 

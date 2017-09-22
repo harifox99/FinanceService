@@ -7,9 +7,9 @@ import java.util.*;
 import org.bear.entity.MacroEconomicEntity;
 //import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 /**
  * @author edward
@@ -27,7 +27,7 @@ public class JdbcMacroEconomicDao extends SimpleJdbcDaoSupport implements MacroE
 		{
 			// TODO Auto-generated method stub
 			String sql = "select * from macroEconomics";
-			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(MacroEconomicEntity.class));
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(MacroEconomicEntity.class));
 		}
 		catch (Exception ex)
 		{
@@ -49,7 +49,7 @@ public class JdbcMacroEconomicDao extends SimpleJdbcDaoSupport implements MacroE
 		"' and YearMonth <= '" + stringEnd + "'";
 		System.out.println("SQL: " + sql);
 		List <MacroEconomicEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(MacroEconomicEntity.class));
+				BeanPropertyRowMapper.newInstance(MacroEconomicEntity.class));
 		for (int i = 0; i < entityList.size(); i++)
 		{
 			//將日期格式Class Date轉成Class String

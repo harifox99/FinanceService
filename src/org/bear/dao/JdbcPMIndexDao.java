@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.bear.entity.PMIndexEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
@@ -28,7 +28,7 @@ public class JdbcPMIndexDao extends SimpleJdbcDaoSupport implements PMIndexDao {
 		{
 			// TODO Auto-generated method stub
 			String sql = "select * from pmIndex";
-			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(PMIndexEntity.class));
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(PMIndexEntity.class));
 		}
 		catch (Exception ex)
 		{
@@ -50,7 +50,7 @@ public class JdbcPMIndexDao extends SimpleJdbcDaoSupport implements PMIndexDao {
 		"' and YearMonth <= '" + stringEnd + "'";
 		System.out.println("SQL: " + sql);
 		List <PMIndexEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(PMIndexEntity.class));
+				BeanPropertyRowMapper.newInstance(PMIndexEntity.class));
 		return entityList;
 	}
 

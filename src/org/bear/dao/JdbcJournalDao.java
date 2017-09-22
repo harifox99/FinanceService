@@ -5,9 +5,9 @@ package org.bear.dao;
 
 import java.util.List;
 import org.bear.journal.wrapper.JournalEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
@@ -22,7 +22,7 @@ public class JdbcJournalDao extends SimpleJdbcDaoSupport implements JournalDao {
 	public JournalEntity findJournal(String transactionID, int serialNo) {
 		// TODO Auto-generated method stub
 		String sql = "select * from journal where transactionID = '" + transactionID + "' and serialNo = '" + serialNo + "'";
-		JournalEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(JournalEntity.class));
+		JournalEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(JournalEntity.class));
 		return entity;
 	}
 
@@ -33,7 +33,7 @@ public class JdbcJournalDao extends SimpleJdbcDaoSupport implements JournalDao {
 		// TODO Auto-generated method stub
 		List <JournalEntity> wrapperList = null;
 		String sql = "select * from journal where status = ?";
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(JournalEntity.class), status);
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(JournalEntity.class), status);
 		//Iterator <BasicStockWrapper> iterator = wrapperList.iterator();
 		return wrapperList;
 	}

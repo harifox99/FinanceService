@@ -6,9 +6,9 @@ import java.util.List;
 import org.bear.entity.ThreeBigEntity;
 import org.bear.util.DateTimeFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcThreeBigDao extends SimpleJdbcDaoSupport implements ThreeBigDao {
@@ -41,7 +41,7 @@ public class JdbcThreeBigDao extends SimpleJdbcDaoSupport implements ThreeBigDao
 				"where stockID = '" + stockID + "' order by YearMonth desc";
 		System.out.println(sql);
 		List <ThreeBigEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigEntity.class));
+				BeanPropertyRowMapper.newInstance(ThreeBigEntity.class));
 		return entityList;
 	}
 

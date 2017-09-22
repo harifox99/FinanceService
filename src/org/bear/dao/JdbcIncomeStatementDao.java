@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bear.entity.IncomeStatementEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
@@ -30,7 +30,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		") and (stockID = '" + stockID + "') and (seasons <> '00') " + 
 		"or (year > " + year + ") and (stockID = '" + stockID + "') and (seasons <> '00') order by Year";
 		System.out.println("findDataBySeason: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return wrapperList;
 	}
 
@@ -75,7 +75,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		String sql = "select * from incomeStatement where seasons = '00' and year >= " + year +
 		" and stockID = '" + stockID + "' order by Year";
 		System.out.println("findDataByYear: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return wrapperList;
 	}
 
@@ -86,7 +86,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		String sql = "select * from incomeStatement where seasons = '00'" + 
 		" and stockID = '" + stockID + "' order by Year";
 		System.out.println("findDataByYear: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return wrapperList;
 	}
 
@@ -95,7 +95,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		String sql = "select * from incomeStatement where stockid = '" + incomeStatementEntity.getStockID() +
 		"' and year = '" + incomeStatementEntity.getYear() + "' and seasons = '" + incomeStatementEntity.getSeasons() + "'";
 		System.out.println(sql);
-		List <IncomeStatementEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		List <IncomeStatementEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		if (wrapperList.size() <= 0)
 		{
 			sql = "insert into incomeStatement(StockID, Year, Seasons, OperatingRevenue, OperatingCost, " + 
@@ -117,7 +117,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		String sql = "select top " + size + " * from incomeStatement where stockID = '" +
 		stockID + "' ORDER BY Year DESC, Seasons DESC";
 		//System.out.println("SQL: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return wrapperList;
 	}
 
@@ -126,7 +126,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 			String year, String seasons) {
 		// TODO Auto-generated method stub
 		String sql = "select * from incomeStatement where stockID = '" + stockID + "' and year = '" + year + "' and seasons = '" + seasons + "'";
-		IncomeStatementEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		IncomeStatementEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return entity;
 	}
 
@@ -140,7 +140,7 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		String sql = "select top " + size + " * from incomeStatement where stockID = '" +
 		stockID + "' and seasons = '00' order by YEAR desc";
 		//System.out.println("SQL: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return wrapperList;
 	}
 

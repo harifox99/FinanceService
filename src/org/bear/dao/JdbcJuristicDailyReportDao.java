@@ -8,9 +8,9 @@ import org.bear.entity.JuristicDailyEntity;
 import org.bear.entity.RetailInvestorsEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements JuristicDailyReportDao {
@@ -47,7 +47,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		List <JuristicDailyEntity> entityList = null;
 		String sql = "select top " + size + " * from JuristicDailyReport ORDER BY ExchangeDate desc";
 		//System.out.println("SQL: " + sql);
-		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
+		entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
 		return entityList;
 	}
 
@@ -56,7 +56,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		// TODO Auto-generated method stub
 		List <ThreeBigExchangeEntity> entityList = null;
 		String sql = "select top " + size + " * from ThreeBigExchange where stockID = ? ORDER BY ExchangeDate desc";
-		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID);
+		entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID);
 		return entityList;
 	}
 
@@ -69,7 +69,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 			String sql = "select * from ThreeBigExchange where exchangeDate = ? and rank <= " +
 			rank + " and rank > 0 ORDER BY rank";
 			System.out.println(sql);
-			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date);
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date);
 		}
 		catch (Exception ex)
 		{
@@ -86,7 +86,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		{			
 			String sql = "select * from ThreeBigExchange where exchangeDate = ? and stockID = ?";			
 			System.out.println(sql);
-			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date, stockID);
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date, stockID);
 		}
 		catch (Exception ex)
 		{
@@ -137,7 +137,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		List <RetailInvestorsEntity> entityList = null;
 		String sql = "select top " + size + " * from Retail_Mtx order by exchangeDate desc";
 		//System.out.println("SQL: " + sql);
-		entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(RetailInvestorsEntity.class));
+		entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(RetailInvestorsEntity.class));
 		Collections.reverse(entityList);
 		return entityList;
 	}
@@ -148,7 +148,7 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 	public JuristicDailyEntity findByDate(Date exchangeDate) 
 	{
 		String sql = "select * from JuristicDailyReport where exchangeDate = '" + exchangeDate + "'";
-		JuristicDailyEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
+		JuristicDailyEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
 		return entity;
 	}
 	/**
@@ -165,14 +165,14 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		// TODO Auto-generated method stub	
 		//TSMC一定會有交易資料，透過TSMC取得過去的交易日期
 		String sql = "select top (" + size + ")"  + " * from ThreeBigExchange where StockID = '2330' and exchanger = '外資' order by ExchangeDate desc";		
-		List<ThreeBigExchangeEntity> exchangeDateList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class));
+		List<ThreeBigExchangeEntity> exchangeDateList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class));
 		for (int i = 0; i < exchangeDateList.size(); i++)
 		{
 			try
 			{	
 				String dateString = dateFormat.format(exchangeDateList.get(i).getExchangeDate());
 				sql = "select * from ThreeBigExchange where stockID = ? and exchanger = ? and exchangeDate = ? ORDER BY ExchangeDate desc";
-				ThreeBigExchangeEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID, buyer, dateString);
+				ThreeBigExchangeEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), stockID, buyer, dateString);
 				entityList.add(entity);
 			}
 			catch (EmptyResultDataAccessException ex)

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bear.entity.BalanceSheetEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
@@ -65,7 +65,7 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 		") and (stockID = '" + stockID + "') and (seasons <> '00') " + 
 		"or (year > " + year + ") and (stockID = '" + stockID + "') and (seasons <> '00') order by Year";
 		System.out.println("findDataBySeason: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
 		return wrapperList;
 	}
 
@@ -76,7 +76,7 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 		String sql = "select * from BalanceSheet where seasons = '00' and year >= " + year +
 		" and stockID = '" + stockID + "' order by Year";
 		System.out.println("findDataByYear: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
 		return wrapperList;
 	}
 
@@ -86,7 +86,7 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 		String sql = "select * from BalanceSheet where seasons = '00'" + 
 		" and stockID = '" + stockID + "' order by Year";
 		System.out.println("findDataByYear: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
 		return wrapperList;
 	}
 
@@ -95,7 +95,7 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 		String sql = "select * from BalanceSheet where stockid = '" + balanceSheetEntity.getStockID() +
 		"' and year = '" + balanceSheetEntity.getYear() + "' and seasons = '" + balanceSheetEntity.getSeasons() + "'";
 		System.out.println(sql);
-		List <BalanceSheetEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
+		List <BalanceSheetEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
 		if (wrapperList.size() <= 0)
 		{
 			sql = "insert into BalanceSheet(StockID, Year, Seasons, Cash, ShortTermInvestment, " + 

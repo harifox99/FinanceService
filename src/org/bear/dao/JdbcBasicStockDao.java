@@ -3,9 +3,9 @@ package org.bear.dao;
 import java.util.ArrayList;
 import java.util.List;
 import org.bear.entity.BasicStockWrapper;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStockDao {
@@ -13,8 +13,15 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 	public List<BasicStockWrapper> findAllData() {
 		// TODO Auto-generated method stub
 		List <BasicStockWrapper> wrapperList = null;
-		String sql = "select * from StockData where enabled <> 0";
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
+		try
+		{
+			String sql = "select * from StockData where enabled <> 0";
+			wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		//Iterator <BasicStockWrapper> iterator = wrapperList.iterator();
 		return wrapperList;
 	}
@@ -36,7 +43,7 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		// TODO Auto-generated method stub
 		List <BasicStockWrapper> wrapperList = null;
 		String sql = "select * from StockData where enabled <> 0 and StockType <> 17 and stockBranch = '" + stockBranch + "'";
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
 		//Iterator <BasicStockWrapper> iterator = wrapperList.iterator();
 		return wrapperList;
 	}
@@ -55,7 +62,7 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		try
 		{
 			String sql = "select * from StockData where stockID = ?";
-			BasicStockWrapper entity = this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedBeanPropertyRowMapper.newInstance(BasicStockWrapper.class), stockID);
+			BasicStockWrapper entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(BasicStockWrapper.class), stockID);
 			return entity;
 		}
 		catch (Exception ex)

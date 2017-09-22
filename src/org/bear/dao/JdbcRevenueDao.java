@@ -11,9 +11,9 @@ import org.bear.entity.LongTermRevenueWrapper;
 import org.bear.entity.RevenueEntity;
 import org.bear.entity.RevenueIncreaseWrapper;
 import org.bear.util.StringUtil;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 
@@ -37,7 +37,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 			String sql = "select * from operatingRevenue where YearMonth >= '" + stringStart +
 			"' and YearMonth <= '" + stringEnd + "' and stockID = '" + stockID + "' order by YearMonth";
 			System.out.println("Sql Cmd:" + sql);
-			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 			Iterator <RevenueEntity> iterator = entityList.iterator();   
 			int loopIndex = -1;
 			List<Integer> listYearAccumu = new ArrayList<Integer>();
@@ -102,7 +102,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		"' and YearMonth <= '" + stringEnd + "'";
 		System.out.println("SQL: " + sql);
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
+				BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		return entityList;
 	}
 
@@ -130,7 +130,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		String sql = "select * from operatingRevenue where YearMonth >= '" + stringStart +
 		"' and YearMonth <= '" + stringEnd + "' and stockID = '" + stockID + "' order by YearMonth";
 		System.out.println("Sql Cmd:" + sql);
-		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
+		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		int revenueAvergae[] = new int[entityList.size()];
 		int threeAverage;
 		int twelveAverage;
@@ -182,7 +182,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		"' and (DATEPART(year, YearMonth) = '" + year + "') order by YearMonth";
 		//System.out.println("SQL: " + sql);
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
+				BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		return entityList;
 	}
 	/**
@@ -208,7 +208,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		stockID + "' order by yearMonth desc";
 		//System.out.println("SQL: " + sql);
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(RevenueEntity.class));
+				BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		return entityList;
 	}
 	public void update(String stockID, RevenueEntity entity)

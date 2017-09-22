@@ -3,9 +3,8 @@ package org.bear.dao;
 import java.util.List;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public class JdbcStockTypeDao extends SimpleJdbcDaoSupport implements StockTypeDao {
-	
-	@SuppressWarnings("unchecked")
+public class JdbcStockTypeDao extends SimpleJdbcDaoSupport implements StockTypeDao 
+{	
 	@Override
 	public List<Integer> findAllData() {
 		// TODO Auto-generated method stub

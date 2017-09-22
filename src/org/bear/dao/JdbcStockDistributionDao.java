@@ -2,9 +2,9 @@ package org.bear.dao;
 
 import java.util.List;
 import org.bear.entity.StockDistributionEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcStockDistributionDao extends SimpleJdbcDaoSupport implements StockDistributionDao {
@@ -33,7 +33,7 @@ public class JdbcStockDistributionDao extends SimpleJdbcDaoSupport implements St
 		String sql = "select top (" + duration + ") * from StockDistribution " +
 				"where stockID = '" + stockID + "' order by YearMonth desc"; 
 		List <StockDistributionEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(StockDistributionEntity.class));
+				BeanPropertyRowMapper.newInstance(StockDistributionEntity.class));
 		return entityList;
 	}
 

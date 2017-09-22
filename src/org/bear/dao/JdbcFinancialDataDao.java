@@ -6,9 +6,9 @@ package org.bear.dao;
 import java.util.ArrayList;
 import java.util.List;
 import org.bear.entity.FinancialDataEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
@@ -35,7 +35,7 @@ public class JdbcFinancialDataDao extends SimpleJdbcDaoSupport implements Financ
 		String sql = "select * from financialData where seasons = '00' and year >= " + year +
 		" and stockID = '" + stockID + "' order by Year";
 		System.out.println("findDataByYear: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(FinancialDataEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(FinancialDataEntity.class));
 		return wrapperList;
 	}
 
@@ -69,7 +69,7 @@ public class JdbcFinancialDataDao extends SimpleJdbcDaoSupport implements Financ
 		String sql = "select * from financialData where stockid = '" + financialEntity.getStockID() +
 		"' and year = '" + financialEntity.getYear() + "' and seasons = '" + financialEntity.getSeasons() + "'";
 		System.out.println(sql);
-		List <FinancialDataEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(FinancialDataEntity.class));
+		List <FinancialDataEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(FinancialDataEntity.class));
 		if (wrapperList.size() <= 0)
 		{
 			sql = "insert into financialData(StockID, Year, Seasons, NAV, CashDiv) " +

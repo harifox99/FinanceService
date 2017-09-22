@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.bear.entity.AmericanMacroEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcAmericanMacroDao extends SimpleJdbcDaoSupport implements
@@ -20,7 +20,7 @@ public class JdbcAmericanMacroDao extends SimpleJdbcDaoSupport implements
 		{
 			// TODO Auto-generated method stub
 			String sql = "select * from americanMacro";
-			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(AmericanMacroEntity.class));
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(AmericanMacroEntity.class));
 		}
 		catch (Exception ex)
 		{
@@ -39,7 +39,7 @@ public class JdbcAmericanMacroDao extends SimpleJdbcDaoSupport implements
 		"' and YearMonth <= '" + stringEnd + "'";
 		System.out.println("SQL: " + sql);
 		List <AmericanMacroEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(AmericanMacroEntity.class));
+				BeanPropertyRowMapper.newInstance(AmericanMacroEntity.class));
 		return entityList;
 	}
 

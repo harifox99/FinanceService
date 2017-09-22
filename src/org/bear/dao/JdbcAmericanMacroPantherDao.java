@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.bear.entity.AmericanMacroPantherEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
@@ -19,7 +19,7 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 		{
 			// TODO Auto-generated method stub
 			String sql = "select * from americanMacroPanther";
-			entityList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(AmericanMacroPantherEntity.class));
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(AmericanMacroPantherEntity.class));
 			for (int i = 0; i < entityList.size(); i++)
 			{
 				AmericanMacroPantherEntity element = entityList.get(i);
@@ -48,7 +48,7 @@ public class JdbcAmericanMacroPantherDao extends SimpleJdbcDaoSupport implements
 		"' and YearMonth <= '" + stringEnd + "'";
 		System.out.println("SQL: " + sql);
 		List <AmericanMacroPantherEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
-				ParameterizedBeanPropertyRowMapper.newInstance(AmericanMacroPantherEntity.class));
+				BeanPropertyRowMapper.newInstance(AmericanMacroPantherEntity.class));
 		for (int i = 0; i < entityList.size(); i++)
 		{
 			AmericanMacroPantherEntity element = entityList.get(i);

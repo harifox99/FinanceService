@@ -3,9 +3,9 @@ package org.bear.dao;
 import java.util.ArrayList;
 import java.util.List;
 import org.bear.entity.CashFlowsEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsDao {
@@ -18,7 +18,7 @@ public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsD
 		") and (stockID = '" + stockID + "') and (seasons <> '00') " + 
 		"or (year > " + year + ") and (stockID = '" + stockID + "') and (seasons <> '00') order by Year";
 		System.out.println("findDataBySeason: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
 		//Iterator <BasicStockWrapper> iterator = wrapperList.iterator();
 		return wrapperList;
 	}
@@ -53,7 +53,7 @@ public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsD
 		String sql = "select * from StatementOfCashFlow where seasons = '00' and year >= " + year +
 		" and stockID = '" + stockID + "' order by Year";
 		System.out.println("findDataByYear: " + sql);
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
 		return wrapperList;
 	}
 
@@ -62,7 +62,7 @@ public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsD
 		String sql = "select * from StatementOfCashFlow where stockid = '" + cashFlowsEntity.getStockID() +
 		"' and year = '" + cashFlowsEntity.getYear() + "' and seasons = '" + cashFlowsEntity.getSeasons() + "'";
 		System.out.println(sql);
-		List <CashFlowsEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
+		List <CashFlowsEntity> wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
 		if (wrapperList.size() <= 0)
 		{
 			sql = "insert into StatementOfCashFlow(StockID, Year, Seasons, IncomeSummary, OperatingActivity, " + 
@@ -85,7 +85,7 @@ public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsD
 		List <CashFlowsEntity> wrapperList = null;
 		String sql = "select top (" + num + ") * from StatementOfCashFlow where stockid = '" + 
 		stockID + "' and seasons <> '00' order by year desc, seasons desc";
-		wrapperList = this.getSimpleJdbcTemplate().query(sql, ParameterizedBeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(CashFlowsEntity.class));
 		return wrapperList;
 	}
 }
