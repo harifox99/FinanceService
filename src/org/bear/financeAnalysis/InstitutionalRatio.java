@@ -49,7 +49,8 @@ public class InstitutionalRatio
 	 * @return
 	 */
 	public List<InstitutionalEntity> getOrder(int days, int accumulation, 
-			int maxSize, String date, String buyer, String priceDate, double capital, double price)
+			int maxSize, String date, String buyer, String priceDate, 
+			double capital, double price, boolean isSmallCapital)
 	{
 		List<BasicStockWrapper> listStock = basicStockDao.findAllData();
 		//外資個股買賣超佔股本比
@@ -135,7 +136,7 @@ public class InstitutionalRatio
 	    	entity.setInfo(order);
 	    	listInstitutionalEntity.add(entity);
 	    }*/
-		listForeignerEntity = this.checkCapital(listForeignerEntity, capital);
+		listForeignerEntity = this.checkCapital(listForeignerEntity, capital, isSmallCapital);
 		this.getPrice(listForeignerEntity, priceDate);
 		listForeignerEntity = this.checkPrice(listForeignerEntity, price);
 		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
@@ -191,7 +192,8 @@ public class InstitutionalRatio
      * @param list
      * @param exceptedCapital
      */
-    private List<InstitutionalEntity> checkCapital(List<InstitutionalEntity> list, double exceptedCapital)
+    private List<InstitutionalEntity> checkCapital(List<InstitutionalEntity> list, 
+    		double exceptedCapital, boolean isSmallCapital)
     {
     	List<InstitutionalEntity> capitalList = new ArrayList <InstitutionalEntity>();
     	for (int i = 0; i < list.size(); i++)
@@ -199,8 +201,11 @@ public class InstitutionalRatio
     		String stockID = list.get(i).getStockID();
     		BasicStockWrapper basicEntity = basicStockDao.findBasicData(stockID);
     		double capital = basicEntity.getCapital();
-    		if (capital <= exceptedCapital)
+    		if (capital <= exceptedCapital && isSmallCapital)
     			capitalList.add(list.get(i));
+    		else if (isSmallCapital == false && capital > exceptedCapital)
+    			capitalList.add(list.get(i));
+    		
     	}
     	return capitalList;
     }
