@@ -45,7 +45,8 @@ public class InstitutionalRatio
 	 * @param buyer 外資/投信
 	 * @param priceDate 股價（日期）
 	 * @param capital 股本
-	 * @param capital 期望股價
+	 * @param price 期望股價
+	 * @param isSmallCapital 設定股本 > or < 某一個值
 	 * @return
 	 */
 	public List<InstitutionalEntity> getOrder(int days, int accumulation, 
