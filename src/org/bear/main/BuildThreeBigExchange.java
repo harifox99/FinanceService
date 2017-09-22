@@ -31,6 +31,11 @@ public class BuildThreeBigExchange {
 	public static void main(String[] args) 
 	{
 		String[] date = {"106/09/20"};
+		BuildThreeBigExchange trader = new BuildThreeBigExchange();
+		trader.update(date);
+	}
+	public void update(String[] date)
+	{
 		for (int i = 0; i < date.length; i++)
 		{
 			//把民國轉換成西元
