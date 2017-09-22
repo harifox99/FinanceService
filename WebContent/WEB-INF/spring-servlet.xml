@@ -12,6 +12,6 @@
 	<context:component-scan base-package="org.bear"/>		
 	<context:annotation-config />
 	<context:spring-configured />
-	
-	
+	<!-- <bean id="updateTradeData" class="org.bear.cron.CronStarter"/> -->
+	<import resource="cron-config.xml"/>
 </beans>
