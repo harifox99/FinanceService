@@ -1,6 +1,9 @@
 package org.bear.main;
+import java.util.List;
+
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
+import org.bear.entity.ThreeBigExchangeEntity;
 import org.bear.parser.TaifexLotParser;
 import org.bear.parser.TaifexMtxParser;
 import org.bear.parser.TpexThreeBigExchangeParser;
@@ -44,7 +47,7 @@ public class BuildThreeBigExchange {
 			//String westenYear = westenDate;
 			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
 			String url;		
-			BuildThreeBigExchange exchange = new BuildThreeBigExchange();				
+			BuildThreeBigExchange exchange = new BuildThreeBigExchange();
 			//上市，外資&投信
 			url = "http://www.tse.com.tw/fund/T86?response=html";
 			exchange.buildTwse(westenDate.replace("/", ""), 1, url);
@@ -82,6 +85,8 @@ public class BuildThreeBigExchange {
 			url = "http://www.taifex.com.tw/chinese/3/3_1_1.asp";
 			exchange.buildMtxOi(westenDate, url);
 			System.out.println(url);
+			//00632R
+			this.setT50R(westenDate);
 		}
 	}
 	/**
@@ -187,5 +192,12 @@ public class BuildThreeBigExchange {
 		getMtxTotalOi.setDate(date);
 		getMtxTotalOi.setUrl(url);
 		getMtxTotalOi.getContent();
+	}
+	//00632R
+	public void setT50R(String date)
+	{
+		List<ThreeBigExchangeEntity> list = juristicDailyReportDao.findStockBySize("00632R", 1, "外資");
+		ThreeBigExchangeEntity entity = list.get(0);
+		juristicDailyReportDao.update("JuristicDailyReport", "T50R", entity.getQuantity(), date.replace("/", "-"));
 	}
 }
