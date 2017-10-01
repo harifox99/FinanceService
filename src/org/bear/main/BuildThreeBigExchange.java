@@ -1,6 +1,4 @@
 package org.bear.main;
-import java.util.List;
-
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.entity.ThreeBigExchangeEntity;
@@ -33,7 +31,7 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args) 
 	{
-		String[] date = {"106/09/30"};
+		String[] date = {"106/09/04"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 	}
@@ -196,8 +194,7 @@ public class BuildThreeBigExchange {
 	//00632R
 	public void setT50R(String date)
 	{
-		List<ThreeBigExchangeEntity> list = juristicDailyReportDao.findStockBySize("00632R", 1, "外資");
-		ThreeBigExchangeEntity entity = list.get(0);
+		ThreeBigExchangeEntity entity = juristicDailyReportDao.findStockByDateAndBuyer("00632R", date.replace("/", "-"), "外資");
 		juristicDailyReportDao.update("JuristicDailyReport", "T50R", entity.getQuantity(), date.replace("/", "-"));
 	}
 }
