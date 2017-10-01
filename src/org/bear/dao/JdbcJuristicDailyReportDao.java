@@ -187,4 +187,15 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 		}
 		return entityList;
 	}
+
+	@Override
+	public ThreeBigExchangeEntity findStockByDateAndBuyer(
+			String stockID, String date, String buyer) 
+	{
+		ThreeBigExchangeEntity entity;		
+		String sql = "select * from ThreeBigExchange where exchangeDate = ? and stockID = ? and exchanger = ?";			
+		System.out.println(sql);
+		entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date, stockID, buyer);
+		return entity;
+	}
 }
