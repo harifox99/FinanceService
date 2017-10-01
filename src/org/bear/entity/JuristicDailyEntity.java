@@ -80,6 +80,10 @@ public class JuristicDailyEntity {
 	 * ¥~¸ê­É¨é
 	 */
 	int stockLending;
+	/**
+	 * T50R
+	 */
+	int t50r;
 	public Date getExchangeDate() {
 		return exchangeDate;
 	}
@@ -187,6 +191,11 @@ public class JuristicDailyEntity {
 	}
 	public void setStockLending(int stockLending) {
 		this.stockLending = stockLending;
-	}		
-	
+	}
+	public int getT50r() {
+		return t50r;
+	}
+	public void setT50r(int t50r) {
+		this.t50r = t50r;
+	}
 }
