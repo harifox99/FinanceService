@@ -60,6 +60,7 @@ public class JuristicAnalysis
 				report.setForeignerComment(this.foreignerComment(i));
 				report.setTopTenMonthDiff(this.topTenMonthDiff(entity));
 				report.setTopTenNextDiff(this.topTenNextDiff(entity));
+				report.setT50r(entity.getT50r());
 				//借券餘額如果增加，則顯示為正；反之顯示為負 (Flex要顯示色彩用)
 				if (entity.getStockLending() > list.get(i+1).getStockLending())
 					report.setStockLending(entity.getStockLending());
