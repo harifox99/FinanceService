@@ -1,7 +1,9 @@
 package org.bear.main;
+import java.util.HashMap;
+
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
-import org.bear.entity.ThreeBigExchangeEntity;
+import org.bear.parser.EtfParser;
 import org.bear.parser.TaifexLotParser;
 import org.bear.parser.TaifexMtxParser;
 import org.bear.parser.TpexThreeBigExchangeParser;
@@ -80,6 +82,9 @@ public class BuildThreeBigExchange {
 		         "106/11/01", "106/11/02", "106/11/03", 
 		         "106/11/06", "106/11/07", "106/11/08", "106/11/09", "106/11/10",
 		         "106/11/13", "106/11/14", "106/11/15", "106/11/16", "106/11/17",
+				 "106/11/20", "106/11/21", "106/11/22", "106/11/23", "106/11/24",
+				 "106/11/27", "106/11/28", "106/11/29", "106/11/30",
+				 "106/12/01", "106/12/04", "106/12/05", "106/12/06", "106/12/07", "106/12/08",
 		};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
@@ -93,7 +98,7 @@ public class BuildThreeBigExchange {
 			String westenDate = StringUtil.convertYear(dateArray[0]);
 			//String westenYear = westenDate;
 			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
-			String url;		
+			String url;
 			BuildThreeBigExchange exchange = new BuildThreeBigExchange();
 			//上市，外資&投信
 			url = "http://www.tse.com.tw/fund/T86?response=html";
@@ -133,7 +138,8 @@ public class BuildThreeBigExchange {
 			exchange.buildMtxOi(westenDate, url);
 			System.out.println(url);
 			//00632R
-			this.setT50R(westenDate);
+			url = "http://www.twse.com.tw/fund/MI_QFIIS?response=html&selectType=0099P&date=" + westenDate.replace("/", "");
+			this.setT50R(url, westenDate);
 			//Put Call Power
 			url = "http://www.taifex.com.tw/chinese/3/3_2_2.asp";
 			this.setPutCallPower(westenDate, url);
@@ -244,10 +250,20 @@ public class BuildThreeBigExchange {
 		getMtxTotalOi.getContent();
 	}
 	//00632R
-	public void setT50R(String date)
+	public void setT50R(String url, String date)
 	{
-		ThreeBigExchangeEntity entity = juristicDailyReportDao.findStockByDateAndBuyer("00632R", date.replace("/", "-"), "外資");
-		juristicDailyReportDao.update("JuristicDailyReport", "T50R", entity.getQuantity(), date.replace("/", "-"));
+		HashMap<String, Boolean> stockNo = new HashMap<String, Boolean>();
+		stockNo.put("00632R", true);
+		HashMap<Integer, Boolean> stockColumn = new HashMap<Integer, Boolean>();
+		stockColumn.put(5, true);
+		EtfParser parser = new EtfParser();
+		parser.setDao(juristicDailyReportDao);
+		parser.setUrl(url);
+		parser.setDate(date);
+		parser.setStockColumn(stockColumn);
+		parser.setStockNo(stockNo);
+		parser.getConnection();
+		parser.parseHttpGet(0);
 	}
 	//Put Call Power
 	public void setPutCallPower(String date, String url)
