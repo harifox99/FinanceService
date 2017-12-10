@@ -144,7 +144,7 @@ public class InstitutionalRatio
 		this.getPrice(listForeignerEntity, priceDate);
 		listForeignerEntity = this.priceFilter(listForeignerEntity, compareDate, priceRate);
 		listForeignerEntity = this.checkPrice(listForeignerEntity, price);
-		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
+		this.consecutiveExchange(listForeignerEntity, days, buyer, maxSize);	
 		this.majorHolder(listForeignerEntity, maxSize, date);	
 		return listForeignerEntity;
 	}
@@ -407,31 +407,41 @@ public class InstitutionalRatio
     		String compareDate, int priceRate)
     {
     	List<InstitutionalEntity> filterList = new ArrayList<InstitutionalEntity>();
-    	//計算某個日子股價 (上市)
-    	String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
-    	TwsePriceParser twseParser = new TwsePriceParser();
-    	twseParser.setUrl(url + compareDate.replace("/", ""));
-    	twseParser.getConnection();
-    	twseParser.parse(4);
-		HashMap<String, Double> previousPrice = twseParser.getHashPrice();
-		//計算某個日子股價 (上櫃)
-		TpexPriceParser tpexParser = new TpexPriceParser();
-		String year = compareDate.substring(0, 4);
-		url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
-		compareDate = StringUtil.convertChineseYear(year) + "/" + compareDate.substring(4, 6) + "/" + compareDate.substring(6, 8);
-		tpexParser.setUrl(url + compareDate);
-		tpexParser.getConnection();
-		tpexParser.parse(0);
-		previousPrice.putAll(tpexParser.getHashPrice());	
-		for (int i = 0; i < list.size(); i++)
-		{
-			String stockId = list.get(i).getStockID();
-			double rate = (double)list.get(i).getPrice()/previousPrice.get(stockId) * 100 - 100;
-			if (rate < priceRate)
+    	try
+    	{	    	
+	    	//計算某個日子股價 (上市)
+	    	String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
+	    	TwsePriceParser twseParser = new TwsePriceParser();
+	    	twseParser.setUrl(url + compareDate.replace("/", ""));
+	    	twseParser.getConnection();
+	    	twseParser.parse(4);
+			HashMap<String, Double> previousPrice = twseParser.getHashPrice();
+			//計算某個日子股價 (上櫃)
+			TpexPriceParser tpexParser = new TpexPriceParser();
+			String year = compareDate.substring(0, 4);
+			url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+			compareDate = StringUtil.convertChineseYear(year) + "/" + compareDate.substring(4, 6) + "/" + compareDate.substring(6, 8);
+			tpexParser.setUrl(url + compareDate);
+			tpexParser.getConnection();
+			tpexParser.parse(0);
+			previousPrice.putAll(tpexParser.getHashPrice());	
+			for (int i = 0; i < list.size(); i++)
 			{
-				filterList.add(list.get(i));
+				String stockId = list.get(i).getStockID();
+				System.out.println("stockId: " + stockId);
+				if (previousPrice.get(stockId) == null)
+					continue;
+				double rate = (double)list.get(i).getPrice()/previousPrice.get(stockId) * 100 - 100;
+				if (rate < priceRate)
+				{
+					filterList.add(list.get(i));
+				}
 			}
-		}
+    	}
+    	catch (Exception ex)
+    	{
+    		ex.printStackTrace();
+    	}
 		return filterList;
     }
 }
