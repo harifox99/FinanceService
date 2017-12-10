@@ -385,10 +385,12 @@ public class JuristicAnalysis
 	 * @return
 	 */
 	public List<InstitutionalEntity> getOrder(int days, int accumulation, 
-			int maxSize, String date, String buyer, String priceDate, double capital, double price, boolean isSmallCapital)
+			int maxSize, String date, String buyer, String priceDate, double capital, double price, 
+			boolean isSmallCapital, int priceRate, String compareDate)
 	{
 		InstitutionalRatio ratio = new InstitutionalRatio();
-		return ratio.getOrder(days, accumulation, maxSize, date, buyer, priceDate, capital, price, isSmallCapital);		
+		return ratio.getOrder(days, accumulation, maxSize, date, buyer, priceDate, capital, price, 
+				isSmallCapital, priceRate, compareDate);		
 	}	
 	
 	public static void main(String args[])

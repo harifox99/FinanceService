@@ -47,11 +47,14 @@ public class InstitutionalRatio
 	 * @param capital 股本
 	 * @param price 期望股價
 	 * @param isSmallCapital 設定股本 > or < 某一個值
+	 * @param priceRate 漲幅比例
+	 * @param compareDate 某個時間股價 (比較用)
 	 * @return
 	 */
 	public List<InstitutionalEntity> getOrder(int days, int accumulation, 
 			int maxSize, String date, String buyer, String priceDate, 
-			double capital, double price, boolean isSmallCapital)
+			double capital, double price, boolean isSmallCapital,
+			int priceRate, String compareDate)
 	{
 		List<BasicStockWrapper> listStock = basicStockDao.findAllData();
 		//外資個股買賣超佔股本比
@@ -139,6 +142,7 @@ public class InstitutionalRatio
 	    }*/
 		listForeignerEntity = this.checkCapital(listForeignerEntity, capital, isSmallCapital);
 		this.getPrice(listForeignerEntity, priceDate);
+		listForeignerEntity = this.priceFilter(listForeignerEntity, compareDate, priceRate);
 		listForeignerEntity = this.checkPrice(listForeignerEntity, price);
 		this.consecutiveExchange(listForeignerEntity, days, "外資", maxSize);	
 		this.majorHolder(listForeignerEntity, maxSize, date);	
@@ -391,6 +395,44 @@ public class InstitutionalRatio
 				entity.setPrice(0);
 			}
 		}
+    }
+    /**
+     * 可以用漲幅過濾機構投資人篩選結果
+     * @param list
+     * @param compareDate
+     * @param priceRate
+     * @return
+     */
+    private List<InstitutionalEntity> priceFilter(List<InstitutionalEntity> list, 
+    		String compareDate, int priceRate)
+    {
+    	List<InstitutionalEntity> filterList = new ArrayList<InstitutionalEntity>();
+    	//計算某個日子股價 (上市)
+    	String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
+    	TwsePriceParser twseParser = new TwsePriceParser();
+    	twseParser.setUrl(url + compareDate.replace("/", ""));
+    	twseParser.getConnection();
+    	twseParser.parse(4);
+		HashMap<String, Double> previousPrice = twseParser.getHashPrice();
+		//計算某個日子股價 (上櫃)
+		TpexPriceParser tpexParser = new TpexPriceParser();
+		String year = compareDate.substring(0, 4);
+		url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+		compareDate = StringUtil.convertChineseYear(year) + "/" + compareDate.substring(4, 6) + "/" + compareDate.substring(6, 8);
+		tpexParser.setUrl(url + compareDate);
+		tpexParser.getConnection();
+		tpexParser.parse(0);
+		previousPrice.putAll(tpexParser.getHashPrice());	
+		for (int i = 0; i < list.size(); i++)
+		{
+			String stockId = list.get(i).getStockID();
+			double rate = (double)list.get(i).getPrice()/previousPrice.get(stockId) * 100 - 100;
+			if (rate < priceRate)
+			{
+				filterList.add(list.get(i));
+			}
+		}
+		return filterList;
     }
 }
 class ValueComparator implements Comparator<String> 
