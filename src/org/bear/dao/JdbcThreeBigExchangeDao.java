@@ -34,9 +34,10 @@ public class JdbcThreeBigExchangeDao extends SimpleJdbcDaoSupport implements Thr
 	}
 
 	@Override
-	public List<ThreeBigExchangeEntity> latest() {
-		// TODO Auto-generated method stub
-		return null;
+	public void update(String date, String stockID, int rank, String buyer) {
+		String sql = "update ThreeBigExchange set rank = '" + rank +
+		"' where stockID = '" + stockID + "' and exchangeDate = '" + date + "' and" + 
+		" exchanger = '" + buyer + "'";
+		this.getSimpleJdbcTemplate().update(sql);
 	}
-
 }
