@@ -47,6 +47,10 @@ public class InstitutionalEntity {
 	 * 收盤價
 	 */
 	double price;
+	/**
+	 * 排名
+	 */
+	int rank;
 	public String getStockID() {
 		return stockID;
 	}
@@ -106,5 +110,11 @@ public class InstitutionalEntity {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
 	}	
 }
