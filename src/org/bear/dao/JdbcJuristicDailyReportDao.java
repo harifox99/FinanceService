@@ -192,10 +192,37 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 	public ThreeBigExchangeEntity findStockByDateAndBuyer(
 			String stockID, String date, String buyer) 
 	{
-		ThreeBigExchangeEntity entity;		
-		String sql = "select * from ThreeBigExchange where exchangeDate = ? and stockID = ? and exchanger = ?";			
-		System.out.println(sql);
-		entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date, stockID, buyer);
-		return entity;
+		try
+		{
+			ThreeBigExchangeEntity entity;		
+			String sql = "select * from ThreeBigExchange where exchangeDate = ? and stockID = ? and exchanger = ?";			
+			System.out.println(sql);
+			entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), date, stockID, buyer);
+			return entity;
+		}
+		catch (Exception ex)
+		{
+			//ex.printStackTrace();
+			return null;
+		}
+	}
+	/**
+	 * 將買賣超資料+排名
+	 */
+	public void updateRank(String buyer, String exchangeDate)
+	{
+		String sql = "select * from ThreeBigExchange" +
+        " where (Exchanger = ?) AND (ExchangeDate = ?)" +
+        " order by Quantity desc";		
+		List<ThreeBigExchangeEntity> exchangeDateList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(ThreeBigExchangeEntity.class), buyer, exchangeDate);
+		int rank = 1;
+		for (int i = 0; i < exchangeDateList.size(); i++)
+		{
+			ThreeBigExchangeEntity entity = exchangeDateList.get(i);
+			sql = "update ThreeBigExchange set rank = '" + rank++ +
+			"' where stockID = '" + entity.getStockID() + "' and exchangeDate = '" + entity.getExchangeDate() + "' and" + 
+			" exchanger = '" + entity.getExchanger() + "'";
+			this.getSimpleJdbcTemplate().update(sql);
+		}
 	}
 }

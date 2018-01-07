@@ -25,4 +25,5 @@ public interface JuristicDailyReportDao {
 	public void insert(RetailInvestorsEntity entity);
 	public int update(String tableName, String indexName, int indexValue, String date);
 	public List<RetailInvestorsEntity> findRetailInvestors(int size);
+	public void updateRank(String buyer, String exchangeDate);
 }
