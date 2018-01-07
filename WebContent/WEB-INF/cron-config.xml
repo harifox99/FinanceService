@@ -20,7 +20,7 @@
 	
 	<bean id="tradeDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	 	<property name="jobDetail" ref="updateTradeData" />
-	 	<property name="cronExpression" value="0 0 21 ? * MON-FRI"/>
+	 	<property name="cronExpression" value="0 30 21 ? * MON-FRI"/>
 	</bean>
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
