@@ -99,7 +99,7 @@ public class TwseThreeBigExchangeParser extends EasyParserBase
 						dao.insert(foreigner);
 						twoBigQuantity = quantity/1000;
 					}
-					else if (j == 7)//投信買賣超
+					else if (j == 10)//投信買賣超
 					{
 						//股數->張數
 						int quantity = Integer.parseInt(content);
