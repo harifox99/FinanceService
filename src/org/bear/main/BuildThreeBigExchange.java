@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.parser.EtfParser;
+import org.bear.parser.RankingParser;
 import org.bear.parser.TaifexLotParser;
 import org.bear.parser.TaifexMtxParser;
 import org.bear.parser.TpexThreeBigExchangeParser;
@@ -32,7 +33,7 @@ public class BuildThreeBigExchange {
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	ThreeBigExchangeDao threeBigExchangeDao = (ThreeBigExchangeDao)context.getBean("threeBigExchangeDao");
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
 		/*
 		String[] date = {"106/02/03", "106/02/03",
@@ -70,6 +71,7 @@ public class BuildThreeBigExchange {
                 "106/08/21", "106/08/22", "106/08/23", "106/08/24", "106/08/25",
                 "106/08/28", "106/08/29", "106/08/30", "106/08/31"
                 };*/
+		/*
 		String[] date = {"106/09/01", "106/09/04", "106/09/05", "106/09/06", "106/09/07", "106/09/08",
 		         "106/09/11", "106/09/12", "106/09/13", "106/09/14", "106/09/15",
 		         "106/09/18", "106/09/19", "106/09/20", "106/09/21", "106/09/22",
@@ -84,10 +86,24 @@ public class BuildThreeBigExchange {
 		         "106/11/13", "106/11/14", "106/11/15", "106/11/16", "106/11/17",
 				 "106/11/20", "106/11/21", "106/11/22", "106/11/23", "106/11/24",
 				 "106/11/27", "106/11/28", "106/11/29", "106/11/30",
-				 "106/12/01", "106/12/04", "106/12/05", "106/12/06", "106/12/07", "106/12/08",
-		};
+				 "106/12/01", "106/12/04", "106/12/05", "106/12/06", "106/12/07", "106/12/08",				 
+		};*/
+		/*
+ 		String[] date = {"106/11/01", "106/11/02", "106/11/03", 
+		                 "106/11/06", "106/11/07", "106/11/08", "106/11/09", "106/11/10",
+		                 "106/11/13", "106/11/14", "106/11/15", "106/11/16", "106/11/17",
+				         "106/11/20", "106/11/21", "106/11/22", "106/11/23", "106/11/24",
+				         "106/11/27", "106/11/28", "106/11/29", "106/11/30",
+				         "106/12/01", "106/12/04", "106/12/05", "106/12/06", "106/12/07", "106/12/08",
+				         "106/12/11", "106/12/12", "106/12/13", "106/12/14", "106/12/15",
+				         "106/12/18", "106/12/19", "106/12/20", "106/12/21", "106/12/22",
+				         "106/12/25", "106/12/26", "106/12/27", "106/12/28", "106/12/29",
+				         "107/01/02", "107/01/03", "107/01/04", "107/01/05"
+				         };*/
+		String[] date = {"107/01/05"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
+		
 	}
 	public void update(String[] date)
 	{
@@ -100,7 +116,7 @@ public class BuildThreeBigExchange {
 			westenDate = westenDate + "/" + dateArray[1] + "/" + dateArray[2];
 			String url;
 			BuildThreeBigExchange exchange = new BuildThreeBigExchange();
-			//上市，外資&投信
+			//上市，外資&投信			
 			url = "http://www.tse.com.tw/fund/T86?response=html";
 			exchange.buildTwse(westenDate.replace("/", ""), 1, url);
 			//上櫃，外資&投信
@@ -143,6 +159,26 @@ public class BuildThreeBigExchange {
 			//Put Call Power
 			url = "http://www.taifex.com.tw/chinese/3/3_2_2.asp";
 			this.setPutCallPower(westenDate, url);
+			/*			
+			//證交所投信買超排名
+			url = "http://www.twse.com.tw/fund/TWT44U?response=html&date=";
+			this.getRank(westenDate.replace("/", ""), url, "投信", westenDate);
+			//證交所外資買超排名
+			url = "http://www.twse.com.tw/fund/TWT38U?response=html&date=";
+			this.getRank(westenDate.replace("/", ""), url, "外資", westenDate);
+			//櫃買投信買超排名
+			url = "http://www.tpex.org.tw/web/stock/3insti/sitc_trading/sitctr_print.php?l=zh-tw&t=D&type=buy&d=";
+			this.getRank(date[i], url, "投信", westenDate);
+			//櫃買外資買超排名
+			url = "http://www.tpex.org.tw/web/stock/3insti/qfii_trading/forgtr_print.php?l=zh-tw&t=D&type=buy&d=";
+			this.getRank(date[i], url, "外資", westenDate);
+			/* 兩大排名, 20180107
+			 * 根本不用去網頁擷取排名，資料庫都有資料，用order by就好，我他媽在耍什麼白癡 
+			 */
+			juristicDailyReportDao.updateRank("兩大", westenDate.replace("/", ""));
+			juristicDailyReportDao.updateRank("外資", westenDate.replace("/", ""));
+			juristicDailyReportDao.updateRank("投信", westenDate.replace("/", ""));
+			System.out.println(westenDate + " End!");
 		}
 	}
 	/**
@@ -273,5 +309,16 @@ public class BuildThreeBigExchange {
 		power.setDate(date);
 		power.setUrl(url);
 		power.getContent();
+	}
+	public void getRank(String date, String url, String buyer, String sqlDate)
+	{
+		RankingParser parser = new RankingParser();
+		parser.setThreeBigExchangeDao(threeBigExchangeDao);
+		parser.setUrl(url + date);
+		parser.setDate(date);
+		parser.setBuyer(buyer);
+		parser.setSqlDate(sqlDate);
+		parser.getConnection();		
+		parser.parseHttpGet(0);
 	}
 }
