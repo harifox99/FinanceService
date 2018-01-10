@@ -57,5 +57,6 @@ public class CapitalParser extends EasyParserBase
 		CapitalParser parser = new CapitalParser();
 		parser.getConnection();
 		parser.parse(0);
+		System.out.println("Update Captital Successfully!");
 	}
 }
