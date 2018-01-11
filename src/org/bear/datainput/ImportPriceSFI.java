@@ -1,5 +1,6 @@
 package org.bear.datainput;
 
+import java.util.*;
 import org.bear.util.newRevenue.GetHinetStockPrice;
 import org.bear.util.newRevenue.GetMopsRevenue;
 import org.bear.util.newRevenue.GetSFIGrateiRevenue;
@@ -16,19 +17,16 @@ public class ImportPriceSFI extends ImportStockID
 		{		
 			int sleepTime = 1000;
 			int idleTime = 0;
-			/*
-			String[] stockid = {"1598","1776","2069","2236","2239","2633","2739","2748",
-                                "3321","3346","3413","3708","4190","4438","4545",
-                                "4551","4552","4555","4557","4763","4943","4968","5258",
-                                "6442","6443","6451","6452","6456","6464","6477","6525","6531",
-                                "8222","8341","8442","8463","8464","8466","8467","8473","8488"};
-            */
+			List<String> stockList = new ArrayList<String>();
+			String[] stockArray = {"5491", "6138", "6139", "6285", "6287", "8349"};
+			for (int k = 0; k < stockArray.length; k++)
+				stockList.add(stockArray[k]);
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				String stockID = wrapperList.get(j).getStockID();
 				String stockName = wrapperList.get(j).getStockName();
 				/*
-				if (!stockID.equals("8934"))
+				if (stockList.contains(stockID) == false)
 				{
 					continue;
 				}*/
