@@ -3,9 +3,11 @@ package org.bear.financeAnalysis;
 import java.util.*;
 
 import org.bear.dao.BasicStockDao;
+import org.bear.dao.IncomeStatementDao;
 import org.bear.dao.JdbcRevenueDao;
 import org.bear.dao.StockDistributionDao;
 import org.bear.entity.BasicStockWrapper;
+import org.bear.entity.IncomeStatementEntity;
 import org.bear.entity.RedRabbitStockWrapper;
 import org.bear.entity.RedRabbitWrapper;
 import org.bear.entity.RevenueEntity;
@@ -19,10 +21,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class RedRabbitRevenueAnalysis 
 {
 	BasicStockDao basicStockDao;
+	IncomeStatementDao incomeStatementDao;
+	JdbcRevenueDao jdbcRevenueDao;
 	final int oneYear = 12;
 	final int sixYear = 72+1;
 	final int threeMonth = 3;
-	JdbcRevenueDao jdbcRevenueDao;
 	//紅兔指標至少要14個月才能計算
 	final int minMonth = 14;
 	public List<RedRabbitWrapper> getRedRabbit()
@@ -345,6 +348,7 @@ public class RedRabbitRevenueAnalysis
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 		jdbcRevenueDao = (JdbcRevenueDao)context.getBean("revenueDao");
+		incomeStatementDao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
 		List<RedRabbitStockWrapper> wrapperList = new ArrayList<RedRabbitStockWrapper>();
 		//原始資料
@@ -363,6 +367,12 @@ public class RedRabbitRevenueAnalysis
 				{
 					String stockID = conditionalList.get(i).getStockID();
 					List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
+					//最新一季營業利益
+					List<IncomeStatementEntity> operatingIncomeList = incomeStatementDao.findDataByLatest(1, stockID);
+					int operatingIncome = operatingIncomeList.get(0).getOperatingIncome();
+					//過濾最新一季營業利益 < 0
+					if (operatingIncome < 0)
+						continue;
 					//實際成長的月份數
 					int growMonth = 0;									
 					for (int j = 0; j < totalMonth; j++)
