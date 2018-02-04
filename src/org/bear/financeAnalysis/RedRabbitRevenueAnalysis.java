@@ -371,7 +371,7 @@ public class RedRabbitRevenueAnalysis
 					List<IncomeStatementEntity> operatingIncomeList = incomeStatementDao.findDataByLatest(1, stockID);
 					int operatingIncome = operatingIncomeList.get(0).getOperatingIncome();
 					//過濾最新一季營業利益 < 0
-					if (operatingIncome <= 0)
+					if (operatingIncome < 0)
 						continue;
 					//實際成長的月份數
 					int growMonth = 0;									
