@@ -27,10 +27,10 @@ public class BuffettAnalysis
 	final int arraySize = 6;
 	public BuffettAnalysisWrapper getBuffettAnalysis(String stockID)
 	{
-		BuffettAnalysisWrapper wrapper = this.getBuffettAnalysis(stockID, 8, 2008);
+		BuffettAnalysisWrapper wrapper = this.getBuffettData(stockID, 8, 2008);
 		return wrapper;
 	}
-	public BuffettAnalysisWrapper getBuffettAnalysis(String stockID, int totalYear, int year)
+	public BuffettAnalysisWrapper getBuffettData(String stockID, int totalYear, int year)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		FinancialDataDao dao = (FinancialDataDao)context.getBean("basicFinancialDataDao");

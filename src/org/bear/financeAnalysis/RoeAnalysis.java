@@ -123,7 +123,7 @@ public class RoeAnalysis
 		for (int i = 0; i < stockList.size(); i++)
 		{
 			//System.out.println("StockID: " + stockList.get(i).getStockID());
-			BuffettAnalysisWrapper wrapper = buffettAnalysis.getBuffettAnalysis(stockList.get(i).getStockID(), totalYear, initYear);		
+			BuffettAnalysisWrapper wrapper = buffettAnalysis.getBuffettData(stockList.get(i).getStockID(), totalYear, initYear);		
 			double expectedPrice = buffettAnalysis.expectedRate(expectedRate, wrapper.getReasonablePrice());
 			expectedPrice = StringUtil.setPointLength(expectedPrice);
 			if (wrapper.getPrice() < expectedPrice)
