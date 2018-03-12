@@ -1,6 +1,4 @@
 package org.bear.datainput;
-
-import java.util.*;
 import org.bear.util.newRevenue.GetHinetStockPrice;
 import org.bear.util.newRevenue.GetMopsRevenue;
 import org.bear.util.newRevenue.GetSFIGrateiRevenue;
@@ -17,10 +15,15 @@ public class ImportPriceSFI extends ImportStockID
 		{		
 			int sleepTime = 1000;
 			int idleTime = 0;
+			/*
+			String readData;
 			List<String> stockList = new ArrayList<String>();
-			String[] stockArray = {"5491", "6138", "6139", "6285", "6287", "8349"};
-			for (int k = 0; k < stockArray.length; k++)
-				stockList.add(stockArray[k]);
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/aluba0504/Desktop/stock.csv"));
+			while((readData = reader.readLine()) != null)
+			{
+				stockList.add(readData);
+			}
+			reader.close();*/
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				String stockID = wrapperList.get(j).getStockID();
@@ -31,7 +34,6 @@ public class ImportPriceSFI extends ImportStockID
 					continue;
 				}*/
 				System.out.print(j);
-
 				int stockBranch = wrapperList.get(j).getStockBranch();
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");	
 				idleTime++;
