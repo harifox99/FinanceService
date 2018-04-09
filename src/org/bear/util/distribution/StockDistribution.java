@@ -36,12 +36,14 @@ public class StockDistribution
 		parser.setStockID(stockID);
 		parser.setCurrentMonth(isCurrentMonth);
 		parser.setDateString(startYear + startMonth);
-		String url = "http://www.tdcc.com.tw/smWeb/QryStock.jsp";
+		String url = "http://www.tdcc.com.tw/smWeb/QryStockAjax.do";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		paramList.add(new BasicNameValuePair("SCA_DATE", startYear + startMonth));
+		paramList.add(new BasicNameValuePair("scaDate", startYear + startMonth));
+		paramList.add(new BasicNameValuePair("scaDates", startYear + startMonth));
 		paramList.add(new BasicNameValuePair("SqlMethod", "StockNo"));
 		paramList.add(new BasicNameValuePair("StockNo", stockID));
-		paramList.add(new BasicNameValuePair("sub", "¬d¸ß"));
+		paramList.add(new BasicNameValuePair("REQ_OPR", "SELECT"));
+		paramList.add(new BasicNameValuePair("clkStockNo", stockID));
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
 		//System.out.println(responseString);
 		parser.setResponseString(responseString);
