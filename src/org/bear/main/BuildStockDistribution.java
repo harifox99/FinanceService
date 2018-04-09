@@ -15,7 +15,7 @@ public class BuildStockDistribution extends ImportStockID
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
-		String[] dateString = {"20180302"};
+		String[] dateString = {"20180331"};
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
@@ -25,7 +25,7 @@ public class BuildStockDistribution extends ImportStockID
 				System.out.println("StockID: " + wrapperList.get(j).getStockID() + ", " + j);
 				StockDistribution stockDistribution = new StockDistribution();
 				stockDistribution.setDao(stockDistributionDao);
-				stockDistribution.setCurrentMonth(false);
+				stockDistribution.setCurrentMonth(true);
 				stockDistribution.getContent(wrapperList.get(j).getStockID(), 
 				dateString[i].substring(0, 4), dateString[i].substring(4, 8), null, null);
 			}
