@@ -255,12 +255,15 @@ public class InstitutionalRatio
     	for (int i = 0; i < maxSize; i++)
     	{
     		InstitutionalEntity entity = list.get(i);
-    		String url = "http://www.tdcc.com.tw/smWeb/QryStock.jsp";
+    		String url = "http://www.tdcc.com.tw/smWeb/QryStockAjax.do";
     		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-    		paramList.add(new BasicNameValuePair("SCA_DATE", dateString));
+    		paramList.add(new BasicNameValuePair("scaDate", dateString));
+    		paramList.add(new BasicNameValuePair("scaDates", dateString));
     		paramList.add(new BasicNameValuePair("SqlMethod", "StockNo"));
     		paramList.add(new BasicNameValuePair("StockNo", list.get(i).getStockID()));
-    		paramList.add(new BasicNameValuePair("sub", "查詢"));
+    		paramList.add(new BasicNameValuePair("REQ_OPR", "SELECT"));
+    		paramList.add(new BasicNameValuePair("clkStockNo", list.get(i).getStockID()));
+    		paramList.add(new BasicNameValuePair("radioStockNo", list.get(i).getStockID()));		
     		boolean isSuccessful = false;
     		//集保填錯日期就GG了，所以要設Counter
     		int count = 15;
@@ -274,7 +277,7 @@ public class InstitutionalRatio
 	    		{
 	    			String responseString = HttpUtil.send(url, paramList, 1, "big5");
 	    			Document doc = Jsoup.parse(responseString);
-	    			Element table = doc.select("table").get(7);
+	    			Element table = doc.select("table").get(8);
 		    		Elements tr = table.select("tr");
 		    		//400-600, 600-800, 800-1000, 1000+ (共4份資料)
 		    		for (int j = startTrIndex; j < startTrIndex + 4; j++)
