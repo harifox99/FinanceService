@@ -44,9 +44,10 @@ public class StockDistribution
 		paramList.add(new BasicNameValuePair("StockNo", stockID));
 		paramList.add(new BasicNameValuePair("REQ_OPR", "SELECT"));
 		paramList.add(new BasicNameValuePair("clkStockNo", stockID));
+		paramList.add(new BasicNameValuePair("radioStockNo", stockID));
 		String responseString = HttpUtil.send(url, paramList, 1, "big5");
 		//System.out.println(responseString);
 		parser.setResponseString(responseString);
-		parser.parse(7);	
+		parser.parse(8);	
 	}
 }
