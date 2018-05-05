@@ -51,6 +51,14 @@ public class InstitutionalEntity {
 	 * 排名
 	 */
 	int rank;
+	/**
+	 * 外資持股比率
+	 */
+	double foreignerRatio;
+	/**
+	 * 投信持股比例
+	 */
+	double mutualFund;
 	public String getStockID() {
 		return stockID;
 	}
@@ -116,5 +124,17 @@ public class InstitutionalEntity {
 	}
 	public void setRank(int rank) {
 		this.rank = rank;
-	}	
+	}
+	public double getForeignerRatio() {
+		return foreignerRatio;
+	}
+	public void setForeignerRatio(double foreignerRatio) {
+		this.foreignerRatio = foreignerRatio;
+	}
+	public double getMutualFund() {
+		return mutualFund;
+	}
+	public void setMutualFund(double mutualFund) {
+		this.mutualFund = mutualFund;
+	}
 }
