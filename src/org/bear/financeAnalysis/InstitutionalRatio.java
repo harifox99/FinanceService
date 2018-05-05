@@ -1,7 +1,6 @@
 package org.bear.financeAnalysis;
-
+import java.net.URL;
 import java.util.*;
-
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -77,7 +76,7 @@ public class InstitutionalRatio
 		}		
 		Iterator<String> it;
 		//外資排序
-		List<InstitutionalEntity> listForeignerEntity = new ArrayList<InstitutionalEntity>();		
+		List<InstitutionalEntity> listForeignerEntity = new ArrayList<InstitutionalEntity>();
 		sortedForeigner.putAll(mapForeigner);
 		it = sortedForeigner.keySet().iterator();
 		while (it.hasNext()) 
@@ -101,10 +100,12 @@ public class InstitutionalRatio
 		listForeignerEntity = this.checkPrice(listForeignerEntity, price);
 		this.consecutiveExchange(listForeignerEntity, days, buyer, maxSize);	
 		this.majorHolder(listForeignerEntity, maxSize, date);	
+		this.ShareholdingRatio(listForeignerEntity, maxSize, date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8));
 		return listForeignerEntity;
 	}
     public static void main(String[] args) 
-    {	    	    
+    {	    	  
+    	/*
 	    HashMap<String, Double> map = new HashMap<String, Double>();
         ValueComparator bvc = new ValueComparator(map);
         TreeMap<String, Double> sorted_map = new TreeMap<String, Double>(bvc);
@@ -115,7 +116,10 @@ public class InstitutionalRatio
 	    map.put("ab", 0.44);
         System.out.println("unsorted map: " + map);
         sorted_map.putAll(map);
-        System.out.println("results: " + sorted_map);	    	    
+        System.out.println("results: " + sorted_map);*/       
+        InstitutionalRatio ratio = new InstitutionalRatio();
+    	List<InstitutionalEntity> listForeignerEntity = new ArrayList<InstitutionalEntity>();
+    	ratio.ShareholdingRatio(listForeignerEntity, 1, "2018-05-04");
     }
     /**
      * 計算不同天數 (累積資料)的投信買賣超佔股本比或是外資買賣超佔股本比
@@ -401,6 +405,50 @@ public class InstitutionalRatio
     		ex.printStackTrace();
     	}
 		return filterList;
+    }
+    /**
+     * 計算外資、投信持股
+     * @param list
+     */
+    public void ShareholdingRatio(List<InstitutionalEntity> list, int maxSize, String date)
+    {
+        String urlHeader = "http://moneydj.emega.com.tw/z/zc/zcl/zcl.djhtm?a=";
+        try
+        {
+	    	for (int i = 0; i < maxSize; i++)
+	    	{
+	    		InstitutionalEntity entity = list.get(i);
+	    		String urlString = urlHeader + entity.getStockID() + "&c=" + date + "&d=" + date;
+	    		URL url = new URL(urlString);//在這邊輸入你要解析的網頁網址 
+		        Document xmlDoc =  Jsoup.parse(url, 3000); //使用Jsoup jar 去解析網頁
+		        //(要解析的文件,timeout)
+		        Element table = xmlDoc.select("table").get(2); //select the first table.
+		        Elements rows = table.select("tr");
+		        for (int j = 0; j < rows.size(); j++)
+		        {
+		        	if (j == 7)
+		        	{
+		        		Element td = rows.get(j);
+		        		Elements tdList = td.select("td");
+		        		int total = Integer.parseInt(tdList.get(8).text().replace(",", ""));
+		        		double totalRatio = Double.parseDouble(tdList.get(10).text().replace("%", ""));
+		        		double foreignerRatio = Double.parseDouble(tdList.get(9).text().replace("%", ""));
+		        		total = (int) (total / totalRatio) * 100;
+		        		double mutualFund = Integer.parseInt(tdList.get(6).text().replace(",", ""));
+		        		double mutualFundRatio = mutualFund * 100 / total;
+		        		mutualFundRatio = StringUtil.setPointLength(mutualFundRatio);	
+		        		//System.out.println(foreignerRatio);
+		        		list.get(i).setForeignerRatio(foreignerRatio);
+		        		//System.out.println(mutualFundRatio);
+		        		list.get(i).setMutualFund(mutualFundRatio);
+		        	}
+		        }	    	
+	    	}
+        }
+        catch (Exception ex)
+        {
+        	
+        }
     }
 }
 class ValueComparator implements Comparator<String> 
