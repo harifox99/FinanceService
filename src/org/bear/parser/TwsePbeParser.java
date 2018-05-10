@@ -61,6 +61,8 @@ public class TwsePbeParser extends EasyParserBase
 				}
 				else if (j == 5)
 				{
+					if (content.equals("-"))
+						continue;
 					double pbr;
 					pbr = Double.parseDouble(content);
 					hashPbr.put(stockId, pbr);
