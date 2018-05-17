@@ -2,16 +2,19 @@ package org.bear.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.message.BasicNameValuePair;
 /**
  * HTTP POST Utility
@@ -30,14 +33,13 @@ public class HttpUtil {
 	 */
 	public static String send(String url, Map<String, String> paramMap, int retryCount, String encoding) throws IOException
 	{
-		//DefaultHttpClient httpClinet = new DefaultHttpClient();
-		HttpClient httpClinet = HttpClientBuilder.create().build();
+		DefaultHttpClient httpClinet = new DefaultHttpClient();
 		retryCount=retryCount<0?0:retryCount;
 		retryCount=retryCount>10?10:retryCount;
-		//HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
+		HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		HttpPost post = new HttpPost(url);
-		//httpClinet.setHttpRequestRetryHandler(retryHandler);
+		httpClinet.setHttpRequestRetryHandler(retryHandler);
 		List<NameValuePair> paramList=new ArrayList<NameValuePair>();
 		
 		for (Entry<String, String> entry:paramMap.entrySet())
@@ -80,14 +82,13 @@ public class HttpUtil {
 	
 	public static String send(String url, List<NameValuePair> paramList, int retryCount, String encoding)
 	{
-		//DefaultHttpClient httpClinet = new DefaultHttpClient();
-		HttpClient httpClinet = HttpClientBuilder.create().build();
+		DefaultHttpClient httpClinet = new DefaultHttpClient();
 		retryCount=retryCount<0?0:retryCount;
 		retryCount=retryCount>10?10:retryCount;
-		//HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
+		HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		HttpPost post = new HttpPost(url);
-		//httpClinet.setHttpRequestRetryHandler(retryHandler);
+		httpClinet.setHttpRequestRetryHandler(retryHandler);
 		UrlEncodedFormEntity entity = null;
 		try 
 		{
@@ -133,14 +134,13 @@ public class HttpUtil {
 	 */
 	public static String sendWithRetry(String url, List<NameValuePair> paramList, int retryCount, String encoding)
 	{
-		//DefaultHttpClient httpClinet = new DefaultHttpClient();
-		HttpClient httpClinet = HttpClientBuilder.create().build();
+		DefaultHttpClient httpClinet = new DefaultHttpClient();
 		retryCount=retryCount<0?0:retryCount;
 		retryCount=retryCount>10?10:retryCount;
-		//HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
+		HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		HttpPost post = new HttpPost(url);
-		//httpClinet.setHttpRequestRetryHandler(retryHandler);
+		httpClinet.setHttpRequestRetryHandler(retryHandler);
 		UrlEncodedFormEntity entity = null;
 		try 
 		{
@@ -190,13 +190,12 @@ public class HttpUtil {
 	public static String send(String url, String data, String charset)
 	{
 		String tempData = data;
-		//DefaultHttpClient httpClinet = new DefaultHttpClient();
-		HttpClient httpClinet = HttpClientBuilder.create().build();
-		//int retryCount = 3;
-		//HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
+		DefaultHttpClient httpClinet = new DefaultHttpClient();
+		int retryCount = 3;
+		HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		HttpPost post = new HttpPost(url);
-		//httpClinet.setHttpRequestRetryHandler(retryHandler);
+		httpClinet.setHttpRequestRetryHandler(retryHandler);
 
 		try 
 		{
