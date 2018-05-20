@@ -20,8 +20,8 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2017"};
-				String[] seasons = {"01", "02"};				
+				String[] years = {"2018"};
+				String[] seasons = {"01"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
