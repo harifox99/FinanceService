@@ -47,6 +47,12 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 			entity[i] = new BalanceSheetEntity();
 		dao = (BalanceSheetDao)context.getBean("basicBalanceSheetDao");
 	}
+	/**
+	 * 其他流動資產，和財報狗計算方法不同 (財報狗叫其餘流動資產)
+     * 短期投資，和財報狗計算方法不同
+     * 其他資產-可能會計科目不足
+     * 其他負債=應計退休金+遞延所得稅+其他非流動負債
+	 */
 	public void getTableContent(Element element)
 	{
 		String rowData[] = new String[dataLength];
@@ -65,13 +71,16 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 					content = StringUtil.eraseSpecialChar(content);
 					if (content.equals("現金及約當現金"))
 						title = AccountTitle.Cash;
-					else if (content.equals("短期投資"))
+					//else if (content.equals("短期投資"))
+					else if (content.equals("透過損益按公允價值衡量之金融資產－流動"))
+						title = AccountTitle.ShortTermInvestment;
+					else if (content.equals("透過其他綜合損益按公允價值衡量之金融資產－流動"))	
 						title = AccountTitle.ShortTermInvestment;
 					else if (content.equals("應收帳款及票據"))
 						title = AccountTitle.Receivable;
 					else if (content.equals("其他應收款"))	
 						title = AccountTitle.OtherReceivable;
-					else if (content.equals("短期借支"))	
+					else if (content.equals("資金貸予他人－流動"))	
 						title = AccountTitle.ShortTermBorrowing;
 					else if (content.equals("存貨"))	
 						title = AccountTitle.Inventory;
@@ -79,22 +88,42 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 						title = AccountTitle.PrepaidExpense;
 					else if (content.equals("其他流動資產"))
 						title = AccountTitle.OtherCurrentAssets;
+					//else if (content.equals("其他金融資產－流動"))
 					else if (content.equals("流動資產"))
 						title = AccountTitle.CurrentAssets;
-					else if (content.equals("長期投資"))
+					//else if (content.equals("長期投資"))
+					else if (content.equals("透過損益按公允價值衡量之金融資產－非流動"))
 						title = AccountTitle.LongTermInvestment;
-					else if (content.equals("固定資產"))
+					else if (content.equals("採權益法之長期股權投資"))
+						title = AccountTitle.LongTermInvestment;
+					//else if (content.equals("固定資產"))
+					else if (content.equals("不動產廠房及設備"))
 						title = AccountTitle.FixedAssets;
-					else if (content.equals("其他資產"))
+					//else if (content.equals("其他資產"))
+					else if (content.equals("透過其他綜合損益按公允價值衡量之金融資產－非流動"))
+						title = AccountTitle.OtherAssets;
+					else if (content.equals("按攤銷後成本衡量之金融資產－非流動"))
+						title = AccountTitle.OtherAssets;
+					else if (content.equals("商譽及無形資產合計"))
+						title = AccountTitle.OtherAssets;
+					else if (content.equals("遞延資產合計"))
+						title = AccountTitle.OtherAssets;
+					else if (content.equals("其他非流動資產"))
 						title = AccountTitle.OtherAssets;
 					else if (content.equals("資產總額"))
 						title = AccountTitle.TotalAssets;
 					else if (content.equals("流動負債"))
 						title = AccountTitle.CurrentLiability;
-					else if (content.equals("長期負債"))
+					//else if (content.equals("長期負債"))
+					else if (content.equals("非流動負債"))
 						title = AccountTitle.LongTermLiability;
-					else if (content.equals("其他負債及準備"))
-						title = AccountTitle.OtherLiability;
+					//else if (content.equals("其他負債及準備"))
+					else if (content.equals("應計退休金負債"))
+					    title = AccountTitle.OtherLiability;
+					else if (content.equals("遞延所得稅"))
+					    title = AccountTitle.OtherLiability;
+					else if (content.equals("其他非流動負債"))
+					    title = AccountTitle.OtherLiability;
 					else if (content.equals("負債總額"))
 						title = AccountTitle.TotalLiability;
 					else if (content.equals("股東權益總額"))
@@ -107,7 +136,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 						title = AccountTitle.SEASON;
 					else if (content.equals("短期借款"))
 						title = AccountTitle.ShortTermLoan;
-					else if (content.equals("應付商業本票"))
+					else if (content.contains("應付商業本票"))
 						title = AccountTitle.CommercialPaperPayable;
 					else
 					{
@@ -171,7 +200,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				case ShortTermInvestment:
 				{
 					int result = Integer.parseInt(rowData[k]);
-					entity[k].setShortTermInvestment(result);
+					entity[k].setShortTermInvestment(entity[k].getShortTermInvestment() + result);
 					break;
 				}	     
 				case Receivable: 
@@ -217,12 +246,12 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 					try
 					{
 						int result = Integer.parseInt(rowData[k]);
-						entity[k].setOtherReceivable(result);
+						entity[k].setOtherCurrentAssets(entity[k].getOtherCurrentAssets() + result);
 					}
 					catch (NumberFormatException ex)
 					{
 						int result = Integer.parseInt(rowData[k].substring(rowData[k].indexOf(">")+1));
-						entity[k].setOtherReceivable(result);
+						entity[k].setOtherCurrentAssets(entity[k].getOtherCurrentAssets() + result);
 					}
 					break;	
 				}
@@ -235,7 +264,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				case LongTermInvestment: 
 				{	
 					int result = Integer.parseInt(rowData[k]);
-					entity[k].setLongTermInvestment(result);
+					entity[k].setLongTermInvestment(entity[k].getLongTermInvestment() + result);
 					break;	
 				}
 				case FixedAssets: 
@@ -247,7 +276,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				case OtherAssets: 
 				{	
 					int result = Integer.parseInt(rowData[k]);
-					entity[k].setOtherAssets(result);
+					entity[k].setOtherAssets(entity[k].getOtherAssets() + result);
 					break;	
 				}
 				case TotalAssets: 
@@ -271,13 +300,13 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 				case LongTermLiability: 
 				{	
 					int result = Integer.parseInt(rowData[k]);
-					entity[k].setLongTermLiability(result);
+					entity[k].setLongTermLiability(entity[k].getLongTermLiability() + result);
 					break;	
 				}
 				case OtherLiability: 
 				{	
 					int result = Integer.parseInt(rowData[k]);
-					entity[k].setOtherLiability(result);
+					entity[k].setOtherLiability(entity[k].getOtherLiability() + result);
 					break;	
 				}
 				case TotalLiability: 
@@ -333,7 +362,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 		if (this.isYear == false)
 		{
 			String yearAndSeason[] = rowData.split("\\.");
-			entity.setYear(StringUtil.convertYear(yearAndSeason[0]));
+			entity.setYear(yearAndSeason[0]);
 			entity.setSeasons(this.convertMonth(yearAndSeason[1]));
 			entity.setStockID(stockID);
 		}
