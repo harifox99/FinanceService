@@ -63,15 +63,17 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 				{
 					resultElement = tdList.get(j);
 					String content = resultElement.getContent().toString();
-					if (content.equals("稅後淨利"))
+					content = StringUtil.eraseSpecialChar(content);
+					content = content.trim();
+					if (content.contains("稅前淨利"))
 						title = AccountTitle.INCOME_SUMMARY;
 					else if (content.equals("來自營運之現金流量"))
 						title = AccountTitle.OPERATING_ACTIVITY;
 					else if (content.equals("投資活動之現金流量"))
 						title = AccountTitle.INVESTING_ACTIVITY;
-					else if (content.equals("理財活動之現金流量"))	
+					else if (content.equals("籌資活動之現金流量"))	
 						title = AccountTitle.FINANCING_ACTIVITY;
-					else if (content.equals("期初現金約當現金"))	
+					else if (content.equals("期初現金及約當現金"))	
 						title = AccountTitle.BEGINNING_CASH;
 					else if (content.equals("期末現金及約當現金"))	
 						title = AccountTitle.ENDING_CASH;
@@ -190,7 +192,7 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 		if (this.isYear == false)
 		{
 			String yearAndSeason[] = rowData.split("\\.");
-			entity.setYear(StringUtil.convertYear(yearAndSeason[0]));
+			entity.setYear(yearAndSeason[0]);
 			entity.setSeasons(this.convertMonth(yearAndSeason[1]));
 			entity.setStockID(stockID);
 		}
