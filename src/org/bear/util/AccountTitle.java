@@ -48,6 +48,8 @@ public enum AccountTitle
 	InvestmentIncome,
 	NonOperatingRevenue,
 	NonOperatingExpense,
+	//營業外收支
+	NonOperating,
 	PreTaxIncome,
 	NetIncome,
 	EPS,
