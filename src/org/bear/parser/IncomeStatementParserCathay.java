@@ -75,15 +75,17 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 						title = AccountTitle.NonOperatingRevenue;
 					else if (content.equals("營業外支出合計"))
 						title = AccountTitle.NonOperatingExpense;
+					else if (content.equals("營業外收入及支出"))
+						title = AccountTitle.NonOperating;
 					else if (content.equals("稅前淨利"))
 						title = AccountTitle.PreTaxIncome;
-					else if (content.equals("本期稅後淨利"))
+					else if (content.contains("稅後淨利"))
 						title = AccountTitle.NetIncome;
 					else if (content.contains("每股盈餘") && !content.contains("稀釋"))
 						title = AccountTitle.EPS;
 					else if (content.equals("期別") || content.equals("年"))
 						title = AccountTitle.SEASON;
-					else if (content.contains("加權平均股本"))
+					else if (content.contains("加權平均股"))
 						title = AccountTitle.WghtAvgStocks;
 					else
 					{
@@ -251,6 +253,54 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 					}
 					break;	
 				}
+				/**
+				 *  作弊，因新的IFRS，已無營業外收入&營業外支出，改成合併的營業外收支
+				 *  所以營業外支出，若為正，比如說30，則業外收入=31，業外支出=1
+				 *  所以營業外支出，若為負，比如說-30，則業外收入=1，業外支出=31
+				 */
+				case NonOperating:
+				{	
+					try
+					{
+						int result = Integer.parseInt(rowData[k]);
+						if (result > 0)
+						{
+							entity[k].setNonOperatingRevenue(result+1);
+							entity[k].setNonOperatingExpense(1);
+						}
+						else if (result < 0)
+						{
+							entity[k].setNonOperatingRevenue(1);
+							entity[k].setNonOperatingExpense(result*-1 + 1);
+						}
+						else
+						{
+							entity[k].setNonOperatingRevenue(1);
+							entity[k].setNonOperatingExpense(1);
+						}
+					}
+					catch (NumberFormatException ex)
+					{
+						int result = Integer.parseInt(rowData[k].substring(rowData[k].indexOf(">")+1));
+						if (result > 0)
+						{
+							entity[k].setNonOperatingRevenue(result+1);
+							entity[k].setNonOperatingExpense(1);
+						}
+						else if (result < 0)
+						{
+							entity[k].setNonOperatingRevenue(1);
+							entity[k].setNonOperatingExpense(result*-1 + 1);
+						}
+						else
+						{
+							entity[k].setNonOperatingRevenue(1);
+							entity[k].setNonOperatingExpense(1);
+						}
+						entity[k].setNonOperatingExpense(result);
+					}
+					break;	
+				}
 				case PreTaxIncome: 
 				{	
 					try
@@ -298,12 +348,12 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 					try
 					{
 						int result = Integer.parseInt(rowData[k]);
-						entity[k].setWghtAvgStocks(result);
+						entity[k].setWghtAvgStocks(result*10);
 					}
 					catch (NumberFormatException ex)
 					{
 						int result = Integer.parseInt(rowData[k].substring(rowData[k].indexOf(">")+1));
-						entity[k].setWghtAvgStocks(result);
+						entity[k].setWghtAvgStocks(result*10);
 					}
 					break;	
 				}
