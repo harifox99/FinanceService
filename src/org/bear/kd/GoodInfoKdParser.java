@@ -33,9 +33,7 @@ public class GoodInfoKdParser
 	        Element table = xmlDoc.select("table").get(56); //select the first table.
 	        Elements rows = table.select("tr");
 	        for (int j = 0; j < rows.size(); j++)
-	        {
-	        	
-	        }
+	        {}
 		}
 		catch (Exception ex)
 		{
