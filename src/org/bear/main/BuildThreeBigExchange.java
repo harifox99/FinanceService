@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
+import org.bear.kd.GoodInfoRequest;
 import org.bear.parser.EtfParser;
 import org.bear.parser.RankingParser;
 import org.bear.parser.TaifexLotParser;
@@ -100,7 +101,7 @@ public class BuildThreeBigExchange {
 				         "106/12/25", "106/12/26", "106/12/27", "106/12/28", "106/12/29",
 				         "107/01/02", "107/01/03", "107/01/04", "107/01/05"
 				         };*/
-		String[] date = {"107/05/21"};
+		String[] date = {"107/05/25"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 		
@@ -178,6 +179,10 @@ public class BuildThreeBigExchange {
 			juristicDailyReportDao.updateRank("兩大", westenDate.replace("/", ""));
 			juristicDailyReportDao.updateRank("外資", westenDate.replace("/", ""));
 			juristicDailyReportDao.updateRank("投信", westenDate.replace("/", ""));
+			//KD指標
+			GoodInfoRequest request = new GoodInfoRequest();
+			request.conn(true, westenDate);
+			request.conn(false, westenDate);
 			System.out.println(westenDate + " End!");
 		}
 	}
