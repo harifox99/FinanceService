@@ -8,8 +8,10 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.bear.constant.FinancialReport;
 import org.bear.dao.BasicStockDao;
+import org.bear.dao.GoodInfoDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
+import org.bear.entity.GoodInfoEntity;
 import org.bear.entity.InstitutionalEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
 import org.bear.parser.TpexPriceParser;
@@ -30,6 +32,7 @@ public class InstitutionalRatio
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
+	GoodInfoDao goodInfoDao = (GoodInfoDao)context.getBean("goodInfoDao");
 	List<InstitutionalEntity> listAllEntity = new ArrayList<InstitutionalEntity>();
 	//List<List<InstitutionalEntity>> listAllEntity = new ArrayList<List<InstitutionalEntity>>();
 	Map<String, Double> mapForeigner;	 
@@ -101,6 +104,7 @@ public class InstitutionalRatio
 		this.consecutiveExchange(listForeignerEntity, days, buyer, maxSize);	
 		this.majorHolder(listForeignerEntity, maxSize, date);	
 		this.ShareholdingRatio(listForeignerEntity, maxSize, date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8));
+		this.addKD(listForeignerEntity);
 		return listForeignerEntity;
 	}
     public static void main(String[] args) 
@@ -446,10 +450,40 @@ public class InstitutionalRatio
 	    	}
         }
         catch (Exception ex)
-        {
-        	
-        }
+        {}
     }
+    /**
+     * 新增KD指標
+     * @param list
+     */
+    public void addKD(List<InstitutionalEntity> list)
+    {
+    	for (int i = 0; i < list.size(); i++)
+		{
+			InstitutionalEntity entity = list.get(i);
+			String stockID = entity.getStockID();
+			GoodInfoEntity goodInfo = goodInfoDao.getData(stockID);
+			if (goodInfo != null)
+			{
+				entity.setDay_d(goodInfo.getDay_d());
+				entity.setDay_k(goodInfo.getDay_k());
+				entity.setWeek_d(goodInfo.getWeek_d());
+				entity.setWeek_k(goodInfo.getWeek_k());
+				entity.setDay_kd_20(goodInfo.getDay_kd_20());
+				entity.setWeek_kd_20(goodInfo.getWeek_kd_20());
+			}
+			else
+			{
+				entity.setDay_d(">20");
+				entity.setDay_k(">20");
+				entity.setWeek_d(">20");
+				entity.setWeek_k(">20");
+				entity.setDay_kd_20("N");
+				entity.setWeek_kd_20("N");
+			}
+		}
+    }
+    
 }
 class ValueComparator implements Comparator<String> 
 {
