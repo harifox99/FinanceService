@@ -3,6 +3,7 @@ package org.bear.dao;
 import java.util.ArrayList;
 import java.util.List;
 import org.bear.entity.GoodInfoEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -32,5 +33,19 @@ public class JdbcGoodInfoDao extends SimpleJdbcDaoSupport implements GoodInfoDao
 		String sql = "UPDATE GoodInfo SET " + indexName + " = ? where Exchangedate = '" + date + "' and stockId = '" + stockId;
 		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
 		return result;
+	}
+	
+	public GoodInfoEntity getData(String stockID)
+	{
+		try
+		{
+			String sql = "select * from GoodInfo where stockID = '" + stockID + "'";
+			GoodInfoEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(GoodInfoEntity.class));
+			return entity;
+		}
+		catch (Exception ex)
+		{
+			return null;
+		}
 	}
 }
