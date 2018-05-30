@@ -30,7 +30,8 @@ public class JdbcGoodInfoDao extends SimpleJdbcDaoSupport implements GoodInfoDao
 	}
 	public int update(String indexName, String indexValue, String date, String stockId) {
 		// TODO Auto-generated method stub
-		String sql = "UPDATE GoodInfo SET " + indexName + " = ? where Exchangedate = '" + date + "' and stockId = '" + stockId;
+		String sql = "UPDATE GoodInfo SET " + indexName + " = ? where Exchangedate = '" + date + "' and stockId = '" + stockId + "'";
+		System.out.println("SQL, GoodInfo: " + sql);
 		int result = this.getSimpleJdbcTemplate().update(sql, indexValue);
 		return result;
 	}
