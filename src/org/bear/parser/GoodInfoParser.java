@@ -47,7 +47,7 @@ public class GoodInfoParser
         				{    //日週同時交叉
         					if (mapDay.get(data) != null)
         					{
-        						dao.update("Week_KD_20", "1", dateString, data);
+        						dao.update("Week_KD_20", "Y", dateString, data);
         						break;
         					}
         					else
@@ -83,10 +83,9 @@ public class GoodInfoParser
         				}
         				list.add(entity);
         			}
-        			System.out.print(tdList.get(k).text() + ", ");
+        			//System.out.print(tdList.get(k).text() + ", ");
         		}
-        		
-        		System.out.println();
+        		//System.out.println();
 	        }
 	        dao.insertBatch(list);
 		}
