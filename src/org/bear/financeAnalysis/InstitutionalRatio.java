@@ -104,7 +104,7 @@ public class InstitutionalRatio
 		this.consecutiveExchange(listForeignerEntity, days, buyer, maxSize);	
 		this.majorHolder(listForeignerEntity, maxSize, date);	
 		this.ShareholdingRatio(listForeignerEntity, maxSize, date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8));
-		this.addKD(listForeignerEntity);
+		this.addKD(listForeignerEntity, priceDate);
 		return listForeignerEntity;
 	}
     public static void main(String[] args) 
@@ -456,13 +456,13 @@ public class InstitutionalRatio
      * 新增KD指標
      * @param list
      */
-    public void addKD(List<InstitutionalEntity> list)
+    public void addKD(List<InstitutionalEntity> list, String priceDate)
     {
     	for (int i = 0; i < list.size(); i++)
 		{
 			InstitutionalEntity entity = list.get(i);
 			String stockID = entity.getStockID();
-			GoodInfoEntity goodInfo = goodInfoDao.getData(stockID);
+			GoodInfoEntity goodInfo = goodInfoDao.getData(stockID, priceDate);
 			if (goodInfo != null)
 			{
 				entity.setDay_d(goodInfo.getDay_d());

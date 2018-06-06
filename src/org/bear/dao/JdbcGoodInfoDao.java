@@ -36,11 +36,11 @@ public class JdbcGoodInfoDao extends SimpleJdbcDaoSupport implements GoodInfoDao
 		return result;
 	}
 	
-	public GoodInfoEntity getData(String stockID)
+	public GoodInfoEntity getData(String stockID, String priceDate)
 	{
 		try
 		{
-			String sql = "select * from GoodInfo where stockID = '" + stockID + "'";
+			String sql = "select * from GoodInfo where stockID = '" + stockID + "' and exchangeDate = '" + priceDate + "'";
 			GoodInfoEntity entity = this.getSimpleJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(GoodInfoEntity.class));
 			return entity;
 		}
