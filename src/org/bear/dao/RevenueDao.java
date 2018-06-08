@@ -24,4 +24,6 @@ public interface RevenueDao
 	public void update(String stockID, String turnoverRatio, String averageIndex, Date date);
 	public int update(String indexName, String indexValue, Date date, String stockID);
 	public int update(String sql);
+	//一二月營收合併顯示
+	public List<RevenueEntity> findByLatestMergeSize(int size, String stockID);
 }

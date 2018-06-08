@@ -58,6 +58,7 @@ public class PerfectAnalysis
 	 * @param priceRate 漲幅比例
 	 * @param peDate 證交所本益比/股價 (日期)
 	 * @param compareDate 某個時間股價 (通常是6個月)
+	 * @param isMergeChineseYear 一二月營收是否合併計算
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
@@ -65,7 +66,7 @@ public class PerfectAnalysis
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe, 
 			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth, 
 			boolean isFreeCashFlow, boolean isOperatingCashFlow, boolean isNonOperating,
-			boolean isComparePrice, int priceRate, String peDate, String compareDate)
+			boolean isComparePrice, int priceRate, String peDate, String compareDate, boolean isMergeChineseYear)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -103,7 +104,11 @@ public class PerfectAnalysis
 				//if (!stockID.equals("1715"))
 					//continue;
 				//System.out.println("stockID: " + stockID);
-				List<RevenueEntity> revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
+				List<RevenueEntity> revenueList;
+				if (isMergeChineseYear)
+					revenueList = revenueDao.findByLatestMergeSize(maxMonth+1, stockList.get(i).getStockID());
+				else
+					revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
 				//Set Column Name
 				if (i == 0)
 				{
@@ -474,10 +479,12 @@ public class PerfectAnalysis
 				return null;
 			double thisMonthYoy = (double)revenue.get(i).getRevenue()/revenue.get(i).getLastRevenue();
 			double lastMonthYoy = (double)revenue.get(i+1).getRevenue()/revenue.get(i+1).getLastRevenue();
+			//如果本月營收 (thisMonthYoy < lastMonthYoy) 衰退
 			if (i < totalMonth && thisMonthYoy < lastMonthYoy)
 			{
 				//期望M個月份有N個月份YoY上升
 				//期望totalMonth個月份有expectedMonth個月份YoY上升
+				//衰退幅度超越臨界值 (difference-- <= 0)
 				if (difference-- <= 0)
 					return null;
 				else
@@ -497,6 +504,7 @@ public class PerfectAnalysis
 				String strRevenue = formatter.format(thisMonthYoy);
 				yoyList.add(strRevenue);	
 			}
+			//最舊的一個月的資料
 			if (i == maxMonth-1)
 			{
 				lastMonthYoy -= 1;

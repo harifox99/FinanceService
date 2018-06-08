@@ -257,4 +257,36 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		int result = this.getSimpleJdbcTemplate().update(sql);
 		return result;
 	}
+
+	@Override
+	public List<RevenueEntity> findByLatestMergeSize(int size, String stockID) {
+		String sql = "select top " + (size+1) + " * from operatingRevenue where stockID = '" +
+		stockID + "' order by yearMonth desc";
+		List <RevenueEntity> entityMergeList = new ArrayList<RevenueEntity>();
+		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
+				BeanPropertyRowMapper.newInstance(RevenueEntity.class));
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			String dateString = entityList.get(i).getYearMonth().toString().substring(5, 7);
+			//把二月營收取代成累計營收
+			if (dateString.contains("02"))
+			{
+				RevenueEntity entity = entityList.get(i);
+				entity.setRevenue((int)entityList.get(i).getAccumulation());
+				entity.setLastRevenue((int)entityList.get(i).getLastAccumulation());
+				entityMergeList.add(entity);
+			}
+			//忽略一月營收
+			else if (dateString.contains("01"))
+			{
+				continue;
+			}
+			//除此之外，保持原資料
+			else
+			{
+				entityMergeList.add(entityList.get(i));
+			}
+		}
+		return entityMergeList;
+	}
 }
