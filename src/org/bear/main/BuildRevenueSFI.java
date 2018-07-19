@@ -13,9 +13,9 @@ public class BuildRevenueSFI {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String startYear = "2018";
-		String startMonth = "4";
+		String startMonth = "6";
 		String endYear = "2018";
-		String endMonth = "4";
+		String endMonth = "6";
 		GetSFIContent getContent;
 		ImportPriceSFI sfi = new ImportPriceSFI();
 		/* 上市/上櫃營收資訊 (公開資訊觀測站)，僅用startYear and startMonth */
