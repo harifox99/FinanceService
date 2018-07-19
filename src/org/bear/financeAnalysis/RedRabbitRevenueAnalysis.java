@@ -498,7 +498,10 @@ public class RedRabbitRevenueAnalysis
 				for (int j = 0; j < 6; j++)
 				{
 					double yoy;
-					yoy = (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue()-1;
+					if (entityList.get(j).getLastRevenue() == 0)
+						yoy = 1;
+					else
+						yoy = (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue()-1;
 					yoy = yoy*100;
 					yoy = StringUtil.setPointLength(yoy, 2);					
 					switch (j)
