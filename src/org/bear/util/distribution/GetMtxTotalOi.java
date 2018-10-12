@@ -17,19 +17,12 @@ public class GetMtxTotalOi extends GetTaifexLot
 	public void getContent()
 	{		
 		MtxTotalOiParser parser = new MtxTotalOiParser();
-		String[] dateArray = date.split("/");
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		paramList.add(new BasicNameValuePair("datestart", date));
-		paramList.add(new BasicNameValuePair("DATA_DATE_Y", dateArray[0]));
-		paramList.add(new BasicNameValuePair("DATA_DATE_M", dateArray[1]));
-		paramList.add(new BasicNameValuePair("DATA_DATE_D", dateArray[2]));
-		paramList.add(new BasicNameValuePair("syear", dateArray[0]));
-		paramList.add(new BasicNameValuePair("smonth", dateArray[1]));
-		paramList.add(new BasicNameValuePair("sday", dateArray[2]));
-		paramList.add(new BasicNameValuePair("qtype", "2"));
-		paramList.add(new BasicNameValuePair("commodity_id", "MTX"));
-		paramList.add(new BasicNameValuePair("commodity_idt", "MTX"));
-		paramList.add(new BasicNameValuePair("dateaddcnt", "0"));	
+		paramList.add(new BasicNameValuePair("queryDate", date));
+		paramList.add(new BasicNameValuePair("queryType", "2"));
+		paramList.add(new BasicNameValuePair("marketCode", "0"));	
+		paramList.add(new BasicNameValuePair("commodity_id", "MTX"));	
+		paramList.add(new BasicNameValuePair("commodity_idt", "MTX"));	
 		String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
 		//System.out.println(responseString);
 		parser.setResponseString(responseString);
