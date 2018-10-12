@@ -32,6 +32,9 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 						{																															
 							String content = resultElement.getContent().toString();
 							content = content.replace(",", "");
+							content = content.replace("\r", "");
+							content = content.replace("\n", "");
+							content = content.replace("\t", "");
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setTopTenLotBuyMonth(Integer.parseInt(this.retrivelData(content)));
@@ -40,18 +43,27 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 						{
 							String content = resultElement.getContent().toString().trim();	
 							content = content.replace(",", "");					
+							content = content.replace("\r", "");
+							content = content.replace("\n", "");
+							content = content.replace("\t", "");
 							entity.setTopTenLotSellMonth(Integer.parseInt(this.retrivelData(content)));					
 						}
 						else if (i == 5 && j == 3)//台指期所有契約買方
 						{
 							String content = resultElement.getContent().toString().trim();	
-							content = content.replace(",", "");					
+							content = content.replace(",", "");			
+							content = content.replace("\r", "");
+							content = content.replace("\n", "");
+							content = content.replace("\t", "");
 							entity.setTopTenLotBuyTotal(Integer.parseInt(this.retrivelData(content)));					
 						}
 						else if (i == 5 && j == 7)//台指期所有契約賣方
 						{
 							String content = resultElement.getContent().toString().trim();	
-							content = content.replace(",", "");					
+							content = content.replace(",", "");		
+							content = content.replace("\r", "");
+							content = content.replace("\n", "");
+							content = content.replace("\t", "");
 							entity.setTopTenLotSellTotal(Integer.parseInt(this.retrivelData(content)));					
 						}
 					}
