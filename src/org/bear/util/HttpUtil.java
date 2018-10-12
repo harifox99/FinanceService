@@ -222,41 +222,6 @@ public class HttpUtil {
 			e.printStackTrace();
 		}
 		return responseString;
-//		String tempData=data;
-//		try {
-//			tempData=URLEncoder.encode(tempData,"ISO-8859-1");
-//
-//			URL targetUrl=new URL(url);
-//			
-//			URLConnection conn=targetUrl.openConnection();
-//			System.out.println("send by enc:"+conn.getContentEncoding());
-//			conn.setDoOutput(true);
-//			conn.setDoInput(true);
-//			OutputStreamWriter wr=new OutputStreamWriter(conn.getOutputStream());
-//			wr.write(tempData);
-//			wr.flush();
-//			
-//			BufferedReader rd=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//			String line=null;
-//			StringBuffer sb=new StringBuffer();
-//			while ((line=rd.readLine())!=null){
-//				sb.append(line);
-//			}
-//			wr.close();
-//			rd.close();
-//			return sb.toString();
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		return null;
 	}
 	private static void sleep(int number)
 	{
@@ -268,6 +233,58 @@ public class HttpUtil {
 		{
 			ex.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Response without ISO-8859
+	 * @param url
+	 * @param paramList
+	 * @param retryCount
+	 * @param encoding
+	 * @return
+	 */
+	public static String sendUrl(String url, List<NameValuePair> paramList, int retryCount, String encoding)
+	{
+		DefaultHttpClient httpClinet = new DefaultHttpClient();
+		retryCount=retryCount<0?0:retryCount;
+		retryCount=retryCount>10?10:retryCount;
+		HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, true);
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		HttpPost post = new HttpPost(url);
+		httpClinet.setHttpRequestRetryHandler(retryHandler);
+		UrlEncodedFormEntity entity = null;
+		try 
+		{
+			entity = new UrlEncodedFormEntity(paramList, encoding);
+		} 
+		catch (UnsupportedEncodingException e1) 
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		post.setEntity(entity);
+		
+		String responseString = null;
+		
+		try 
+		{
+			responseString = httpClinet.execute(post, responseHandler);
+		} 
+		catch (ClientProtocolException e) 
+		{
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			System.out.println("Request Timeout in HttpUtil.java");
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			e.printStackTrace();
+		}
+		
+		return responseString;
 	}
 }
 
