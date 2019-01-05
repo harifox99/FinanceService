@@ -36,7 +36,7 @@ public class StockDistribution
 		parser.setStockID(stockID);
 		parser.setCurrentMonth(isCurrentMonth);
 		parser.setDateString(startYear + startMonth);
-		String url = "http://www.tdcc.com.tw/smWeb/QryStockAjax.do";
+		String url = "https://www.tdcc.com.tw/smWeb/QryStockAjax.do";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("scaDate", startYear + startMonth));
 		paramList.add(new BasicNameValuePair("scaDates", startYear + startMonth));
@@ -45,9 +45,9 @@ public class StockDistribution
 		paramList.add(new BasicNameValuePair("REQ_OPR", "SELECT"));
 		paramList.add(new BasicNameValuePair("clkStockNo", stockID));
 		paramList.add(new BasicNameValuePair("radioStockNo", stockID));
-		String responseString = HttpUtil.send(url, paramList, 1, "big5");
+		String responseString = HttpUtil.sendUrl(url, paramList, 1, "UTF-8");
 		//System.out.println(responseString);
 		parser.setResponseString(responseString);
-		parser.parse(8);	
+		parser.parse(7);	
 	}
 }
