@@ -71,7 +71,7 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 						title = AccountTitle.OPERATING_ACTIVITY;
 					else if (content.equals("投資活動之現金流量"))
 						title = AccountTitle.INVESTING_ACTIVITY;
-					else if (content.equals("籌資活動之現金流量"))	
+					else if (content.contains("資活動之現金流量"))//融資/籌資活動	
 						title = AccountTitle.FINANCING_ACTIVITY;
 					else if (content.equals("期初現金及約當現金"))	
 						title = AccountTitle.BEGINNING_CASH;
