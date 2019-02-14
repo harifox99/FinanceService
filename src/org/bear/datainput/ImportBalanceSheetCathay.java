@@ -2,6 +2,11 @@
  * 
  */
 package org.bear.datainput;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bear.constant.FinancialReport;
 import org.bear.parser.BalanceSheetParserCathay;
 import org.bear.util.GetURLCathayBalanceSheet;
@@ -17,15 +22,27 @@ public class ImportBalanceSheetCathay extends ImportStockID
 		try
 		{		
 			int idleTime = 0;
+			String readData;
+			List<String> stockList = new ArrayList<String>();
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20180917/Desktop/Book1.csv"));
+			while((readData = reader.readLine()) != null)
+			{
+				stockList.add(readData);
+			}
+			reader.close();
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2018"};
-				String[] seasons = {"01"};				
+				String[] seasons = {"03"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
-				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");				
+				if (stockList.contains(stockID) == false)
+				{
+					continue;
+				}
+				System.out.println("代碼：" + stockID + " " + idleTime + ". ");				
 				//季資料
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
 				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);

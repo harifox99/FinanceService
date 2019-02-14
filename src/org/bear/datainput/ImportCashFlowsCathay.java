@@ -1,4 +1,9 @@
 package org.bear.datainput;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bear.constant.FinancialReport;
 import org.bear.parser.CashFlowsParserCathay;
 import org.bear.util.*;
@@ -29,14 +34,26 @@ public class ImportCashFlowsCathay extends ImportStockID
 				idleTime++;
 			}*/			
 			//季資料
+			String readData;
+			List<String> stockList = new ArrayList<String>();
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20180917/Desktop/Book1.csv"));
+			while((readData = reader.readLine()) != null)
+			{
+				stockList.add(readData);
+			}
+			reader.close();
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2018"};
-				String[] seasons = {"01"};				
+				String[] seasons = {"01", "02", "03"};						
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))
 					//continue;
+				if (stockList.contains(stockID) == false)
+				{
+					continue;
+				}
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, false, expectedNum, true);
