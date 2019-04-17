@@ -101,7 +101,7 @@ public class BuildThreeBigExchange {
 				         "106/12/25", "106/12/26", "106/12/27", "106/12/28", "106/12/29",
 				         "107/01/02", "107/01/03", "107/01/04", "107/01/05"
 				         };*/
-		String[] date = {"108/01/21"};
+		String[] date = {"108/04/15"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 		
@@ -121,7 +121,8 @@ public class BuildThreeBigExchange {
 			url = "http://www.tse.com.tw/fund/T86?response=html";
 			exchange.buildTwse(westenDate.replace("/", ""), 1, url);
 			//上櫃，外資&投信
-			url = "http://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_print.php?l=en-us&se=EW&t=D&d=";
+			//url = "http://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_print.php?l=en-us&se=EW&t=D&d=";
+			url = "https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php?l=en-us&se=EW&t=D&d=";
 			exchange.buildTpex(westenDate, 2, url);	
 			//證交所，三大法人買賣超金額
 			url = "http://www.tse.com.tw/fund/BFI82U?response=html";
@@ -205,7 +206,7 @@ public class BuildThreeBigExchange {
 		TpexThreeBigExchangeParser parser = new TpexThreeBigExchangeParser();
 		parser.setDao(threeBigExchangeDao);
 		parser.setStockBranch(stockBranch);
-		parser.setUrl(url + date);
+		parser.setUrl(url + date + "&o=htm");
 		parser.setDate(date);
 		parser.getConnection();
 		parser.parse();
