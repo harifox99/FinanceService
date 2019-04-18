@@ -23,7 +23,7 @@ public class ImportPriceSFI extends ImportStockID
 			
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20180917/Desktop/Book1.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20190211/Desktop/Book1.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
