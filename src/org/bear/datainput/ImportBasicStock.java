@@ -20,7 +20,7 @@ public class ImportBasicStock extends ParseFile
 		ArrayList <BasicStockWrapper> list = new ArrayList <BasicStockWrapper>();
 		try
 		{			
-			reader = new BufferedReader(new FileReader("data/2016T2-04.csv"));
+			reader = new BufferedReader(new FileReader("data/2018T2-04.csv"));
 			//上市公司
 			while((readData = reader.readLine()) != null)
 			{
@@ -28,17 +28,25 @@ public class ImportBasicStock extends ParseFile
 					continue;
 				else
 				{
-					System.out.println(this.intRowIndex);
+					//System.out.println(this.intRowIndex);
 					bufferData = readData.split(",");
-					String stockID = bufferData[0].trim();				
+					String stockID = bufferData[0].trim();	
 					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true)
+					{
+						System.out.println("stockID:" + stockID);
 						list.add(this.getBasicStockWrapper(bufferData));
+					}
 					else if (new RegEx("^[0-9]{1,2}", stockID).isMatch() == true)
+					{
+						System.out.println("stockType:" + stockID);
 						stockType = Integer.parseInt(stockID);
+					}
 				}			
 			}
+			System.out.println("上市End:");
+			
 			//上櫃公司
-			reader = new BufferedReader(new FileReader("data/Gretai2016.csv"));
+			reader = new BufferedReader(new FileReader("data/Gretai2018.csv"));
 			while((readData = reader.readLine()) != null)
 			{
 				if (readData.equals(",,,,"))
@@ -54,6 +62,7 @@ public class ImportBasicStock extends ParseFile
 						list.add(this.getBasicGretaiWrapper(bufferData));
 				}			
 			}
+			System.out.println("上櫃End:");
 			
 		}
 		catch (IOException ex)
