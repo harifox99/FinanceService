@@ -33,7 +33,7 @@ public class GetMopsRevenue implements GetSFIContent {
 		paramList.add(new BasicNameValuePair("firstin", "true"));
 		boolean isSuccessful = false;
 		int loopIndex = 0;
-		while (isSuccessful == false && loopIndex++ < 10)
+		while (isSuccessful == false && loopIndex++ < 7)
 		{
 			String responseString = null;
 			try
@@ -75,7 +75,7 @@ public class GetMopsRevenue implements GetSFIContent {
 				//System.exit(0);
 				try 
 				{
-					Thread.sleep(FinancialReport.sleepTime * 6);
+					Thread.sleep(FinancialReport.sleepTime * 3);
 				} 
 				catch (InterruptedException e) 
 				{
