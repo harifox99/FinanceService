@@ -40,7 +40,7 @@ public class ImportPriceSFI extends ImportStockID
 				}
 				System.out.print(j);
 				int stockBranch = wrapperList.get(j).getStockBranch();
-				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");	
+				System.out.println("代碼：" + stockID + " " + idleTime + ". ");	
 				idleTime++;
 				if (sfi instanceof GetTwseIndividualIndex && stockBranch == 2)
 					continue;
