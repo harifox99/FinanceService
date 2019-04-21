@@ -25,17 +25,18 @@ public class ImportIncomeStatementCathay extends ImportStockID
 			int idleTime = 0;
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20180917/Desktop/Book1.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20190211/Desktop/Book1.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
 			}
 			reader.close();
-			for (int j = 0; j < wrapperList.size(); j++)
+			/*
+			for (int j = 1108; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] seasons = {"01", "02", "03"};
-				String[] years = {"2018"};
+				String[] seasons = {"01", "02", "03", "04"};
+				String[] years = {"2017"};
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;		
@@ -60,15 +61,17 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				}
 				Thread.sleep(FinancialReport.sleepTime);	
 				idleTime++;
-			}
-			/*
+			}*/
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 2;
-				String[] years = {"2015", "2016"};
+				int expectedNum = 6;
+				String[] years = {"2016", "2015", "2014", "2013", "2012", "2011"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
-
+				if (stockList.contains(stockID) == false)
+				{
+					continue;
+				}
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				//年資料
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, true);
@@ -76,7 +79,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				incomeStatementYear.parse(2);
 				Thread.sleep(FinancialReport.sleepTime);	
 				idleTime++;
-			}*/
+			}
 		}
 		catch (Exception ex)
 		{
