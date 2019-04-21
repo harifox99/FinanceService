@@ -368,7 +368,7 @@ public class BalanceSheetParserCathay extends ParserBase implements Parser
 		}
 		else
 		{
-			entity.setYear(StringUtil.convertYear(rowData));
+			entity.setYear(rowData);
 			entity.setSeasons("00");
 			entity.setStockID(stockID);
 		}

@@ -198,7 +198,7 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 		}
 		else
 		{
-			entity.setYear(StringUtil.convertYear(rowData));
+			entity.setYear(rowData);
 			entity.setSeasons("00");
 			entity.setStockID(stockID);
 		}
