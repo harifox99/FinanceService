@@ -15,7 +15,7 @@ public class BuildStockDistribution extends ImportStockID
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
-		String[] dateString = {"20181228"};
+		String[] dateString = {"20190531"};
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
