@@ -101,7 +101,7 @@ public class BuildThreeBigExchange {
 				         "106/12/25", "106/12/26", "106/12/27", "106/12/28", "106/12/29",
 				         "107/01/02", "107/01/03", "107/01/04", "107/01/05"
 				         };*/
-		String[] date = {"108/04/15"};
+		String[] date = {"108/06/28"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 		
@@ -118,26 +118,26 @@ public class BuildThreeBigExchange {
 			String url;
 			BuildThreeBigExchange exchange = new BuildThreeBigExchange();
 			//上市，外資&投信			
-			url = "http://www.tse.com.tw/fund/T86?response=html";
+			url = "https://www.twse.com.tw/fund/T86?response=html";
 			exchange.buildTwse(westenDate.replace("/", ""), 1, url);
 			//上櫃，外資&投信
 			//url = "http://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_print.php?l=en-us&se=EW&t=D&d=";
 			url = "https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php?l=en-us&se=EW&t=D&d=";
 			exchange.buildTpex(westenDate, 2, url);	
 			//證交所，三大法人買賣超金額
-			url = "http://www.tse.com.tw/fund/BFI82U?response=html";
+			url = "https://www.twse.com.tw/fund/BFI82U?response=html";
 			exchange.buildJuristicAmountInfo(westenDate.replace("/", ""), url);
 			//期交所，外資未平倉口數
-			url = "http://www.taifex.com.tw/cht/3/futContractsDate";
+			url = "https://www.taifex.com.tw/cht/3/futContractsDate";
 			exchange.buildTaiFexLot(westenDate, url, "", new TaifexLotParser(), 3);
 			//期交所前十大法人未沖銷部位
-			url = "http://www.taifex.com.tw/cht/3/largeTraderFutQry";
+			url = "https://www.taifex.com.tw/cht/3/largeTraderFutQry";
 			exchange.buildTopTen(westenDate, url);
 			//期交所外資/自營商選擇權未平倉餘額
-			url = "http://www.taifex.com.tw/cht/3/callsAndPutsDate";
+			url = "https://www.taifex.com.tw/cht/3/callsAndPutsDate";
 			exchange.buildOption(westenDate, url);
 			//大盤指數&成交量
-			url = "http://www.tse.com.tw/exchangeReport/FMTQIK?response=html";
+			url = "https://www.twse.com.tw/exchangeReport/FMTQIK?response=html";
 			exchange.buildIndex(westenDate.replace("/", ""), url);	
 			System.out.println(url);
 			//大盤指數&成交量
@@ -146,20 +146,20 @@ public class BuildThreeBigExchange {
 			//westenYear + "&mmon=" + dateArray[1];			
 			//exchange.buildVolumn(westenDate, url);
 			//外資借券
-			url = "http://www.twse.com.tw/exchangeReport/TWT93U?response=html";
+			url = "https://www.twse.com.tw/exchangeReport/TWT93U?response=html";
 			exchange.buildStockLending(westenDate.replace("/", ""), url);
 			//小台三大法人未平倉口數
-			url = "http://www.taifex.com.tw/cht/3/futContractsDate";
+			url = "https://www.taifex.com.tw/cht/3/futContractsDate";
 			exchange.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 3);
 			//小台未平倉餘額
-			url = "http://www.taifex.com.tw/cht/3/futDailyMarketReport";
+			url = "https://www.taifex.com.tw/cht/3/futDailyMarketReport";
 			exchange.buildMtxOi(westenDate, url);
 			System.out.println(url);
 			//00632R
-			url = "http://www.twse.com.tw/fund/MI_QFIIS?response=html&selectType=0099P&date=" + westenDate.replace("/", "");
+			url = "https://www.twse.com.tw/fund/MI_QFIIS?response=html&selectType=0099P&date=" + westenDate.replace("/", "");
 			this.setT50R(url, westenDate);
 			//Put Call Power
-			url = "http://www.taifex.com.tw/cht/3/optDailyMarketReport";
+			url = "https://www.taifex.com.tw/cht/3/optDailyMarketReport";
 			this.setPutCallPower(westenDate, url);
 			/*			
 			//證交所投信買超排名
