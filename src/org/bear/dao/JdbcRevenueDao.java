@@ -289,4 +289,16 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		}
 		return entityMergeList;
 	}
+
+	@Override
+	public List<RevenueEntity> findBySpecificDate(int size, String stockID, String year, String month) 
+	{
+		String sql = "select * from operatingRevenue where stockID = '" +
+		stockID + "' and (DATEPART(year, YearMonth) = '" + year + "') AND (DATEPART(month, YearMonth) = '" + month + "')" + 
+				" order by yearMonth desc";
+		System.out.println("SQL: " + sql);
+		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
+				BeanPropertyRowMapper.newInstance(RevenueEntity.class));
+		return entityList;
+	}
 }
