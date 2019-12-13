@@ -19,7 +19,8 @@ public class GetMopsRevenue implements GetSFIContent {
 	@Override
 	public void getContent(String stockID, String stockName, String startYear, String startMonth,
 			String endYear, String endMonth) {		
-		String url = "http://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";		
+		//String url = "http://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";	
+		String url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("encodeURIComponent", "1"));
 		paramList.add(new BasicNameValuePair("run", "Y"));
