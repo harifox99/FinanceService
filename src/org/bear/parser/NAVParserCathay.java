@@ -92,9 +92,9 @@ public class NAVParserCathay extends BalanceSheetParserCathay
 				}	
 				case SEASON:
 				{
-					if (rowData[k].length() > 3)
-						rowData[k] = rowData[k].substring(0, 3);
-					listYear.add(StringUtil.convertYear(rowData[k]));
+					if (rowData[k].length() > 4)
+						rowData[k] = rowData[k].substring(0, 4);
+					listYear.add(rowData[k]);
 					break;
 				}
 				default:
