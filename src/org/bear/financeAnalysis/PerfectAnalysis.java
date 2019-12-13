@@ -59,6 +59,9 @@ public class PerfectAnalysis
 	 * @param peDate 證交所本益比/股價 (日期)
 	 * @param compareDate 某個時間股價 (通常是6個月)
 	 * @param isMergeChineseYear 一二月營收是否合併計算
+	 * @param isSpecificDate 篩選日期
+	 * @param specificYear 篩選年
+	 * @param specificMonth 篩選月
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
@@ -66,7 +69,8 @@ public class PerfectAnalysis
 			int expectedGrossProfitRatio, int operatingProfitRatio, int expectedPe, 
 			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth, 
 			boolean isFreeCashFlow, boolean isOperatingCashFlow, boolean isNonOperating,
-			boolean isComparePrice, int priceRate, String peDate, String compareDate, boolean isMergeChineseYear)
+			boolean isComparePrice, int priceRate, String peDate, String compareDate, boolean isMergeChineseYear,
+			boolean isSpecificDate, String specificYear, String specificMonth)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -106,9 +110,31 @@ public class PerfectAnalysis
 				//System.out.println("stockID: " + stockID);
 				List<RevenueEntity> revenueList;
 				if (isMergeChineseYear)
-					revenueList = revenueDao.findByLatestMergeSize(maxMonth+1, stockList.get(i).getStockID());
+				{
+					if (isSpecificDate)
+					{
+						revenueList = revenueDao.findBySpecificDate(maxMonth, stockList.get(i).getStockID(), specificYear, specificMonth);
+						if (revenueList.size() > 0)
+							revenueList = revenueDao.findByLatestMergeSize(maxMonth+1, stockList.get(i).getStockID());
+						else
+							continue;
+					}
+					else
+						revenueList = revenueDao.findByLatestMergeSize(maxMonth+1, stockList.get(i).getStockID());
+				}
 				else
-					revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
+				{
+					if (isSpecificDate)
+					{
+						revenueList = revenueDao.findBySpecificDate(maxMonth, stockList.get(i).getStockID(), specificYear, specificMonth);
+						if (revenueList.size() > 0)
+							revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
+						else
+							continue;
+					}
+					else
+						revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
+				}
 				//Set Column Name
 				if (i == 0)
 				{
