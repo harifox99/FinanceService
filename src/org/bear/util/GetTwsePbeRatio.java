@@ -12,7 +12,7 @@ public class GetTwsePbeRatio {
 	HashMap<String, Double> hashPbr;
 	GetURLContent content;
 	//String url = "http://www.twse.com.tw/ch/trading/exchange/BWIBBU/BWIBBU_d.php";
-	String url = "http://www.twse.com.tw/exchangeReport/BWIBBU_d?response=html&selectType=ALL&date=";
+	String url = "https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=html&selectType=ALL&date=";
 	String date;
 	public String getDate() {
 		return date;
@@ -55,7 +55,7 @@ public class GetTwsePbeRatio {
 	public static void main(String args[])
 	{
 		GetTwsePbeRatio ratio = new GetTwsePbeRatio();
-		ratio.setDate("20170609");
+		ratio.setDate("2017/06/09");
 		ratio.getContent();
 	}
 }

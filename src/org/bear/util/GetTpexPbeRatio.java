@@ -13,7 +13,7 @@ public class GetTpexPbeRatio {
 	HashMap<String, Double> hashPbr;
 	GetURLContent content;
 	String date;
-	String url = "http://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera_print.php?l=zh-tw&d=";
+	String url = "https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera_print.php?l=zh-tw&d=";
 	public String getDate() {
 		return date;
 	}
