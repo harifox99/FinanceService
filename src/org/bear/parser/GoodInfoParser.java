@@ -27,7 +27,7 @@ public class GoodInfoParser
 			List<GoodInfoEntity> list = new ArrayList<GoodInfoEntity>();
 			Document xmlDoc = Jsoup.parse(responseString);
 	        //(要解析的文件,timeout)
-	        Element table = xmlDoc.select("table").get(58); //select the first table.
+	        Element table = xmlDoc.select("table").get(94); //select the first table.
 	        Elements rows = table.select("tr");
 	        for (int j = 0; j < rows.size(); j++)
 	        {
