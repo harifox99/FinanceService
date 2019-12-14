@@ -105,7 +105,7 @@ public class PerfectAnalysis
 			{
 				String stockID = stockList.get(i).getStockID();
 				String stockName = stockList.get(i).getStockName();
-				//if (!stockID.equals("1715"))
+				//if (!stockID.equals("1539"))
 					//continue;
 				//System.out.println("stockID: " + stockID);
 				List<RevenueEntity> revenueList;
@@ -395,20 +395,20 @@ public class PerfectAnalysis
 			if (isComparePrice == true)
 			{
 				//璸衡程穝基
-				String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
+				String url = "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
 				TwsePriceParser parser = new TwsePriceParser();
 				//チ瓣锣﹁じ
 				String[] dateArray = peDate.split("/");
 				String year = StringUtil.convertYear(dateArray[0]);
 				parser.setUrl(url + year + dateArray[1] + dateArray[2]);
 				parser.getConnection();
-				parser.parse(4);
+				parser.parse(8);
 				HashMap<String, Double> hashPrice = parser.getHashPrice();
 				//璸衡琘ら基 (硄盽琌)
 				parser = new TwsePriceParser();
 				parser.setUrl(url + compareDate.replace("/", ""));
 				parser.getConnection();
-				parser.parse(4);
+				parser.parse(8);
 				HashMap<String, Double> previousPrice = parser.getHashPrice();
 				columnNameList.add(compareDate.replace("/", "") + "\r\n" + "基");
 				columnNameList.add(year + dateArray[1] + dateArray[2] + "\r\n" + "程穝基");				
@@ -440,7 +440,7 @@ public class PerfectAnalysis
 			if (isComparePrice == true)
 			{
 				//璸衡程穝基
-				String url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+				String url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
 				TpexPriceParser parser = new TpexPriceParser();
 				parser.setUrl(url + peDate);
 				parser.getConnection();
