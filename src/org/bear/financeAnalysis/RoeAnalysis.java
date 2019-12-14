@@ -9,12 +9,14 @@ import org.bear.dao.BalanceSheetDao;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.FinancialDataDao;
 import org.bear.dao.IncomeStatementDao;
+import org.bear.dao.RevenueDao;
 import org.bear.entity.BuffettAnalysisWrapper;
 import org.bear.entity.FinancialDataEntity;
 import org.bear.entity.RoeYearWrapper;
 import org.bear.entity.BalanceSheetEntity;
 import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.IncomeStatementEntity;
+import org.bear.entity.RevenueEntity;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -44,8 +46,10 @@ public class RoeAnalysis
 	 * @param demandRoe 期望ROE
 	 * @return
 	 */
-	public List<RoeYearWrapper> getDemandROEList(int totalYear, int demandYear, int demandRoe, String discountRate)
+	public List<RoeYearWrapper> getDemandRoeList(int totalYear, int demandYear, int demandRoe, String discountRate,
+												boolean isBurstRevenue, int shortTerm, int longTerm)
 	{
+		RevenueDao revenueDao = (RevenueDao)context.getBean("revenueDao");
 		List<BasicStockWrapper> stockList = dao.findAllData();
 		List<RoeYearWrapper> roeYearList = new ArrayList<RoeYearWrapper>();
 		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy");
@@ -55,9 +59,17 @@ public class RoeAnalysis
 		{			
 			for (int i = 0; i < stockList.size(); i++)
 			{
+				if (isBurstRevenue)//短期營收超越長期營收
+				{
+					List<RevenueEntity> list = revenueDao.findByLatestSize(longTerm, stockList.get(i).getStockID());
+					if (list.size() < longTerm) //營收不足
+						continue;
+					if (this.isBurstRevenue(list, shortTerm, longTerm) == false)
+						continue;
+				}
 				String stockID = stockList.get(i).getStockID();
 				String stockName = stockList.get(i).getStockName();
-				//if (!stockID.equals("2330"))
+				//if (!stockID.equals("2493"))
 					//continue;				
 				financialList = financialDao.findDataByYear(stockID, String.valueOf(initYear));
 				balanceSheetList = balanceSheetDao.findDataByYear(stockID);
@@ -83,6 +95,10 @@ public class RoeAnalysis
 					roeList.add(StringUtil.setPointLength(roe*100));
 				}			
 				wrapper.setRoeList(roeList);
+				List<RevenueEntity> list = revenueDao.findByLatestSize(longTerm, stockList.get(i).getStockID());
+				//顯示短期營收與長期營收值
+				wrapper.setShortRevenue(this.averageRevenue(list, shortTerm));
+				wrapper.setLongRevenue(this.averageRevenue(list, longTerm));
 				if (this.checkExpectedRoe(roeList, demandRoe, demandYear))
 					roeYearList.add(wrapper);
 			}
@@ -130,5 +146,49 @@ public class RoeAnalysis
 				roeYearList.add(stockList.get(i));
 		}
 		return roeYearList;
+	}
+	
+	/**
+	 * 短期營收超越長期營收
+	 * @param list
+	 * @param shortTerm
+	 * @param longTerm
+	 * @return
+	 */
+	private boolean isBurstRevenue(List<RevenueEntity> list, int shortTerm, int longTerm)
+	{
+		double shortRevenue = 0;
+		double longRevenue = 0;
+		for (int i = 0; i < shortTerm; i++)
+		{
+			double revenue = (double)list.get(i).getRevenue() / list.get(i).getLastRevenue();
+			revenue = revenue - 1;
+			shortRevenue = shortRevenue + revenue;
+		}
+		shortRevenue = shortRevenue / shortTerm;
+		for (int i = 0; i < longTerm; i++)
+		{
+			double revenue = (double)list.get(i).getRevenue() / list.get(i).getLastRevenue();
+			revenue = revenue - 1;
+			longRevenue = longRevenue + revenue;
+		}
+		longRevenue = longRevenue / longTerm;
+		if (shortRevenue > longRevenue && shortRevenue > 0)
+			return true;
+		else
+			return false;
+	}
+	private double averageRevenue(List<RevenueEntity> list, int period)
+	{
+		double averageRevenue = 0;
+		for (int i = 0; i < period; i++)
+		{
+			double revenue = (double)list.get(i).getRevenue() / list.get(i).getLastRevenue();
+			revenue = revenue - 1;
+			averageRevenue = averageRevenue + revenue;
+		}
+		averageRevenue = averageRevenue / 3 * 100;
+		averageRevenue = StringUtil.setPointLength(averageRevenue);
+		return averageRevenue;
 	}
 }
