@@ -428,7 +428,7 @@ public class PerfectAnalysis
 					}
 					catch (NullPointerException ex)
 					{
-						System.out.println("Stock price null: " + stockID);
+						System.out.println("TWSE Stock price null: " + stockID);
 						calculateList.add(perfectList.get(i));
 					}
 				}
@@ -471,7 +471,7 @@ public class PerfectAnalysis
 					}
 					catch (NullPointerException ex)
 					{
-						System.out.println("Stock price null: " + stockID);
+						System.out.println("TPEX Stock price null: " + stockID);
 						calculateList.add(perfectList.get(i));
 					}
 				}
