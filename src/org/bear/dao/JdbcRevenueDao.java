@@ -263,6 +263,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		String sql = "select top " + (size+1) + " * from operatingRevenue where stockID = '" +
 		stockID + "' order by yearMonth desc";
 		List <RevenueEntity> entityMergeList = new ArrayList<RevenueEntity>();
+		List <RevenueEntity> newList = new ArrayList<RevenueEntity>();
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
 				BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		for (int i = 0; i < entityList.size(); i++)
@@ -287,7 +288,12 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 				entityMergeList.add(entityList.get(i));
 			}
 		}
-		return entityMergeList;
+		//若完全沒有一二月資料，則刪去最舊一筆
+		for (int i = 0; i < size; i++)
+		{
+			newList.add(entityMergeList.get(i));
+		}
+		return newList;
 	}
 
 	@Override
