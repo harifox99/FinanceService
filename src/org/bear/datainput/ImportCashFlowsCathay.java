@@ -20,13 +20,14 @@ public class ImportCashFlowsCathay extends ImportStockID
 			int idleTime = 0;
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20190211/Desktop/Book1.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20191118/Desktop/Book1.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
 			}
 			reader.close();
 			//年資料	
+			/*
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = 6;
@@ -43,14 +44,13 @@ public class ImportCashFlowsCathay extends ImportStockID
 				cashFlowsParser.parse(2);
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}		
+			}*/		
 			//季資料
-			/*
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2017"};
-				String[] seasons = {"01", "02", "03", "04"};						
+				String[] years = {"2019"};
+				String[] seasons = {"01", "02", "03"};						
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))
 					//continue;
@@ -73,7 +73,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 				}
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}*/
+			}
 		}
 		catch (Exception ex)
 		{
