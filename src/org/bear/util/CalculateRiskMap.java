@@ -151,8 +151,8 @@ public class CalculateRiskMap
 			}
 			wrapper = new RiskMapWrapper();
 			//計算近四季ROE
-			balanceSheetList = balanceSheetDao.findDataBySeason(stockID, "2009", "01");
-			incomeStatementList = incomeStatementDao.findDataBySeason(stockID, "2009", "01");
+			balanceSheetList = balanceSheetDao.findDataBySeason(stockID, "2015", "01");
+			incomeStatementList = incomeStatementDao.findDataBySeason(stockID, "2015", "01");
 			//平均股東權益
 			int averageEquity = 0;
 			//稅後淨利
