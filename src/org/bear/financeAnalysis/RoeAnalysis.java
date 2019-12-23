@@ -179,6 +179,12 @@ public class RoeAnalysis
 		else
 			return false;
 	}
+	/**
+	 * ¥­§¡Àç¦¬
+	 * @param list
+	 * @param period
+	 * @return
+	 */
 	private double averageRevenue(List<RevenueEntity> list, int period)
 	{
 		double averageRevenue = 0;
