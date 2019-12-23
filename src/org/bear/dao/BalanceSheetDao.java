@@ -15,6 +15,8 @@ public interface BalanceSheetDao
 	public List<BalanceSheetEntity> findDataBySeason(String stockID, String year, String seasons);
 	public List<BalanceSheetEntity> findDataByYear(String stockID, String year);
 	public List<BalanceSheetEntity> findDataByYear(String stockID);
+	//擷取最新的資料
+	public List<BalanceSheetEntity> findLatest(String stockID, int num);
 	public void insert(BalanceSheetEntity balanceSheetEntity);
 	public void insertWithCheck(BalanceSheetEntity balanceSheetEntity);
 }

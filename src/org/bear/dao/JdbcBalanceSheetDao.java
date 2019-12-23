@@ -5,7 +5,6 @@ package org.bear.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bear.entity.BalanceSheetEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -109,6 +108,15 @@ public class JdbcBalanceSheetDao extends SimpleJdbcDaoSupport implements
 			SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(balanceSheetEntity);
 			this.getSimpleJdbcTemplate().update(sql, parameterSource);
 		}		
+	}
+
+	@Override
+	public List<BalanceSheetEntity> findLatest(String stockID, int num) {
+		List <BalanceSheetEntity> wrapperList = null;
+		String sql = "select top (" + num + ") * from balanceSheet where stockid = '" + 
+		stockID + "' and seasons <> '00' order by year desc, seasons desc";
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BalanceSheetEntity.class));
+		return wrapperList;
 	}
 
 }

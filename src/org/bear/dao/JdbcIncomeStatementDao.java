@@ -5,7 +5,6 @@ package org.bear.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bear.entity.IncomeStatementEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -140,6 +139,15 @@ public class JdbcIncomeStatementDao extends SimpleJdbcDaoSupport implements
 		String sql = "select top " + size + " * from incomeStatement where stockID = '" +
 		stockID + "' and seasons = '00' order by YEAR desc";
 		//System.out.println("SQL: " + sql);
+		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
+		return wrapperList;
+	}
+
+	@Override
+	public List<IncomeStatementEntity> findLatest(String stockID, int num) {
+		List <IncomeStatementEntity> wrapperList = null;
+		String sql = "select top (" + num + ") * from incomeStatement where stockid = '" + 
+		stockID + "' and seasons <> '00' order by year desc, seasons desc";
 		wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(IncomeStatementEntity.class));
 		return wrapperList;
 	}

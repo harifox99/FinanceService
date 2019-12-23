@@ -16,7 +16,9 @@ public interface IncomeStatementDao {
 	public List<IncomeStatementEntity> findDataByYear(String stockID);
 	public void insert(IncomeStatementEntity incomeStatementEntity);
 	public void insertWithCheck(IncomeStatementEntity incomeStatementEntity);
+	//擷取最新的資料 (不含年資料)
 	public List<IncomeStatementEntity> findDataByLatest(int size, String stockID);
 	public List<IncomeStatementEntity> findDataByLatestYear(int size, String stockID);
 	public IncomeStatementEntity findSingleDataBySeason(String stockID, String year, String seasons);
+	public List<IncomeStatementEntity> findLatest(String stockID, int num);
 }
