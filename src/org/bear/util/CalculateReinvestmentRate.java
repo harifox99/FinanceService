@@ -63,14 +63,31 @@ public class CalculateReinvestmentRate extends BasicEntity
 				reinvestmentRate = (double)(balanceSheetList.get(i).getFixedAssets() + balanceSheetList.get(i).getLongTermInvestment() -
 				balanceSheetList.get(i-arraySize).getFixedAssets() - balanceSheetList.get(i-arraySize).getLongTermInvestment())/
 				(incomeStatementList.get(i).getNetIncome() + incomeStatementList.get(i-1).getNetIncome() + incomeStatementList.get(i-2).getNetIncome() + incomeStatementList.get(i-3).getNetIncome());
-				reinvestmentRate = StringUtil.setPointLength(reinvestmentRate*100);
+				//分母 =0
+				if (incomeStatementList.get(i).getNetIncome() + incomeStatementList.get(i-1).getNetIncome() + incomeStatementList.get(i-2).getNetIncome() + incomeStatementList.get(i-3).getNetIncome() == 0)
+					reinvestmentRate = 0;
+				else
+					reinvestmentRate = StringUtil.setPointLength(reinvestmentRate*100);
 				reinvestmentRateList.add(reinvestmentRate);
 			}
-			balanceSheetList = balanceSheetDao.findDataBySeason(stockID, year, seasons);
+			//這裡的資產負債和損益資料長度不一定正確，所以擷取最新4季資料即可
+			/*
+		    balanceSheetList = balanceSheetDao.findDataBySeason(stockID, year, seasons);
 			incomeStatementList = incomeStatementDao.findDataBySeason(stockID, year, seasons);
 			for (int i = balanceSheetList.size() - 1; i >= balanceSheetList.size() - arraySize; i--)
 			{           
 				if (i == balanceSheetList.size() - 1)
+				{
+					fiexdAsset = balanceSheetList.get(i).getFixedAssets();
+					longTermInvestment = balanceSheetList.get(i).getLongTermInvestment();
+				}				
+				netIncome += incomeStatementList.get(i).getNetIncome();
+			}*/
+			balanceSheetList = balanceSheetDao.findLatest(stockID, 4);
+			incomeStatementList = incomeStatementDao.findLatest(stockID, 4);
+			for (int i = 0; i < balanceSheetList.size(); i++)
+			{           
+				if (i == 0)
 				{
 					fiexdAsset = balanceSheetList.get(i).getFixedAssets();
 					longTermInvestment = balanceSheetList.get(i).getLongTermInvestment();
