@@ -59,6 +59,10 @@ public class RoeAnalysis
 		{			
 			for (int i = 0; i < stockList.size(); i++)
 			{
+				String stockID = stockList.get(i).getStockID();
+				String stockName = stockList.get(i).getStockName();
+				//if (!stockID.equals("2493"))
+					//continue;			
 				if (isBurstRevenue)//短期營收超越長期營收
 				{
 					List<RevenueEntity> list = revenueDao.findByLatestSize(longTerm, stockList.get(i).getStockID());
@@ -67,10 +71,7 @@ public class RoeAnalysis
 					if (this.isBurstRevenue(list, shortTerm, longTerm) == false)
 						continue;
 				}
-				String stockID = stockList.get(i).getStockID();
-				String stockName = stockList.get(i).getStockName();
-				//if (!stockID.equals("2493"))
-					//continue;				
+					
 				financialList = financialDao.findDataByYear(stockID, String.valueOf(initYear));
 				balanceSheetList = balanceSheetDao.findDataByYear(stockID);
 				incomeStatementList = incomeStatementDao.findDataByYear(stockID);
@@ -187,7 +188,7 @@ public class RoeAnalysis
 			revenue = revenue - 1;
 			averageRevenue = averageRevenue + revenue;
 		}
-		averageRevenue = averageRevenue / 3 * 100;
+		averageRevenue = averageRevenue / period * 100;
 		averageRevenue = StringUtil.setPointLength(averageRevenue);
 		return averageRevenue;
 	}
