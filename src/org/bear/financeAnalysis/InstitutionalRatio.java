@@ -206,48 +206,55 @@ public class InstitutionalRatio
     		int days, String buyer, int maxSize)
     { 	
     	final int converter = 100;
-    	for (int index = 0; index < maxSize; index++) 
+    	try
     	{
-    		InstitutionalEntity entity = list.get(index);		
-    		//股票代碼
-    		String stockID = list.get(index).getStockID();
-    		BasicStockWrapper basicEntity = basicStockDao.findBasicData(stockID);
-    	    //未排序交易資訊 (成交量)
-    	    List<ThreeBigExchangeEntity> listRawData = juristicDailyReportDao.findStockBySize(stockID, days, buyer);
-    		//計算單日成交比率
-    		List<Double> ratioList = new ArrayList<Double>();    		
-        	for (int i = 0; i < listRawData.size(); i++)
-        	{
-        		//成交量
-        		double quantity = listRawData.get(i).getQuantity();
-        		double ratio = (double)quantity/basicEntity.getCapital()/converter;
-        		ratioList.add(StringUtil.setPointLength(ratio));
-        	}    	        	        	     	        	    
-    	    int buy = 0;    	        	       	       	    
-    	    for (int i = 0; i < ratioList.size(); i++)
-    	    {
-    	    	if (ratioList.get(i) > 0)
-    	    		buy++;
-    	    }
-    	    //過去M天買N天
-    	    entity.setComment("過去" + ratioList.size() + "天，買" + buy + "天");
-    	    buy = 0;
-    	    for (int i = 0; i < ratioList.size(); i++)
-    	    {
-    	    	if (ratioList.get(i) > 0)
-    	    		buy++;
-    	    	else
-    	    		break;
-    	    }    
-    	    //連續買超天數
-    	    entity.setConsecutiveDays("連續買超" + buy + "天");
-    	    //名稱
-    	    String name = basicEntity.getStockName();
-    	    entity.setName(name);
-    	    //股本
-    	    double capital = basicEntity.getCapital();
-    	    entity.setCapital(StringUtil.setPointLength(capital));
-    	}    	
+	    	for (int index = 0; index < maxSize; index++) 
+	    	{
+	    		InstitutionalEntity entity = list.get(index);		
+	    		//股票代碼
+	    		String stockID = list.get(index).getStockID();
+	    		BasicStockWrapper basicEntity = basicStockDao.findBasicData(stockID);
+	    	    //未排序交易資訊 (成交量)
+	    	    List<ThreeBigExchangeEntity> listRawData = juristicDailyReportDao.findStockBySize(stockID, days, buyer);
+	    		//計算單日成交比率
+	    		List<Double> ratioList = new ArrayList<Double>();    		
+	        	for (int i = 0; i < listRawData.size(); i++)
+	        	{
+	        		//成交量
+	        		double quantity = listRawData.get(i).getQuantity();
+	        		double ratio = (double)quantity/basicEntity.getCapital()/converter;
+	        		ratioList.add(StringUtil.setPointLength(ratio));
+	        	}    	        	        	     	        	    
+	    	    int buy = 0;    	        	       	       	    
+	    	    for (int i = 0; i < ratioList.size(); i++)
+	    	    {
+	    	    	if (ratioList.get(i) > 0)
+	    	    		buy++;
+	    	    }
+	    	    //過去M天買N天
+	    	    entity.setComment("過去" + ratioList.size() + "天，買" + buy + "天");
+	    	    buy = 0;
+	    	    for (int i = 0; i < ratioList.size(); i++)
+	    	    {
+	    	    	if (ratioList.get(i) > 0)
+	    	    		buy++;
+	    	    	else
+	    	    		break;
+	    	    }    
+	    	    //連續買超天數
+	    	    entity.setConsecutiveDays("連續買超" + buy + "天");
+	    	    //名稱
+	    	    String name = basicEntity.getStockName();
+	    	    entity.setName(name);
+	    	    //股本
+	    	    double capital = basicEntity.getCapital();
+	    	    entity.setCapital(StringUtil.setPointLength(capital));
+	    	}    
+    	}
+    	catch (Exception ex)
+    	{
+    		ex.printStackTrace();
+    	}
     	System.out.println("");
     }
     /**
@@ -263,7 +270,7 @@ public class InstitutionalRatio
     	for (int i = 0; i < maxSize; i++)
     	{
     		InstitutionalEntity entity = list.get(i);
-    		String url = "http://www.tdcc.com.tw/smWeb/QryStockAjax.do";
+    		String url = "https://www.tdcc.com.tw/smWeb/QryStockAjax.do";
     		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
     		paramList.add(new BasicNameValuePair("scaDate", dateString));
     		paramList.add(new BasicNameValuePair("scaDates", dateString));
@@ -283,9 +290,9 @@ public class InstitutionalRatio
     			double eightHundredRatio = 0;
 	    		try
 	    		{
-	    			String responseString = HttpUtil.send(url, paramList, 1, "big5");
+	    			String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
 	    			Document doc = Jsoup.parse(responseString);
-	    			Element table = doc.select("table").get(8);
+	    			Element table = doc.select("table").get(7);
 		    		Elements tr = table.select("tr");
 		    		//400-600, 600-800, 800-1000, 1000+ (共4份資料)
 		    		for (int j = startTrIndex; j < startTrIndex + 4; j++)
@@ -334,14 +341,14 @@ public class InstitutionalRatio
     private void getPrice(List<InstitutionalEntity> list, String dateString)
     {
     	//證交所
-    	String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
+    	String url = "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
 		TwsePriceParser twseParser = new TwsePriceParser();
 		twseParser.setUrl(url + dateString);
 		twseParser.getConnection();
 		twseParser.parse(4);
 		HashMap<String, Double> hashPrice = twseParser.getHashPrice();	
 		//櫃買
-		url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+		url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
 		TpexPriceParser tpexParser = new TpexPriceParser();
 		String year = dateString.substring(0, 4);
 		dateString = StringUtil.convertChineseYear(year) + "/" + dateString.substring(4, 6) + "/" + dateString.substring(6, 8);
@@ -376,7 +383,7 @@ public class InstitutionalRatio
     	try
     	{	    	
 	    	//計算某個日子股價 (上市)
-	    	String url = "http://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
+	    	String url = "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=html&type=ALLBUT0999&date=";
 	    	TwsePriceParser twseParser = new TwsePriceParser();
 	    	twseParser.setUrl(url + compareDate.replace("/", ""));
 	    	twseParser.getConnection();
@@ -385,7 +392,7 @@ public class InstitutionalRatio
 			//計算某個日子股價 (上櫃)
 			TpexPriceParser tpexParser = new TpexPriceParser();
 			String year = compareDate.substring(0, 4);
-			url = "http://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+			url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
 			compareDate = StringUtil.convertChineseYear(year) + "/" + compareDate.substring(4, 6) + "/" + compareDate.substring(6, 8);
 			tpexParser.setUrl(url + compareDate);
 			tpexParser.getConnection();
@@ -450,7 +457,9 @@ public class InstitutionalRatio
 	    	}
         }
         catch (Exception ex)
-        {}
+        {
+        	ex.printStackTrace();
+        }
     }
     /**
      * 新增KD指標
