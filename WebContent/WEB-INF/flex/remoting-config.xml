@@ -99,4 +99,9 @@
             <source>org.bear.financeAnalysis.RedRabbitChart</source>
         </properties>
     </destination>
+    <destination id="institutionRatio">
+        <properties>
+            <source>org.bear.financeAnalysis.InstitutionalRatio</source>
+        </properties>
+    </destination>
 </service>
