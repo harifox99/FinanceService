@@ -430,6 +430,7 @@ public class InstitutionalRatio
 	    	{
 	    		InstitutionalEntity entity = list.get(i);
 	    		String urlString = urlHeader + entity.getStockID() + "&c=" + date + "&d=" + date;
+	    		System.out.println(urlString);
 	    		URL url = new URL(urlString);//在這邊輸入你要解析的網頁網址 
 		        Document xmlDoc =  Jsoup.parse(url, 3000); //使用Jsoup jar 去解析網頁
 		        //(要解析的文件,timeout)
