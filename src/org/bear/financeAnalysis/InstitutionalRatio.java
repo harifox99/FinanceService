@@ -103,7 +103,7 @@ public class InstitutionalRatio
 		listForeignerEntity = this.checkPrice(listForeignerEntity, price);
 		this.consecutiveExchange(listForeignerEntity, days, buyer, maxSize);	
 		this.majorHolder(listForeignerEntity, maxSize, date);	
-		this.ShareholdingRatio(listForeignerEntity, maxSize, date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8));
+		this.ShareholdingRatio(listForeignerEntity, maxSize, priceDate.substring(0, 4) + "-" + priceDate.substring(4, 6) + "-" + priceDate.substring(6, 8));
 		this.addKD(listForeignerEntity, priceDate);
 		return listForeignerEntity;
 	}
@@ -424,10 +424,10 @@ public class InstitutionalRatio
     public void ShareholdingRatio(List<InstitutionalEntity> list, int maxSize, String date)
     {
         String urlHeader = "http://moneydj.emega.com.tw/z/zc/zcl/zcl.djhtm?a=";
-        try
-        {
-	    	for (int i = 0; i < maxSize; i++)
-	    	{
+    	for (int i = 0; i < maxSize; i++)
+    	{
+    		try
+            {
 	    		InstitutionalEntity entity = list.get(i);
 	    		String urlString = urlHeader + entity.getStockID() + "&c=" + date + "&d=" + date;
 	    		System.out.println(urlString);
@@ -454,13 +454,14 @@ public class InstitutionalRatio
 		        		//System.out.println(mutualFundRatio);
 		        		list.get(i).setMutualFund(mutualFundRatio);
 		        	}
-		        }	    	
-	    	}
+		        }   
+            }
+    		catch (Exception ex)
+	        {
+	        	ex.printStackTrace();
+	        }
         }
-        catch (Exception ex)
-        {
-        	ex.printStackTrace();
-        }
+       
     }
     /**
      * 新增KD指標
@@ -484,10 +485,10 @@ public class InstitutionalRatio
 			}
 			else
 			{
-				entity.setDay_d(">20");
-				entity.setDay_k(">20");
-				entity.setWeek_d(">20");
-				entity.setWeek_k(">20");
+				entity.setDay_d("N");
+				entity.setDay_k("N");
+				entity.setWeek_d("N");
+				entity.setWeek_k("N");
 				entity.setDay_kd_20("N");
 				entity.setWeek_kd_20("N");
 			}
