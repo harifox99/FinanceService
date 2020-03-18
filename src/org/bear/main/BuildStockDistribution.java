@@ -15,13 +15,19 @@ public class BuildStockDistribution extends ImportStockID
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
-		String[] dateString = {"20191129"};
+		String[] dateString = {"20200227"};
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				//if (!wrapperList.get(j).getStockID().equals("3577"))
-					//continue;
+				
+				if (!wrapperList.get(j).getStockID().equals("1235") &&
+					!wrapperList.get(j).getStockID().equals("3562") &&	
+					!wrapperList.get(j).getStockID().equals("4939") &&
+					//!wrapperList.get(j).getStockID().equals("6128") &&
+					//!wrapperList.get(j).getStockID().equals("6240") &&
+					!wrapperList.get(j).getStockID().equals("5392"))
+					continue;
 				System.out.println("StockID: " + wrapperList.get(j).getStockID() + ", " + j);
 				StockDistribution stockDistribution = new StockDistribution();
 				stockDistribution.setDao(stockDistributionDao);

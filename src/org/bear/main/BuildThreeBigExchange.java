@@ -101,7 +101,7 @@ public class BuildThreeBigExchange {
 				         "106/12/25", "106/12/26", "106/12/27", "106/12/28", "106/12/29",
 				         "107/01/02", "107/01/03", "107/01/04", "107/01/05"
 				         };*/
-		String[] date = {"108/12/13"};
+		String[] date = {"109/03/13"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 		
