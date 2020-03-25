@@ -68,9 +68,8 @@ public class InstitutionalRatio
 		ValueComparator foreignerVC = new ValueComparator(mapForeigner);
 		TreeMap<String, Double> sortedForeigner = new TreeMap<String, Double>(foreignerVC);
 		for (int i = 0; i < listStock.size(); i++)
-		//for (int i = 0; i < 100; i++)
 		{
-			//if (!listStock.get(i).getStockID().equals("2421"))
+			//if (!listStock.get(i).getStockID().equals("2458"))
 				//continue;
 			//得到該股票的外資交易資料
 			listForeigner = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, buyer);		
@@ -208,6 +207,8 @@ public class InstitutionalRatio
     	final int converter = 100;
     	try
     	{
+    		if (maxSize > list.size())
+    			maxSize = list.size();
 	    	for (int index = 0; index < maxSize; index++) 
 	    	{
 	    		InstitutionalEntity entity = list.get(index);		
@@ -216,7 +217,7 @@ public class InstitutionalRatio
 	    		BasicStockWrapper basicEntity = basicStockDao.findBasicData(stockID);
 	    	    //未排序交易資訊 (成交量)
 	    	    List<ThreeBigExchangeEntity> listRawData = juristicDailyReportDao.findStockBySize(stockID, days, buyer);
-	    		//計算單日成交比率
+	    		//計算單日成交比率 
 	    		List<Double> ratioList = new ArrayList<Double>();    		
 	        	for (int i = 0; i < listRawData.size(); i++)
 	        	{
@@ -267,6 +268,8 @@ public class InstitutionalRatio
     {
     	//400大戶從第12行開始
     	final int startTrIndex = 12;
+    	if (maxSize > list.size())
+			maxSize = list.size();
     	for (int i = 0; i < maxSize; i++)
     	{
     		InstitutionalEntity entity = list.get(i);
@@ -424,6 +427,8 @@ public class InstitutionalRatio
     public void ShareholdingRatio(List<InstitutionalEntity> list, int maxSize, String date)
     {
         String urlHeader = "http://moneydj.emega.com.tw/z/zc/zcl/zcl.djhtm?a=";
+        if (maxSize > list.size())
+			maxSize = list.size();
     	for (int i = 0; i < maxSize; i++)
     	{
     		try
