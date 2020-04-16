@@ -1,5 +1,8 @@
 package org.bear.main;
 import java.util.HashMap;
+import java.util.Properties;
+
+import javax.mail.Session;
 
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
@@ -12,6 +15,7 @@ import org.bear.parser.TpexThreeBigExchangeParser;
 import org.bear.parser.TwseDailyDataParser;
 import org.bear.parser.TwseStockLendingParser;
 import org.bear.parser.TwseThreeBigAmountParser;
+import org.bear.util.EmailUtil;
 import org.bear.util.StringUtil;
 import org.bear.util.distribution.GetMtxTotalOi;
 import org.bear.util.distribution.GetPutCallPower;
@@ -185,6 +189,13 @@ public class BuildThreeBigExchange {
 			request.conn(true, westenDate);
 			request.conn(false, westenDate);
 			System.out.println(westenDate + " End!");
+			//Send Mail
+			String smtpHostServer = "msa.hinet.net";
+		    String emailID = "bear@cht.com.tw";
+		    Properties props = System.getProperties();
+		    props.put("mail.smtp.host", smtpHostServer);
+		    Session session = Session.getInstance(props, null);
+			EmailUtil.sendEmail(session, emailID, "Äw½X¤é³ø", westenDate + " End!");
 		}
 	}
 	/**
