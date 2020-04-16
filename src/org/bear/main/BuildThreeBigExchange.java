@@ -1,7 +1,6 @@
 package org.bear.main;
 import java.util.HashMap;
 import java.util.Properties;
-
 import javax.mail.Session;
 
 import org.bear.dao.JuristicDailyReportDao;
@@ -190,12 +189,16 @@ public class BuildThreeBigExchange {
 			request.conn(false, westenDate);
 			System.out.println(westenDate + " End!");
 			//Send Mail
-			String smtpHostServer = "msa.hinet.net";
+			String smtpHostServer = "msr.hinet.net";
 		    String emailID = "bear@cht.com.tw";
 		    Properties props = System.getProperties();
+		    props.put("mail.smtp.auth", "true");
 		    props.put("mail.smtp.host", smtpHostServer);
+		    props.put("mail.smtp.port", 587);
+		    final String user = "love.wine@msa.hinet.net";
+		    final String pass = "chtl@9191";   
 		    Session session = Session.getInstance(props, null);
-			EmailUtil.sendEmail(session, emailID, "籌碼日報", westenDate + " End!");
+			EmailUtil.sendEmail(session, emailID, "籌碼日報", westenDate + " End!", user, pass);
 		}
 	}
 	/**

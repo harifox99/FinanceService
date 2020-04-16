@@ -19,7 +19,7 @@ public class EmailUtil {
 	 * @param subject
 	 * @param body
 	 */
-	public static void sendEmail(Session session, String toEmail, String subject, String body)
+	public static void sendEmail(Session session, String toEmail, String subject, String body, String user, String pass)
 	{
 		try
 	    {
@@ -35,7 +35,7 @@ public class EmailUtil {
 		    msg.setSentDate(new Date());
 		    msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
 		    System.out.println("Message is ready");
-	    	Transport.send(msg);  
+	    	Transport.send(msg, user, pass);  
 		    System.out.println("EMail Sent Successfully!!");
 	    }
 	    catch (Exception e) 
@@ -51,6 +51,6 @@ public class EmailUtil {
 	    Properties props = System.getProperties();
 	    props.put("mail.smtp.host", smtpHostServer);
 	    Session session = Session.getInstance(props, null);
-	    EmailUtil.sendEmail(session, emailID, "每日籌碼報表", "SimpleEmail Testing Body");
+	    EmailUtil.sendEmail(session, emailID, "每日籌碼報表", "SimpleEmail Testing Body", "", "");
 	}
 }
