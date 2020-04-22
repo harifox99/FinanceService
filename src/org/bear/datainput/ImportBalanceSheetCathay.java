@@ -24,7 +24,7 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			int idleTime = 0;
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20191118/Desktop/Book1.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20200324/Desktop/Book1.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
@@ -34,7 +34,7 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2019"};
-				String[] seasons = {"01", "02", "03"};				
+				String[] seasons = {"01", "02", "03", "04"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
@@ -62,8 +62,8 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 6;
-				String[] years = {"2016", "2015", "2014", "2013", "2012", "2011"};
+				int expectedNum = 2;
+				String[] years = {"2019", "2018"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				if (stockList.contains(stockID) == false)
