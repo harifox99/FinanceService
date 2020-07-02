@@ -64,5 +64,35 @@ public class GetURLContentBase
 		}
 		return elementList;
 	}
+	/**
+	 * source = new Source(new URL(urlString));有時候擷取會失敗，所以直接把傳回的responseString丟去Parse
+	 * @param responseString 回應的HTML String
+	 * @return
+	 */
+	public List<Element> getContentString(String responseString)
+	{
+		boolean isConnect = false;
+		List<Element> elementList = null;
+		while (isConnect == false)
+		{
+			//System.out.println(source.toString());
+			try
+			{
+				CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
+				Source source = new Source(responseString);
+				elementList = source.getAllElements(HTMLElementName.TABLE);
+				//source = new Source(new URL(urlString));
+				isConnect = true;
+			}
+			catch (IndexOutOfBoundsException ex)
+			{
+				System.out.println("查無此股票籌碼資訊!");
+			}
+		}
+		return elementList;
+	}
+	public String getUrlString() {
+		return urlString;
+	}
 }
 
