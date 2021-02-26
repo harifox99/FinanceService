@@ -184,9 +184,9 @@ public class BuildThreeBigExchange {
 			juristicDailyReportDao.updateRank("外資", westenDate.replace("/", ""));
 			juristicDailyReportDao.updateRank("投信", westenDate.replace("/", ""));
 			//KD指標
-			//GoodInfoRequest request = new GoodInfoRequest();
-			//request.conn(true, westenDate);
-			//request.conn(false, westenDate);
+			GoodInfoRequest request = new GoodInfoRequest();
+			request.conn(true, westenDate);
+			request.conn(false, westenDate);
 			System.out.println(westenDate + " End!");
 			//Send Mail
 			String smtpHostServer = "msr.hinet.net";
