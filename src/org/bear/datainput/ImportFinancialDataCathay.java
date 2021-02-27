@@ -13,6 +13,7 @@ import org.bear.util.GetURLCathayCashDiv;
 import org.bear.util.GetURLCathayNav;
 import org.bear.util.GetURLCathayNavSingle;
 import org.bear.util.GetURLContentBase;
+import org.bear.util.HttpUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -62,7 +63,8 @@ public class ImportFinancialDataCathay extends ImportStockID
 			urlNav = new GetURLCathayNav(stockID, true);
 		else
 			urlNav = new GetURLCathayNavSingle(stockID, true);
-		NAVParserCathay navParser = new NAVParserCathay(urlNav.getContent(), stockID);
+		String responseString = HttpUtil.httpGet(urlNav.getUrlString(), "UTF-8");
+		NAVParserCathay navParser = new NAVParserCathay(urlNav.getContentString(responseString), stockID);
 		navParser.parse(2);
 		//每年配發股息
 		GetURLCathayCashDiv urlCashDiv = new GetURLCathayCashDiv(stockID);
@@ -91,7 +93,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
 			//只要當年的
-			if (entity.year.equals("2016"))
+			if (entity.year.equals("2018"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
