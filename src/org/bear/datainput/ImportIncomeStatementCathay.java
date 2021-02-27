@@ -11,6 +11,7 @@ import java.util.List;
 import org.bear.constant.FinancialReport;
 import org.bear.parser.IncomeStatementParserCathay;
 import org.bear.util.GetURLCathayIncomeStatement;
+import org.bear.util.HttpUtil;
 
 /**
  * @author edward
@@ -25,7 +26,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 			int idleTime = 0;
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20191118/Desktop/Book1.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20200324/Desktop/Book1.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
@@ -36,7 +37,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] seasons = {"01", "02", "03"};
-				String[] years = {"2019"};
+				String[] years = {"2020"};
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;		
@@ -47,7 +48,8 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				System.out.println("¥N½X¡G" + stockID + " " + idleTime + ". ");
 				//©u¸ê®Æ
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, false);
-				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContentString(responseString), stockID, false, years, seasons, expectedNum, true);
 				
 				try
 				{					
@@ -65,8 +67,8 @@ public class ImportIncomeStatementCathay extends ImportStockID
 			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 6;
-				String[] years = {"2016", "2015", "2014", "2013", "2012", "2011"};
+				int expectedNum = 1;
+				String[] years = {"2019"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				if (stockList.contains(stockID) == false)

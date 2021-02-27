@@ -30,8 +30,8 @@ public class ImportCashFlowsCathay extends ImportStockID
 			/*
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
-				int expectedNum = 2;
-				String[] years = {"2019", "2018"};
+				int expectedNum = 1;
+				String[] years = {"2019"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(i).getStockID();
 				if (stockList.contains(stockID) == false)
@@ -49,8 +49,8 @@ public class ImportCashFlowsCathay extends ImportStockID
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2019"};
-				String[] seasons = {"01", "02", "03", "04"};						
+				String[] years = {"2020"};
+				String[] seasons = {"01", "02", "03"};						
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))
 					//continue;
@@ -60,7 +60,8 @@ public class ImportCashFlowsCathay extends ImportStockID
 				}
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
-				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, false, expectedNum, true);
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContentString(responseString), stockID, years, seasons, false, expectedNum, true);
 				try
 				{					
 					cashFlowsParser.parse(2);

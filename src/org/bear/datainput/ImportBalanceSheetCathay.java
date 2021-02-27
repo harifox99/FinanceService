@@ -10,6 +10,7 @@ import java.util.List;
 import org.bear.constant.FinancialReport;
 import org.bear.parser.BalanceSheetParserCathay;
 import org.bear.util.GetURLCathayBalanceSheet;
+import org.bear.util.HttpUtil;
 
 /**
  * @author edward
@@ -30,11 +31,12 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				stockList.add(readData);
 			}
 			reader.close();
+			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2019"};
-				String[] seasons = {"01", "02", "03", "04"};				
+				String[] years = {"2020"};
+				String[] seasons = {"01", "02", "03"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
@@ -45,7 +47,8 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				System.out.println("¥N½X¡G" + stockID + " " + idleTime + ". ");				
 				//©u¸ê®Æ
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
-				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContent(), stockID, false, years, seasons, expectedNum, true);
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContentString(responseString), stockID, false, years, seasons, expectedNum, true);
 				try
 				{					
 					balanceSheetSeason.parse(2);
@@ -62,8 +65,8 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 2;
-				String[] years = {"2019", "2018"};
+				int expectedNum = 1;
+				String[] years = {"2019"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				if (stockList.contains(stockID) == false)
