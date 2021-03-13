@@ -352,7 +352,7 @@ public class RedRabbitRevenueAnalysis
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
 		List<RedRabbitStockWrapper> wrapperList = new ArrayList<RedRabbitStockWrapper>();
 		//原始資料
-		List<BasicStockWrapper> stockIdList = basicStockDao.findAllData();	
+		List<BasicStockWrapper> stockIdList = basicStockDao.findSpecificDate();	
 		//符合條件的資料
 		List<BasicStockWrapper> conditionalList;
 		//暫時的計算結果
