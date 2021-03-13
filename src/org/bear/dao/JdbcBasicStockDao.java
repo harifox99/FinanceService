@@ -1,6 +1,7 @@
 package org.bear.dao;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.bear.entity.BasicStockWrapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -69,6 +70,34 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		{
 			return null;
 		}
+	}
+
+	@Override
+	public List<BasicStockWrapper> findSpecificDate() 
+	{		
+		Date date = new Date();
+		//設定日期格式
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");
+		//進行轉換
+		String dateString = dateFormat.format(date);
+		int year = Integer.parseInt(dateString.substring(0, 4));
+		int month = Integer.parseInt(dateString.substring(4, 6));
+		if (month == 1)
+		{
+			month = 12;
+			year = year - 1;
+		}
+		else
+		{
+			month = month - 1;
+		}
+		String sql = "select * from operatingRevenue where " +
+				 "(DATEPART(year, YearMonth) = '" + year + "') AND (DATEPART(month, YearMonth) = '" + month + "')" + 
+						" order by yearMonth desc";
+		System.out.println("SQL: " + sql);
+		List <BasicStockWrapper> entityList = this.getSimpleJdbcTemplate().query(sql, 
+						BeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
+		return entityList;
 	}
 
 }

@@ -12,4 +12,6 @@ public interface BasicStockDao
 	public List<BasicStockWrapper> findStockTypeData(String stockBranch);
 	public void updateCapital(String stcokID, String capital);
 	public BasicStockWrapper findBasicData(String stockID);
+	//列出有最新營收的股票
+	public List<BasicStockWrapper> findSpecificDate();
 }
