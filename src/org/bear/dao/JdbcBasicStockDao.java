@@ -91,9 +91,11 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		{
 			month = month - 1;
 		}
-		String sql = "select * from operatingRevenue where " +
-				 "(DATEPART(year, YearMonth) = '" + year + "') AND (DATEPART(month, YearMonth) = '" + month + "')" + 
-						" order by yearMonth desc";
+		
+		String sql = "select operatingRevenue.StockID, StockData.StockName from operatingRevenue inner join StockData " +
+				"on operatingRevenue.StockID = StockData.StockID " +
+			    "where (DATEPART(year, YearMonth) = '" + year + "') AND (DATEPART(month, YearMonth) = '" + 
+				month + "')" + "order by yearMonth desc";
 		System.out.println("SQL: " + sql);
 		List <BasicStockWrapper> entityList = this.getSimpleJdbcTemplate().query(sql, 
 						BeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
