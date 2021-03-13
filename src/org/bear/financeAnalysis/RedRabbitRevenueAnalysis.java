@@ -377,9 +377,14 @@ public class RedRabbitRevenueAnalysis
 					int growMonth = 0;									
 					for (int j = 0; j < totalMonth; j++)
 					{
-						int revenue = entityList.get(j).getRevenue();
+						int revenue = 0;
 						int lastRevenue = 0;
 						String date = entityList.get(j).getYearMonth().toString().substring(5, 10);
+						//2月營收用合併資料
+						if (date.startsWith("02"))						
+							revenue = (int) entityList.get(j).getAccumulation();
+						else
+							revenue = entityList.get(j).getRevenue();
 						String lastDate = "";
 						//連續比較5年的同月分資料
 						for (int k = 1; k < 6; k++)
@@ -387,7 +392,11 @@ public class RedRabbitRevenueAnalysis
 							//資料不足5年，無法計算，結束迴圈
 							if (entityList.size() <= j+k*oneYear)
 								break;
-							lastRevenue = entityList.get(j+k*oneYear).getRevenue();
+							//2月營收用合併資料
+							if (date.startsWith("02"))				
+								lastRevenue = (int) entityList.get(j+k*oneYear).getAccumulation();
+							else
+								lastRevenue = entityList.get(j+k*oneYear).getRevenue();
 							if (revenue == 0 || lastRevenue == 0)
 								break;
 							lastDate = entityList.get(j+k*oneYear).getYearMonth().toString().substring(5, 10);					
@@ -498,8 +507,12 @@ public class RedRabbitRevenueAnalysis
 				for (int j = 0; j < 6; j++)
 				{
 					double yoy;
+					String date = entityList.get(j).getYearMonth().toString().substring(5, 10);
 					if (entityList.get(j).getLastRevenue() == 0)
 						yoy = 1;
+					//2月營收用合併資料
+					else if (date.startsWith("02"))
+						yoy = (double)entityList.get(j).getAccumulation()/entityList.get(j).getLastAccumulation()-1;
 					else
 						yoy = (double)entityList.get(j).getRevenue()/entityList.get(j).getLastRevenue()-1;
 					yoy = yoy*100;
