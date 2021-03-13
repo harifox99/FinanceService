@@ -63,7 +63,12 @@ public class RedRabbitChart
 				    if (month.startsWith("0"))
 				    	month = month.substring(1);
 				    //第N個月分資料就放第N-1個陣列，1月放第0個，5月放第4個，以此類推
-					int revenue = entityList.get(index).getRevenue();
+					int revenue = 0;
+					//2月營收用合併資料
+					if (month.equals("2"))
+						revenue = (int) entityList.get(index).getAccumulation();
+					else
+						revenue = entityList.get(index).getRevenue();
 					switch (i)
 					{
 						case 0:
@@ -87,13 +92,27 @@ public class RedRabbitChart
 			//最近半年資料
 			for (int i = 0; i < latestMonth; i++)
 			{
-				int revenue = entityList.get(latestMonth-1-i).getRevenue();
+				int revenue = 0;
+				RevenueEntity entity = entityList.get(latestMonth-1-i);
+				String date = entity.getYearMonth().toString().substring(5, 10);
+				//2月營收用合併資料
+				if (date.startsWith("02"))
+					revenue = (int) entity.getAccumulation();
+				else
+					revenue = (int) entity.getRevenue();
 				chartArray[i].setLatestYear(revenue);
 			}
 			//因為總共要分析月營收66個月，若資料不足一年，會發生ArrayIndexOutOfBoundsException，因此要另外寫程式畫未滿一年的資料
 			for (int i = 0; i < reminderMonth; i++)
 			{
-				int revenue = entityList.get(totalYear * year + latestMonth + i).getRevenue();
+				int revenue = 0;
+				RevenueEntity entity = entityList.get(totalYear * year + latestMonth + i);
+				String date = entity.getYearMonth().toString().substring(5, 10);	
+				//2月營收用合併資料
+				if (date.startsWith("02"))
+					revenue = (int) entity.getAccumulation();
+				else
+					revenue = (int) entity.getRevenue();
 				if (totalYear == 1)
 					chartArray[year-1-i].setBeforeLastYear(revenue);
 				else if (totalYear == 2)
