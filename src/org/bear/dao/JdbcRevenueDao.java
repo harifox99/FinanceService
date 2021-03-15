@@ -277,11 +277,12 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 				entity.setLastRevenue((int)entityList.get(i).getLastAccumulation());
 				entityMergeList.add(entity);
 			}
-			//忽略一月營收
+			//忽略一月營收 (還是要顯示1月營收)
+			/*
 			else if (dateString.contains("01"))
 			{
 				continue;
-			}
+			}*/
 			//除此之外，保持原資料
 			else
 			{
