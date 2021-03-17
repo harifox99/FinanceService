@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 import org.bear.dao.GoodInfoDao;
 import org.bear.entity.GoodInfoEntity;
 import org.jsoup.Jsoup;
@@ -72,11 +71,13 @@ public class GoodInfoParser
 	        			}
 	        			else if (k == 2)
 	        			{
+	        				
 	        				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	        				/*
 	        				Date date = new Date();  
 	        			    //System.out.println(dateFormat.format(date));  
-	        			    String year = dateFormat.format(date).substring(0, 4); 
-							entity.setExchangeDate(dateFormat.parse(year + "/" + data));
+	        			    String year = dateFormat.format(date).substring(0, 4); */
+							entity.setExchangeDate(dateFormat.parse(dateString));
 	        			}
 	        			else if (k == 3)
 	        				entity.setPrice(Double.parseDouble(data));
