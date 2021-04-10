@@ -32,7 +32,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				stockList.add(readData);
 			}
 			reader.close();
-			
+			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
@@ -63,12 +63,12 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				}
 				Thread.sleep(FinancialReport.sleepTime);	
 				idleTime++;
-			}
-			/*
+			}*/
+			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
-				int expectedNum = 1;
-				String[] years = {"2019"};
+				int expectedNum = 2;
+				String[] years = {"2019", "2020"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				if (stockList.contains(stockID) == false)
@@ -78,11 +78,12 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				//年資料
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, true);
-				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, true, years, seasons, expectedNum, true);
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContentString(responseString), stockID, true, years, seasons, expectedNum, true);
 				incomeStatementYear.parse(2);
 				Thread.sleep(FinancialReport.sleepTime);	
 				idleTime++;
-			}*/
+			}
 		}
 		catch (Exception ex)
 		{
