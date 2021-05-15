@@ -33,7 +33,7 @@ public class GetMopsRevenue implements GetSFIContent {
 		paramList.add(new BasicNameValuePair("month", startMonth));
 		paramList.add(new BasicNameValuePair("firstin", "true"));
 		boolean isSuccessful = false;
-		int loopIndex = 0;
+		int loopIndex = 5;
 		while (isSuccessful == false && loopIndex++ < 7)
 		{
 			String responseString = null;
