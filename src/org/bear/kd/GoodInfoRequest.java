@@ -39,10 +39,13 @@ public class GoodInfoRequest
 			conn.setRequestMethod("POST");
 			conn.setDoInput(true);
 			conn.setDoOutput(true); 
-			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			//conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			//conn.setRequestProperty("Referer", "https://goodinfo.tw/StockInfo/StockList.asp?RPT_TIME=&MARKET_CAT=%E6%99%BA%E6%85%A7%E9%81%B8%E8%82%A1&INDUSTRY_CAT=%E6%97%A5KD%E9%BB%83%E9%87%91%E4%BA%A4%E5%8F%89%40%40%E6%97%A5KD%E7%9B%B8%E4%BA%92%E4%BA%A4%E5%8F%89%40%40KD%E9%BB%83%E9%87%91%E4%BA%A4%E5%8F%89");
 			conn.setRequestProperty("Referer", "https://goodinfo.tw/StockInfo/StockList.asp?RPT_TIME=&MARKET_CAT=%E6%99%BA%E6%85%A7%E9%81%B8%E8%82%A1&INDUSTRY_CAT=%E6%97%A5KD+20%7E50%E9%BB%83%E9%87%91%E4%BA%A4%E5%8F%89%40%40%E6%97%A5KD%E7%9B%B8%E4%BA%92%E4%BA%A4%E5%8F%89%40%40KD+20%7E50%E9%BB%83%E9%87%91%E4%BA%A4%E5%8F%89");
-			conn.setRequestProperty("cookie", "_ga=GA1.2.795921985.1520179488; __gads=ID=944f3deb3d244b7c:T=1520179488:S=ALNI_Ma-xj15q7lM5grfZKetSJM6376OkA; CLIENT%5FID=20180414160428687%5F220%2E135%2E163%2E10; SCREEN_SIZE=WIDTH=1366&HEIGHT=768; _gid=GA1.2.25478762.1525869105; _gat=1");
-			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36");
+			//conn.setRequestProperty("cookie", "_ga=GA1.2.795921985.1520179488; __gads=ID=944f3deb3d244b7c:T=1520179488:S=ALNI_Ma-xj15q7lM5grfZKetSJM6376OkA; CLIENT%5FID=20180414160428687%5F220%2E135%2E163%2E10; SCREEN_SIZE=WIDTH=1366&HEIGHT=768; _gid=GA1.2.25478762.1525869105; _gat=1");
+			conn.setRequestProperty("cookie", "CLIENT%5FID=20210520224939328%5F114%2E136%2E119%2E190; SCREEN_SIZE=WIDTH=1280&HEIGHT=800; IS_TOUCH_DEVICE=F; _ga=GA1.2.1588212926.1621522184; __gads=ID=7645a22a2db0e8ed-22c857fbcac800e3:T=1621522185:S=ALNI_MagfIum2QZwKpTkcHoAtOYVOeaLsg; _gid=GA1.2.1947197764.1621993931; _gat=1");
+			//conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36");
+			  conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0");
 			conn.setSSLSocketFactory(sslsocketfactory);
 			DataOutputStream dos=new DataOutputStream(conn.getOutputStream());
 			String postString = "RPT_TIME=&MARKET_CAT=" + MARKET_CAT + "&INDUSTRY_CAT=" + INDUSTRY_CAT;
@@ -69,7 +72,7 @@ public class GoodInfoRequest
 	public static void main(String[] args) throws Exception
     {
 		GoodInfoRequest request = new GoodInfoRequest();
-		request.conn(true, "2021/05/21");
-		request.conn(false, "2021/05/21");
+		request.conn(true, "2021/05/25");
+		request.conn(false, "2021/05/25");
     }
 }
