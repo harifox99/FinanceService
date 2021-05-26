@@ -38,7 +38,11 @@ public class GoodInfoParser
 		        	GoodInfoEntity entity = new GoodInfoEntity();
 		        	Element td = rows.get(j);
 	        		Elements tdList = td.select("td");
-	        		String data = tdList.get(0).text().trim();
+	        		String data = "";
+	        		if (tdList.size() > 0)
+	        			data = tdList.get(0).text().trim();	      
+	        		else
+	        			continue;
 	        		//搜尋代號為開頭的<table>
 	        		if (!data.contains("代號") && isTrueTable == false)
     				{
