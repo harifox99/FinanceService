@@ -77,11 +77,11 @@ public class GetTaifexLot
 		paramList.add(new BasicNameValuePair("queryType", "1"));
 		paramList.add(new BasicNameValuePair("doQuery", "1"));
 		paramList.add(new BasicNameValuePair("commodityId", commodityId));	
-		String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
+		String responseString = HttpUtil.sendUrl(url, paramList, 1, "UTF-8");
 		//System.out.println(responseString);
 		parser.setResponseString(responseString);
 		parser.setDao(dao);
 		parser.setDate(date);
-		parser.parse(tableIndex);	
+		parser.parse(tableIndex);
 	}
 }
