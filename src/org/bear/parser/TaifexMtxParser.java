@@ -20,14 +20,14 @@ public class TaifexMtxParser extends TaifexLotParser
 		RetailInvestorsEntity entity = new RetailInvestorsEntity();
 		for (int i = 0; i < trList.size(); i++)
 		{
-			if (i == 9)
+			if (i == 11)
 			{				
 				Element trElement = trList.get(i);
 				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
 				Element resultElement = null;
 				for (int j = 0; j < tdList.size(); j++)
 				{	
-					if (j == 11)
+					if (j == 10)
 					{
 						resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
 						resultElement = resultElement.getFirstElement(HTMLElementName.FONT);

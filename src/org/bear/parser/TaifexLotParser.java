@@ -39,7 +39,7 @@ public class TaifexLotParser extends EasyParserBase {
 		JuristicDailyEntity entity = new JuristicDailyEntity();
 		for (int i = 0; i < trList.size(); i++)
 		{
-			if (i == 5 || i == 14)
+			if (i == 7 || i == 16)
 			{				
 				Element trElement = trList.get(i);
 				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
@@ -48,25 +48,25 @@ public class TaifexLotParser extends EasyParserBase {
 				{	
 					try
 					{																
-						if (i == 5 && j == 11)//外資未平倉台指期餘額
+						if (i == 7 && j == 11)//外資未平倉台指期餘額
 						{
 							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
-							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
+							//resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
 							String content = resultElement.getContent().toString().trim();	
 							content = content.replace(",", "");
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setTotalLot(Integer.parseInt(content));
 						}
-						else if (i == 14 && j == 11)//外資未平倉小台指餘額
+						else if (i == 16 && j == 11)//外資未平倉小台指餘額
 						{
 							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
-							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
+							//resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
 							String content = resultElement.getContent().toString().trim();	
 							content = content.replace(",", "");
 							entity.setTotalSmallLot(Integer.parseInt(content));							
 						}
-						else if (i == 5 && j == 5)//外資新增台指期口數
+						else if (i == 7 && j == 4)//外資新增台指期口數
 						{
 							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
 							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
@@ -74,7 +74,7 @@ public class TaifexLotParser extends EasyParserBase {
 							content = content.replace(",", "");
 							entity.setNewLot(Integer.parseInt(content));							
 						}
-						else if (i == 14 && j == 5)//外資新增小台指口數
+						else if (i == 16 && j == 4)//外資新增小台指口數
 						{
 							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
 							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
