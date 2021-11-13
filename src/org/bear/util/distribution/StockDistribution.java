@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.StockDistributionDao;
+import org.bear.exception.TdccException;
 import org.bear.parser.distribution.StockDistributionParser;
 import org.bear.util.HttpUtil;
 
@@ -29,7 +30,7 @@ public class StockDistribution
 	public void setDao(StockDistributionDao dao) {
 		this.dao = dao;
 	}
-	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth)
+	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth) throws TdccException
 	{
 		StockDistributionParser parser = new StockDistributionParser();
 		parser.setDao(dao);

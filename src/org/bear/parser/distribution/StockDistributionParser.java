@@ -6,9 +6,10 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import org.bear.dao.StockDistributionDao;
 import org.bear.entity.StockDistributionEntity;
-import org.bear.parser.EasyParserBase;
+import org.bear.exception.TdccException;
+import org.bear.parser.ExceptionParserBase;
 
-public class StockDistributionParser extends EasyParserBase
+public class StockDistributionParser extends ExceptionParserBase
 {
 	StockDistributionDao dao;
 	String stockID;
@@ -39,7 +40,7 @@ public class StockDistributionParser extends EasyParserBase
 	public void setCurrentMonth(boolean isCurrentMonth) {
 		this.isCurrentMonth = isCurrentMonth;
 	}
-	public void getTableContent(Element element) 
+	public void getTableContent(Element element) throws TdccException 
 	{
 		List<Element> trList = element.getAllElements(HTMLElementName.TR);
 		StockDistributionEntity entity = new StockDistributionEntity();
@@ -261,7 +262,10 @@ public class StockDistributionParser extends EasyParserBase
 				}
 			}
 		}
-		dao.insert(entity);
+		if (entity.getD1() == 0 && entity.getP1000000() == 0)
+			throw new TdccException();
+		else
+			dao.insert(entity);
 	}
 	
 	private String convertMonth()
