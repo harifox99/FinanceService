@@ -104,9 +104,13 @@ public class BuildThreeBigExchange {
 				         "106/12/25", "106/12/26", "106/12/27", "106/12/28", "106/12/29",
 				         "107/01/02", "107/01/03", "107/01/04", "107/01/05"
 				         };*/
-		String[] date = {"110/01/20"};
+		String[] date = {"111/02/09"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
+		//String westenDate = "2021/05/12";
+		//BuildThreeBigExchange exchange = new BuildThreeBigExchange();
+		//String url = "https://www.taifex.com.tw/cht/3/futContractsDate";
+		//exchange.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 2);
 		
 	}
 	public void update(String[] date)
@@ -132,7 +136,7 @@ public class BuildThreeBigExchange {
 			exchange.buildJuristicAmountInfo(westenDate.replace("/", ""), url);
 			//期交所，外資未平倉口數
 			url = "https://www.taifex.com.tw/cht/3/futContractsDate";
-			exchange.buildTaiFexLot(westenDate, url, "", new TaifexLotParser(), 3);
+			exchange.buildTaiFexLot(westenDate, url, "", new TaifexLotParser(), 2);
 			//期交所前十大法人未沖銷部位
 			url = "https://www.taifex.com.tw/cht/3/largeTraderFutQry";
 			exchange.buildTopTen(westenDate, url);
@@ -153,7 +157,7 @@ public class BuildThreeBigExchange {
 			exchange.buildStockLending(westenDate.replace("/", ""), url);
 			//小台三大法人未平倉口數
 			url = "https://www.taifex.com.tw/cht/3/futContractsDate";
-			exchange.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 3);
+			exchange.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 2);
 			//小台未平倉餘額
 			url = "https://www.taifex.com.tw/cht/3/futDailyMarketReport";
 			exchange.buildMtxOi(westenDate, url);
@@ -183,7 +187,7 @@ public class BuildThreeBigExchange {
 			juristicDailyReportDao.updateRank("兩大", westenDate.replace("/", ""));
 			juristicDailyReportDao.updateRank("外資", westenDate.replace("/", ""));
 			juristicDailyReportDao.updateRank("投信", westenDate.replace("/", ""));
-			//KD指標
+			//KD指標	
 			GoodInfoRequest request = new GoodInfoRequest();
 			request.conn(true, westenDate);
 			request.conn(false, westenDate);
