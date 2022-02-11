@@ -25,17 +25,17 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			int idleTime = 0;
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20200324/Desktop/Book1.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/Book1.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
 			}
 			reader.close();
-			/*
+			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2020"};
+				String[] years = {"2021"};
 				String[] seasons = {"01", "02", "03"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
@@ -51,7 +51,7 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContentString(responseString), stockID, false, years, seasons, expectedNum, true);
 				try
 				{					
-					balanceSheetSeason.parse(2);
+					balanceSheetSeason.parse(1);
 				}
 				catch (NullPointerException ex)
 				{
@@ -61,8 +61,7 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				}
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}*/
-			
+			}
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 2;
