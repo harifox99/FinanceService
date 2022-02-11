@@ -47,11 +47,11 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 	{
 		String rowData[] = new String[dataLength];
 		Element resultElement = null;
-		List<Element> trList = element.getAllElements(HTMLElementName.TR);
+		List<Element> trList = element.getAllElements(HTMLElementName.DIV);
 		for (int i = 0; i < trList.size(); i++)
 		{
 			Element trElement = trList.get(i);
-			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
+			List<Element> tdList = trElement.getAllElements(HTMLElementName.SPAN);
 			for (int j = 0; j < tdList.size(); j++)
 			{
 				if (j == 0)
