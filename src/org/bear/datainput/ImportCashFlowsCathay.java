@@ -20,14 +20,14 @@ public class ImportCashFlowsCathay extends ImportStockID
 			int idleTime = 0;
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/capital20200324/Desktop/Book1.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/Book1.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
 			}
 			reader.close();
 			//年資料	
-			
+			/*
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = 2;
@@ -45,13 +45,13 @@ public class ImportCashFlowsCathay extends ImportStockID
 				cashFlowsParser.parse(2);
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}
+			}*/
 			//季資料
-			/*
-			for (int i = 0; i < wrapperList.size(); i++)
+			
+			for (int i = 2; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2020"};
+				String[] years = {"2021"};
 				String[] seasons = {"01", "02", "03"};						
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))
@@ -66,7 +66,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContentString(responseString), stockID, years, seasons, false, expectedNum, true);
 				try
 				{					
-					cashFlowsParser.parse(2);
+					cashFlowsParser.parse(1);
 				}
 				catch (NullPointerException ex)
 				{
@@ -76,7 +76,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 				}
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}*/
+			}
 		}
 		catch (Exception ex)
 		{
