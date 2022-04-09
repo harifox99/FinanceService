@@ -2,6 +2,8 @@
  * 
  */
 package org.bear.datainput;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.*;
 
 import org.bear.constant.FinancialReport;
@@ -33,13 +35,25 @@ public class ImportFinancialDataCathay extends ImportStockID
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		dao = (FinancialDataDao)context.getBean("basicFinancialDataDao");
+		String readData;
+		List<String> stockList = new ArrayList<String>();
 		try
-		{		
+		{	
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/Book1.txt"));
+			while((readData = reader.readLine()) != null)
+			{
+				stockList.add(readData);
+			}
+			reader.close();
 			int idleTime = 0;			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				entityList = new ArrayList <FinancialDataEntity>();
 				String stockID = wrapperList.get(j).getStockID();
+				if (stockList.contains(stockID) == false)
+				{
+					continue;
+				}
 				//if (!stockID.equals("2437"))
 					//continue;
 				System.out.println("ªÑ²¼¥N½X¡G" + stockID + " " + idleTime + ". ");
