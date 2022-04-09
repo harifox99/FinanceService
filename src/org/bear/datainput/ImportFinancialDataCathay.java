@@ -65,7 +65,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			urlNav = new GetURLCathayNavSingle(stockID, true);
 		String responseString = HttpUtil.httpGet(urlNav.getUrlString(), "UTF-8");
 		NAVParserCathay navParser = new NAVParserCathay(urlNav.getContentString(responseString), stockID);
-		navParser.parse(2);
+		navParser.parse(1);
 		//每年配發股息
 		GetURLCathayCashDiv urlCashDiv = new GetURLCathayCashDiv(stockID);
 		/** 國泰/玉山的網頁，其實是精誠資訊，HTML有問題，所以換Parser
@@ -93,7 +93,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
 			//只要當年的
-			if (entity.year.equals("2018"))
+			if (entity.year.equals("2020"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
