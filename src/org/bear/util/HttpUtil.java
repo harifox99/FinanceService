@@ -166,7 +166,7 @@ public class HttpUtil {
 			try 
 			{
 				responseString = httpClinet.execute(post, responseHandler);
-				responseString = new String(responseString.getBytes("ISO-8859-1"), encoding);
+				//responseString = new String(responseString.getBytes("ISO-8859-1"), encoding);
 				isConnect = true;
 			} 
 			
