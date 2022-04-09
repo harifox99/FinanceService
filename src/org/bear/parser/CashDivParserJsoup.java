@@ -44,7 +44,7 @@ public class CashDivParserJsoup extends ParserBase
 	        //(要解析的文件,timeout)
 	        Elements tr = xmlDoc.select("tr"); //要解析的tag元素為tr
 	        //只要最新3年
-	        for (int i = startTrIndex; i < startTrIndex + 3; i++)
+	        for (int i = startTrIndex; i < startTrIndex + 10; i++)
 	        {
 		        Element td = tr.get(i);
 		        Elements tdList = td.select("td");
