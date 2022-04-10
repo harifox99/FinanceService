@@ -101,6 +101,7 @@ public class PerfectAnalysis
 			columnNameList.add("股票代碼");
 			columnNameList.add("股票名稱");
 			calculateList = new ArrayList<List<String>>();
+			boolean isSetColumnName = false;
 			for (int i = 0; i < stockList.size(); i++)
 			{
 				String stockID = stockList.get(i).getStockID();
@@ -136,12 +137,13 @@ public class PerfectAnalysis
 						revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
 				}
 				//Set Column Name
-				if (i == 0)
+				if (isSetColumnName == false)
 				{
 					for (int j = revenueList.size()-1; j >= 0; j--)
 					{
 						this.addColumnName(revenueList.get(j).getYearMonth(), "營收");
 					}
+					isSetColumnName = true;
 				}
 				List<String> yoyList = this.checkYoy(revenueList, yoyTotalMonth, yoyGrowMonth);
 				if (yoyList != null)
