@@ -8,6 +8,8 @@ public interface BasicStockDao
 	public void insertBatch(List<BasicStockWrapper> entity);
 	//┮Τ布
 	public List<BasicStockWrapper> findAllData();
+	//┮Τ布眖程秨﹍
+	public List<BasicStockWrapper> findAllDataDesc();
 	//カ(branchType=1)┪耫(branchType=2)布
 	public List<BasicStockWrapper> findStockTypeData(String stockBranch);
 	public void updateCapital(String stcokID, String capital);

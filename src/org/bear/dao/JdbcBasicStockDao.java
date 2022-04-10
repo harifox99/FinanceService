@@ -9,9 +9,11 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStockDao {
-
-	public List<BasicStockWrapper> findAllData() {
+public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStockDao 
+{
+	@Override
+	public List<BasicStockWrapper> findAllData() 
+	{
 		// TODO Auto-generated method stub
 		List <BasicStockWrapper> wrapperList = null;
 		try
@@ -27,6 +29,7 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		return wrapperList;
 	}
 
+	@Override
 	public void insertBatch(List<BasicStockWrapper> entity) {
 		// TODO Auto-generated method stub
 		String sql = "insert into StockData(StockID, StockName, StockType, StockBranch, Enabled) " + 
@@ -100,6 +103,23 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		List <BasicStockWrapper> entityList = this.getSimpleJdbcTemplate().query(sql, 
 						BeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
 		return entityList;
+	}
+
+	@Override
+	public List<BasicStockWrapper> findAllDataDesc() 
+	{
+		List <BasicStockWrapper> wrapperList = null;
+		try
+		{
+			String sql = "select * from StockData where enabled <> 0 order by stockId desc";
+			wrapperList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(BasicStockWrapper.class));
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		//Iterator <BasicStockWrapper> iterator = wrapperList.iterator();
+		return wrapperList;
 	}
 
 }
