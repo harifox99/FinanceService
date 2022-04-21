@@ -20,4 +20,9 @@ public class ThreeBigUpdate
 		String[] date = {dateString};
 		threeBig.update(date);
 	}
+	public static void main(String[] args)
+	{
+		ThreeBigUpdate update = new ThreeBigUpdate();
+		update.update();
+	}
 }
