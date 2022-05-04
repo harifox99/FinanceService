@@ -1,5 +1,7 @@
 package org.bear.financeAnalysis;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 
 import org.bear.dao.BasicStockDao;
@@ -338,12 +340,14 @@ public class RedRabbitRevenueAnalysis
 	 * @param totalMajorShareholder 過去M個月
 	 * @param selectedMajorShareholder 有N個月大股東買超
 	 * @param peDate 證交所本益比(日期)
+	 * @param revenueAdd 營收三選二
 	 * @return
 	 */
 	public List<RedRabbitStockWrapper> getAdvancedRedRabbit(boolean revenueCheck, int totalMonth, int selectedMonth,
 			boolean retailCheck, int totalRetail, int selectedRetail,
 			boolean majorShareholderCheck, int totalMajorShareholder, 
-			int selectedMajorShareholder, String peDate)
+			int selectedMajorShareholder, String peDate, 
+			boolean isRevenueAdd, boolean isSpecificDate, String specificYear, String specificMonth)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -363,10 +367,23 @@ public class RedRabbitRevenueAnalysis
 			//營收創下歷年同期新高
 			if (revenueCheck == true)
 			{
+				List<String> stockList = jdbcRevenueDao.findBySpecificDate(specificYear, specificMonth);
+				HashMap<String, Boolean> stockMap = new HashMap<String, Boolean>();
+				for (int i = 0; i < stockList.size(); i++)
+					stockMap.put(stockList.get(i), true);
 				for (int i = 0; i < conditionalList.size(); i++)
 				{
 					String stockID = conditionalList.get(i).getStockID();
-					List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
+					List<RevenueEntity> entityList;
+					if (isSpecificDate)
+					{
+						if (stockMap.get( conditionalList.get(i).getStockID() ) != null)
+							entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
+						else
+							continue;
+					}
+					else
+						entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
 					//最新一季營業利益
 					List<IncomeStatementEntity> operatingIncomeList = incomeStatementDao.findDataByLatest(1, stockID);
 					int operatingIncome = operatingIncomeList.get(0).getOperatingIncome();
@@ -478,6 +495,30 @@ public class RedRabbitRevenueAnalysis
 					}
 				}
 				conditionalList = calculateList;
+				calculateList = new ArrayList<BasicStockWrapper>();
+			}
+			if (isRevenueAdd)
+			{
+				int maxMonth = 3;
+				List<RevenueEntity> revenueList = null;
+				for (int i = 0; i < conditionalList.size(); i++)
+				{
+					if (isSpecificDate)
+					{
+						revenueList = jdbcRevenueDao.findBySpecificDate(conditionalList.get(i).getStockID(), specificYear, specificMonth);
+						if (revenueList.size() > 0)
+							revenueList = jdbcRevenueDao.findByLatestSize(maxMonth+1, conditionalList.get(i).getStockID());
+						else
+							continue;
+					}
+					else
+						revenueList = jdbcRevenueDao.findByLatestSize(maxMonth+1, conditionalList.get(i).getStockID());
+				    //////////////////////
+					List<String> yoyList = this.checkYoy(revenueList, 3, 2);
+					if (yoyList != null)
+						calculateList.add(conditionalList.get(i));
+				}
+				conditionalList = calculateList;
 			}
 			/****************
 			 * 重組資料		
@@ -555,6 +596,57 @@ public class RedRabbitRevenueAnalysis
 			ex.printStackTrace();
 		}
 		return wrapperList;
+	}
+	private List<String> checkYoy(List<RevenueEntity> revenue, int totalMonth, int expectedMonth)
+	{
+		int maxMonth = 3;//因為3選2
+		List<String> yoyList = new ArrayList<String>();
+		int difference = totalMonth - expectedMonth;
+		for (int i = 0; i < maxMonth; i++)
+		{
+			//YoY Revenue
+			if (revenue.get(i).getRevenue() == 0 || revenue.get(i).getLastRevenue() == 0 ||
+				revenue.get(i+1).getRevenue() == 0 || revenue.get(i+1).getLastRevenue() == 0)
+				return null;
+			double thisMonthYoy = (double)revenue.get(i).getRevenue()/revenue.get(i).getLastRevenue();
+			double lastMonthYoy = (double)revenue.get(i+1).getRevenue()/revenue.get(i+1).getLastRevenue();
+			//如果本月營收 (thisMonthYoy < lastMonthYoy) 衰退
+			if (i < totalMonth && thisMonthYoy < lastMonthYoy)
+			{
+				//期望M個月份有N個月份YoY上升
+				//期望totalMonth個月份有expectedMonth個月份YoY上升
+				//衰退幅度超越臨界值 (difference-- <= 0)
+				if (difference-- <= 0)
+					return null;
+				else
+				{
+					thisMonthYoy -= 1;
+					thisMonthYoy *= 100;
+					NumberFormat formatter = new DecimalFormat(".##");
+					String strRevenue = formatter.format(thisMonthYoy);
+					yoyList.add(strRevenue);	
+				}
+			}		
+			else
+			{
+				thisMonthYoy -= 1;
+				thisMonthYoy *= 100;
+				NumberFormat formatter = new DecimalFormat(".##");
+				String strRevenue = formatter.format(thisMonthYoy);
+				yoyList.add(strRevenue);	
+			}
+			//最舊的一個月的資料
+			if (i == maxMonth-1)
+			{
+				lastMonthYoy -= 1;
+				lastMonthYoy *= 100;
+				NumberFormat formatter = new DecimalFormat(".##");
+				String strRevenue = formatter.format(lastMonthYoy);
+				yoyList.add(strRevenue);					
+			}		
+		}	
+		
+		return yoyList;
 	}
 	
 }
