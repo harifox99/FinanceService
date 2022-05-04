@@ -296,7 +296,9 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		}
 		return newList;
 	}
-
+	/**
+	 * 僅篩選特定日期之營收，通常是因為在8號或是9號，資料不足，又想早一步篩選資料來分析（天下武功，無堅不摧，唯快不破）
+	 */
 	@Override
 	public List<RevenueEntity> findBySpecificDate(String stockID, String year, String month) 
 	{
@@ -307,5 +309,18 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
 				BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		return entityList;
+	}
+	/**
+	 * 僅篩選特定日期之營收，通常是因為在8號或是9號，資料不足，又想早一步篩選資料來分析（天下武功，無堅不摧，唯快不破）
+	 */
+	@Override
+	public List<String> findBySpecificDate(String year, String month) 
+	{
+		String sql = "select stockid from operatingRevenue where " +
+	    " (DATEPART(year, YearMonth) = '" + year + "') AND (DATEPART(month, YearMonth) = '" + month + "')" + 
+				" order by yearMonth desc";
+		System.out.println("SQL: " + sql);
+		List<String> data = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
+		return data;
 	}
 }

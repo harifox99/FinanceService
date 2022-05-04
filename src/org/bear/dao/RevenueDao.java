@@ -28,4 +28,6 @@ public interface RevenueDao
 	public List<RevenueEntity> findByLatestMergeSize(int size, String stockID);
 	//僅篩選符合特殊日期之營收
 	public List<RevenueEntity> findBySpecificDate(String stockID, String year, String month);
+	//僅篩選符合特殊日期之營收
+	public List<String> findBySpecificDate(String year, String month);
 }
