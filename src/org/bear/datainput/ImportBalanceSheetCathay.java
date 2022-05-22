@@ -35,8 +35,8 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2021"};
-				String[] seasons = {"01", "02", "03"};				
+				String[] years = {"2022"};
+				String[] seasons = {"01"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
@@ -62,10 +62,11 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
 			}
+			/*
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 2;
-				String[] years = {"2019", "2020"};
+				String[] years = {"2020", "2021"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				if (stockList.contains(stockID) == false)
@@ -77,10 +78,10 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, true);
 				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
 				BalanceSheetParserCathay balanceSheetYear = new BalanceSheetParserCathay(urlContent.getContentString(responseString), stockID, true, years, seasons, expectedNum, true);
-				balanceSheetYear.parse(2);
+				balanceSheetYear.parse(1);
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
-			}
+			}*/
 		}
 		catch (Exception ex)
 		{
