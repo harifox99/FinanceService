@@ -298,7 +298,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 	}
 
 	@Override
-	public List<RevenueEntity> findBySpecificDate(int size, String stockID, String year, String month) 
+	public List<RevenueEntity> findBySpecificDate(String stockID, String year, String month) 
 	{
 		String sql = "select * from operatingRevenue where stockID = '" +
 		stockID + "' and (DATEPART(year, YearMonth) = '" + year + "') AND (DATEPART(month, YearMonth) = '" + month + "')" + 
