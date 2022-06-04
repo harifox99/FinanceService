@@ -114,7 +114,7 @@ public class PerfectAnalysis
 				{
 					if (isSpecificDate)
 					{
-						revenueList = revenueDao.findBySpecificDate(maxMonth, stockList.get(i).getStockID(), specificYear, specificMonth);
+						revenueList = revenueDao.findBySpecificDate(stockList.get(i).getStockID(), specificYear, specificMonth);
 						if (revenueList.size() > 0)
 							revenueList = revenueDao.findByLatestMergeSize(maxMonth+1, stockList.get(i).getStockID());
 						else
@@ -127,7 +127,7 @@ public class PerfectAnalysis
 				{
 					if (isSpecificDate)
 					{
-						revenueList = revenueDao.findBySpecificDate(maxMonth, stockList.get(i).getStockID(), specificYear, specificMonth);
+						revenueList = revenueDao.findBySpecificDate(stockList.get(i).getStockID(), specificYear, specificMonth);
 						if (revenueList.size() > 0)
 							revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
 						else
