@@ -1,4 +1,5 @@
 package org.bear.util.distribution;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.NameValuePair;
@@ -30,25 +31,34 @@ public class StockDistribution
 	public void setDao(StockDistributionDao dao) {
 		this.dao = dao;
 	}
-	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth) throws TdccException
+	public void getContent(String stockID, String startYear, String startMonth, String endYear, String endMonth, String token) throws TdccException
 	{
-		StockDistributionParser parser = new StockDistributionParser();
-		parser.setDao(dao);
-		parser.setStockID(stockID);
-		parser.setCurrentMonth(isCurrentMonth);
-		parser.setDateString(startYear + startMonth);
-		String url = "https://www.tdcc.com.tw/smWeb/QryStockAjax.do";
-		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		paramList.add(new BasicNameValuePair("scaDate", startYear + startMonth));
-		paramList.add(new BasicNameValuePair("scaDates", startYear + startMonth));
-		paramList.add(new BasicNameValuePair("SqlMethod", "StockNo"));
-		paramList.add(new BasicNameValuePair("StockNo", stockID));
-		paramList.add(new BasicNameValuePair("REQ_OPR", "SELECT"));
-		paramList.add(new BasicNameValuePair("clkStockNo", stockID));
-		paramList.add(new BasicNameValuePair("radioStockNo", stockID));
-		String responseString = HttpUtil.sendUrl(url, paramList, 1, "UTF-8");
-		//System.out.println(responseString);
-		parser.setResponseString(responseString);
-		parser.parse(7);	
+		try
+		{
+			StockDistributionParser parser = new StockDistributionParser();
+			parser.setDao(dao);
+			parser.setStockID(stockID);
+			parser.setCurrentMonth(isCurrentMonth);
+			parser.setDateString(startYear + startMonth);
+			String url = "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock";
+			List<NameValuePair> paramList = new ArrayList<NameValuePair>();				
+			paramList.add(new BasicNameValuePair("SYNCHRONIZER_TOKEN", token));
+			String SYNCHRONIZER_URI_ENCODE = URLEncoder.encode("/portal/zh/smWeb/qryStock", "UTF-8");
+			paramList.add(new BasicNameValuePair("SYNCHRONIZER_URI", SYNCHRONIZER_URI_ENCODE));
+			paramList.add(new BasicNameValuePair("method", "submit"));		
+			paramList.add(new BasicNameValuePair("firDate", "20221014"));
+			paramList.add(new BasicNameValuePair("scaDate", "20221014"));
+			paramList.add(new BasicNameValuePair("sqlMethod", "StockNo"));
+			paramList.add(new BasicNameValuePair("stockNo", "1101"));
+			//paramList.add(new BasicNameValuePair("stockName", ""));		
+			String responseString = HttpUtil.sendUrl(url, paramList, 1, "UTF-8");
+			System.out.println(responseString);
+			parser.setResponseString(responseString);
+			parser.parse(7);	
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 }
