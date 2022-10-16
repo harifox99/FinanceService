@@ -1,14 +1,11 @@
 package org.bear.util.distribution;
+import java.io.*;
+import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.StockDistributionDao;
 import org.bear.exception.TdccException;
 import org.bear.parser.distribution.StockDistributionParser;
-import org.bear.util.HttpUtil;
-
+import javax.net.ssl.*;
 public class StockDistribution 
 {
 	StockDistributionDao dao;
@@ -35,25 +32,51 @@ public class StockDistribution
 	{
 		try
 		{
+			StringBuffer content = new StringBuffer();
+			SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 			StockDistributionParser parser = new StockDistributionParser();
 			parser.setDao(dao);
 			parser.setStockID(stockID);
 			parser.setCurrentMonth(isCurrentMonth);
 			parser.setDateString(startYear + startMonth);
-			String url = "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock";
-			List<NameValuePair> paramList = new ArrayList<NameValuePair>();				
-			paramList.add(new BasicNameValuePair("SYNCHRONIZER_TOKEN", token));
+			URL url = new URL("https://www.tdcc.com.tw/portal/zh/smWeb/qryStock?");
+			HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setDoInput(true);
+			conn.setDoOutput(true);        
+			conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+			conn.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
+			conn.setRequestProperty("Accept-Language", "zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3");
+			conn.setRequestProperty("Connection", "keep-alive");
+			conn.setRequestProperty("Content-Length", "196");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.setRequestProperty("cookie", "JSESSIONID=aOes-vzfWrBZKeNd2lsBNmX; _ga=GA1.3.730827645.1665751778; _fbp=fb.2.1665751778503.984260935; JSESSIONID=00009H3jWMAUoPKm0K-jsNh1hmx:19tmde4ae; _gid=GA1.3.1348963233.1665895596");
+			conn.setRequestProperty("Host", "www.tdcc.com.tw");
+			conn.setRequestProperty("Origin", "https://www.tdcc.com.tw");
+			conn.setRequestProperty("Referer", "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock");
+			conn.setRequestProperty("Upgrade-Insecure-Requests", "1");
+			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0");
+			
+			
+			conn.setSSLSocketFactory(sslsocketfactory);
+			DataOutputStream dos=new DataOutputStream(conn.getOutputStream());
 			String SYNCHRONIZER_URI_ENCODE = URLEncoder.encode("/portal/zh/smWeb/qryStock", "UTF-8");
-			paramList.add(new BasicNameValuePair("SYNCHRONIZER_URI", SYNCHRONIZER_URI_ENCODE));
-			paramList.add(new BasicNameValuePair("method", "submit"));		
-			paramList.add(new BasicNameValuePair("firDate", "20221014"));
-			paramList.add(new BasicNameValuePair("scaDate", "20221014"));
-			paramList.add(new BasicNameValuePair("sqlMethod", "StockNo"));
-			paramList.add(new BasicNameValuePair("stockNo", "1101"));
-			//paramList.add(new BasicNameValuePair("stockName", ""));		
-			String responseString = HttpUtil.sendUrl(url, paramList, 1, "UTF-8");
-			System.out.println(responseString);
-			parser.setResponseString(responseString);
+			String postString = "SYNCHRONIZER_TOKEN=" + token + "&SYNCHRONIZER_URI=" + SYNCHRONIZER_URI_ENCODE + "&method=submit&firDate=20221014&scaDate=20221014&sqlMethod=StockNo&stockNo=1101&stockName=";
+			System.out.println(postString);
+			///////////////////////////////////
+			dos.writeBytes(postString);
+			dos.flush();
+			dos.close();
+			InputStream inputstream = conn.getInputStream();
+			InputStreamReader inputstreamreader = new InputStreamReader(inputstream, "UTF-8");
+			BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
+			String string = null;
+			while ((string = bufferedreader.readLine()) != null)
+			{
+			    //System.out.println("Received " + string);
+				content.append(string + "\n");
+			}
+			System.out.println(content.toString());
 			parser.parse(7);	
 		}
 		catch(Exception ex)
