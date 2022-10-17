@@ -10,8 +10,8 @@ import org.bear.util.GetURLContent;
 public class FileParserTester {
 	GetURLContent content;
 	FileParser fileParser;
-	String url = "https://stock-ai.com/ddl?s=twTT&r=tdrK2P3aCe";
-	public FileParserTester()
+	//String url = "https://stock-ai.com/ddl?s=twTT&r=tdrK2P3aCe";
+	public FileParserTester(String url)
 	{
 		content = new GetURLContent(url);
 		fileParser = new FileParser();
@@ -19,6 +19,6 @@ public class FileParserTester {
 	}
 	public static void main(String args[])
 	{
-		new FileParserTester();
+		new FileParserTester("https://smart.tdcc.com.tw/opendata/getOD.ashx?id=1-5");
 	}
 }

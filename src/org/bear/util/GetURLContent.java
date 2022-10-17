@@ -30,7 +30,7 @@ public class GetURLContent
 			{
 				url = new URL(urlString);
 				urlConnection = url.openConnection();
-				htmlContent = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+				htmlContent = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
 				isConnect = true;
 				if (isFirst == false)
 					Thread.sleep(1000 * 30);
