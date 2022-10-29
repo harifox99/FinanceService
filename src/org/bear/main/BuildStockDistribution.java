@@ -2,6 +2,7 @@ package org.bear.main;
 import org.bear.dao.*;
 import org.bear.datainput.ImportStockID;
 import org.bear.exception.TdccException;
+import org.bear.token.CsrfToken;
 import org.bear.util.distribution.StockDistribution;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,7 +17,8 @@ public class BuildStockDistribution extends ImportStockID
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
-		String[] dateString = {"20220401"};
+		String[] dateString = {"20220930"};
+		CsrfToken token = new CsrfToken("https://www.tdcc.com.tw/portal/zh/smWeb/qryStock");										
 		for (int i = 0; i < dateString.length; i++)
 		{
 			for (int j = 0; j < wrapperList.size(); j++)
@@ -36,9 +38,9 @@ public class BuildStockDistribution extends ImportStockID
 						System.out.println("StockID: " + wrapperList.get(j).getStockID() + ", " + j);
 						StockDistribution stockDistribution = new StockDistribution();
 						stockDistribution.setDao(stockDistributionDao);
-						stockDistribution.setCurrentMonth(false);
+						stockDistribution.setCurrentMonth(true);
 						stockDistribution.getContent(wrapperList.get(j).getStockID(), 
-						dateString[i].substring(0, 4), dateString[i].substring(4, 8), null, null);
+						dateString[i].substring(0, 4), dateString[i].substring(4, 8), null, null, token.getCsrf_token());
 						break;
 					}
 					catch (TdccException ex)
