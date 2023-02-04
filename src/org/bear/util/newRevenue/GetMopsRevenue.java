@@ -23,15 +23,18 @@ public class GetMopsRevenue implements GetSFIContent {
 		String url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
 		paramList.add(new BasicNameValuePair("encodeURIComponent", "1"));
-		paramList.add(new BasicNameValuePair("run", "Y"));
-		paramList.add(new BasicNameValuePair("step", "0"));
-		paramList.add(new BasicNameValuePair("yearmonth", StringUtil.convertChineseYear(startYear) + startMonth));
-		paramList.add(new BasicNameValuePair("TYPEK", "sii"));
-		paramList.add(new BasicNameValuePair("co_id", stockID));
+		paramList.add(new BasicNameValuePair("step", "1"));
+		paramList.add(new BasicNameValuePair("firstin", "1"));
 		paramList.add(new BasicNameValuePair("off", "1"));
+		paramList.add(new BasicNameValuePair("queryName", "co_id"));
+		paramList.add(new BasicNameValuePair("inpuType", "co_id"));
+		paramList.add(new BasicNameValuePair("run", "Y"));
+		paramList.add(new BasicNameValuePair("TYPEK", "all"));
+		paramList.add(new BasicNameValuePair("isnew", "false"));
+		paramList.add(new BasicNameValuePair("co_id", stockID));		
 		paramList.add(new BasicNameValuePair("year", StringUtil.convertChineseYear(startYear)));
 		paramList.add(new BasicNameValuePair("month", startMonth));
-		paramList.add(new BasicNameValuePair("firstin", "true"));
+		
 		boolean isSuccessful = false;
 		int loopIndex = 5;
 		while (isSuccessful == false && loopIndex++ < 7)
