@@ -48,6 +48,12 @@ public class GetMopsRevenue implements GetSFIContent {
 					System.out.println("資料庫中查無需求資料");
 					break;
 				}
+				//控股公司
+				else if (responseString.contains("詳細資料"))
+				{
+					GetMopRevenueIfrs ifrs = new GetMopRevenueIfrs();
+					ifrs.getContent(stockID, stockName, startYear, startMonth, endYear, endMonth);
+				}
 				else if (stockName.startsWith("F") || stockName.endsWith("KY"))
 				{
 					MopsF_Parser parser = new MopsF_Parser();
