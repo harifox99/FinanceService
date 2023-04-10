@@ -107,7 +107,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
 			//只要當年的
-			if (entity.year.equals("2020"))
+			if (entity.year.equals("2021"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
