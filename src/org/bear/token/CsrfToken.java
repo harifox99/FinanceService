@@ -23,7 +23,7 @@ public class CsrfToken
         	URLConnection connection= GetUrlData.getConnection(url, null);
             //獲取請求回來的資訊
             String data = GetUrlData.getStringByConnection(connection);
-            System.out.println(data);
+            //System.out.println(data);
             //匹配token
             Document xmlDoc =  Jsoup.parse(data);
             Element link = xmlDoc.select("form").first();
