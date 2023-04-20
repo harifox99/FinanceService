@@ -1,13 +1,17 @@
 package org.bear.util.distribution;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.StockDistributionDao;
 import org.bear.exception.TdccException;
 import org.bear.parser.distribution.StockDistributionParser;
-import org.bear.util.HttpUtil;
 
 public class StockDistribution 
 {
@@ -41,17 +45,40 @@ public class StockDistribution
 			parser.setCurrentMonth(isCurrentMonth);
 			parser.setDateString(startYear + startMonth);
 			String url = "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock";
+			String subUrl = "/portal/zh/smWeb/qryStock";
+			//String SYNCHRONIZER_URI_ENCODE = URLEncoder.encode(subUrl, "UTF-8");
+			/******************************************************/
+			CloseableHttpClient client = HttpClients.createDefault();
+			HttpPost httpPost = new HttpPost(url);
+			/******************************************************/
 			List<NameValuePair> paramList = new ArrayList<NameValuePair>();		
-			String SYNCHRONIZER_URI_ENCODE = URLEncoder.encode("/portal/zh/smWeb/qryStock", "UTF-8");
 			paramList.add(new BasicNameValuePair("SYNCHRONIZER_TOKEN", token));			
-			paramList.add(new BasicNameValuePair("SYNCHRONIZER_URI", SYNCHRONIZER_URI_ENCODE));
+			paramList.add(new BasicNameValuePair("SYNCHRONIZER_URI", subUrl));
 			paramList.add(new BasicNameValuePair("method", "submit"));		
-			paramList.add(new BasicNameValuePair("firDate", "20221014"));
-			paramList.add(new BasicNameValuePair("scaDate", "20221014"));
+			paramList.add(new BasicNameValuePair("firDate", "20230414"));
+			paramList.add(new BasicNameValuePair("scaDate", "20230414"));
 			paramList.add(new BasicNameValuePair("sqlMethod", "StockNo"));
 			paramList.add(new BasicNameValuePair("stockNo", "1101"));
-			paramList.add(new BasicNameValuePair("stockName", ""));		
-			String responseString = HttpUtil.sendUrl(url, paramList, 1, "UTF-8");
+			paramList.add(new BasicNameValuePair("stockName", ""));
+			httpPost.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
+			/******************************************************/
+			httpPost.setHeader("Cookie", "JSESSIONID=yOuz_3wI3cWnn3R9h91vD2L; JSESSIONID=0000a-y9GiUSckaVngdUhVPLtW-:19tmde4ae");
+			//httpPost.setHeader("Cookie", "JSESSIONID=gvMgA7hxb3LPe6siUpQDiNa; _ga=GA1.3.981804023.1667022288; _fbp=fb.2.1667022288683.1803316909; JSESSIONID=00004SFSqYiv12OuzCnUN303704:19tmde622; _gid=GA1.3.473102104.1672639373; _gat=1");
+			httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			//httpPost.setHeader("Content-Length", "196");
+			httpPost.setHeader("Host", "www.tdcc.com.tw");
+			//httpPost.setHeader("User-Agent", "PMozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
+			httpPost.setHeader("Accept", "*/*");
+			httpPost.setHeader("Accept-Encoding", "gzip, deflate, br");
+			httpPost.setHeader("Connection", "keep-alive");
+			//httpPost.setHeader("Referer", "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock");
+			/******************************************************/
+			CloseableHttpResponse response = client.execute(httpPost);		
+			String responseString = new BasicResponseHandler().handleResponse(response);
+			//HttpResponse response = client.execute(httpPost);
+			//HttpEntity entity = response.getEntity();
+			//String responseString = EntityUtils.toString(entity, "UTF-8");
+		    client.close();
 			System.out.println(responseString);
 			parser.setResponseString(responseString);
 			parser.parse(7);	
