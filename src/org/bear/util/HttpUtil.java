@@ -206,7 +206,7 @@ public class HttpUtil {
 		{
 			post.setEntity(new StringEntity(tempData, charset));
 		} 
-		catch (UnsupportedEncodingException e) 
+		catch (Exception e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
