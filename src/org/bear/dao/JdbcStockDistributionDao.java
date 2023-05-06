@@ -1,14 +1,14 @@
 package org.bear.dao;
-
 import java.util.List;
 import org.bear.entity.StockDistributionEntity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public class JdbcStockDistributionDao extends SimpleJdbcDaoSupport implements StockDistributionDao {
-
+public class JdbcStockDistributionDao extends SimpleJdbcDaoSupport implements StockDistributionDao 
+{
 	@Override
 	public void insert(StockDistributionEntity entity) {
 		// TODO Auto-generated method stub
@@ -35,6 +35,45 @@ public class JdbcStockDistributionDao extends SimpleJdbcDaoSupport implements St
 		List <StockDistributionEntity> entityList = this.getSimpleJdbcTemplate().query(sql, 
 				BeanPropertyRowMapper.newInstance(StockDistributionEntity.class));
 		return entityList;
+	}
+
+	@Override
+	public StockDistributionEntity query(String stockID, String dateString) 
+	{
+		try
+		{
+			String sql = "select * from stockDistribution where stockID = ? and yearMonth = ?";
+			System.out.println(sql);
+			StockDistributionEntity entity = getJdbcTemplate().queryForObject(sql,
+					new Object[]{stockID, dateString}, 
+					BeanPropertyRowMapper.newInstance(StockDistributionEntity.class));
+			return entity;
+		}
+		catch (EmptyResultDataAccessException ex)
+		{
+			return null;
+		}
+	}
+
+	@Override
+	public void update(StockDistributionEntity entity, String stockID, String yearMonth) 
+	{
+		String sql = "update stockDistribution set " + 
+	                 "p1 = ?, p1000 = ?, p5000 = ?, p10000 = ?, p15000 = ?, " +
+	                 "p20000 = ?, p30000 = ?, p40000 = ?, p50000 = ?, p100000 = ?, " +
+	                 "p200000 = ?, p400000 = ?, p600000 = ?, p800000 = ?, p1000000 = ? " +
+	                 "where stockID = ? and yearMonth = ?";
+	                  
+		int result = this.getSimpleJdbcTemplate().update(sql, 
+				entity.getP1(), entity.getP1000(), entity.getP5000(), entity.getP10000(), entity.getP15000(), 
+				entity.getP20000(), entity.getP30000(), entity.getP40000(), entity.getP50000(), entity.getP100000(), 
+				entity.getP200000(), entity.getP400000(), entity.getP600000(), entity.getP800000(), entity.getP1000000(),
+				stockID, yearMonth);
+		if (result <= 0)
+		{
+			System.out.println("Update StockDistributionEntity Error!");
+			System.exit(result);
+		}
 	}
 
 }
