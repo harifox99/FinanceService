@@ -17,10 +17,10 @@ public class BuildStockDistribution extends ImportStockID
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao stockDistributionDao = (StockDistributionDao)context.getBean("stockDistributionDao");
-		String[] dateString = {"20220930"};
-		CsrfToken token = new CsrfToken("https://www.tdcc.com.tw/portal/zh/smWeb/qryStock");										
+		String[] dateString = {"20220930"};										
 		for (int i = 0; i < dateString.length; i++)
 		{
+			CsrfToken token = new CsrfToken("https://www.tdcc.com.tw/portal/zh/smWeb/qryStock");	
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				/*
@@ -31,17 +31,22 @@ public class BuildStockDistribution extends ImportStockID
 					!wrapperList.get(j).getStockID().equals("6240") &&
 					!wrapperList.get(j).getStockID().equals("5392"))
 					continue;*/
+				String csrf_token = token.getCsrf_token();
 				while(true)
 				{
 					try
 					{
-						System.out.println("StockID: " + wrapperList.get(j).getStockID() + ", " + j);
+						System.out.println("csrf_token: " + csrf_token);
+						System.out.println("StockID: " + wrapperList.get(j).getStockID() + ", " + j);						
 						StockDistribution stockDistribution = new StockDistribution();
 						stockDistribution.setDao(stockDistributionDao);
 						stockDistribution.setCurrentMonth(true);
 						stockDistribution.getContent(wrapperList.get(j).getStockID(), 
-						dateString[i].substring(0, 4), dateString[i].substring(4, 8), null, null, token.getCsrf_token());
-						break;
+						dateString[i].substring(0, 4), dateString[i].substring(4, 8), null, null, csrf_token);
+						if (csrf_token == null)
+							break;
+						else
+							continue;
 					}
 					catch (TdccException ex)
 					{
