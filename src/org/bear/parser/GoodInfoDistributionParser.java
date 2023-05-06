@@ -64,7 +64,7 @@ public class GoodInfoDistributionParser
         			else
         			{
         				double numeral = 0;
-        				data = tdList.get(k).text().trim();
+        				data = tdList.get(k).text().trim().replace(",", "");
         				numeral = Double.parseDouble(data);
         				numeral = numeral * 10000 * 1000;
         				finalData = Double.valueOf(numeral).longValue();
