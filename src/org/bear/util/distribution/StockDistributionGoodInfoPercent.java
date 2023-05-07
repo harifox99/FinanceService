@@ -51,6 +51,7 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 				}
 				GoodInfoDistributionPercentParser parser = new GoodInfoDistributionPercentParser();
 				parser.parse(content.toString(), dateString, week, dao, STOCK_ID, true);
+				Thread.sleep(2000);
 			}
 			catch (Exception ex)
 			{
