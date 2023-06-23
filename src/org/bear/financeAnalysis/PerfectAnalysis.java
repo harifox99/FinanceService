@@ -62,6 +62,9 @@ public class PerfectAnalysis
 	 * @param isSpecificDate 篩選日期
 	 * @param specificYear 篩選年
 	 * @param specificMonth 篩選月
+	 * @param isSpecificReport 篩選季報
+	 * @param reportYear 篩選年
+	 * @param reportMonth 篩選季度
 	 * @return
 	 */
 	public List<List<String>> analysis(int yoyTotalMonth, int yoyGrowMonth, int demandOperatingProfit,
@@ -70,7 +73,8 @@ public class PerfectAnalysis
 			boolean isMinusRevenueGrowth, boolean isMinusProfitGrowth, 
 			boolean isFreeCashFlow, boolean isOperatingCashFlow, boolean isNonOperating,
 			boolean isComparePrice, int priceRate, String peDate, String compareDate, boolean isMergeChineseYear,
-			boolean isSpecificDate, String specificYear, String specificMonth)
+			boolean isSpecificDate, String specificYear, String specificMonth,
+			boolean isSpecificReport, String reportYear, String reportMonth)
 	{		
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -102,13 +106,17 @@ public class PerfectAnalysis
 			columnNameList.add("股票名稱");
 			calculateList = new ArrayList<List<String>>();
 			boolean isSetColumnName = false;
+			List<String> reportList = revenueDao.findBySpecificReport(reportYear, reportMonth);
 			for (int i = 0; i < stockList.size(); i++)
 			{
 				String stockID = stockList.get(i).getStockID();
 				String stockName = stockList.get(i).getStockName();
-				//if (!stockID.equals("1539"))
-					//continue;
-				//System.out.println("stockID: " + stockID);
+				/*
+				if (!stockID.equals("1539"))
+					continue;
+				System.out.println("stockID: " + stockID);*/
+				if (!reportList.contains(stockID))
+					continue;
 				List<RevenueEntity> revenueList;
 				if (isMergeChineseYear)
 				{
@@ -136,6 +144,7 @@ public class PerfectAnalysis
 					else
 						revenueList = revenueDao.findByLatestSize(maxMonth+1, stockList.get(i).getStockID());
 				}
+				
 				//Set Column Name
 				if (isSetColumnName == false)
 				{
@@ -153,7 +162,7 @@ public class PerfectAnalysis
 					yoyList.add(1, stockName);
 					//把經過第一關檢驗的股票代碼先暫存起來，第二關就不用掃瞄所有股票了
 					perfectList.add(yoyList);				
-				}
+				}				
 			}		
 			calculateList = new ArrayList<List<String>>();
 			//三個月營收平均
