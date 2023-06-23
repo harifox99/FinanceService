@@ -30,4 +30,6 @@ public interface RevenueDao
 	public List<RevenueEntity> findBySpecificDate(String stockID, String year, String month);
 	//僅篩選符合特殊日期之營收
 	public List<String> findBySpecificDate(String year, String month);
+	//僅篩選符合特殊日期之財報
+	public List<String> findBySpecificReport(String year, String season);
 }

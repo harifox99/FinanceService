@@ -323,4 +323,14 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		List<String> data = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
 		return data;
 	}
+
+	@Override
+	public List<String> findBySpecificReport(String year, String seasons) 
+	{
+		//String sql = "select stockid from balanceSheet where year = '" + year + "'" + " and seasons = '" + seasons + "'";
+		String sql = "select stockid from balanceSheet where year = ? and seasons = ?";
+		//System.out.println(sql);
+		List<String> data = (List<String>)getJdbcTemplate().queryForList(sql, String.class, year, seasons);
+		return data;
+	}
 }
