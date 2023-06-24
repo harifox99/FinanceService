@@ -347,7 +347,8 @@ public class RedRabbitRevenueAnalysis
 			boolean retailCheck, int totalRetail, int selectedRetail,
 			boolean majorShareholderCheck, int totalMajorShareholder, 
 			int selectedMajorShareholder, String peDate, 
-			boolean isRevenueAdd, boolean isSpecificDate, String specificYear, String specificMonth)
+			boolean isRevenueAdd, boolean isSpecificDate, String specificYear, String specificMonth,
+			boolean isSpecificReport, String reportYear, String reportMonth)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
@@ -362,9 +363,11 @@ public class RedRabbitRevenueAnalysis
 		//暫時的計算結果
 		List<BasicStockWrapper> calculateList = new ArrayList<BasicStockWrapper>();
 		conditionalList = stockIdList;
+		//指定財務報表季度
+		List<String> reportList = jdbcRevenueDao.findBySpecificReport(reportYear, reportMonth);
 		try
 		{
-			//營收創下歷年同期新高
+			//營收創下歷年同期新高，預設都會執行
 			if (revenueCheck == true)
 			{
 				List<String> stockList = jdbcRevenueDao.findBySpecificDate(specificYear, specificMonth);
@@ -374,6 +377,8 @@ public class RedRabbitRevenueAnalysis
 				for (int i = 0; i < conditionalList.size(); i++)
 				{
 					String stockID = conditionalList.get(i).getStockID();
+					if (!reportList.contains(stockID) && isSpecificReport)
+						continue;
 					List<RevenueEntity> entityList;
 					if (isSpecificDate)
 					{

@@ -106,6 +106,7 @@ public class PerfectAnalysis
 			columnNameList.add("股票名稱");
 			calculateList = new ArrayList<List<String>>();
 			boolean isSetColumnName = false;
+			//指定財務報表季度
 			List<String> reportList = revenueDao.findBySpecificReport(reportYear, reportMonth);
 			for (int i = 0; i < stockList.size(); i++)
 			{
@@ -115,7 +116,7 @@ public class PerfectAnalysis
 				if (!stockID.equals("1539"))
 					continue;
 				System.out.println("stockID: " + stockID);*/
-				if (!reportList.contains(stockID))
+				if (!reportList.contains(stockID) && isSpecificReport)
 					continue;
 				List<RevenueEntity> revenueList;
 				if (isMergeChineseYear)
