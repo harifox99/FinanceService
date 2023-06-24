@@ -66,8 +66,8 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 	}
 	public static void main(String args[])
 	{
-		String dateString = "2022-09-01";		
-		String week = "22W40";
+		String dateString = "2023-05-01";		
+		String week = "23W22";
 		StockDistributionGoodInfoPercent distribution = new StockDistributionGoodInfoPercent();
 		distribution.conn(dateString, week);
 	}
