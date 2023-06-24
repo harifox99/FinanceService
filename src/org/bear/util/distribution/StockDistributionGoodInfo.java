@@ -8,6 +8,11 @@ import org.bear.parser.GoodInfoDistributionParser;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.net.URLEncoder;
+/**
+ * GoodInfo的股權分配表
+ * @author bear
+ *
+ */
 public class StockDistributionGoodInfo extends ImportStockID
 {
 	public void conn(String dateString, String week)
@@ -51,6 +56,7 @@ public class StockDistributionGoodInfo extends ImportStockID
 				}
 				GoodInfoDistributionParser parser = new GoodInfoDistributionParser();
 				parser.parse(content.toString(), dateString, week, dao, STOCK_ID, true);
+				Thread.sleep(3000);
 			}
 			catch (Exception ex)
 			{
