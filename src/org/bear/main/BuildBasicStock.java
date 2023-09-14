@@ -1,10 +1,14 @@
 package org.bear.main;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bear.dao.BasicStockDao;
+import org.bear.dao.StockTypeDao;
 import org.bear.datainput.ImportBasicStock;
 import org.bear.entity.BasicStockWrapper;
+import org.bear.entity.StockType;
 import org.bear.parser.BasicDataParserCathay;
 import org.bear.util.GetURLCathayBasicData;
 import org.springframework.context.ApplicationContext;
@@ -59,13 +63,20 @@ public class BuildBasicStock {
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		BasicStockDao dao = (BasicStockDao)context.getBean("basicStockDao");
-		list = new ImportBasicStock().getBasicStockList();
+		StockTypeDao typeDao = (StockTypeDao)context.getBean("stockTypeDao");
+		List<StockType> data= typeDao.findFullData();
+		Map<String, Integer> stockMap = new HashMap<String, Integer>();
+		for (int i = 0; i < data.size(); i++)
+		{
+			StockType stockType = data.get(i);
+			stockMap.put(stockType.getTypeName(), stockType.getTypeId());
+		}
+		list = new ImportBasicStock().getBasicStockList(stockMap);
 		dao.insertBatch(list);
 		/***** Â^¨úªÑ¥» *****/
-		List <BasicStockWrapper> wrapperList = dao.findAllData();
-		for (int i = 0; i < wrapperList.size(); i++)
+		for (int i = 0; i < list.size(); i++)
 		{
-			String stockID = wrapperList.get(i).getStockID();
+			String stockID = list.get(i).getStockID();
 			GetURLCathayBasicData urlContent = new GetURLCathayBasicData(stockID);
 			BasicDataParserCathay parser = new BasicDataParserCathay(urlContent.getContent(), stockID);
 			parser.parse(2);
