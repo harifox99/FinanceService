@@ -1,9 +1,9 @@
 package org.bear.datainput;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import org.bear.entity.BasicStockWrapper;
 import org.bear.util.ParseFile;
 import org.bear.util.RegEx;
@@ -14,13 +14,14 @@ import org.bear.util.RegEx;
 public class ImportBasicStock extends ParseFile 
 {
 	public ImportBasicStock(){};
-	int stockType;
-	public ArrayList <BasicStockWrapper> getBasicStockList()
+	Map<String, Integer> stockMap;
+	public ArrayList <BasicStockWrapper> getBasicStockList(Map<String, Integer> stockMap)
 	{
+		this.stockMap = stockMap;
 		ArrayList <BasicStockWrapper> list = new ArrayList <BasicStockWrapper>();
 		try
 		{			
-			reader = new BufferedReader(new FileReader("data/2018T2-04.csv"));
+			reader = new BufferedReader(new FileReader("data/twse2023Q2.csv"));
 			//上市公司
 			while((readData = reader.readLine()) != null)
 			{
@@ -31,39 +32,40 @@ public class ImportBasicStock extends ParseFile
 					//System.out.println(this.intRowIndex);
 					bufferData = readData.split(",");
 					String stockID = bufferData[0].trim();	
+					stockID = stockID.replace("\"","");
 					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true)
 					{
 						System.out.println("stockID:" + stockID);
 						list.add(this.getBasicStockWrapper(bufferData));
 					}
+					/*
 					else if (new RegEx("^[0-9]{1,2}", stockID).isMatch() == true)
 					{
 						System.out.println("stockType:" + stockID);
 						stockType = Integer.parseInt(stockID);
-					}
+					}*/
 				}			
 			}
-			System.out.println("上市End:");
-			
+			System.out.println("上市End:");			
 			//上櫃公司
-			reader = new BufferedReader(new FileReader("data/Gretai2018.csv"));
+			reader = new BufferedReader(new FileReader("data/tpex2023Q2.csv"));
 			while((readData = reader.readLine()) != null)
 			{
-				if (readData.equals(",,,,"))
-					break;
-				else if (this.intRowIndex++ == 0)
+				if (this.intRowIndex++ == 0)
 					continue;				
 				else
 				{
-					System.out.println(this.intRowIndex);
 					bufferData = readData.split(",");
-					String stockID = bufferData[0].trim();				
+					String stockID = bufferData[0].trim();	
+					stockID = stockID.replace("\"","");
 					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true)
+					{
+						System.out.println("stockID:" + stockID);
 						list.add(this.getBasicGretaiWrapper(bufferData));
+					}
 				}			
 			}
-			System.out.println("上櫃End:");
-			
+			System.out.println("上櫃End:");			
 		}
 		catch (IOException ex)
 		{
@@ -75,24 +77,29 @@ public class ImportBasicStock extends ParseFile
 	private BasicStockWrapper getBasicStockWrapper(String[] bufferData)
 	{		
 		BasicStockWrapper wrapper = new BasicStockWrapper();
-		wrapper.setStockID(bufferData[0].trim());
-		wrapper.setStockName(bufferData[1].trim());
+		wrapper.setStockID(bufferData[0].trim().replace("\"",""));
+		wrapper.setStockName(bufferData[1].trim().replace("\"",""));
 		wrapper.setStockBranch(1);
+		String stockName = bufferData[3].trim().replace("\"","");
+		int stockType = stockMap.get(stockName);
 		wrapper.setStockType(stockType);
 		wrapper.setEnabled(1);
+		wrapper.setCapital(0);
 		return wrapper;
 	}
 	//處理上櫃資訊
 	private BasicStockWrapper getBasicGretaiWrapper(String[] bufferData)
 	{		
 		BasicStockWrapper wrapper = new BasicStockWrapper();
-		wrapper.setStockID(bufferData[0].trim());
-		wrapper.setStockName(bufferData[1].trim());
+		wrapper.setStockID(bufferData[0].trim().replace("\"",""));
+		wrapper.setStockName(bufferData[1].trim().replace("\"",""));
 		//1.上市；2上櫃
 		wrapper.setStockBranch(2);
-		//目前無法解析上櫃種類，一律以32代替
-		wrapper.setStockType(32);
+		String stockName = bufferData[3].trim().replace("\"","");
+		int stockType = stockMap.get(stockName);
+		wrapper.setStockType(stockType);
 		wrapper.setEnabled(1);
+		wrapper.setCapital(0);
 		return wrapper;
 	}
 }
