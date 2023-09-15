@@ -33,7 +33,7 @@ public class ImportBasicStock extends ParseFile
 					bufferData = readData.split(",");
 					String stockID = bufferData[0].trim();	
 					stockID = stockID.replace("\"","");
-					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true)
+					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true && stockID.length() == 4)
 					{
 						System.out.println("stockID:" + stockID);
 						list.add(this.getBasicStockWrapper(bufferData));
@@ -58,7 +58,7 @@ public class ImportBasicStock extends ParseFile
 					bufferData = readData.split(",");
 					String stockID = bufferData[0].trim();	
 					stockID = stockID.replace("\"","");
-					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true)
+					if (new RegEx("^[1-9][0-9]{3,3}", stockID).isMatch() == true && stockID.length() == 4)
 					{
 						System.out.println("stockID:" + stockID);
 						list.add(this.getBasicGretaiWrapper(bufferData));
@@ -78,7 +78,7 @@ public class ImportBasicStock extends ParseFile
 	{		
 		BasicStockWrapper wrapper = new BasicStockWrapper();
 		wrapper.setStockID(bufferData[0].trim().replace("\"",""));
-		wrapper.setStockName(bufferData[1].trim().replace("\"",""));
+		wrapper.setStockName(bufferData[2].trim().replace("\"",""));
 		wrapper.setStockBranch(1);
 		String stockName = bufferData[3].trim().replace("\"","");
 		int stockType = stockMap.get(stockName);
@@ -92,7 +92,7 @@ public class ImportBasicStock extends ParseFile
 	{		
 		BasicStockWrapper wrapper = new BasicStockWrapper();
 		wrapper.setStockID(bufferData[0].trim().replace("\"",""));
-		wrapper.setStockName(bufferData[1].trim().replace("\"",""));
+		wrapper.setStockName(bufferData[2].trim().replace("\"",""));
 		//1.¤W¥«¡F2¤WÂd
 		wrapper.setStockBranch(2);
 		String stockName = bufferData[3].trim().replace("\"","");
