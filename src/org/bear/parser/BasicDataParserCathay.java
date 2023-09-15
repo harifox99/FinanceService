@@ -73,7 +73,7 @@ public class BasicDataParserCathay extends ParserBase
 						List<Element> pList = resultElement.getAllElements(HTMLElementName.SPAN);
 						resultElement = pList.get(0);
 						content = resultElement.getContent().toString();
-						content.replace(",", "");
+						content = content.replace(",", "");
 						nav = Double.parseDouble(content);
 						nav = StringUtil.setPointLength(nav);
 					}
