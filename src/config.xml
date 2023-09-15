@@ -96,4 +96,8 @@
 		class="org.bear.dao.JdbcGoodInfoDao">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	<bean id="commomDao"
+		class="org.bear.dao.CommonDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
