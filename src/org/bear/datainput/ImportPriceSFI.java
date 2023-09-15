@@ -13,17 +13,20 @@ import org.bear.util.newRevenue.GretaiIndividualIndex;
 
 public class ImportPriceSFI extends ImportStockID
 {
-	public void insertBatchList(String startYear, String startMonth, String endYear, String endMonth, GetSFIContent sfi)
+	public void insertBatchList(String startYear, String startMonth, String endYear, String endMonth, GetSFIContent sfi, List<String> dataList)
 	{
 		//去證券期貨發展基金會抓營收資料
 		try
 		{		
 			int sleepTime = 1000;
 			int idleTime = 0;
-			
 			String readData;
+			BufferedReader reader = null;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/StockList.txt"));
+			if (dataList == null)
+				reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/StockList.txt"));
+			else
+				stockList = dataList;
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
@@ -33,7 +36,6 @@ public class ImportPriceSFI extends ImportStockID
 			{
 				String stockID = wrapperList.get(j).getStockID();
 				String stockName = wrapperList.get(j).getStockName();
-				
 				if (stockList.contains(stockID) == false)
 				{
 					continue;
@@ -78,7 +80,6 @@ public class ImportPriceSFI extends ImportStockID
 				}
 				else
 					continue;
-				
 			}
 		}
 		catch (Exception ex)

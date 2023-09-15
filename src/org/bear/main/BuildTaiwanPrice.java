@@ -22,7 +22,7 @@ public class BuildTaiwanPrice {
 		//getContent = new GetSFITwsePrice();
 		//sfi.insertBatchList(preYear, preMonth, year, month, getContent);
 		getContent = new GetHinetStockPrice();
-		sfi.insertBatchList(startYear, startMonth, year, month, getContent);
+		sfi.insertBatchList(startYear, startMonth, year, month, getContent, null);
 		/* 證交所平均價與週轉率, sleep time可以調成1000ms */
 		//getContent = new GetTwseIndividualIndex();
 		//sfi.insertBatchList(startYear, null, null, null, getContent);
