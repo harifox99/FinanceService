@@ -15,7 +15,6 @@ public class ImportPriceSFI extends ImportStockID
 {
 	public void insertBatchList(String startYear, String startMonth, String endYear, String endMonth, GetSFIContent sfi, List<String> dataList)
 	{
-		//去證券期貨發展基金會抓營收資料
 		try
 		{		
 			int sleepTime = 1000;
@@ -23,15 +22,19 @@ public class ImportPriceSFI extends ImportStockID
 			String readData;
 			BufferedReader reader = null;
 			List<String> stockList = new ArrayList<String>();
+			//從檔案來
 			if (dataList == null)
+			{				
 				reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/StockList.txt"));
+				while((readData = reader.readLine()) != null)
+				{
+					stockList.add(readData);
+				}
+				reader.close();
+			}
+			//或是從指定資料來
 			else
 				stockList = dataList;
-			while((readData = reader.readLine()) != null)
-			{
-				stockList.add(readData);
-			}
-			reader.close();
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				String stockID = wrapperList.get(j).getStockID();
