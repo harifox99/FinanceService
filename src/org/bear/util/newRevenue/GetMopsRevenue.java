@@ -54,7 +54,7 @@ public class GetMopsRevenue implements GetSFIContent {
 					GetMopRevenueIfrs ifrs = new GetMopRevenueIfrs();
 					ifrs.getContent(stockID, stockName, startYear, startMonth, endYear, endMonth);
 				}
-				else if (stockName.startsWith("F") || stockName.endsWith("KY"))
+				else if (stockName.startsWith("F") || stockName.contains("KY") || stockName.endsWith("DR"))
 				{
 					MopsF_Parser parser = new MopsF_Parser();
 					parser.setResponseString(responseString);
