@@ -8,6 +8,8 @@ import org.bear.parser.GoodInfoDistributionPercentParser;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * GoodInfo的股權分配表(持股比率)
  * @author bear
@@ -20,11 +22,30 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao dao = (StockDistributionDao)context.getBean("stockDistributionDao");	
 		SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+		List<String> stockList = new ArrayList<String>();
+		try
+		{
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/StockListBack.txt"));
+			String readData;			
+			while((readData = reader.readLine()) != null)
+			{
+				stockList.add(readData);
+			}
+			reader.close();
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		for (int j = 0; j < wrapperList.size(); j++)
 		{
 			try
 			{
 				String STOCK_ID = wrapperList.get(j).getStockID();
+				if (stockList.contains(STOCK_ID) == false)				
+					continue;		
+				else
+					System.out.println("STOCK_ID: " + STOCK_ID);
 				String DISPLAY_CAT = "持有比例區間分級一覽(完整)";
 				DISPLAY_CAT = URLEncoder.encode(DISPLAY_CAT, "UTF-8");
 				StringBuffer content = new StringBuffer();
@@ -66,9 +87,12 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 	}
 	public static void main(String args[])
 	{
-		String dateString = "2023-05-01";		
-		String week = "23W22";
-		StockDistributionGoodInfoPercent distribution = new StockDistributionGoodInfoPercent();
-		distribution.conn(dateString, week);
+		String[] dateString = {"202307", "202306", "202305", "202304", "202303", "202302", "202301"};		
+		String[] week = {"23W30", "23W26", "23W22", "23W17", "23W13", "23W08", "23W05"};
+		for (int i = 0; i < dateString.length; i++)
+		{
+			StockDistributionGoodInfo distribution = new StockDistributionGoodInfo();
+			distribution.conn(dateString[i], week[i]);
+		}
 	}
 }
