@@ -1,10 +1,8 @@
 package org.bear.parser;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.bear.dao.StockDistributionDao;
 import org.bear.entity.StockDistributionEntity;
-import org.bear.exception.TdccException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -100,10 +98,10 @@ public class GoodInfoDistributionParser
         			else if (k == 20)
         				entity.setD1000000(finalData);
         		}
-        		if (entity.getD1() == 0 && entity.getP1000000() == 0)
+        		/*if (entity.getD1() == 0 && entity.getP1000000() == 0)
         			throw new TdccException();
-        		else
-        			dao.insert(entity);
+        		else*/
+        		dao.insert(entity);
 	        }
 		}
 	    catch (Exception ex)
