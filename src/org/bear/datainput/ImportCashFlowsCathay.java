@@ -20,7 +20,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 			int idleTime = 0;
 			String readData;
 			List<String> stockList = new ArrayList<String>();
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/Book1.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/StockList.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
@@ -46,8 +46,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
 			}*/
-			//季資料
-			
+			//季資料			
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
