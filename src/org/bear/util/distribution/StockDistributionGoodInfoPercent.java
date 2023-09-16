@@ -86,12 +86,12 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 		}
 	}
 	public static void main(String args[])
-	{
-		String[] dateString = {"202307", "202306", "202305", "202304", "202303", "202302", "202301"};		
-		String[] week = {"23W30", "23W26", "23W22", "23W17", "23W13", "23W08", "23W05"};
+	{		
+		String[] dateString = {"2023-01-01"};		
+		String[] week = {"23W05"};
 		for (int i = 0; i < dateString.length; i++)
 		{
-			StockDistributionGoodInfo distribution = new StockDistributionGoodInfo();
+			StockDistributionGoodInfoPercent distribution = new StockDistributionGoodInfoPercent();
 			distribution.conn(dateString[i], week[i]);
 		}
 	}
