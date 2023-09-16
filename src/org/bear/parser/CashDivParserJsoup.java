@@ -42,9 +42,11 @@ public class CashDivParserJsoup extends ParserBase
 	        URL url = new URL(urlString);//在這邊輸入你要解析的網頁網址 
 	        Document xmlDoc =  Jsoup.parse(url, 3000); //使用Jsoup jar 去解析網頁
 	        //(要解析的文件,timeout)
-	        Elements tr = xmlDoc.select("tr"); //要解析的tag元素為tr
+	        Elements tables = xmlDoc.select("table"); 
+	        Element table = tables.get(2);
+	        Elements tr = table.select("tr"); //要解析的tag元素為tr
 	        //只要最新3年
-	        for (int i = startTrIndex; i < startTrIndex + 10; i++)
+	        for (int i = 4; i < tr.size(); i++)
 	        {
 		        Element td = tr.get(i);
 		        Elements tdList = td.select("td");
