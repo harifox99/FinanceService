@@ -152,9 +152,7 @@ public class InstallCert {
         System.out.println();
         System.out.println(cert);
         System.out.println();
-        System.out.println
-                ("Added certificate to keystore 'jssecacerts' using alias '"
-                        + alias + "'");
+        System.out.println("Added certificate to keystore 'jssecacerts' using alias '" + alias + "'");
     }
 
     private static final char[] HEXDIGITS = "0123456789abcdef".toCharArray();
