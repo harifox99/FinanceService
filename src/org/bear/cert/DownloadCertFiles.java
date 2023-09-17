@@ -20,66 +20,64 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
  
  
-public class DownloadCertFiles {
- 
+public class DownloadCertFiles 
+{ 
     private static final char[] HEXDIGITS = "0123456789abcdef".toCharArray();
- 
-    public static void main(String[] args) throws Exception {
- 
+    public void loadCerts(String[] args)
+    {
         String host       = null;
         int    port       = -1;
         String keystore   = null;
-        char[] passphrase = null;
-         
-        String defaultPassphrase = "changeit";
-         
+        char[] passphrase = null;    
+        String defaultPassphrase = "changeit";         
         int numArg = 0;
-        int nbArgs = args.length;
-         
+        int nbArgs = args.length;         
         boolean invalidArgs = false;
-        boolean isQuiet = false;
-         
-        while (numArg < nbArgs) {
+        boolean isQuiet = true;
+        while (numArg < nbArgs) 
+        {
             String arg = args[numArg++];
-             
             if (host == null) {  // 1st argument is the "host:port"
                 String[] c = arg.split(":");
                 host = c[0];
                 port = (c.length == 1) ? 443 : Integer.parseInt(c[1]);
             }
-            else if (keystore == null) {  //  2nd argument is the keystore passphrase
+            else if (keystore == null) 
+            {  //  2nd argument is the keystore passphrase
                 keystore = arg;
             }
-            else if (passphrase == null) {  //  2nd argument is the keystore passphrase
+            else if (passphrase == null) 
+            {  //  2nd argument is the keystore passphrase
                 passphrase = arg.toCharArray();
             }
-            else {
+            else 
+            {
                 invalidArgs = true;  // too many args
             }
         }
  
-        if (host == null) {
+        if (host == null) 
+        {
             invalidArgs = true;
-        }
- 
-        if (invalidArgs) {
+        } 
+        if (invalidArgs) 
+        {
             System.out.println("Usage: java LoadCerts host[:port] [keystore] [passphrase]");
             return;
-        }
-         
+        }         
         File file = null;
-        if(keystore != null) {
+        if (keystore != null) 
             file = new File(keystore);
-        } else {
-            file = new File("");
-        }
-         
-        if (file.isFile() == false) {
+        else 
+            file = new File("");         
+        if (file.isFile() == false) 
+        {
             System.out.println("Error: keystore file not found");
             char SEP = File.separatorChar;
             File dir = new File(System.getProperty("java.home") + SEP + "lib" + SEP + "security");
             file = new File(dir, "jssecacerts");
-            if (file.isFile() == false) {
+            if (file.isFile() == false) 
+            {
                 System.out.println("Info: Loading default keystore...");
                 passphrase = defaultPassphrase.toCharArray();
                 file = new File(dir, "cacerts");
@@ -89,93 +87,98 @@ public class DownloadCertFiles {
          
         System.out.println("Info: host : "+host);
         System.out.println("Info: keystore : "+keystore);
- 
         //Load keystore
-        InputStream in = new FileInputStream(keystore);
-        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-        ks.load(in, passphrase);
-        in.close();
-         
-        SSLContext context = SSLContext.getInstance("TLS");
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        tmf.init(ks);
-        X509TrustManager defaultTrustManager = (X509TrustManager) tmf.getTrustManagers()[0];
-        SaveTrustManager tm = new SaveTrustManager(defaultTrustManager);
-        context.init(null, new TrustManager[]{tm}, null);
-        SSLSocketFactory factory = context.getSocketFactory();
- 
-        System.out.println("Info: Opening connection to " + host + ":" + port + " ...");
-         
-        //Initiate socket
-        SSLSocket socket = (SSLSocket) factory.createSocket(host, port);
-        socket.setSoTimeout(10000);
-         
-        try {
+        try
+        {
+	        InputStream in = new FileInputStream(keystore);
+	        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+	        ks.load(in, passphrase);
+	        in.close();
+	        SSLContext context = SSLContext.getInstance("TLS");
+	        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+	        tmf.init(ks);
+	        X509TrustManager defaultTrustManager = (X509TrustManager) tmf.getTrustManagers()[0];
+	        SaveTrustManager tm = new SaveTrustManager(defaultTrustManager);
+	        context.init(null, new TrustManager[]{tm}, null);
+	        SSLSocketFactory factory = context.getSocketFactory();
+	        System.out.println("Info: Opening connection to " + host + ":" + port + " ...");
+	        //Initiate socket
+	        SSLSocket socket = (SSLSocket) factory.createSocket(host, port);
+	        socket.setSoTimeout(10000);
             System.out.println("Info: Initiating SSL handshake...");
             socket.startHandshake();
             socket.close();
             System.out.println("Info: Certificate is already trusted");
-        } catch (SSLException e) {
+
+	        X509Certificate[] chain = tm.chain;
+	        if (chain == null) 
+	        {
+	            System.out.println("Error: Could not obtain server certificate chain");
+	            return;
+	        }
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	        System.out.println();
+	        System.out.println("Info: Server sent " + chain.length + " certificate(s):");
+	        System.out.println();         
+	        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
+	        MessageDigest md5 = MessageDigest.getInstance("MD5");
+	        for (int i = 0; i < chain.length; i++) 
+	        {
+	            X509Certificate cert = chain[i];
+	            System.out.println(" " + (i + 1) + " Subject " + cert.getSubjectDN());
+	            System.out.println("   Issuer  " + cert.getIssuerDN());
+	            sha1.update(cert.getEncoded());
+	            System.out.println("   sha1    " + toHexString(sha1.digest()));
+	            md5.update(cert.getEncoded());
+	            System.out.println("   md5     " + toHexString(md5.digest()));
+	            System.out.println();
+	        }
+	 
+	        int k;
+	        if (isQuiet) 
+	        {
+	            System.out.println("Info: Adding first certificate to trusted keystore");
+	            k = 0;
+	        }
+	        else 
+	        {
+	            System.out.println("Info: Enter certificate to add to trusted keystore or 'q' to quit: [1]");
+	            String line = reader.readLine().trim();
+	            try 
+	            {
+	                k = (line.length() == 0) ? 0 : Integer.parseInt(line) - 1;
+	            } 
+	            catch (NumberFormatException e) 
+	            {
+	                System.out.println("Error: KeyStore not changed");
+	                return;
+	            }
+	        }
+	 
+	        X509Certificate cert = chain[k];
+	        String alias = host + "-" + (k + 1);
+	        ks.setCertificateEntry(alias, cert);
+	        OutputStream out = new FileOutputStream(keystore);
+	        ks.store(out, passphrase);
+	        out.close();
+	        System.out.println(cert);
+	        System.out.println("Info: Added certificate to keystore '"+keystore+"' using alias '" + alias + "'");
+        } 
+        catch (SSLException e) 
+        {
             e.printStackTrace(System.out);
         }
-         
-        X509Certificate[] chain = tm.chain;
-        if (chain == null) {
-            System.out.println("Error: Could not obtain server certificate chain");
-            return;
+        catch (Exception e) 
+        {
+            e.printStackTrace(System.out);
         }
-         
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
- 
-        System.out.println();
-        System.out.println("Info: Server sent " + chain.length + " certificate(s):");
-        System.out.println();
-         
-        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
-        for (int i = 0; i < chain.length; i++) {
-            X509Certificate cert = chain[i];
-            System.out.println(" " + (i + 1) + " Subject " + cert.getSubjectDN());
-            System.out.println("   Issuer  " + cert.getIssuerDN());
-            sha1.update(cert.getEncoded());
-            System.out.println("   sha1    " + toHexString(sha1.digest()));
-            md5.update(cert.getEncoded());
-            System.out.println("   md5     " + toHexString(md5.digest()));
-            System.out.println();
-        }
- 
-        int k;
-        if (isQuiet) {
-            System.out.println("Info: Adding first certificate to trusted keystore");
-            k = 0;
-        }
-        else {
-            System.out.println("Info: Enter certificate to add to trusted keystore or 'q' to quit: [1]");
-            String line = reader.readLine().trim();
-            try {
-                k = (line.length() == 0) ? 0 : Integer.parseInt(line) - 1;
-            } catch (NumberFormatException e) {
-                System.out.println("Error: KeyStore not changed");
-                return;
-            }
-        }
- 
-        X509Certificate cert = chain[k];
-        String alias = host + "-" + (k + 1);
-        ks.setCertificateEntry(alias, cert);
- 
-        OutputStream out = new FileOutputStream(keystore);
-        ks.store(out, passphrase);
-        out.close();
- 
-        System.out.println(cert);
-        System.out.println("Info: Added certificate to keystore '"+keystore+"' using alias '" + alias + "'");
- 
     }
   
-    private static String toHexString(byte[] bytes) {
+    private static String toHexString(byte[] bytes) 
+    {
         StringBuilder sb = new StringBuilder(bytes.length * 3);
-        for (int b : bytes) {
+        for (int b : bytes) 
+        {
             b &= 0xff;
             sb.append(HEXDIGITS[b >> 4]);
             sb.append(HEXDIGITS[b & 15]);
@@ -185,29 +188,44 @@ public class DownloadCertFiles {
     }
      
     //Inner class to save the default trust manager
-    private static class SaveTrustManager implements X509TrustManager {
- 
+    private static class SaveTrustManager implements X509TrustManager 
+    {
         private final X509TrustManager tm;
         private X509Certificate[] chain;
- 
-        SaveTrustManager(X509TrustManager tm) {
+        SaveTrustManager(X509TrustManager tm) 
+        {
             this.tm = tm;
         }
  
-        public X509Certificate[] getAcceptedIssuers() {
+        public X509Certificate[] getAcceptedIssuers() 
+        {
             // This change has been done due to the following resolution advised for Java 1.7+
             // http://infposs.blogspot.kr/2013/06/installcert-and-java-7.html
             return new X509Certificate[0];
             //throw new UnsupportedOperationException();
         }
  
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException 
+        {
             throw new UnsupportedOperationException();
         }
  
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException 
+        {
             this.chain = chain;
             tm.checkServerTrusted(chain, authType);
         }
+    }
+    public static void main(String[] args)
+    {
+    	//String[] twse = {"www.twse.com.tw", "443"};
+    	String[] tpex = {"www.tpex.org.tw", "443"};
+    	//String[] taif = {"www.taifex.com.tw", "443"};
+    	//DownloadCertFiles twseCerts = new DownloadCertFiles();
+    	//twseCerts.loadCerts(twse);
+    	DownloadCertFiles tpexCerts = new DownloadCertFiles();
+    	tpexCerts.loadCerts(tpex);
+    	//DownloadCertFiles taifCerts = new DownloadCertFiles();
+    	//taifCerts.loadCerts(taif);
     }
 }
