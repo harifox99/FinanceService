@@ -17,7 +17,7 @@ public class GetURLContent
 	{
 		this.urlString = urlString;
 	}
-	public BufferedReader getContent()
+	public BufferedReader getContent(String encode)
 	{
 		boolean isConnect = false;
 		boolean isFirst = true;
@@ -30,7 +30,10 @@ public class GetURLContent
 			{
 				url = new URL(urlString);
 				urlConnection = url.openConnection();
-				htmlContent = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+				if (encode == null)
+					htmlContent = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+				else
+					htmlContent = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), encode));
 				isConnect = true;
 				if (isFirst == false)
 					Thread.sleep(1000 * 30);

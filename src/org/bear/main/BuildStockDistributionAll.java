@@ -25,7 +25,7 @@ public class BuildStockDistributionAll extends ImportStockID
 			//¤U¸ü¸ê®Æ
 			GetURLContent content = new GetURLContent(url);
 			FileParser fileParser = new FileParser();
-			List<String> listData = fileParser.getResponse(content.getContent());
+			List<String> listData = fileParser.getResponse(content.getContent(null));
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");	
 			Date date = dateFormat.parse(dateString);
 			//Parse Data

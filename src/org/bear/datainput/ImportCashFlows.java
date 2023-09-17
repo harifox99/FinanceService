@@ -64,7 +64,7 @@ public class ImportCashFlows
 						urlContent = new GetURLContent(cashFlowsUrlHeader, yearSeason[i], stockID);
 					do
 					{
-						CashFlowsParser cashFlowsParser = new CashFlowsParser(urlContent.getContent(), yearSeason[i], list, stockID, basicCashFlowsDao, writer);
+						CashFlowsParser cashFlowsParser = new CashFlowsParser(urlContent.getContent(null), yearSeason[i], list, stockID, basicCashFlowsDao, writer);
 						isSuccessful = cashFlowsParser.parse();
 					}while (isSuccessful == false);
 					Thread.sleep(1000);

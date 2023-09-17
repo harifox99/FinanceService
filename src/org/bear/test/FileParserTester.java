@@ -15,7 +15,7 @@ public class FileParserTester {
 	{
 		content = new GetURLContent(url);
 		fileParser = new FileParser();
-		fileParser.getResponse(content.getContent());
+		fileParser.getResponse(content.getContent(null));
 	}
 	public static void main(String args[])
 	{

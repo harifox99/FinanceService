@@ -28,7 +28,7 @@ public class SP500NewIndex
 		List<String> listData;
 		content = new GetURLContent(url);
 		fileParser = new FileParser();
-		listData = fileParser.getResponse(content.getContent());
+		listData = fileParser.getResponse(content.getContent(null));
 		String[] data;
 		for (int i = 1; i < listData.size(); i++)
 		{
