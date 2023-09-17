@@ -41,7 +41,7 @@ public class GetTwseThreeBigExchange
 		return url;
 	}
 	public void setUrl(String url) {
-		this.url = url + "&date=" + date + "&selectType=ALLBUT0999";
+		this.url = url + "&date=" + date + "&selectType=ALLBUT0999&response=html";
 	}
 	
 	public void getContent()
