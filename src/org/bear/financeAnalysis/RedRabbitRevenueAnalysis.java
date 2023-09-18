@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 
+import org.bear.constant.FinancialReport;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.IncomeStatementDao;
 import org.bear.dao.JdbcRevenueDao;
@@ -377,7 +378,8 @@ public class RedRabbitRevenueAnalysis
 				for (int i = 0; i < conditionalList.size(); i++)
 				{
 					String stockID = conditionalList.get(i).getStockID();
-					if (!reportList.contains(stockID) && isSpecificReport)
+					//有一些很奇怪的股票資料不足，先略過檢查
+					if ( (!reportList.contains(stockID) && isSpecificReport) || FinancialReport.skipStockId.contains(stockID) )
 						continue;
 					List<RevenueEntity> entityList;
 					if (isSpecificDate)
