@@ -43,11 +43,19 @@ public class JdbcJuristicDailyReportDao extends SimpleJdbcDaoSupport implements 
 	}
 
 	@Override
-	public List<JuristicDailyEntity> findLatestData(int size) {
+	public List<JuristicDailyEntity> findLatestData(int size) 
+	{
 		List <JuristicDailyEntity> entityList = null;
-		String sql = "select top " + size + " * from JuristicDailyReport ORDER BY ExchangeDate desc";
-		//System.out.println("SQL: " + sql);
-		entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));
+		try
+		{			
+			String sql = "select top " + size + " * from JuristicDailyReport ORDER BY ExchangeDate desc";
+			System.out.println("SQL: " + sql);
+			entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(JuristicDailyEntity.class));			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		return entityList;
 	}
 
