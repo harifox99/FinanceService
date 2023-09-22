@@ -68,9 +68,11 @@ public class InstitutionalRatio
 		ValueComparator foreignerVC = new ValueComparator(mapForeigner);
 		TreeMap<String, Double> sortedForeigner = new TreeMap<String, Double>(foreignerVC);
 		for (int i = 0; i < listStock.size(); i++)
-		{
-			//if (!listStock.get(i).getStockID().equals("2458"))
-				//continue;
+		{			
+			if (!listStock.get(i).getStockID().equals("6757"))
+				continue;
+			if (listStock.get(i).getCapital() == 0)
+				continue;
 			//得到該股票的外資交易資料
 			listForeigner = juristicDailyReportDao.findStockBySize(listStock.get(i).getStockID(), days, buyer);		
 			List<Double> ratioList = this.computeAccumulateCapitalRatio(listStock.get(i).getStockID(), listForeigner, listStock.get(i).getCapital(), mapForeigner, accumulation);
@@ -141,15 +143,22 @@ public class InstitutionalRatio
     	//成交量
     	double totalQuantity = 0;
     	List<Double> ratioList = new ArrayList<Double>();
-    	for (int i = 0; i < listInstitutional.size(); i++)
+    	try
     	{
-    		totalQuantity = totalQuantity + listInstitutional.get(i).getQuantity();
-    		double ratio = (double)totalQuantity/capital/converter;
-    		ratioList.add(StringUtil.setPointLength(ratio));
-    		if (i == accumulation-1)
-    		{
-    			mapOrder.put(stockID, ratio);
-    		}
+	    	for (int i = 0; i < listInstitutional.size(); i++)
+	    	{
+	    		totalQuantity = totalQuantity + listInstitutional.get(i).getQuantity();
+	    		double ratio = (double)totalQuantity/capital/converter;
+	    		ratioList.add(StringUtil.setPointLength(ratio));
+	    		if (i == accumulation-1)
+	    		{
+	    			mapOrder.put(stockID, ratio);
+	    		}
+	    	}
+    	}
+    	catch (Exception ex)
+    	{
+    		ex.printStackTrace();
     	}
     	return ratioList;
     }
