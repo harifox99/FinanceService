@@ -4,19 +4,17 @@ import java.util.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.bear.constant.FinancialReport;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.GoodInfoDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.GoodInfoEntity;
 import org.bear.entity.InstitutionalEntity;
+import org.bear.entity.StockDistributionEntity;
 import org.bear.entity.ThreeBigExchangeEntity;
 import org.bear.parser.TpexPriceParser;
 import org.bear.parser.TwsePriceParser;
-import org.bear.util.HttpUtil;
+import org.bear.util.StockDistributionWeek;
 import org.bear.util.StringUtil;
 import org.jsoup.Jsoup;
 import org.springframework.context.ApplicationContext;
@@ -69,8 +67,8 @@ public class InstitutionalRatio
 		TreeMap<String, Double> sortedForeigner = new TreeMap<String, Double>(foreignerVC);
 		for (int i = 0; i < listStock.size(); i++)
 		{			
-			if (!listStock.get(i).getStockID().equals("6757"))
-				continue;
+			//if (!listStock.get(i).getStockID().equals("6757"))
+				//continue;
 			if (listStock.get(i).getCapital() == 0)
 				continue;
 			//得到該股票的外資交易資料
@@ -275,72 +273,22 @@ public class InstitutionalRatio
      */
     private void majorHolder(List<InstitutionalEntity> list, int maxSize, String dateString)
     {
-    	//400大戶從第12行開始
-    	final int startTrIndex = 12;
+    	StockDistributionWeek buildStock = new StockDistributionWeek();
+    	Map<String, StockDistributionEntity> entityMap = buildStock.getData("https://smart.tdcc.com.tw/opendata/getOD.ashx?id=1-5");    
     	if (maxSize > list.size())
 			maxSize = list.size();
     	for (int i = 0; i < maxSize; i++)
-    	{
+    	{    		
     		InstitutionalEntity entity = list.get(i);
-    		String url = "https://www.tdcc.com.tw/smWeb/QryStockAjax.do";
-    		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-    		paramList.add(new BasicNameValuePair("scaDate", dateString));
-    		paramList.add(new BasicNameValuePair("scaDates", dateString));
-    		paramList.add(new BasicNameValuePair("SqlMethod", "StockNo"));
-    		paramList.add(new BasicNameValuePair("StockNo", list.get(i).getStockID()));
-    		paramList.add(new BasicNameValuePair("REQ_OPR", "SELECT"));
-    		paramList.add(new BasicNameValuePair("clkStockNo", list.get(i).getStockID()));
-    		paramList.add(new BasicNameValuePair("radioStockNo", list.get(i).getStockID()));		
-    		boolean isSuccessful = false;
-    		//集保填錯日期就GG了，所以要設Counter
-    		int count = 15;
-    		while (isSuccessful == false && count-- > 0)
-    		{
-    			//400張
-    			double totalRatio = 0;
-    			//800張
-    			double eightHundredRatio = 0;
-	    		try
-	    		{
-	    			String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
-	    			Document doc = Jsoup.parse(responseString);
-	    			Element table = doc.select("table").get(7);
-		    		Elements tr = table.select("tr");
-		    		//400-600, 600-800, 800-1000, 1000+ (共4份資料)
-		    		for (int j = startTrIndex; j < startTrIndex + 4; j++)
-			        {
-				        Element td = tr.get(j);
-				        Elements tdList = td.select("td");
-				        double ratio = Double.parseDouble(tdList.get(4).text());	
-				        ratio = StringUtil.setPointLength(ratio);
-				        totalRatio = totalRatio + ratio;
-				        if (j == startTrIndex+2)
-				        	eightHundredRatio = ratio;
-				        if (j == startTrIndex+3)
-				        {
-				        	entity.setThousand(ratio);
-				        	entity.setEightHundred(StringUtil.setPointLength(ratio+eightHundredRatio));
-				        }
-			        }
-		    		entity.setFourHundred(StringUtil.setPointLength(totalRatio));
-	    			isSuccessful = true;
-	    		}
-	    		//集保很容易發生Http Error
-	    		catch (Exception ex)
-	    		{
-	    			try 
-					{
-	    				System.out.println("StockID:" + list.get(i).getStockID());
-						Thread.sleep(FinancialReport.sleepTime * 6);
-					} 
-					catch (InterruptedException e) 
-					{
-						// TODO Auto-generated catch block
-						System.out.println(list.get(i).getStockID() + ": 重新查詢營收發生中斷!");
-					}
-	    		}
-	    		
-    		}
+    		StockDistributionEntity distribution = entityMap.get(entity.getStockID());
+    		//400-600, 600-800, 800-1000, 1000+ (共4份資料)
+    		//400張
+			double d400  = distribution.getP400000() + distribution.getP600000() + distribution.getP800000() + distribution.getP1000000();
+    		double d800  = distribution.getP800000() + distribution.getP1000000();
+    		double d1000 = distribution.getP1000000();
+    		entity.setFourHundred(StringUtil.setPointLength(d400));
+    		entity.setEightHundred(StringUtil.setPointLength(d800));
+    		entity.setThousand(StringUtil.setPointLength(d1000));
     	}
     }
     
