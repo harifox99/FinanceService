@@ -6,11 +6,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.GoodInfoDao;
+import org.bear.dao.JdbcStockTypeDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.GoodInfoEntity;
 import org.bear.entity.InstitutionalEntity;
 import org.bear.entity.StockDistributionEntity;
+import org.bear.entity.StockTypeName;
 import org.bear.entity.ThreeBigExchangeEntity;
 import org.bear.parser.TpexPriceParser;
 import org.bear.parser.TwsePriceParser;
@@ -30,7 +32,7 @@ public class InstitutionalRatio
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
-	GoodInfoDao goodInfoDao = (GoodInfoDao)context.getBean("goodInfoDao");
+	GoodInfoDao goodInfoDao = (GoodInfoDao)context.getBean("goodInfoDao");	
 	List<InstitutionalEntity> listAllEntity = new ArrayList<InstitutionalEntity>();
 	//List<List<InstitutionalEntity>> listAllEntity = new ArrayList<List<InstitutionalEntity>>();
 	Map<String, Double> mapForeigner;	 
@@ -104,6 +106,7 @@ public class InstitutionalRatio
 		this.majorHolder(listForeignerEntity, maxSize, date);	
 		this.ShareholdingRatio(listForeignerEntity, maxSize, priceDate.substring(0, 4) + "-" + priceDate.substring(4, 6) + "-" + priceDate.substring(6, 8));
 		this.addKD(listForeignerEntity, priceDate);
+		this.getStockType(listForeignerEntity);
 		return listForeignerEntity;
 	}
     public static void main(String[] args) 
@@ -456,7 +459,27 @@ public class InstitutionalRatio
 			}
 		}
     }
-    
+    private void getStockType(List<InstitutionalEntity> list)
+    {
+    	try
+    	{
+	    	JdbcStockTypeDao jdbcStockTypeDao = (JdbcStockTypeDao)context.getBean("stockTypeDao");
+	    	List<StockTypeName> listStockType = jdbcStockTypeDao.getStockTypeName();    	
+	    	Map<String, String> mapStockType = new HashMap<String, String>();
+	    	for (int i = 0; i < listStockType.size(); i++)
+	    		mapStockType.put(listStockType.get(i).getStockID(), listStockType.get(i).getTypeName());
+	    	for (int i = 0; i < list.size(); i++)
+	    	{
+	    		InstitutionalEntity entity = list.get(i);
+	    		String stockID = list.get(i).getStockID();
+	    		entity.setStockTypeName(mapStockType.get(stockID));
+	    	}
+    	}
+    	catch (Exception x)
+    	{
+    		x.printStackTrace();
+    	}
+    }
 }
 class ValueComparator implements Comparator<String> 
 {

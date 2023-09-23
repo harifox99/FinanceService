@@ -83,6 +83,17 @@ public class InstitutionalEntity {
 	 * Week KD Gold Cross
 	 */
 	String week_kd_20;
+	/**
+	 * ÃþªÑ
+	 */
+	String stockTypeName;
+	
+	public String getStockTypeName() {
+		return stockTypeName;
+	}
+	public void setStockTypeName(String stockTypeName) {
+		this.stockTypeName = stockTypeName;
+	}
 	public String getStockID() {
 		return stockID;
 	}
