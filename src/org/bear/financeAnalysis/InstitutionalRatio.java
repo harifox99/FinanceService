@@ -58,6 +58,7 @@ public class InstitutionalRatio
 			double capital, double price, boolean isSmallCapital,
 			int priceRate, String compareDate)
 	{
+		System.out.println("買賣超佔股本比......................");
 		List<BasicStockWrapper> listStock = basicStockDao.findAllData();
 		//外資個股買賣超佔股本比
 		Map<String, List<Double>> foreignerStockRatio = new HashMap<String, List<Double>>();
@@ -98,13 +99,17 @@ public class InstitutionalRatio
 	    		entity.setRank(rankEntity.getRank());
 	    	listForeignerEntity.add(entity);
 	    }
+		System.out.println("過濾股本");
 		listForeignerEntity = this.checkCapital(listForeignerEntity, capital, isSmallCapital);
 		this.getPrice(listForeignerEntity, priceDate);
+		System.out.println("過濾漲幅");
 		listForeignerEntity = this.priceFilter(listForeignerEntity, compareDate, priceRate);
 		listForeignerEntity = this.checkPrice(listForeignerEntity, price);
+		System.out.println("計算連續買天數，M天有N天買");
 		this.consecutiveExchange(listForeignerEntity, days, buyer, maxSize);	
 		this.majorHolder(listForeignerEntity, maxSize, date);	
 		this.ShareholdingRatio(listForeignerEntity, maxSize, priceDate.substring(0, 4) + "-" + priceDate.substring(4, 6) + "-" + priceDate.substring(6, 8));
+		System.out.println("Add K/D");
 		this.addKD(listForeignerEntity, priceDate);
 		this.getStockType(listForeignerEntity);
 		return listForeignerEntity;
