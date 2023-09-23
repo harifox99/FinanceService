@@ -39,11 +39,7 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"112/08/01", "112/08/02", "112/08/04",
-				"112/08/07", "112/08/08", "112/08/09", "112/08/10", "112/08/11",
-				"112/08/14", "112/08/15", "112/08/16", "112/08/17", "112/08/18",
-				"112/08/21", "112/08/22", "112/08/23", "112/08/24", "112/08/25",
-				"112/08/28", "112/08/29", "112/08/30", "112/08/31"};
+		String[] date = {"112/09/22"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 	}
@@ -122,7 +118,7 @@ public class BuildThreeBigExchange {
 			System.out.println(westenDate + " End!");
 			//Send Mail
 			String smtpHostServer = "msr.hinet.net";
-		    String emailID = "bear@cht.com.tw";
+		    String emailID = "aluba0504@gmail.com";
 		    Properties props = System.getProperties();
 		    props.put("mail.smtp.auth", "true");
 		    props.put("mail.smtp.host", smtpHostServer);
