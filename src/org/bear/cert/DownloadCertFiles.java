@@ -215,19 +215,17 @@ public class DownloadCertFiles {
         }
     }
     public static void main(String[] args) throws Exception
-    {
-    	/*
+    {    	
     	String[] twse = {"www.twse.com.tw", "443"};
     	String[] tpex = {"www.tpex.org.tw", "443"};
-    	String[] taif = {"www.taifex.com.tw", "443"};*/
-    	String[] tdcc = {"www.tdcc.com.tw", "443"};
-    	/*
+    	String[] taif = {"www.taifex.com.tw", "443"};
+    	String[] tdcc = {"www.tdcc.com.tw", "443"};    	
     	DownloadCertFiles twseCerts = new DownloadCertFiles();
     	twseCerts.loadCerts(twse);
     	DownloadCertFiles tpexCerts = new DownloadCertFiles();
     	tpexCerts.loadCerts(tpex);
     	DownloadCertFiles taifCerts = new DownloadCertFiles();
-    	taifCerts.loadCerts(taif);*/
+    	taifCerts.loadCerts(taif);
     	DownloadCertFiles tdccCerts = new DownloadCertFiles();   	
     	tdccCerts.loadCerts(tdcc);
     }
