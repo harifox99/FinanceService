@@ -313,7 +313,7 @@ public class InstitutionalRatio
 		TwsePriceParser twseParser = new TwsePriceParser();
 		twseParser.setUrl(url + dateString);
 		twseParser.getConnection();
-		twseParser.parse(4);
+		twseParser.parse(8);
 		HashMap<String, Double> hashPrice = twseParser.getHashPrice();	
 		//櫃買
 		url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
@@ -355,7 +355,7 @@ public class InstitutionalRatio
 	    	TwsePriceParser twseParser = new TwsePriceParser();
 	    	twseParser.setUrl(url + compareDate.replace("/", ""));
 	    	twseParser.getConnection();
-	    	twseParser.parse(4);
+	    	twseParser.parse(8);
 			HashMap<String, Double> previousPrice = twseParser.getHashPrice();
 			//計算某個日子股價 (上櫃)
 			TpexPriceParser tpexParser = new TpexPriceParser();
