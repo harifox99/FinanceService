@@ -61,7 +61,7 @@ public class RoeAnalysis
 			{
 				String stockID = stockList.get(i).getStockID();
 				String stockName = stockList.get(i).getStockName();
-				//if (!stockID.equals("2493"))
+				//if (!stockID.equals("1438"))
 					//continue;			
 				if (isBurstRevenue)//短期營收超越長期營收
 				{
@@ -190,6 +190,8 @@ public class RoeAnalysis
 		double averageRevenue = 0;
 		for (int i = 0; i < period; i++)
 		{
+			if (list.get(i).getLastRevenue() == 0)
+				continue;
 			double revenue = (double)list.get(i).getRevenue() / list.get(i).getLastRevenue();
 			revenue = revenue - 1;
 			averageRevenue = averageRevenue + revenue;
