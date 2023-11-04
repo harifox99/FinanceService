@@ -19,6 +19,10 @@ public interface RevenueDao
 	public List<LongTermRevenueWrapper> findLongTermByDate(String stockID, Date startTime, Date endTime);
 	//傳回特定年份營收資料
 	public List<RevenueEntity> findAllData(String stockID, String year);
+	//找出特定日期範圍的營收
+	public List<RevenueEntity> findByLatestSize(int size, String stockID, String year, String month);
+	//查詢是否有最新一筆營收資訊
+	public List<RevenueEntity> findByLatestSize(String stockID, String year, String month);
 	public void update(String stockID, RevenueEntity entity);
 	public void updatePrice(String stockID, RevenueEntity entity);
 	public void update(String stockID, String turnoverRatio, String averageIndex, Date date);
