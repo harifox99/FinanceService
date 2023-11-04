@@ -31,7 +31,7 @@ public class RedRabbitRevenueAnalysis
 	final int threeMonth = 3;
 	//紅兔指標至少要14個月才能計算
 	final int minMonth = 14;
-	public List<RedRabbitWrapper> getRedRabbit()
+	public List<RedRabbitWrapper> getRedRabbit(String year, String month)
 	{
 		List<RedRabbitWrapper> redRabitWrapper = new ArrayList<RedRabbitWrapper>();
 		String debug = "";
@@ -58,8 +58,12 @@ public class RedRabbitRevenueAnalysis
 				List<RevenueEntity> entityList = jdbcRevenueDao.findByLatestSize(minMonth, stockID);
 				if (entityList.size() < minMonth)
 					continue;
+				//如果有（最新）資料
+				entityList = jdbcRevenueDao.findByLatestSize(stockID, year, month);
+				if (entityList.size() == 0)
+					continue;
 				//創近一年新高
-				entityList = jdbcRevenueDao.findByLatestSize(oneYear, stockID);
+				entityList = jdbcRevenueDao.findByLatestSize(oneYear, stockID, year, month);
 				for (int j = 0; j < entityList.size(); j++)
 				{
 					if (j == 0)
@@ -75,10 +79,9 @@ public class RedRabbitRevenueAnalysis
 							break;										
 						}
 					}
-				}	
-				
+				}
 				//本月營收創六年以來新高
-			    entityList = jdbcRevenueDao.findByLatestSize(sixYear-1, stockID);
+			    entityList = jdbcRevenueDao.findByLatestSize(sixYear-1, stockID, year, month);
 				for (int j = 0; j < entityList.size(); j++)
 				{
 					wrapper.setMonthSize(entityList.size());
@@ -99,7 +102,7 @@ public class RedRabbitRevenueAnalysis
 					
 				//創六年同期新高(2)&次高(1)
 				//創六年同期新低(2)&次低(1)
-				entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);		
+				entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID, year, month);		
 				List<Integer> sortedRevenue = new ArrayList<Integer>();
 				for (int j = 0; j < entityList.size(); j++)
 				{
@@ -253,7 +256,7 @@ public class RedRabbitRevenueAnalysis
 				}
 				/** 連三月單月營收數字 **/
 				//連三月絕對營收成長
-				entityList = jdbcRevenueDao.findByLatestSize(threeMonth, stockID);
+				entityList = jdbcRevenueDao.findByLatestSize(threeMonth, stockID, year, month);
 				for (int j = 0; j < entityList.size(); j++)
 				{
 					if (j == 0)
@@ -307,7 +310,7 @@ public class RedRabbitRevenueAnalysis
 					}
 				}		
 				//本月MoM>去年同期MoM
-				entityList = jdbcRevenueDao.findByLatestSize(14, stockID);
+				entityList = jdbcRevenueDao.findByLatestSize(14, stockID, year, month);
 				/* 這個月/上個月 */
 				double currentMom = (double)entityList.get(0).getRevenue()/entityList.get(1).getRevenue();
 				/* 去年同一個月/去年上一個月 */
@@ -384,7 +387,7 @@ public class RedRabbitRevenueAnalysis
 					List<RevenueEntity> entityList;
 					if (isSpecificDate)
 					{
-						if (stockMap.get( conditionalList.get(i).getStockID() ) != null)
+						if (stockMap.get(conditionalList.get(i).getStockID()) != null)
 							entityList = jdbcRevenueDao.findByLatestSize(sixYear, stockID);
 						else
 							continue;
