@@ -340,7 +340,7 @@ public class JdbcRevenueDao extends SimpleJdbcDaoSupport implements RevenueDao {
 		String sql = "select top " + size + " * from operatingRevenue where stockID = '" +
 		stockID + "' and YearMonth <= '" + year + "-" + month + "-01'" + 
 						" order by yearMonth desc";
-		System.out.println("SQL: " + sql);
+		//System.out.println("SQL: " + sql);
 		List <RevenueEntity> entityList = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(RevenueEntity.class));
 		return entityList;		
 	}
