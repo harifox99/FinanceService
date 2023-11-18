@@ -10,7 +10,6 @@ import net.htmlparser.jericho.HTMLElementName;
 import org.bear.dao.IncomeStatementDao;
 import org.bear.entity.IncomeStatementEntity;
 import org.bear.util.AccountTitle;
-import org.bear.util.GetURLCathayIncomeStatementSingle;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -122,12 +121,13 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 				}
 			}
 		}
+		/* 移除單一報表，只擷取合併報表
 		if (this.checkExpectedNum(entity, expectedNum, years, seasons) == true && this.isCombined == true)
 		{
 			GetURLCathayIncomeStatementSingle urlContent = new GetURLCathayIncomeStatementSingle(stockID, this.isYear);
 			IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContent(), stockID, this.isYear, years, seasons, expectedNum, false);
 			incomeStatementYear.parse(2);
-		}
+		}*/
 	}
 	public void setStockData(String rowData[])
 	{
