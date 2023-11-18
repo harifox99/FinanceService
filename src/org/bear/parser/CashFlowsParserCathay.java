@@ -113,12 +113,13 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 				}
 			}
 		}
+		/* 移除單一報表，只擷取合併報表
 		if (this.checkExpectedNum(entity, expectedNum, years, seasons) == true && this.isCombined == true)
 		{
 			GetURLCathayCashFlowSingle urlContent = new GetURLCathayCashFlowSingle(stockID, this.isYear);
 			CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContent(), stockID, years, seasons, this.isYear, expectedNum, false);
 			cashFlowsParser.parse(2);
-		}
+		}*/
 	}
 	public void setStockData(String rowData[])
 	{
