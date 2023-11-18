@@ -10,7 +10,6 @@ import org.bear.dao.BalanceSheetDao;
 import org.bear.entity.BalanceSheetEntity;
 import org.bear.entity.BasicEntity;
 import org.bear.util.AccountTitle;
-import org.bear.util.GetURLCathayBalanceSheetSingle;
 import org.bear.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
