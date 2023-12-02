@@ -34,6 +34,7 @@ public class DistributionWrapper {
 	 */
 	long strongStockHolder;
 	String yearMonth;
+	String stockName;
 	public long getRetailInvestor() {
 		return retailInvestor;
 	}
@@ -87,6 +88,12 @@ public class DistributionWrapper {
 	}
 	public void setYearMonth(String yearMonth) {
 		this.yearMonth = yearMonth;
+	}
+	public String getStockName() {
+		return stockName;
+	}
+	public void setStockName(String stockName) {
+		this.stockName = stockName;
 	}
 	
 }
