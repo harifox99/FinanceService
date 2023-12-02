@@ -2,9 +2,10 @@ package org.bear.util.distribution;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.bear.dao.BasicStockDao;
 import org.bear.dao.StockDistributionDao;
 import org.bear.dao.ThreeBigDao;
+import org.bear.entity.BasicStockWrapper;
 import org.bear.entity.StockDistributionEntity;
 import org.bear.journal.wrapper.DistributionWrapper;
 import org.springframework.context.ApplicationContext;
@@ -18,11 +19,12 @@ public class DistributionAnalysis
 	{		
 		List <DistributionWrapper> distributionWrapperList = new ArrayList<DistributionWrapper>();
 		List <StockDistributionEntity> distributionList = stockDistributionDao.latest(stockID, duration);
-		//List <ThreeBigEntity> threeBigList = threeBigDao.latest(stockID, duration);
-		
+		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
+		BasicStockWrapper basicStock = basicStockDao.findBasicData(stockID);	
 		for (int i = 0; i < distributionList.size()-1; i++)
 		{
 			DistributionWrapper wrapper = new DistributionWrapper();
+			wrapper.setStockName(basicStock.getStockName());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM"); 
 			wrapper.setYearMonth(dateFormat.format(distributionList.get(i).getYearMonth()));
 			//´²¤á
