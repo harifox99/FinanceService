@@ -47,7 +47,7 @@ public class CalculateReinvestmentRate extends BasicEntity
 			List <BalanceSheetEntity> balanceSheetList;
 			balanceSheetList = balanceSheetDao.findDataByYear(stockID, year);
 			//·l¯qªí
-			IncomeStatementDao incomeStatementDao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");;
+			IncomeStatementDao incomeStatementDao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
 			List <IncomeStatementEntity> incomeStatementList;
 			incomeStatementList = incomeStatementDao.findDataByYear(stockID, year);
 			for (int i = balanceSheetList.size() - 1; i >= arraySize; i--)
