@@ -29,7 +29,16 @@ public class RedRabbitWrapper {
 	int consecutive3MYoyGrow;
 	//連三月累計YoY成長
 	int consecutive3MAccumuYoyGrow;
-	
+	//最新一季EPS
+	double latestEps;
+	//上季EPS
+	double lastEps;
+	//上上季EPS
+	double lastHalfEps;
+	//上3季EPS
+	double lastThreeSeason;
+	//本益比
+	double peRatio;
 	public int getMonthSize() {
 		return monthSize;
 	}
@@ -114,5 +123,34 @@ public class RedRabbitWrapper {
 	public void setStockName(String stockName) {
 		this.stockName = stockName;
 	}
-	
+	public double getLatestEps() {
+		return latestEps;
+	}
+	public void setLatestEps(double latestEps) {
+		this.latestEps = latestEps;
+	}
+	public double getLastEps() {
+		return lastEps;
+	}
+	public void setLastEps(double lastEps) {
+		this.lastEps = lastEps;
+	}
+	public double getLastHalfEps() {
+		return lastHalfEps;
+	}
+	public void setLastHalfEps(double lastHalfEps) {
+		this.lastHalfEps = lastHalfEps;
+	}
+	public double getLastThreeSeason() {
+		return lastThreeSeason;
+	}
+	public void setLastThreeSeason(double lastThreeSeason) {
+		this.lastThreeSeason = lastThreeSeason;
+	}
+	public double getPeRatio() {
+		return peRatio;
+	}
+	public void setPeRatio(double peRatio) {
+		this.peRatio = peRatio;
+	}
 }
