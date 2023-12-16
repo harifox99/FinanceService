@@ -31,15 +31,17 @@ public class RedRabbitRevenueAnalysis
 	final int threeMonth = 3;
 	//紅兔指標至少要14個月才能計算
 	final int minMonth = 14;
-	public List<RedRabbitWrapper> getRedRabbit(String year, String month)
+	public List<RedRabbitWrapper> getRedRabbit(String year, String month, String peDate)
 	{
 		List<RedRabbitWrapper> redRabitWrapper = new ArrayList<RedRabbitWrapper>();
+		List<RedRabbitWrapper> newRedRabitList = new ArrayList<RedRabbitWrapper>();
 		String debug = "";
 		try
 		{
 			ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 			basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
-			jdbcRevenueDao = (JdbcRevenueDao)context.getBean("revenueDao");					
+			jdbcRevenueDao = (JdbcRevenueDao)context.getBean("revenueDao");
+			incomeStatementDao = (IncomeStatementDao)context.getBean("basicIncomeStatementDao");
 			List<BasicStockWrapper> stockIdList = basicStockDao.findAllData();		
 			for (int i = 0; i < stockIdList.size(); i++)
 			{
@@ -319,18 +321,52 @@ public class RedRabbitRevenueAnalysis
 					wrapper.setMomGrow(1);
 				else
 					wrapper.setMomGrow(0);			
+				//2023/12/15，新增EPS
+				List <IncomeStatementEntity> incomeStatementList = incomeStatementDao.findLatest(stockID, 4);
+				for (int j = 0; j < incomeStatementList.size(); j++)
+				{
+					if (j == 0)
+						wrapper.setLatestEps(incomeStatementList.get(j).getEps());
+					else if (j == 1)
+						wrapper.setLastEps(incomeStatementList.get(j).getEps());
+					else if (j == 2)
+						wrapper.setLastHalfEps(incomeStatementList.get(j).getEps());
+					else if (j == 3)
+						wrapper.setLastThreeSeason(incomeStatementList.get(j).getEps());
+				}
 				wrapper.setStockID(stockID);	
 				wrapper.setStockName(stockName);
 				redRabitWrapper.add(wrapper);
 			}
-			
+			//PE Ratio
+			GetTwsePbeRatio twseRatio = new GetTwsePbeRatio();
+			GetTpexPbeRatio tpexRatio = new GetTpexPbeRatio();
+			twseRatio.setDate(peDate);
+			twseRatio.getContent();
+			tpexRatio.setDate(peDate);
+			tpexRatio.getContent();
+			HashMap<String, Double> hashPer = twseRatio.getHashPer();
+			hashPer.putAll(tpexRatio.getHashPer());
+			//預選篩選條件
+			//創六年以來新高, 創一年以來新高, 創六年同期新高(2)與次高(1), 上個月創六年同期新高(2)與次高(1), 過去一年累計營收創下六年新高
+			for (int i = 0; i < redRabitWrapper.size(); i++)
+			{
+				if (redRabitWrapper.get(i).getSixYearHigh() == 1 && redRabitWrapper.get(i).getOneYearHigh() == 1 &&
+					redRabitWrapper.get(i).getSixYearHighYoy() == 2 && redRabitWrapper.get(i).getSixYearHighYoyLastMonth() == 2 &&
+					redRabitWrapper.get(i).getSixYearAccumulationHigh() == 1)
+				{
+					RedRabbitWrapper wrapper = redRabitWrapper.get(i);
+					wrapper.setPeRatio(hashPer.get(wrapper.getStockID()));
+					newRedRabitList.add(redRabitWrapper.get(i));
+				}
+			}
 		}
 		catch (Exception ex)
 		{
 			System.out.println("debug id: " + debug);
 			ex.printStackTrace();
 		}
-		return redRabitWrapper;
+		return newRedRabitList;
 	}
 	/**
 	 * 紅兔營收+籌碼選股法
