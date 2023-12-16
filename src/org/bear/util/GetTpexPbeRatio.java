@@ -17,8 +17,12 @@ public class GetTpexPbeRatio {
 	public String getDate() {
 		return date;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setDate(String date) 
+	{
+		String[] dateArray = date.split("/");
+		int year = Integer.parseInt(dateArray[0]);
+		year = year - 1911;
+		this.date = year + "/" + dateArray[1] + "/" + dateArray[2];
 	}
 
 	public HashMap<String, Double> getHashPer() {
