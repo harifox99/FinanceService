@@ -411,8 +411,7 @@ public class PerfectAnalysis
 				TwsePriceParser parser = new TwsePriceParser();
 				//民國轉西元
 				String[] dateArray = peDate.split("/");
-				String year = StringUtil.convertYear(dateArray[0]);
-				parser.setUrl(url + year + dateArray[1] + dateArray[2]);
+				parser.setUrl(url + dateArray[0] + dateArray[1] + dateArray[2]);
 				parser.getConnection();
 				parser.parse(8);
 				HashMap<String, Double> hashPrice = parser.getHashPrice();
@@ -423,7 +422,7 @@ public class PerfectAnalysis
 				parser.parse(8);
 				HashMap<String, Double> previousPrice = parser.getHashPrice();
 				columnNameList.add(compareDate.replace("/", "") + "\r\n" + "股價");
-				columnNameList.add(year + dateArray[1] + dateArray[2] + "\r\n" + "最新股價");				
+				columnNameList.add(dateArray[0] + dateArray[1] + dateArray[2] + "\r\n" + "最新股價");				
 				//計算股價上漲幅度
 				for (int i = 0; i < perfectList.size(); i++)
 				{
@@ -451,18 +450,19 @@ public class PerfectAnalysis
 			//檢視近期漲幅，上櫃
 			if (isComparePrice == true)
 			{
+				//西元轉民國
+				String[] dateArray = peDate.split("/");
+				String year = StringUtil.convertChineseYear(dateArray[0]);
 				//計算最新股價
 				String url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
 				TpexPriceParser parser = new TpexPriceParser();
-				parser.setUrl(url + peDate);
+				parser.setUrl(url + year + "/" + dateArray[1] + "/" + dateArray[2]);
 				parser.getConnection();
 				parser.parse(0);
 				HashMap<String, Double> hashPrice = parser.getHashPrice();
 				//計算某個日子股價 (通常是半年)
 				parser = new TpexPriceParser();
-				//西元轉民國
-				String[] dateArray = compareDate.split("/");
-				String year = StringUtil.convertChineseYear(dateArray[0]);
+				dateArray = compareDate.split("/");
 				parser.setUrl(url + year + "/" + dateArray[1] + "/" + dateArray[2]);
 				parser.getConnection();
 				parser.parse(0);
