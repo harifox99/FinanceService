@@ -18,8 +18,10 @@ public class GetTwsePbeRatio {
 		return date;
 	}
 	
-	public void setDate(String date) {
-		this.date = date;
+	public void setDate(String date) 
+	{
+		String[] dateArray = date.split("/");
+		this.date = dateArray[0] + dateArray[1] + dateArray[2];
 	}
 
 	public HashMap<String, Double> getHashPer() {
@@ -33,10 +35,7 @@ public class GetTwsePbeRatio {
 	public void getContent()
 	{
 		TwsePbeParser parser = new TwsePbeParser();
-		//民國轉西元
-		String[] dateArray = date.split("/");
-		String year = StringUtil.convertYear(dateArray[0]);
-		parser.setUrl(url + year + dateArray[1] + dateArray[2]);
+		parser.setUrl(url + date);
 		parser.getConnection();
 		parser.parse();
 		/*
