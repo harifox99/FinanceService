@@ -76,9 +76,10 @@ public class ImportPriceSFI extends ImportStockID
 					sfi.getContent(stockID, stockName, startYear, startMonth, endYear, endMonth);
 					Thread.sleep(sleepTime);
 				}
+				//•ŒendYear¿x¶sstockBranch
 				else if (sfi instanceof GetMopsRevenue)
 				{
-					sfi.getContent(stockID, stockName, startYear, startMonth, endYear, endMonth);
+					sfi.getContent(stockID, stockName, startYear, startMonth, String.valueOf(stockBranch), endMonth);
 					Thread.sleep(sleepTime);
 				}
 				else
