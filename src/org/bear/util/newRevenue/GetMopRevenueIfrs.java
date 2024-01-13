@@ -12,11 +12,12 @@ import org.bear.util.StringUtil;
  * @author edward
  *
  */
-public class GetMopRevenueIfrs implements GetSFIContent {
-
+public class GetMopRevenueIfrs implements GetSFIContent 
+{
 	@Override
 	public void getContent(String stockID, String stockName, String startYear, String startMonth,
-			String endYear, String endMonth) {		
+			String stockBranch, String endMonth) 
+	{		
 		//String url = "http://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";	
 		String url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
@@ -24,7 +25,10 @@ public class GetMopRevenueIfrs implements GetSFIContent {
 		paramList.add(new BasicNameValuePair("run", "Y"));
 		paramList.add(new BasicNameValuePair("step", "0"));
 		paramList.add(new BasicNameValuePair("yearmonth", StringUtil.convertChineseYear(startYear) + startMonth));
-		paramList.add(new BasicNameValuePair("TYPEK", "sii"));
+		if (stockBranch.equals("1"))
+			paramList.add(new BasicNameValuePair("TYPEK", "sii"));
+		else
+			paramList.add(new BasicNameValuePair("TYPEK", "otc"));
 		paramList.add(new BasicNameValuePair("co_id", stockID));
 		paramList.add(new BasicNameValuePair("off", "1"));
 		paramList.add(new BasicNameValuePair("year", StringUtil.convertChineseYear(startYear)));
