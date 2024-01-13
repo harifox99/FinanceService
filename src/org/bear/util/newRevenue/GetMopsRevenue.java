@@ -18,7 +18,7 @@ public class GetMopsRevenue implements GetSFIContent {
 
 	@Override
 	public void getContent(String stockID, String stockName, String startYear, String startMonth,
-			String endYear, String endMonth) {		
+			String stockBranch, String endMonth) {		
 		//String url = "http://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";	
 		String url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
@@ -52,7 +52,7 @@ public class GetMopsRevenue implements GetSFIContent {
 				else if (responseString.contains("¸Ô²Ó¸ê®Æ"))
 				{
 					GetMopRevenueIfrs ifrs = new GetMopRevenueIfrs();
-					ifrs.getContent(stockID, stockName, startYear, startMonth, endYear, endMonth);
+					ifrs.getContent(stockID, stockName, startYear, startMonth, stockBranch, endMonth);
 				}
 				else if (stockName.startsWith("F") || stockName.contains("KY") || stockName.endsWith("DR"))
 				{
