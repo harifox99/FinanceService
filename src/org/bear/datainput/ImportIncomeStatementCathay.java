@@ -35,7 +35,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] seasons = {"01","02"};
+				String[] seasons = {"01","02", "03", "04"};
 				String[] years = {"2023"};
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
@@ -47,7 +47,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				System.out.println("¥N½X¡G" + stockID + " " + idleTime + ". ");
 				//©u¸ê®Æ
 				GetURLCathayIncomeStatement urlContent = new GetURLCathayIncomeStatement(stockID, false);
-				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "Big5");
 				IncomeStatementParserCathay incomeStatementYear = new IncomeStatementParserCathay(urlContent.getContentString(responseString), stockID, false, years, seasons, expectedNum, true);
 				try
 				{					
