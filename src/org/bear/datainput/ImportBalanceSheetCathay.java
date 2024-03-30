@@ -6,12 +6,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bear.constant.FinancialReport;
 import org.bear.parser.BalanceSheetParserCathay;
 import org.bear.util.GetURLCathayBalanceSheet;
 import org.bear.util.HttpUtil;
-
 /**
  * @author edward
  * 去國泰網站抓資產負債表
@@ -36,7 +34,7 @@ public class ImportBalanceSheetCathay extends ImportStockID
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2023"};
-				String[] seasons = {"01","02"};				
+				String[] seasons = {"01","02", "03", "04"};				
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;
@@ -47,7 +45,7 @@ public class ImportBalanceSheetCathay extends ImportStockID
 				System.out.println("代碼：" + stockID + " " + idleTime + ". ");				
 				//季資料
 				GetURLCathayBalanceSheet urlContent = new GetURLCathayBalanceSheet(stockID, false);
-				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "Big5");
 				BalanceSheetParserCathay balanceSheetSeason = new BalanceSheetParserCathay(urlContent.getContentString(responseString), stockID, false, years, seasons, expectedNum, true);
 				try
 				{					
