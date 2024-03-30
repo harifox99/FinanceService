@@ -47,7 +47,7 @@ public class GoodInfoRequest
 	public static void main(String[] args) throws Exception
     {
 		GoodInfoRequest request = new GoodInfoRequest();
-		request.conn(true, "2021/11/12");
-		request.conn(false, "2021/11/12");
+		request.conn(true, "2024/03/01");
+		request.conn(false, "2024/03/01");
     }
 }
