@@ -372,7 +372,8 @@ public class HttpUtil {
 		    // Get Request Example，取得 google 查詢 httpclient 的結果
 		    HttpGet httpGet = new HttpGet(url);
 			HttpResponse response = demo.execute(httpGet);
-			String responseString = EntityUtils.toString(response.getEntity());
+			//String responseString = EntityUtils.toString(response.getEntity());
+			String responseString = new String(EntityUtils.toByteArray(response.getEntity()), charset);
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) 
 			{
 		    	// 如果回傳是 200 OK 的話才輸出
