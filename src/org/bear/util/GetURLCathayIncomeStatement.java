@@ -11,7 +11,7 @@ public class GetURLCathayIncomeStatement extends GetURLContentBase
 {
 	public GetURLCathayIncomeStatement(String stockID, boolean isYear)
 	{
-		urlHeaderSeason = "http://sjmain.esunsec.com.tw/z/zc/zcq/zcq.djhtm?A=";		
+		urlHeaderSeason = "https://djinfo.cathaysec.com.tw/z/zc/zcq/zcq.djhtm?A=";		
 		urlHeaderYear = "http://sjmain.esunsec.com.tw/z/zc/zcq/zcqa/zcqa.djhtm?A=";		
 		urlFooter = "";
 		if (isYear)
