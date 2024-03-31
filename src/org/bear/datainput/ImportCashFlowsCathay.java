@@ -47,7 +47,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 				idleTime++;
 			}*/
 			//©u¸ê®Æ	
-			for (int i = 174; i < wrapperList.size(); i++)
+			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2023"};
