@@ -255,8 +255,8 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 				}
 				/**
 				 *  作弊，因新的IFRS，已無營業外收入&營業外支出，改成合併的營業外收支
-				 *  所以營業外支出，若為正，比如說30，則業外收入=31，業外支出=1
-				 *  所以營業外支出，若為負，比如說-30，則業外收入=1，業外支出=31
+				 *  所以營業外支出，若為正，比如說30，則業外收入=30，業外支出=0
+				 *  所以營業外支出，若為負，比如說-30，則業外收入=0，業外支出=30
 				 */
 				case NonOperating:
 				{	
@@ -265,18 +265,18 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 						int result = Integer.parseInt(rowData[k]);
 						if (result > 0)
 						{
-							entity[k].setNonOperatingRevenue(result+1);
-							entity[k].setNonOperatingExpense(1);
+							entity[k].setNonOperatingRevenue(result);
+							entity[k].setNonOperatingExpense(0);
 						}
 						else if (result < 0)
 						{
-							entity[k].setNonOperatingRevenue(1);
-							entity[k].setNonOperatingExpense(result*-1 + 1);
+							entity[k].setNonOperatingRevenue(0);
+							entity[k].setNonOperatingExpense(result*-1);
 						}
 						else
 						{
-							entity[k].setNonOperatingRevenue(1);
-							entity[k].setNonOperatingExpense(1);
+							entity[k].setNonOperatingRevenue(0);
+							entity[k].setNonOperatingExpense(0);
 						}
 					}
 					catch (NumberFormatException ex)
@@ -284,20 +284,20 @@ public class IncomeStatementParserCathay extends BalanceSheetParserCathay
 						int result = Integer.parseInt(rowData[k].substring(rowData[k].indexOf(">")+1));
 						if (result > 0)
 						{
-							entity[k].setNonOperatingRevenue(result+1);
-							entity[k].setNonOperatingExpense(1);
+							entity[k].setNonOperatingRevenue(result);
+							entity[k].setNonOperatingExpense(0);
 						}
 						else if (result < 0)
 						{
-							entity[k].setNonOperatingRevenue(1);
-							entity[k].setNonOperatingExpense(result*-1 + 1);
+							entity[k].setNonOperatingRevenue(0);
+							entity[k].setNonOperatingExpense(result*-1);
 						}
 						else
 						{
-							entity[k].setNonOperatingRevenue(1);
-							entity[k].setNonOperatingExpense(1);
+							entity[k].setNonOperatingRevenue(0);
+							entity[k].setNonOperatingExpense(0);
 						}
-						entity[k].setNonOperatingExpense(result);
+						//entity[k].setNonOperatingExpense(result);
 					}
 					break;	
 				}
