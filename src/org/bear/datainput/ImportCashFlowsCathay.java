@@ -26,12 +26,12 @@ public class ImportCashFlowsCathay extends ImportStockID
 				stockList.add(readData);
 			}
 			reader.close();
-			//年資料	
+			//年資料
 			/*
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = 2;
-				String[] years = {"2020", "2021"};
+				String[] years = {"2022", "2023"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(i).getStockID();
 				if (stockList.contains(stockID) == false)
@@ -40,18 +40,18 @@ public class ImportCashFlowsCathay extends ImportStockID
 				}
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, true);
-				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "Big5");
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContentString(responseString), stockID, years, seasons, true, expectedNum, true);
 				cashFlowsParser.parse(1);
 				Thread.sleep(FinancialReport.sleepTime);		
 				idleTime++;
 			}*/
-			//季資料			
-			for (int i = 0; i < wrapperList.size(); i++)
+			//季資料	
+			for (int i = 174; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] years = {"2023"};
-				String[] seasons = {"01", "02"};						
+				String[] seasons = {"01", "02", "03", "04"};						
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))
 					//continue;
@@ -61,7 +61,7 @@ public class ImportCashFlowsCathay extends ImportStockID
 				}
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				GetURLCathayCashFlow urlContent = new GetURLCathayCashFlow(stockID, false);
-				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "UTF-8");
+				String responseString = HttpUtil.httpGet(urlContent.getUrlString(), "Big5");
 				CashFlowsParserCathay cashFlowsParser = new CashFlowsParserCathay(urlContent.getContentString(responseString), stockID, years, seasons, false, expectedNum, true);
 				try
 				{					
