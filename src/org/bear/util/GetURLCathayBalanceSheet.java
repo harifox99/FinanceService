@@ -14,7 +14,7 @@ public class GetURLCathayBalanceSheet extends GetURLContentBase
 		//urlHeaderSeason = "http://dj.mybank.com.tw/z/zc/zcp/zcpa/zcpa_";
 	    urlHeaderSeason = "https://djinfo.cathaysec.com.tw/Z/ZC/ZCP/ZCPA.DJHTM?A=";	    				   
 		//urlHeaderYear = "http://dj.mybank.com.tw/z/zc/zcp/zcpb/zcpb_";
-		urlHeaderYear = "http://sjmain.esunsec.com.tw/z/zc/zcp/zcpb/zcpb_";
+		urlHeaderYear = "https://djinfo.cathaysec.com.tw/z/zc/zcp/zcpa/zcpa0.djhtm?b=Y&a=";
 		urlFooter = "";
 		if (isYear)
 			this.urlString = urlHeaderYear + stockID + urlFooter;
