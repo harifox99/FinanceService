@@ -77,6 +77,10 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 						title = AccountTitle.BEGINNING_CASH;
 					else if (content.equals("期末現金及約當現金"))	
 						title = AccountTitle.ENDING_CASH;
+					else if (content.contains("購置不動產廠房設備"))
+						title = AccountTitle.CAPEX;
+					else if (content.contains("處分不動產廠房設備"))
+						title = AccountTitle.CAPRE;
 					else if (content.equals("期別"))
 						title = AccountTitle.SEASON;
 					else
@@ -173,6 +177,19 @@ public class CashFlowsParserCathay extends CashFlowsParserYam implements Parser
 					endingCash[k] = result;
 					break;	
 				}
+				case CAPEX:
+				{
+					int result = Integer.parseInt(rowData[k]);
+					entity[k].setCapEx(result);
+					break;	
+				}
+				case CAPRE:
+				{
+					int result = Integer.parseInt(rowData[k]);
+					entity[k].setCapRe(result);
+					break;	
+				}
+
 				case SEASON:
 				{
 					this.setYearAndSeason(entity[k], rowData[k]);

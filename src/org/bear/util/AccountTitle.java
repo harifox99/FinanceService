@@ -59,4 +59,7 @@ public enum AccountTitle
 	SEASON,
 	EMPTY,
 	MONTH,
+	//資本支出
+	CAPEX,
+	CAPRE,
 }

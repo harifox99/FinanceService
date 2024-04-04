@@ -14,6 +14,16 @@ public class CashFlowsEntity extends BasicEntity
 	int beginningCash;
 	int endingCash;
 	int freeCashFlow;
+	/**
+	 * 購置不動產廠房設備 (資本支出)
+	 */
+	int capEx;
+	/**
+	 * 處分不動產廠房設備
+	 * @return
+	 */
+	int capRe;
+
 	public int getIncomeSummary() {
 		return incomeSummary;
 	}
@@ -73,4 +83,16 @@ public class CashFlowsEntity extends BasicEntity
 	public void setFreeCashFlow(int freeCashFlow) {
 		this.freeCashFlow = freeCashFlow;
 	}
+	public int getCapEx() {
+		return capEx;
+	}
+	public void setCapEx(int capEx) {
+		this.capEx = capEx;
+	}
+	public int getCapRe() {
+		return capRe;
+	}
+	public void setCapRe(int capRe) {
+		this.capRe = capRe;
+	}	
 }

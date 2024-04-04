@@ -40,9 +40,9 @@ public class JdbcCashFlowsDao extends SimpleJdbcDaoSupport implements CashFlowsD
 	public void insert(CashFlowsEntity cashFlowsEntity)
 	{
 		String sql = "insert into StatementOfCashFlow(StockID, Year, Seasons, IncomeSummary, OperatingActivity, " + 
-		"InvestingActivity, FinancingActivity, NetCashFlows, BeginningCash, EndingCash, FreeCashFlow) " +
+		"InvestingActivity, FinancingActivity, NetCashFlows, BeginningCash, EndingCash, FreeCashFlow, CapEx, CapRe) " +
 		"values (:stockID, :year, :seasons, :incomeSummary, :operatingActivity, " + 
-		":investingActivity, :financingActivity, :netCashFlows, :beginningCash, :endingCash, :freeCashFlow)";
+		":investingActivity, :financingActivity, :netCashFlows, :beginningCash, :endingCash, :freeCashFlow, :capEx, :capRe)";
 		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(cashFlowsEntity);
 		this.getSimpleJdbcTemplate().update(sql, parameterSource);
 	}
