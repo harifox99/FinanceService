@@ -1,18 +1,19 @@
 package org.bear.parser;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.JuristicDailyEntity;
-
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 /**
  * 期交所未平倉契約金額Parser
  * @author edward
  *
  */
-public class TaifexLotParser extends EasyParserBase {
+public class TaifexLotParser extends EasyParserBase
+{
 	JuristicDailyReportDao dao;
 	String date;
 	
@@ -28,61 +29,69 @@ public class TaifexLotParser extends EasyParserBase {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(String date)
+	{
 		this.date = date;
 	}
 
-	@Override
-	public void getTableContent(Element element) {
-		// TODO Auto-generated method stub
-		List<Element> trList = element.getAllElements(HTMLElementName.TR);
+	public void parse(String responseString)
+	{
 		JuristicDailyEntity entity = new JuristicDailyEntity();
-		for (int i = 0; i < trList.size(); i++)
+		Document xmlDoc = Jsoup.parse(responseString);
+		Elements tables = xmlDoc.select("table");
+		Element table = tables.get(0);
+		Elements rows = table.select("tr");
+		for (int i = 0; i < rows.size(); i++)
 		{
-			if (i == 7 || i == 16)
+			if (i == 5 || i == 14)
 			{				
-				Element trElement = trList.get(i);
-				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
-				Element resultElement = null;
+				Element td = rows.get(i);
+				Elements tdList = td.select("td");
 				for (int j = 0; j < tdList.size(); j++)
 				{	
 					try
 					{																
-						if (i == 7 && j == 11)//外資未平倉台指期餘額
+						if (i == 5 && j == 11)//外資未平倉台指期餘額
 						{
-							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
-							//resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
-							String content = resultElement.getContent().toString().trim();	
+							Element subElement = tdList.get(j).select("div").get(0);
+							Element tinyElement = subElement.select("span").get(0);
+							String content = tinyElement.text().trim();	
 							content = content.replace(",", "");
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setTotalLot(Integer.parseInt(content));
 						}
-						else if (i == 16 && j == 11)//外資未平倉小台指餘額
+						
+						else if (i == 14 && j == 11)//外資未平倉小台指餘額
 						{
-							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
-							//resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
-							String content = resultElement.getContent().toString().trim();	
+							Element subElement = tdList.get(j).select("div").get(0);
+							Element tinyElement = subElement.select("span").get(0);
+							String content = tinyElement.text().trim();	
 							content = content.replace(",", "");
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setTotalSmallLot(Integer.parseInt(content));							
 						}
-						else if (i == 7 && j == 4)//外資新增台指期口數
+						else if (i == 5 && j == 5)//外資新增台指期口數
 						{
-							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
-							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
-							String content = resultElement.getContent().toString().trim();	
+							Element subElement = tdList.get(j).select("div").get(0);
+							Element tinyElement = subElement.select("span").get(0);
+							String content = tinyElement.text().trim();	
 							content = content.replace(",", "");
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setNewLot(Integer.parseInt(content));							
 						}
-						else if (i == 16 && j == 4)//外資新增小台指口數
+						else if (i == 14 && j == 5)//外資新增小台指口數
 						{
-							resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
-							resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
-							String content = resultElement.getContent().toString().trim();	
+							Element subElement = tdList.get(j).select("div").get(0);
+							Element tinyElement = subElement.select("span").get(0);
+							String content = tinyElement.text().trim();	
 							content = content.replace(",", "");
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setNewSmallLot(Integer.parseInt(content));							
 						}
-						
 					}
 					catch (Exception ex)
 					{
@@ -95,5 +104,11 @@ public class TaifexLotParser extends EasyParserBase {
 		dao.update("TotalSmallLot", entity.getTotalSmallLot(), date);
 		dao.update("NewLot", entity.getNewLot(), date);
 		dao.update("NewSmallLot", entity.getNewSmallLot(), date);
+	}
+
+	@Override
+	public void getTableContent(net.htmlparser.jericho.Element element) {
+		// TODO Auto-generated method stub
+		
 	}
 }
