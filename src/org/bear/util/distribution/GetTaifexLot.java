@@ -1,12 +1,6 @@
 package org.bear.util.distribution;
-
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.parser.TaifexLotParser;
-import org.bear.util.HttpUtil;
 /**
  * 期交所外資未平倉口數Http Post URL 
  * @author edward
@@ -20,6 +14,7 @@ public class GetTaifexLot
 	String commodityId;
 	TaifexLotParser parser;
 	int tableIndex;
+	HttpPostWithHeader postHeader;
 	public JuristicDailyReportDao getDao() {
 		return dao;
 	}
@@ -40,8 +35,9 @@ public class GetTaifexLot
 		return url;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setUrl(String url)
+	{
+		this.url = url; 
 	}
 
 	public String getCommodityId() {
@@ -70,18 +66,18 @@ public class GetTaifexLot
 
 	public void getContent()
 	{
-		//TaifexLotParser parser = new TaifexLotParser();		
-		//String[] dateArray = date.split("/");
-		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		paramList.add(new BasicNameValuePair("queryDate", date));
-		paramList.add(new BasicNameValuePair("queryType", "1"));
-		paramList.add(new BasicNameValuePair("doQuery", "1"));
-		paramList.add(new BasicNameValuePair("commodityId", commodityId));	
-		String responseString = HttpUtil.sendUrl(url, paramList, 1, "UTF-8");
-		//System.out.println(responseString);
-		parser.setResponseString(responseString);
-		parser.setDao(dao);
-		parser.setDate(date);
-		parser.parse(tableIndex);
+		HttpPostWithHeader postHeader = new HttpPostWithHeader();
+		TaifexLotParser parser = new TaifexLotParser();	
+		postHeader.getContent(url, date, dao, parser);
+	}
+	public static void main(String args[])
+	{
+		String url = "https://www.taifex.com.tw/cht/3/futContractsDate";
+		GetTaifexLot getTaiFexForeignerLot = new GetTaifexLot();
+		getTaiFexForeignerLot.setUrl(url);
+		getTaiFexForeignerLot.setDate("2024/04/25");
+		getTaiFexForeignerLot.setCommodityId("");
+		getTaiFexForeignerLot.setTableIndex(2);
+		getTaiFexForeignerLot.getContent();
 	}
 }
