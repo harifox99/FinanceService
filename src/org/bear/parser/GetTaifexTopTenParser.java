@@ -1,36 +1,35 @@
 package org.bear.parser;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
-
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
-
 import org.bear.entity.JuristicDailyEntity;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class GetTaifexTopTenParser extends TaifexLotParser 
 {
-	@Override
-	public void getTableContent(Element element) 
+	public void parse(String responseString)
 	{
-		// TODO Auto-generated method stub
-		List<Element> trList = element.getAllElements(HTMLElementName.TR);
+		Document xmlDoc = Jsoup.parse(responseString);
+		Elements tables = xmlDoc.select("table");
+		Element table = tables.get(0);
 		JuristicDailyEntity entity = new JuristicDailyEntity();
-		for (int i = 0; i < trList.size(); i++)
+		Elements rows = table.select("tr");
+		for (int i = 0; i < rows.size(); i++)
 		{
 			if (i > 3)
 			{				
-				Element trElement = trList.get(i);
-				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
-				Element resultElement = null;
+				Element trElement = rows.get(i);
+				Elements tdList = trElement.select("td");
 				for (int j = 0; j < tdList.size(); j++)
 				{		
 					try
-					{															
-						resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);		
+					{		
 						if (i == 4 && j == 3)//台指期當月契約買方
-						{																															
-							String content = resultElement.getContent().toString();
+						{						
+							Element subElement = tdList.get(j).select("div").get(0);	
+							String content = subElement.text().trim();	
 							content = content.replace(",", "");
 							content = content.replace("\r", "");
 							content = content.replace("\n", "");
@@ -41,7 +40,8 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 						}
 						else if (i == 4 && j == 7)//台指期當月契約賣方
 						{
-							String content = resultElement.getContent().toString().trim();	
+							Element subElement = tdList.get(j).select("div").get(0);	
+							String content = subElement.text().toString().trim();	
 							content = content.replace(",", "");					
 							content = content.replace("\r", "");
 							content = content.replace("\n", "");
@@ -50,7 +50,8 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 						}
 						else if (i == 5 && j == 3)//台指期所有契約買方
 						{
-							String content = resultElement.getContent().toString().trim();	
+							Element subElement = tdList.get(j).select("div").get(0);
+							String content = subElement.text().toString().trim();	
 							content = content.replace(",", "");			
 							content = content.replace("\r", "");
 							content = content.replace("\n", "");
@@ -59,7 +60,8 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 						}
 						else if (i == 5 && j == 7)//台指期所有契約賣方
 						{
-							String content = resultElement.getContent().toString().trim();	
+							Element subElement = tdList.get(j).select("div").get(0);	
+							String content = subElement.text().toString().trim();	
 							content = content.replace(",", "");		
 							content = content.replace("\r", "");
 							content = content.replace("\n", "");
@@ -81,7 +83,7 @@ public class GetTaifexTopTenParser extends TaifexLotParser
 	}
 	private String retrivelData(String content)
 	{
-		String[] contentArray = content.split("<br>");
+		String[] contentArray = content.split(" ");
 		return contentArray[0];
 	}
 }

@@ -1,12 +1,11 @@
 package org.bear.parser;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
-
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
-
 import org.bear.entity.JuristicDailyEntity;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 /**
  * 台指自營商選擇權未平倉Parser
  * @author edward
@@ -14,49 +13,51 @@ import org.bear.entity.JuristicDailyEntity;
  */
 public class TaifexOptionParser extends TaifexLotParser 
 {
-	@Override
-	public void getTableContent(Element element) {
+	public void parse(String responseString) 
+	{
 		// TODO Auto-generated method stub
-		List<Element> trList = element.getAllElements(HTMLElementName.TR);
+		Document xmlDoc = Jsoup.parse(responseString);
+		Elements tables = xmlDoc.select("table");
+		Element table = tables.get(0);
 		JuristicDailyEntity entity = new JuristicDailyEntity();
-		for (int i = 0; i < trList.size(); i++)
+		Elements rows = table.select("tr");
+		for (int i = 0; i < rows.size(); i++)
 		{
 			if (i == 3 || i == 6 || i == 5 || i == 8)
 			{				
-				Element trElement = trList.get(i);
-				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
-				Element resultElement = null;
+				Element trElement = rows.get(i);
+				Elements tdList = trElement.select("td");
 				for (int j = 0; j < tdList.size(); j++)
 				{	
 					try
 					{																
-						if (i == 3 && j == 15)//自營商未平倉買權
+						if (i == 3 && j == 10)//自營商未平倉買權
 						{
-							resultElement = tdList.get(j);				
-							String content = resultElement.getContent().toString().trim();		
+							Element subElement = tdList.get(j).select("span").get(0);	
+							String content = subElement.text().trim();			
 							content = content.replace(",", "");
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setDealerCall(Integer.parseInt(content));
 						}
-						else if (i == 5 && j == 12)//外資未平倉買權
+						else if (i == 5 && j == 7)//外資未平倉買權
 						{
-							resultElement = tdList.get(j);				
-							String content = resultElement.getContent().toString().trim();		
+							Element subElement = tdList.get(j).select("span").get(0);	
+							String content = subElement.text().trim();	
 							content = content.replace(",", "");
 							entity.setForeignerCall(Integer.parseInt(content));
 						}
-						else if (i == 6 && j == 13)//自營商未平倉賣權
+						else if (i == 3 && j == 12)//自營商未平倉賣權
 						{
-							resultElement = tdList.get(j);				
-							String content = resultElement.getContent().toString().trim();		
+							Element subElement = tdList.get(j).select("span").get(0);	
+							String content = subElement.text().trim();	
 							content = content.replace(",", "");	
 							entity.setDealerPut(Integer.parseInt(content));							
 						}
-						else if (i == 8 && j == 12)//外資未平倉賣權
+						else if (i == 5 && j == 9)//外資未平倉賣權
 						{
-							resultElement = tdList.get(j);				
-							String content = resultElement.getContent().toString().trim();		
+							Element subElement = tdList.get(j).select("span").get(0);	
+							String content = subElement.text().trim();				
 							content = content.replace(",", "");	
 							entity.setForeignerPut(Integer.parseInt(content));							
 						}
