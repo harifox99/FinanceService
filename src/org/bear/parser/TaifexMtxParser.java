@@ -1,11 +1,11 @@
 package org.bear.parser;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
-
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
 import org.bear.entity.RetailInvestorsEntity;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 /**
  * 小台指三大法人餘額Parser
  * @author edward
@@ -13,27 +13,25 @@ import org.bear.entity.RetailInvestorsEntity;
  */
 public class TaifexMtxParser extends TaifexLotParser 
 {
-	public void getTableContent(Element element) 
+	public void parse(String responseString) 
 	{
 		// TODO Auto-generated method stub
-		List<Element> trList = element.getAllElements(HTMLElementName.TR);
+		Document xmlDoc = Jsoup.parse(responseString);
+		Elements tables = xmlDoc.select("table");
+		Element table = tables.get(0);
+		Elements rows = table.select("tr");
 		RetailInvestorsEntity entity = new RetailInvestorsEntity();
-		for (int i = 0; i < trList.size(); i++)
+		for (int i = 0; i < rows.size(); i++)
 		{
 			if (i == 11)
 			{				
-				Element trElement = trList.get(i);
-				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
-				Element resultElement = null;
+				Element td = rows.get(i);
+				Elements tdList = td.select("td");
 				for (int j = 0; j < tdList.size(); j++)
 				{	
 					if (j == 10)
 					{
-						resultElement = tdList.get(j).getFirstElement(HTMLElementName.DIV);
-						resultElement = resultElement.getFirstElement(HTMLElementName.FONT);
-						//resultElement = resultElement.getFirstElement(HTMLElementName.B);
-						String content = resultElement.getContent().toString().trim();		
-						content = content.replace("<B>", "");
+						String content = tdList.get(j).text();
 						content = content.replace(",", "");
 						try
 						{

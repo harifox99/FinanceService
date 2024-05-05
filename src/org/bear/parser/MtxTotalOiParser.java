@@ -1,12 +1,11 @@
 package org.bear.parser;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
-
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
-
 import org.bear.entity.JuristicDailyEntity;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 /**
  * 小台指未平倉餘額Parser
  * @author edward
@@ -14,25 +13,24 @@ import org.bear.entity.JuristicDailyEntity;
  */
 public class MtxTotalOiParser extends TaifexLotParser 
 {
-	@Override
-	public void getTableContent(Element element) 
+	public void parse(String responseString) 
 	{
-		// TODO Auto-generated method stub
-		List<Element> trList = element.getAllElements(HTMLElementName.TR);
+		Document xmlDoc = Jsoup.parse(responseString);
+		Elements tables = xmlDoc.select("table");
+		Element table = tables.get(0);
+		Elements rows = table.select("tr");
 		JuristicDailyEntity entity = new JuristicDailyEntity();
 		try
 		{
-			for (int i = 0; i < trList.size(); i++)
+			for (int i = 0; i < rows.size(); i++)
 			{
-				Element trElement = trList.get(i);
-				List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
-				Element resultElement = null;
+				Element trElement = rows.get(i);
+				Elements tdList = trElement.select("td");
 				for (int j = 0; j < tdList.size(); j++)
 				{																	
 					if (j == 10)//小台未平倉餘額
-					{
-						resultElement = tdList.get(j);				
-						String content = resultElement.getContent().toString().trim();		
+					{		
+						String content = tdList.get(j).text();		
 						content = content.replace(",", "");
 						dao.update("Retail_Mtx", "TotalMtx", Integer.parseInt(content), date);
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
