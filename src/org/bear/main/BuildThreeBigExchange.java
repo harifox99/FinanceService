@@ -1,15 +1,16 @@
 package org.bear.main;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.mail.Session;
-
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.kd.GoodInfoRequest;
 import org.bear.parser.EtfParser;
 import org.bear.parser.RankingParser;
 import org.bear.parser.TaifexLotParser;
-import org.bear.parser.TaifexMtxParser;
 import org.bear.parser.TpexThreeBigExchangeParser;
 import org.bear.parser.TwseDailyDataParser;
 import org.bear.parser.TwseStockLendingParser;
@@ -39,7 +40,7 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"113/03/13", "113/03/14", "113/03/15", "113/03/18"};
+		String[] date = {"113/04/12"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 	}
@@ -65,7 +66,7 @@ public class BuildThreeBigExchange {
 			this.buildJuristicAmountInfo(westenDate.replace("/", ""), url);
 			//期交所，外資未平倉口數
 			url = "https://www.taifex.com.tw/cht/3/futContractsDate";
-			this.buildTaiFexLot(westenDate, url, "", new TaifexLotParser(), 2);
+			this.buildTaiFexLot(westenDate, url, "", new TaifexLotParser(), 0);
 			//期交所前十大法人未沖銷部位
 			url = "https://www.taifex.com.tw/cht/3/largeTraderFutQry";
 			this.buildTopTen(westenDate, url);
@@ -80,8 +81,8 @@ public class BuildThreeBigExchange {
 			url = "https://www.twse.com.tw/exchangeReport/TWT93U?response=html";
 			this.buildStockLending(westenDate.replace("/", ""), url);
 			//小台三大法人未平倉口數
-			url = "https://www.taifex.com.tw/cht/3/futContractsDate";
-			this.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 2);
+			//url = "https://www.taifex.com.tw/cht/3/futContractsDate";
+			//this.buildTaiFexLot(westenDate, url, "MXF", new TaifexMtxParser(), 2);
 			//小台未平倉餘額
 			url = "https://www.taifex.com.tw/cht/3/futDailyMarketReport";
 			this.buildMtxOi(westenDate, url);
@@ -166,33 +167,56 @@ public class BuildThreeBigExchange {
 	public void buildTaiFexLot(String date, String url, String commodityId, TaifexLotParser parser, int tableIndex)
 	{
 		//期交所外資未平倉口數
-		GetTaifexLot getTaiFexForeignerLot = new GetTaifexLot();
-		getTaiFexForeignerLot.setDao(juristicDailyReportDao);
-		getTaiFexForeignerLot.setUrl(url);
-		getTaiFexForeignerLot.setDate(date);
-		getTaiFexForeignerLot.setCommodityId(commodityId);
-		getTaiFexForeignerLot.setParser(parser);
-		getTaiFexForeignerLot.setTableIndex(tableIndex);
-		getTaiFexForeignerLot.getContent();
+		try
+		{
+			GetTaifexLot getTaiFexForeignerLot = new GetTaifexLot();
+			getTaiFexForeignerLot.setDao(juristicDailyReportDao);
+			getTaiFexForeignerLot.setDate(date);
+			getTaiFexForeignerLot.setUrl(url + "?queryType=1&goDay=&doQuery=1&dateaddcnt=&queryDate=" + 
+			URLEncoder.encode(date, "UTF-8") + "&commodityId=");
+			getTaiFexForeignerLot.setCommodityId(commodityId);
+			getTaiFexForeignerLot.setParser(parser);
+			getTaiFexForeignerLot.setTableIndex(tableIndex);
+			getTaiFexForeignerLot.getContent();
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
-	public void buildTopTen(String date, String url)
+	public void buildTopTen(String date, String url) 
 	{
-		//期交所前十大法人未沖銷部位
-		GetTaifexTopTen getTaifexTopTen = new GetTaifexTopTen();
-		getTaifexTopTen.setDao(juristicDailyReportDao);
-		getTaifexTopTen.setUrl(url);
-		getTaifexTopTen.setDate(date);
-		getTaifexTopTen.getContent();
-		
+		try 
+		{
+			//期交所前十大法人未沖銷部位
+			GetTaifexTopTen getTaifexTopTen = new GetTaifexTopTen();
+			getTaifexTopTen.setDao(juristicDailyReportDao);
+			getTaifexTopTen.setDate(date);
+			getTaifexTopTen.setUrl(url + "?datecount=&contractId2=&queryDate=" + URLEncoder.encode(date, "UTF-8") + "&contractId=all");
+			getTaifexTopTen.getContent();
+		} 
+		catch (UnsupportedEncodingException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void buildOption(String date, String url)
 	{
-		//台指選擇權
-		GetTaifexOption getTaifexOption = new GetTaifexOption();
-		getTaifexOption.setDao(juristicDailyReportDao);
-		getTaifexOption.setUrl(url);
-		getTaifexOption.setDate(date);
-		getTaifexOption.getContent();
+		try
+		{
+			//台指選擇權
+			GetTaifexOption getTaifexOption = new GetTaifexOption();
+			getTaifexOption.setDao(juristicDailyReportDao);
+			getTaifexOption.setDate(date);
+			getTaifexOption.setUrl(url + "?queryType=1&goDay=&doQuery=1&dateaddcnt=&queryDate=" + URLEncoder.encode(date, "UTF-8"));
+			getTaifexOption.getContent();
+		}
+		catch (UnsupportedEncodingException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void buildIndex(String date, String url)
 	{
@@ -227,11 +251,19 @@ public class BuildThreeBigExchange {
 	//小台未平倉餘額
 	public void buildMtxOi(String date, String url)
 	{
-		GetMtxTotalOi getMtxTotalOi = new GetMtxTotalOi();
-		getMtxTotalOi.setDao(juristicDailyReportDao);
-		getMtxTotalOi.setDate(date);
-		getMtxTotalOi.setUrl(url);
-		getMtxTotalOi.getContent();
+		try
+		{
+			GetMtxTotalOi mtx = new GetMtxTotalOi();
+			mtx.setDao(juristicDailyReportDao);
+			mtx.setDate(date);
+			mtx.setUrl(url + "?queryType=2&marketCode=0&commodity_id=MTX&queryDate=" + URLEncoder.encode(date, "UTF-8") +
+								"&MarketCode=0&commodity_idt=MTX");
+			mtx.getContent();
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	//00632R
 	public void setT50R(String url, String date)
@@ -252,11 +284,19 @@ public class BuildThreeBigExchange {
 	//Put Call Power
 	public void setPutCallPower(String date, String url)
 	{
-		GetPutCallPower power = new GetPutCallPower();
-		power.setDao(juristicDailyReportDao);
-		power.setDate(date);
-		power.setUrl(url);
-		power.getContent();
+		try
+		{
+			GetPutCallPower power = new GetPutCallPower();
+			power.setDao(juristicDailyReportDao);
+			power.setDate(date);
+			power.setUrl(url + "?queryType=2&marketCode=0&commodity_id=TXO&queryDate=" + URLEncoder.encode(date, "UTF-8") +
+								"&MarketCode=0&commodity_idt=TXO");
+			power.getContent();
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	public void getRank(String date, String url, String buyer, String sqlDate)
 	{
