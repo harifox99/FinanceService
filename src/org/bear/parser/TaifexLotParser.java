@@ -3,6 +3,7 @@ package org.bear.parser;
 import java.text.SimpleDateFormat;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.entity.JuristicDailyEntity;
+import org.bear.entity.RetailInvestorsEntity;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -41,9 +42,11 @@ public class TaifexLotParser extends EasyParserBase
 		Elements tables = xmlDoc.select("table");
 		Element table = tables.get(0);
 		Elements rows = table.select("tr");
+		//機構投資人（外資、自營、投信），三大法人未平倉口數
+		int retailNumber = 0;
 		for (int i = 0; i < rows.size(); i++)
 		{
-			if (i == 5 || i == 14)
+			if (i == 5 || i == 14 || i == 12 || i == 13)
 			{				
 				Element td = rows.get(i);
 				Elements tdList = td.select("td");
@@ -70,7 +73,13 @@ public class TaifexLotParser extends EasyParserBase
 							content = content.replace(",", "");
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
-							entity.setTotalSmallLot(Integer.parseInt(content));							
+							entity.setTotalSmallLot(Integer.parseInt(content));	
+							/************************/
+							retailNumber = retailNumber + Integer.parseInt(content);
+							RetailInvestorsEntity retailEntity = new RetailInvestorsEntity();
+							retailEntity.setExchangeDate(dateFormat.parse(date));
+							retailEntity.setInstitutionalMtx(retailNumber);
+							dao.insert(retailEntity);
 						}
 						else if (i == 5 && j == 5)//外資新增台指期口數
 						{
@@ -91,6 +100,13 @@ public class TaifexLotParser extends EasyParserBase
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 							entity.setExchangeDate(dateFormat.parse(date));
 							entity.setNewSmallLot(Integer.parseInt(content));							
+						}
+						else if ((i == 12 && j == 13) || (i == 13 && j == 11))
+						{				
+							Element subElement = tdList.get(j).select("div").get(0);
+							String content = subElement.text().trim();	
+							content = content.replace(",", "");
+							retailNumber = retailNumber + Integer.parseInt(content);
 						}
 					}
 					catch (Exception ex)
