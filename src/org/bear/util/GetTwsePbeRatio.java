@@ -11,8 +11,8 @@ public class GetTwsePbeRatio {
 	HashMap<String, Double> hashPer;
 	HashMap<String, Double> hashPbr;
 	GetURLContent content;
-	//String url = "http://www.twse.com.tw/ch/trading/exchange/BWIBBU/BWIBBU_d.php";
-	String url = "https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=html&selectType=ALL&date=";
+	String url = "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d?selectType=ALL&response=html&date=";
+	//String url = "https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=html&selectType=ALL&date=";
 	String date;
 	public String getDate() {
 		return date;
