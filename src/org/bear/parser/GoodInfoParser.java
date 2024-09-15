@@ -40,13 +40,14 @@ public class GoodInfoParser
         			continue;     
         		data = thList.get(0).text().trim();
         		//System.out.println("Stock ID: " + data);
-        		String dtime = tdList.get(3).text().trim();
+        		//String dtime = tdList.get(3).text().trim();
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 				/*
 				Date date = new Date();  
 			    //System.out.println(dateFormat.format(date));  
 			    String year = dateFormat.format(date).substring(0, 4); */
-				entity.setExchangeDate(dateFormat.parse(dateString + "/" + dtime));
+				entity.setExchangeDate(dateFormat.parse(dateString));
+				//entity.setExchangeDate(dateFormat.parse(dateString + "/" + dtime));
         		//股票代碼	  
         		if (isDay == true)
         			entity.setStockId(data);
@@ -54,7 +55,7 @@ public class GoodInfoParser
         		{    //日週同時交叉
 					if (mapDay.get(data) != null)
 					{
-						dao.update("Week_KD_20", "Y", dateString + "/" + dtime, data);
+						dao.update("Week_KD_20", "Y", dateString, data);
 						break;
 					}
 					else
