@@ -52,7 +52,7 @@ public class TpexPbeParser extends EasyParserBase
 						hashPer.put(stockId, per);
 					}
 				}
-				else if (j == 5)
+				else if (j == 6)
 				{
 					double pbr;
 					//pbr = Double.parseDouble(content);
