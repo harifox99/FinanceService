@@ -39,7 +39,7 @@ public class TwsePbeParser extends EasyParserBase
 				//content = StringUtil.eraseSpecialChar(content);
 				if (j == 0)
 					stockId = content.trim();
-				else if (j == 4)
+				else if (j == 5)
 				{
 					double per;
 					if (content.equals("-"))
@@ -59,13 +59,22 @@ public class TwsePbeParser extends EasyParserBase
 						hashPer.put(stockId, per);
 					}
 				}
-				else if (j == 5)
+				else if (j == 6)
 				{
 					if (content.equals("-"))
 						continue;
-					double pbr;
-					pbr = Double.parseDouble(content);
-					hashPbr.put(stockId, pbr);
+					else if (content.contains(","))
+					{
+						content = content.replace(",", "");
+						double pbr = Double.parseDouble(content);
+						hashPbr.put(stockId, pbr);
+					}
+					else
+					{
+						double pbr;
+						pbr = Double.parseDouble(content);
+						hashPbr.put(stockId, pbr);
+					}
 				}
 									
 			}
