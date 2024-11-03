@@ -125,7 +125,7 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 	@Override
 	public void updateOutstandingShare(String stockID, int share) 
 	{
-		String sql = "update StockData set OutstandingShare = '" + share +
+		String sql = "update StockData set SharesOutstanding = '" + share +
 				"' where stockID = '" + stockID + "'";
 				this.getSimpleJdbcTemplate().update(sql);
 		

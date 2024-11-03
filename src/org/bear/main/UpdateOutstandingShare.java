@@ -3,7 +3,11 @@ import org.bear.dao.BasicStockDao;
 import org.bear.parser.OutStandingParser;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
+/**
+ * 流通在外股數
+ * @author bear
+ *
+ */
 public class UpdateOutstandingShare 
 {
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
