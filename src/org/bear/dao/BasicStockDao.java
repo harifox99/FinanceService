@@ -16,4 +16,5 @@ public interface BasicStockDao
 	public BasicStockWrapper findBasicData(String stockID);
 	//列出有最新營收的股票
 	public List<BasicStockWrapper> findSpecificDate();
+	public void updateOutstandingShare(String stockID, int share);
 }

@@ -122,4 +122,13 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 		return wrapperList;
 	}
 
+	@Override
+	public void updateOutstandingShare(String stockID, int share) 
+	{
+		String sql = "update StockData set OutstandingShare = '" + share +
+				"' where stockID = '" + stockID + "'";
+				this.getSimpleJdbcTemplate().update(sql);
+		
+	}
+
 }
