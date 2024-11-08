@@ -2,7 +2,10 @@ package org.bear.dao;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.bear.entity.BasicStockWrapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -123,12 +126,22 @@ public class JdbcBasicStockDao extends SimpleJdbcDaoSupport implements BasicStoc
 	}
 
 	@Override
-	public void updateOutstandingShare(String stockID, int share) 
+	public void updateSharesOutstanding(String stockID, int share) 
 	{
 		String sql = "update StockData set SharesOutstanding = '" + share +
 				"' where stockID = '" + stockID + "'";
 				this.getSimpleJdbcTemplate().update(sql);
 		
+	}
+
+	@Override
+	public Map<String, Integer> getSharesOutstanding() 
+	{
+		List<BasicStockWrapper> list = this.findAllData();
+		Map<String, Integer> mapShares = new HashMap<String, Integer>();
+		for (int i = 0; i < list.size(); i++)
+			mapShares.put(list.get(i).getStockID(), list.get(i).getSharesOutstanding());
+		return mapShares;
 	}
 
 }

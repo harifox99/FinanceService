@@ -1,6 +1,8 @@
 package org.bear.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.bear.entity.BasicStockWrapper;
 
 public interface BasicStockDao 
@@ -12,9 +14,13 @@ public interface BasicStockDao
 	public List<BasicStockWrapper> findAllDataDesc();
 	//カ(branchType=1)┪耫(branchType=2)布
 	public List<BasicStockWrapper> findStockTypeData(String stockBranch);
+	//穝戈セ肂
 	public void updateCapital(String stcokID, String capital);
 	public BasicStockWrapper findBasicData(String stockID);
 	//Τ程穝犁Μ布
 	public List<BasicStockWrapper> findSpecificDate();
-	public void updateOutstandingShare(String stockID, int share);
+	//穝瑈硄计
+	public void updateSharesOutstanding(String stockID, int share);
+	//琩高瑈硄计
+	public Map<String, Integer> getSharesOutstanding();
 }
