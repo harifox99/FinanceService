@@ -11,6 +11,16 @@ public class BasicStockWrapper
 	int stockBranch;
 	double capital;
 	int enabled;
+	/**
+	 * 在外流通發行股數
+	 */
+	int sharesOutstanding;
+	public int getSharesOutstanding() {
+		return sharesOutstanding;
+	}
+	public void setSharesOutstanding(int sharesOutstanding) {
+		this.sharesOutstanding = sharesOutstanding;
+	}
 	public String getStockID() {
 		return stockID;
 	}
