@@ -31,7 +31,7 @@ public class GetDailyPrice
 		Map<String, Integer> mapShares = basicStockDao.getSharesOutstanding();
 		for (int i = 300; i < listData.size(); i++)
 		{
-			System.out.println(listData.get(i));
+			//System.out.println(listData.get(i));
 			if (isParse)
 			{
 				if (listData.get(i).contains("³Æµù"))
@@ -74,7 +74,6 @@ public class GetDailyPrice
 						entity.setTurnoverRate(roundOff.doubleValue());
 					}
 					list.add(entity);
-					System.out.println();
 				}
 				catch (NumberFormatException ex)
 				{
