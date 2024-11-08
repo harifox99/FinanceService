@@ -40,7 +40,7 @@ public class BuildThreeBigExchange {
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"113/09/27"};
+		String[] date = {"113/11/04"};
 		BuildThreeBigExchange trader = new BuildThreeBigExchange();
 		trader.update(date);
 	}
