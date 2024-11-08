@@ -5,8 +5,12 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.mail.Session;
+
+import org.bear.dao.BasicStockDao;
+import org.bear.dao.DailyPriceDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
+import org.bear.datainput.GetDailyPrice;
 import org.bear.kd.GoodInfoRequest;
 import org.bear.parser.EtfParser;
 import org.bear.parser.RankingParser;
@@ -38,6 +42,8 @@ public class BuildThreeBigExchange {
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	ThreeBigExchangeDao threeBigExchangeDao = (ThreeBigExchangeDao)context.getBean("threeBigExchangeDao");
 	JuristicDailyReportDao juristicDailyReportDao = (JuristicDailyReportDao)context.getBean("juristicDailyReportDao");
+	DailyPriceDao dailyPriceDao = (DailyPriceDao)context.getBean("dailyPriceDao");
+	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	public static void main(String[] args)
 	{
 		String[] date = {"113/11/04"};
@@ -117,6 +123,9 @@ public class BuildThreeBigExchange {
 			request.conn(true, westenDate);
 			request.conn(false, westenDate);
 			System.out.println(westenDate + " End!");
+			//每日成交資訊
+			GetDailyPrice getDailyPrice = new GetDailyPrice();
+			getDailyPrice.getContent("20241108", "Big5", dailyPriceDao, basicStockDao);
 			//Send Mail
 			String smtpHostServer = "msr.hinet.net";
 		    String emailID = "aluba0504@gmail.com";
