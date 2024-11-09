@@ -18,5 +18,6 @@ public class GetURLCathayIncomeStatement extends GetURLContentBase
 			this.urlString = urlHeaderYear + stockID + urlFooter;
 		else
 			this.urlString = urlHeaderSeason + stockID + urlFooter;
+		System.out.println(urlString);
 	}
 }
