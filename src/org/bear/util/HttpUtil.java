@@ -392,7 +392,7 @@ public class HttpUtil {
 		return null;
 	}
 	/**
-	 * HTTP Post with Parameters
+	 * HTTP Post with Parameters Getting String
 	 * @param url
 	 * @param parameter
 	 * @param encode
@@ -428,6 +428,42 @@ public class HttpUtil {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	/**
+	 * HTTP Post with Parameters Getting List String
+	 * @param url
+	 * @param parameter
+	 * @param encode
+	 * @return
+	 */
+	public List<String> httpPostList(String url, String parameter, String encode)
+	{
+		URL serverUrl;
+		BufferedReader htmlContent = null;
+		List<String> listData = new ArrayList<String>();
+		try 
+		{
+			serverUrl = new URL(url);
+			HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
+			urlConnection.setDoOutput(true);
+	        urlConnection.setRequestMethod("POST");
+	        // Writing the post data to the HTTP request body
+	        BufferedWriter httpRequestBodyWriter = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
+	        httpRequestBodyWriter.write(parameter);
+	        httpRequestBodyWriter.close();
+	        htmlContent = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), encode));
+	        String line = "";	        
+	        while ( (line = htmlContent.readLine()) != null)
+	        {
+	        	listData.add(line);
+	        }
+		} 
+		catch (Exception e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listData;
 	}
 }
 
