@@ -34,7 +34,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author edward
  *
  */
-public class BuildThreeBigExchange {
+public class BuildTopThreeExchange {
 
 	/**
 	 * @param args
@@ -47,7 +47,7 @@ public class BuildThreeBigExchange {
 	public static void main(String[] args)
 	{
 		String[] date = {"113/11/04"};
-		BuildThreeBigExchange trader = new BuildThreeBigExchange();
+		BuildTopThreeExchange trader = new BuildTopThreeExchange();
 		trader.update(date);
 	}
 	public void update(String[] date)

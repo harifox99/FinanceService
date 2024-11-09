@@ -1,7 +1,7 @@
 package org.bear.cron;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.bear.main.BuildThreeBigExchange;
+import org.bear.main.BuildTopThreeExchange;
 import org.bear.util.StringUtil;
 /**
  * Cron Job update 三大法人資料
@@ -12,7 +12,7 @@ public class ThreeBigUpdate
 {
 	protected void update()
 	{
-		BuildThreeBigExchange threeBig = new BuildThreeBigExchange();
+		BuildTopThreeExchange threeBig = new BuildTopThreeExchange();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		java.util.Date today = new Date();        
 		String dateString = dateFormat.format(today);
