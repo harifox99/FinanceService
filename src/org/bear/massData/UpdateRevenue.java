@@ -29,7 +29,7 @@ public class UpdateRevenue
 		List<String> listData = httpUtil.httpPostList(url, parameters, "UTF-8");
 		try
 		{
-			for (int i = 1; i < 5; i++)
+			for (int i = 1; i < listData.size(); i++)
 			{
 				String[] data = listData.get(i).split("\",\"");
 				RevenueEntity entity = new RevenueEntity();
