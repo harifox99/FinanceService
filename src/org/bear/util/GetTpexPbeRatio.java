@@ -13,16 +13,14 @@ public class GetTpexPbeRatio {
 	HashMap<String, Double> hashPbr;
 	GetURLContent content;
 	String date;
-	String url = "https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera_print.php?l=zh-tw&d=";
+	//String url = "https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera_print.php?l=zh-tw&d=";
+	String url = "https://www.tpex.org.tw/www/zh-tw/afterTrading/peQryDate?&cate=&id=&response=html&date=" + date;
 	public String getDate() {
 		return date;
 	}
 	public void setDate(String date) 
 	{
-		String[] dateArray = date.split("/");
-		int year = Integer.parseInt(dateArray[0]);
-		year = year - 1911;
-		this.date = year + "/" + dateArray[1] + "/" + dateArray[2];
+		this.date = date;
 	}
 
 	public HashMap<String, Double> getHashPer() {
@@ -45,7 +43,7 @@ public class GetTpexPbeRatio {
 	public static void main(String args[])
 	{
 		GetTpexPbeRatio ratio = new GetTpexPbeRatio();
-		ratio.setDate("106/02/10");
+		ratio.setDate("2024/11/08");
 		ratio.getContent();
 	}
 }
