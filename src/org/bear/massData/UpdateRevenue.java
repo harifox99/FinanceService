@@ -55,9 +55,11 @@ public class UpdateRevenue
 	}
 	public static void main(String[] args)
 	{
+		//¤W¥«
 		UpdateRevenue revenueTwse = new UpdateRevenue();
 		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv");
 		revenueTwse.getData();
+		//¤WÂd
 		UpdateRevenue revenueOtc = new UpdateRevenue();
 		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_113_10.csv");
 		revenueOtc.getData();
