@@ -24,7 +24,7 @@ public class UpdateRevenue
 	public void getData()
 	{
 		String url = "https://mops.twse.com.tw/server-java/FileDownLoad";
-		String parameters = "step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv";				
+		//String parameters = "step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv";				
 		HttpUtil httpUtil = new HttpUtil();		
 		List<String> listData = httpUtil.httpPostList(url, parameters, "UTF-8");
 		try
@@ -55,8 +55,12 @@ public class UpdateRevenue
 	}
 	public static void main(String[] args)
 	{
-		UpdateRevenue revenue = new UpdateRevenue();
-		revenue.getData();
+		UpdateRevenue revenueTwse = new UpdateRevenue();
+		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv");
+		revenueTwse.getData();
+		UpdateRevenue revenueOtc = new UpdateRevenue();
+		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_113_10.csv");
+		revenueOtc.getData();
 	}
 	public String getParameters() {
 		return parameters;
