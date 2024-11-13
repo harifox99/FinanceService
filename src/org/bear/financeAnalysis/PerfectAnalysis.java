@@ -451,19 +451,20 @@ public class PerfectAnalysis
 			if (isComparePrice == true)
 			{
 				//西元轉民國
-				String[] dateArray = peDate.split("/");
-				String year = StringUtil.convertChineseYear(dateArray[0]);
+				//String[] dateArray = peDate.split("/");
+				//String year = StringUtil.convertChineseYear(dateArray[0]);
 				//計算最新股價
-				String url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+				//String url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_print.php?l=zh-tw&se=EW&s=0,asc,0&d=";
+				String url = "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=html&date";
 				TpexPriceParser parser = new TpexPriceParser();
-				parser.setUrl(url + year + "/" + dateArray[1] + "/" + dateArray[2]);
+				parser.setUrl(url + peDate);
 				parser.getConnection();
 				parser.parse(0);
 				HashMap<String, Double> hashPrice = parser.getHashPrice();
 				//計算某個日子股價 (通常是半年)
 				parser = new TpexPriceParser();
-				dateArray = compareDate.split("/");
-				parser.setUrl(url + year + "/" + dateArray[1] + "/" + dateArray[2]);
+				//dateArray = compareDate.split("/");
+				parser.setUrl(url + compareDate);
 				parser.getConnection();
 				parser.parse(0);
 				HashMap<String, Double> previousPrice = parser.getHashPrice();	

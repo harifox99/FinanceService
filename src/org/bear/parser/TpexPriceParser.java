@@ -34,7 +34,11 @@ public class TpexPriceParser extends EasyParserBase
 				resultElement = tdList.get(j);
 				String content = resultElement.getContent().toString();	
 				if (j == 0)
+				{
 					stockID = content.trim();
+					if (stockID.contains("¤WÂd®a¼Æ"))
+						break;
+				}
 				else if (j == 2)
 				{
 					double price;
