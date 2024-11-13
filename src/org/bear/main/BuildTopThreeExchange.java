@@ -46,7 +46,7 @@ public class BuildTopThreeExchange {
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"113/11/04"};
+		String[] date = {"113/11/13"};
 		BuildTopThreeExchange trader = new BuildTopThreeExchange();
 		trader.update(date);
 	}
@@ -125,7 +125,7 @@ public class BuildTopThreeExchange {
 			System.out.println(westenDate + " End!");
 			//每日成交資訊
 			GetDailyPrice getDailyPrice = new GetDailyPrice();
-			getDailyPrice.getContent("20241108", "Big5", dailyPriceDao, basicStockDao);
+			getDailyPrice.getContent(westenDate.replace("/", ""), "Big5", dailyPriceDao, basicStockDao);
 			//Send Mail
 			String smtpHostServer = "msr.hinet.net";
 		    String emailID = "aluba0504@gmail.com";
