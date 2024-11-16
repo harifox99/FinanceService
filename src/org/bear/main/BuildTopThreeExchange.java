@@ -11,6 +11,7 @@ import org.bear.dao.DailyPriceDao;
 import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.datainput.GetDailyPrice;
+import org.bear.datainput.UpdateTpexPrice;
 import org.bear.kd.GoodInfoRequest;
 import org.bear.parser.EtfParser;
 import org.bear.parser.RankingParser;
@@ -126,6 +127,8 @@ public class BuildTopThreeExchange {
 			//每日成交資訊
 			GetDailyPrice getDailyPrice = new GetDailyPrice();
 			getDailyPrice.getContent(westenDate.replace("/", ""), "Big5", dailyPriceDao, basicStockDao);
+			UpdateTpexPrice tpexPrice = new UpdateTpexPrice();
+			tpexPrice.getContent(westenDate, "Big5", dailyPriceDao, basicStockDao);
 			//Send Mail
 			String smtpHostServer = "msr.hinet.net";
 		    String emailID = "aluba0504@gmail.com";
