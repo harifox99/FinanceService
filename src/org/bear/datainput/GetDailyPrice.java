@@ -19,7 +19,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class GetDailyPrice 
 {
-
 	public void getContent(String dateString, String encode, DailyPriceDao dao, BasicStockDao basicStockDao)
 	{
 		String urlString = "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=" + dateString + "&type=ALLBUT0999&response=csv";
