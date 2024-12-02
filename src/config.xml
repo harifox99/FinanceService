@@ -100,4 +100,8 @@
 		class="org.bear.dao.CommonDao">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	<bean id="dailyPriceDao"
+		class="org.bear.dao.JdbcDailyPriceDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
