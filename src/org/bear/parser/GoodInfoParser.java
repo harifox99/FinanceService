@@ -1,10 +1,11 @@
 package org.bear.parser;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.bear.dao.GoodInfoDao;
 import org.bear.entity.GoodInfoEntity;
 import org.jsoup.Jsoup;
@@ -19,6 +20,7 @@ public class GoodInfoParser
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	GoodInfoDao dao = (GoodInfoDao)context.getBean("goodInfoDao");
 	Map <String, Boolean> mapDay = new HashMap<String, Boolean>();
+	Set <String> kdSet = new HashSet<String>();
 	public void parse(String responseString, String dateString, boolean isDay)
 	{
 		try
@@ -56,6 +58,7 @@ public class GoodInfoParser
 					if (mapDay.get(data) != null)
 					{
 						dao.update("Week_KD_20", "Y", dateString, data);
+						kdSet.add(data);
 						break;
 					}
 					else
@@ -96,5 +99,11 @@ public class GoodInfoParser
 		{
 			ex.printStackTrace();
 		}
+	}
+	public Set<String> getKdSet() {
+		return kdSet;
+	}
+	public void setKdSet(Set<String> kdSet) {
+		this.kdSet = kdSet;
 	}
 }
