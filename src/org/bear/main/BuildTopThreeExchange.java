@@ -4,8 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Set;
 import javax.mail.Session;
-
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.DailyPriceDao;
 import org.bear.dao.JuristicDailyReportDao;
@@ -20,6 +20,8 @@ import org.bear.parser.TpexThreeBigExchangeParser;
 import org.bear.parser.TwseDailyDataParser;
 import org.bear.parser.TwseStockLendingParser;
 import org.bear.parser.TwseThreeBigAmountParser;
+import org.bear.shortTrade.Orchid;
+import org.bear.shortTrade.Vcp;
 import org.bear.util.EmailUtil;
 import org.bear.util.StringUtil;
 import org.bear.util.distribution.GetMtxTotalOi;
@@ -47,7 +49,7 @@ public class BuildTopThreeExchange {
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"113/11/13"};
+		String[] date = {"114/03/05"};
 		BuildTopThreeExchange trader = new BuildTopThreeExchange();
 		trader.update(date);
 	}
@@ -123,12 +125,20 @@ public class BuildTopThreeExchange {
 			GoodInfoRequest request = new GoodInfoRequest();
 			request.conn(true, westenDate);
 			request.conn(false, westenDate);
+			Set <String> kdGolden = request.getKdGolden();
 			System.out.println(westenDate + " End!");
 			//每日成交資訊
 			GetDailyPrice getDailyPrice = new GetDailyPrice();
 			getDailyPrice.getContent(westenDate.replace("/", ""), "Big5", dailyPriceDao, basicStockDao);
 			UpdateTpexPrice tpexPrice = new UpdateTpexPrice();
 			tpexPrice.getContent(westenDate, "Big5", dailyPriceDao, basicStockDao);
+			//VCP and 蘭弦
+			Vcp vcp = new Vcp();
+			vcp.getContent();
+			Set<String> vcpSets = vcp.getSets();
+			Orchid orchid = new Orchid();
+			orchid.getContent();
+			Set<String> orchidSets = orchid.getSets();
 			//Send Mail
 			String smtpHostServer = "msr.hinet.net";
 		    String emailID = "aluba0504@gmail.com";
@@ -139,7 +149,7 @@ public class BuildTopThreeExchange {
 		    final String user = "love.wine@msa.hinet.net";
 		    final String pass = "chtl@9191";   
 		    Session session = Session.getInstance(props, null);
-			EmailUtil.sendEmail(session, emailID, "籌碼日報", westenDate + " End!", user, pass);
+			EmailUtil.sendEmail(session, emailID, "籌碼日報", westenDate + " End!", user, pass, kdGolden, vcpSets, orchidSets);
 		}
 	}
 	/**
