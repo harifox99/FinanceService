@@ -2,8 +2,8 @@ package org.bear.kd;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Set;
 import javax.net.ssl.*;
-
 import org.bear.parser.GoodInfoParser;
 /**
  * GoodInfo KD Parser
@@ -13,6 +13,7 @@ import org.bear.parser.GoodInfoParser;
 public class GoodInfoRequest 
 {
 	GoodInfoParser parser = new GoodInfoParser();
+	Set <String> kdGolden;
 	public void conn(boolean isDay, String dateString)
 	{
 		try
@@ -38,12 +39,23 @@ public class GoodInfoRequest
 				content.append(string + "\n");
 			}
 			parser.parse(content.toString(), dateString, isDay);
+			kdGolden = parser.getKdSet();
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
 		}
 	}
+
+	public Set<String> getKdGolden() 
+	{
+		return kdGolden;
+	}
+	public void setKdGolden(Set<String> kdGolden) 
+	{
+		this.kdGolden = kdGolden;
+	}
+
 	public static void main(String[] args) throws Exception
     {
 		GoodInfoRequest request = new GoodInfoRequest();
