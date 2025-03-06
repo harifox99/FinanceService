@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -29,7 +28,17 @@ public class EmailUtil {
 			{
 				"aluba0504@gmail.com",
 				"Kuoxingying@gmail.com",
-				"netflix.loveabby@gmail.com"	
+				"3hf.unds@gmail.com",
+				"mosquitoboy513@gmail.com",
+				"squidcar@gmail.com",
+				"zxcpkpkjcjc@gmail.com",
+				"boss4310@hotmail.com",
+				"chen18850@hotmail.com",
+				"lichain7@gmail.com",
+				"yinliying3836@gmail.com",
+				"peter198729@gmail.com",
+				"netflix.loveabby@gmail.com",
+				"a531626@gmail.com"
 			};
 		    MimeMessage msg = new MimeMessage(session);
 		    //set message headers
@@ -84,7 +93,6 @@ public class EmailUtil {
 		    //End Body
 		    msg.setText(body, "UTF-8");
 		    msg.setSentDate(new Date());
-		    msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
 		    System.out.println("Message is ready");
 	    	Transport.send(msg, user, pass);  
 		    System.out.println("EMail Sent Successfully!!");
