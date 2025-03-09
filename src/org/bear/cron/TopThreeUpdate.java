@@ -8,7 +8,7 @@ import org.bear.util.StringUtil;
  * @author edward
  *
  */
-public class ThreeBigUpdate
+public class TopThreeUpdate
 {
 	protected void update()
 	{
@@ -22,7 +22,7 @@ public class ThreeBigUpdate
 	}
 	public static void main(String[] args)
 	{
-		ThreeBigUpdate update = new ThreeBigUpdate();
+		TopThreeUpdate update = new TopThreeUpdate();
 		update.update();
 	}
 }
