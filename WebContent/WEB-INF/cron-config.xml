@@ -10,11 +10,11 @@
      http://www.springframework.org/schema/tx
      http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
      ">
-    <bean id="threeBigUpdate"
-		class="org.bear.cron.ThreeBigUpdate">
+    <bean id="topThreeUpdate"
+		class="org.bear.cron.TopThreeUpdate">
 	</bean>
 	<bean id="updateTradeData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-	 	<property name="targetObject" ref="threeBigUpdate" />
+	 	<property name="targetObject" ref="topThreeUpdate" />
 	 	<property name="targetMethod" value="update" />
 	</bean> 
 	
