@@ -16,14 +16,10 @@ public class Vcp
 {
 	String urlString = "https://stock.pingponglife.tw/vcp/export?date=";
 	Set<String> sets = new HashSet<String>();
-	
-	public void getContent()
-	{		
+	public void getContent(String dateString)
+	{
 		try
 		{
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			java.util.Date today = new Date();        
-			String dateString = dateFormat.format(today);
 			GetURLContent content = new GetURLContent(urlString + dateString);
 			FileParser fileParser = new FileParser();
 			List<String> listData = fileParser.getResponse(content.getContent("UTF-8"));
@@ -54,7 +50,10 @@ public class Vcp
 	public static void main(String[] args)
 	{
 		Vcp vcp = new Vcp();
-		vcp.getContent();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date today = new Date();        
+		String dateString = dateFormat.format(today);
+		vcp.getContent(dateString);
 	}
 
 }
