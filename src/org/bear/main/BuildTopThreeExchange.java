@@ -3,9 +3,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.Set;
-import javax.mail.Session;
+
+import org.bear.cron.CronVcp;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.DailyPriceDao;
 import org.bear.dao.JuristicDailyReportDao;
@@ -20,9 +20,6 @@ import org.bear.parser.TpexThreeBigExchangeParser;
 import org.bear.parser.TwseDailyDataParser;
 import org.bear.parser.TwseStockLendingParser;
 import org.bear.parser.TwseThreeBigAmountParser;
-import org.bear.shortTrade.Orchid;
-import org.bear.shortTrade.Vcp;
-import org.bear.util.EmailUtil;
 import org.bear.util.StringUtil;
 import org.bear.util.distribution.GetMtxTotalOi;
 import org.bear.util.distribution.GetPutCallPower;
@@ -132,24 +129,8 @@ public class BuildTopThreeExchange {
 			getDailyPrice.getContent(westenDate.replace("/", ""), "Big5", dailyPriceDao, basicStockDao);
 			UpdateTpexPrice tpexPrice = new UpdateTpexPrice();
 			tpexPrice.getContent(westenDate, "Big5", dailyPriceDao, basicStockDao);
-			//VCP and Äõ©¶
-			Vcp vcp = new Vcp();
-			vcp.getContent();
-			Set<String> vcpSets = vcp.getSets();
-			Orchid orchid = new Orchid();
-			orchid.getContent();
-			Set<String> orchidSets = orchid.getSets();
-			//Send Mail
-			String smtpHostServer = "msr.hinet.net";
-		    String emailID = "aluba0504@gmail.com";
-		    Properties props = System.getProperties();
-		    props.put("mail.smtp.auth", "true");
-		    props.put("mail.smtp.host", smtpHostServer);
-		    props.put("mail.smtp.port", 587);
-		    final String user = "love.wine@msa.hinet.net";
-		    final String pass = "chtl@9191";   
-		    Session session = Session.getInstance(props, null);
-			EmailUtil.sendEmail(session, emailID, "Äw½X¤é³ø", westenDate + " End!", user, pass, kdGolden, vcpSets, orchidSets);
+		    CronVcp cronVcp = new CronVcp();
+		    cronVcp.goVcp(kdGolden, westenDate);
 		}
 	}
 	/**
