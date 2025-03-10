@@ -38,7 +38,7 @@ public class CronVcp
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date today = new Date();        
 		String dateString = dateFormat.format(today);
-		dateString = "2025-03-07";
+		dateString = "2025-03-10";
 		//KD«ü¼Ð	
 		GoodInfoRequest request = new GoodInfoRequest();
 		request.conn(true, dateString.replace("-", "/"));
