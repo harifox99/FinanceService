@@ -16,14 +16,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class UpdateRevenue 
 {
-	String url = "https://mops.twse.com.tw/server-java/FileDownLoad";
+	String url = "https://mopsov.twse.com.tw/server-java/FileDownLoad";
 	String parameters;
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	RevenueDao dao = (RevenueDao)context.getBean("revenueDao");
 	public List<RevenueEntity> entityList = new ArrayList<RevenueEntity>();	
 	public void getData()
 	{
-		String url = "https://mops.twse.com.tw/server-java/FileDownLoad";
+		String url = "https://mopsov.twse.com.tw/server-java/FileDownLoad";
 		//String parameters = "step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv";				
 		HttpUtil httpUtil = new HttpUtil();		
 		List<String> listData = httpUtil.httpPostList(url, parameters, "UTF-8");
@@ -57,11 +57,11 @@ public class UpdateRevenue
 	{
 		//¤W¥«
 		UpdateRevenue revenueTwse = new UpdateRevenue();
-		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_114_1.csv");
+		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_114_2.csv");
 		revenueTwse.getData();
 		//¤WÂd
 		UpdateRevenue revenueOtc = new UpdateRevenue();
-		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_114_1.csv");
+		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_114_2.csv");
 		revenueOtc.getData();
 	}
 	public String getParameters() {
