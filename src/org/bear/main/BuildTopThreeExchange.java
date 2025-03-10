@@ -46,7 +46,7 @@ public class BuildTopThreeExchange {
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"114/03/05"};
+		String[] date = {"114/03/10"};
 		BuildTopThreeExchange trader = new BuildTopThreeExchange();
 		trader.update(date);
 	}
@@ -130,7 +130,7 @@ public class BuildTopThreeExchange {
 			UpdateTpexPrice tpexPrice = new UpdateTpexPrice();
 			tpexPrice.getContent(westenDate, "Big5", dailyPriceDao, basicStockDao);
 		    CronVcp cronVcp = new CronVcp();
-		    cronVcp.goVcp(kdGolden, westenDate);
+		    cronVcp.goVcp(kdGolden, westenDate.replace("/", "-"));
 		}
 	}
 	/**
