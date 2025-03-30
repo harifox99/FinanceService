@@ -22,7 +22,6 @@ public class EmailUtil {
 		String body;
 		try
 	    {
-			/*
 			String[] to = 
 			{
 				"a531626@gmail.com",				
@@ -38,8 +37,8 @@ public class EmailUtil {
 				"peter198729@gmail.com",
 				"netflix.loveabby@gmail.com",
 				"aluba0504@gmail.com"
-			};*/
-			String[] to = {"aluba0504@gmail.com"};
+			};
+			//String[] to = {"aluba0504@gmail.com"};
 		    MimeMessage msg = new MimeMessage(session);
 		    //set message headers
 		    msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
