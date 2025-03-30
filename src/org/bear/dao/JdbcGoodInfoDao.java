@@ -58,8 +58,8 @@ public class JdbcGoodInfoDao extends SimpleJdbcDaoSupport implements GoodInfoDao
 		try
 		{
 			String sql = "select stockid from GoodInfo where exchangeDate = '" + priceDate + "' and Day_KD_20 = 'Y' and Week_KD_20 = 'Y'";
-			System.out.println("SQL: " + sql);
-			List<String> data = this.getSimpleJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(String.class));
+			//System.out.println("SQL: " + sql);
+			List<String> data = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
 			Set<String> entity = new HashSet<String>(data);
 			return entity;
 		}
