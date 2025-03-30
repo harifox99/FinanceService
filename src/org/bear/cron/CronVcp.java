@@ -1,5 +1,6 @@
 package org.bear.cron;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Properties;
@@ -46,8 +47,12 @@ public class CronVcp
 		CronVcp vcp = new CronVcp();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date today = new Date();        
+		Calendar calendar = Calendar.getInstance(); 
+		calendar.setTime(today); 
+		calendar.add(Calendar.DATE, -1);
+		today = calendar.getTime();		
 		String dateString = dateFormat.format(today);
-		dateString = "2025-03-24";
+		//dateString = "2025-03-24";
 		//KD«ü¼Ð	
 		Set <String> kdGolden = goodInfoDao.getData(dateString);
 		if (kdGolden == null)
