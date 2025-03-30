@@ -3,9 +3,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Set;
-
-import org.bear.cron.CronVcp;
 import org.bear.dao.BasicStockDao;
 import org.bear.dao.DailyPriceDao;
 import org.bear.dao.JuristicDailyReportDao;
@@ -121,16 +118,17 @@ public class BuildTopThreeExchange {
 			//KD指標	
 			GoodInfoRequest request = new GoodInfoRequest();
 			request.conn(true, westenDate);
-			request.conn(false, westenDate);
-			Set <String> kdGolden = request.getKdGolden();
+			request.conn(false, westenDate);			
 			System.out.println(westenDate + " End!");
 			//每日成交資訊
 			GetDailyPrice getDailyPrice = new GetDailyPrice();
 			getDailyPrice.getContent(westenDate.replace("/", ""), "Big5", dailyPriceDao, basicStockDao);
 			UpdateTpexPrice tpexPrice = new UpdateTpexPrice();
 			tpexPrice.getContent(westenDate, "Big5", dailyPriceDao, basicStockDao);
+			/* 
+			Set <String> kdGolden = request.getKdGolden();
 		    CronVcp cronVcp = new CronVcp();
-		    cronVcp.goVcp(kdGolden, westenDate.replace("/", "-"));
+		    cronVcp.goVcp(kdGolden, westenDate.replace("/", "-")); */
 		}
 	}
 	/**
