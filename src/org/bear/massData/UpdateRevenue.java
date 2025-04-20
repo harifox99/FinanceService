@@ -38,7 +38,7 @@ public class UpdateRevenue
 				String month = StringUtil.addZeroMonth(dateString[1]);
 				entity.setStockID(data[2]);
 				entity.setRevenue(Integer.parseInt(data[5]));
-				entity.setLastRevenue(Integer.parseInt(data[6]));
+				entity.setLastRevenue(Integer.parseInt(data[7]));
 				entity.setAccumulation(Long.parseLong(data[10]));
 				entity.setLastAccumulation(Long.parseLong(data[11]));
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");						
@@ -57,11 +57,11 @@ public class UpdateRevenue
 	{
 		//¤W¥«
 		UpdateRevenue revenueTwse = new UpdateRevenue();
-		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_114_2.csv");
+		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv");
 		revenueTwse.getData();
 		//¤WÂd
 		UpdateRevenue revenueOtc = new UpdateRevenue();
-		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_114_2.csv");
+		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_113_10.csv");
 		revenueOtc.getData();
 	}
 	public String getParameters() {
