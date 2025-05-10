@@ -26,12 +26,12 @@ public class ImportCashFlowsCathay extends ImportStockID
 				stockList.add(readData);
 			}
 			reader.close();
-			//年資料
+			//年資料			
 			/*
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
-				int expectedNum = 2;
-				String[] years = {"2022", "2023"};
+				int expectedNum = 1;
+				String[] years = {"2024"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(i).getStockID();
 				if (stockList.contains(stockID) == false)
@@ -47,10 +47,11 @@ public class ImportCashFlowsCathay extends ImportStockID
 				idleTime++;
 			}*/
 			//季資料	
+			
 			for (int i = 0; i < wrapperList.size(); i++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
-				String[] years = {"2023"};
+				String[] years = {"2024"};
 				String[] seasons = {"01", "02", "03", "04"};						
 				String stockID = wrapperList.get(i).getStockID();
 				//if (!stockID.equals("6131"))

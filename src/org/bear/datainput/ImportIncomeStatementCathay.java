@@ -32,11 +32,12 @@ public class ImportIncomeStatementCathay extends ImportStockID
 				stockList.add(readData);
 			}
 			reader.close();
+			
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = FinancialReport.expectedNum;
 				String[] seasons = {"01", "02", "03", "04"};
-				String[] years = {"2023"};
+				String[] years = {"2024"};
 				String stockID = wrapperList.get(j).getStockID();
 				//if (!stockID.equals("8925"))
 					//continue;		
@@ -66,7 +67,7 @@ public class ImportIncomeStatementCathay extends ImportStockID
 			for (int j = 0; j < wrapperList.size(); j++)
 			{
 				int expectedNum = 2;
-				String[] years = {"2022", "2023"};
+				String[] years = {"2023", "2024"};
 				String[] seasons = {"00"};
 				String stockID = wrapperList.get(j).getStockID();
 				if (stockList.contains(stockID) == false)
