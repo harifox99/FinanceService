@@ -654,8 +654,29 @@ public class RedRabbitRevenueAnalysis
 			if (revenue.get(i).getRevenue() == 0 || revenue.get(i).getLastRevenue() == 0 ||
 				revenue.get(i+1).getRevenue() == 0 || revenue.get(i+1).getLastRevenue() == 0)
 				return null;
-			double thisMonthYoy = (double)revenue.get(i).getRevenue()/revenue.get(i).getLastRevenue();
-			double lastMonthYoy = (double)revenue.get(i+1).getRevenue()/revenue.get(i+1).getLastRevenue();
+			String date = revenue.get(i).getYearMonth().toString().substring(5, 10);
+			/*
+			String stockId = revenue.get(i).getStockID();
+			if (!stockId.equals("3004"))
+				//continue;*/
+			double thisMonthYoy;
+			double lastMonthYoy;
+			//2月營收用合併資料
+			if (date.startsWith("03"))	
+			{
+				thisMonthYoy = (double)revenue.get(i).getRevenue()/revenue.get(i).getLastRevenue();
+				lastMonthYoy = (double)revenue.get(i+1).getAccumulation()/revenue.get(i+1).getLastAccumulation();
+			}
+			else if (date.startsWith("02"))	
+			{
+				thisMonthYoy = (double)revenue.get(i).getAccumulation()/revenue.get(i).getLastAccumulation();
+				lastMonthYoy = (double)revenue.get(i+1).getRevenue()/revenue.get(i+1).getLastRevenue();
+			}
+			else
+			{
+				thisMonthYoy = (double)revenue.get(i).getRevenue()/revenue.get(i).getLastRevenue();
+				lastMonthYoy = (double)revenue.get(i+1).getRevenue()/revenue.get(i+1).getLastRevenue();
+			}
 			//如果本月營收 (thisMonthYoy < lastMonthYoy) 衰退
 			if (i < totalMonth && thisMonthYoy < lastMonthYoy)
 			{
