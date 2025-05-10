@@ -1,5 +1,4 @@
 package org.bear.main;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -33,7 +32,7 @@ public class BuildStockDistributionAll extends ImportStockID
 			for (int j = 1; j < listData.size(); j++)
 			{				
 				String[] stockDataArray = listData.get(j).split(",");
-				if (stockMap.get(stockDataArray[1]) != null)
+				if (stockMap.get(stockDataArray[1].trim()) != null)
 				{
 					String number = stockDataArray[2];
 					String data = stockDataArray[4].replaceAll(",", "");
@@ -120,7 +119,7 @@ public class BuildStockDistributionAll extends ImportStockID
 				}
 			}
 	    }					       
-        catch (ParseException e) 
+        catch (Exception e) 
         {	
 			e.printStackTrace();
 		}		
@@ -128,6 +127,6 @@ public class BuildStockDistributionAll extends ImportStockID
 	public static void main(String[] args)
 	{
 		BuildStockDistributionAll buildStock = new BuildStockDistributionAll();
-		buildStock.getData("202502", "https://smart.tdcc.com.tw/opendata/getOD.ashx?id=1-5");
+		buildStock.getData("202504", "https://smart.tdcc.com.tw/opendata/getOD.ashx?id=1-5");
 	}
 }
