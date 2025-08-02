@@ -1,4 +1,4 @@
-package org.bear.parser;
+package org.bear.parser.distribution;
 import org.bear.dao.StockDistributionDao;
 import org.bear.entity.StockDistributionEntity;
 import org.jsoup.Jsoup;

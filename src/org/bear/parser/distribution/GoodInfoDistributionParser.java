@@ -1,4 +1,4 @@
-package org.bear.parser;
+package org.bear.parser.distribution;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.bear.dao.StockDistributionDao;
