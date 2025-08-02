@@ -127,6 +127,6 @@ public class BuildStockDistributionAll extends ImportStockID
 	public static void main(String[] args)
 	{
 		BuildStockDistributionAll buildStock = new BuildStockDistributionAll();
-		buildStock.getData("202504", "https://smart.tdcc.com.tw/opendata/getOD.ashx?id=1-5");
+		buildStock.getData("202507", "https://smart.tdcc.com.tw/opendata/getOD.ashx?id=1-5");
 	}
 }
