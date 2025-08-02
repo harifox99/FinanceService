@@ -104,4 +104,8 @@
 		class="org.bear.dao.JdbcDailyPriceDao">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	<bean id="pyramidDistributionDao"
+		class="org.bear.dao.JdbcPyramidDistributionDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
