@@ -4,7 +4,7 @@ import java.net.URL;
 import javax.net.ssl.*;
 import org.bear.dao.StockDistributionDao;
 import org.bear.datainput.ImportStockID;
-import org.bear.parser.GoodInfoDistributionParser;
+import org.bear.parser.distribution.GoodInfoDistributionParser;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.net.URLEncoder;
