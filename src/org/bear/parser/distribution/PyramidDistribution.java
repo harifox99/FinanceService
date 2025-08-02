@@ -11,7 +11,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
+/**
+ * 神秘金字塔，每週股權變動比率
+ * @author bear
+ *
+ */
 public class PyramidDistribution extends ImportStockID
 {
 	public void getData()
