@@ -16,19 +16,33 @@
 	<bean id="updateTradeData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	 	<property name="targetObject" ref="topThreeUpdate" />
 	 	<property name="targetMethod" value="update" />
-	</bean> 
-	
+	</bean>
 	<bean id="tradeDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	 	<property name="jobDetail" ref="updateTradeData" />
 	 	<property name="cronExpression" value="0 35 21 ? * MON-FRI"/>
 	</bean>
+	<!--
+	<bean id="vcp"
+		class="org.bear.cron.CronVcp">
+	</bean>
 	
+	<bean id="sendVcpData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	 	<property name="targetObject" ref="vcp" />
+	 	<property name="targetMethod" value="start" />
+	</bean> 
+	
+	<bean id="vcpDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	 	<property name="jobDetail" ref="sendVcpData" />
+	 	<property name="cronExpression" value="0 45 8 ? * MON-SAT"/>
+	</bean>
+		
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 	 	<property name="triggers">
 	 		<list>
 	 			<ref bean="tradeDataTrigger" />
-	 			<!-- other triggers you have may be included here -->
+	 			<ref bean="vcpDataTrigger" />
 	 		</list>
 	 	</property>
 	</bean>  
+	-->
 </beans>
