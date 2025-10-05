@@ -54,7 +54,8 @@ public class GoodInfoParser
         		if (isDay == true)
         			entity.setStockId(data);
         		else //if (isDay == false)
-        		{    //日週同時交叉
+        		{   
+        			//日週同時交叉
 					if (mapDay.get(data) != null)
 					{
 						dao.update("Week_KD_20", "Y", dateString, data);
