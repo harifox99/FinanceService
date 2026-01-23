@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.bear.dao.RevenueDao;
 import org.bear.entity.RevenueEntity;
 import org.bear.util.HttpUtil;
@@ -14,18 +15,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author bear
  *
  */
-public class UpdateRevenue 
+public class UpdateRevenue
 {
 	String url = "https://mopsov.twse.com.tw/server-java/FileDownLoad";
 	String parameters;
 	ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 	RevenueDao dao = (RevenueDao)context.getBean("revenueDao");
-	public List<RevenueEntity> entityList = new ArrayList<RevenueEntity>();	
+	public List<RevenueEntity> entityList = new ArrayList<RevenueEntity>();
 	public void getData()
 	{
 		String url = "https://mopsov.twse.com.tw/server-java/FileDownLoad";
-		//String parameters = "step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv";				
-		HttpUtil httpUtil = new HttpUtil();		
+		//String parameters = "step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_113_10.csv";
+		HttpUtil httpUtil = new HttpUtil();
 		List<String> listData = httpUtil.httpPostList(url, parameters, "UTF-8");
 		try
 		{
@@ -41,27 +42,27 @@ public class UpdateRevenue
 				entity.setLastRevenue(Integer.parseInt(data[7]));
 				entity.setAccumulation(Long.parseLong(data[10]));
 				entity.setLastAccumulation(Long.parseLong(data[11]));
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");						
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 				Date date = dateFormat.parse(year + "-" + month);
 				entity.setYearMonth(date);
-				entityList.add(entity);	
+				entityList.add(entity);
 			}
-			dao.insertBatch(entityList);				
+			dao.insertBatch(entityList);
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-		}		
+		}
 	}
 	public static void main(String[] args)
 	{
 		//¤W¥«
 		UpdateRevenue revenueTwse = new UpdateRevenue();
-		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_114_8.csv");
+		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_114_11.csv");
 		revenueTwse.getData();
 		//¤WÂd
 		UpdateRevenue revenueOtc = new UpdateRevenue();
-		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_114_8.csv");
+		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_114_11.csv");
 		revenueOtc.getData();
 	}
 	public String getParameters() {
@@ -75,5 +76,5 @@ public class UpdateRevenue
 	}
 	public void setDao(RevenueDao dao) {
 		this.dao = dao;
-	}	
+	}
 }
