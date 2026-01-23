@@ -43,7 +43,7 @@ public class BuildTopThreeExchange {
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"114/12/29", "114/12/30", "114/12/31", "115/01/02"};
+		String[] date = {"115/01/05"};
 		BuildTopThreeExchange trader = new BuildTopThreeExchange();
 		trader.update(date);
 	}
