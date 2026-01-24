@@ -21,7 +21,6 @@
 	 	<property name="jobDetail" ref="updateTradeData" />
 	 	<property name="cronExpression" value="0 35 21 ? * MON-FRI"/>
 	</bean>
-	<!--
 	<bean id="vcp"
 		class="org.bear.cron.CronVcp">
 	</bean>
@@ -40,9 +39,8 @@
 	 	<property name="triggers">
 	 		<list>
 	 			<ref bean="tradeDataTrigger" />
-	 			<ref bean="vcpDataTrigger" />
 	 		</list>
 	 	</property>
 	</bean>  
-	-->
+	
 </beans>
