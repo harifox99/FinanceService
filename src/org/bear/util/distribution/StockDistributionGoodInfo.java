@@ -29,7 +29,7 @@ public class StockDistributionGoodInfo extends ImportStockID
 			String readData;			
 			while((readData = reader.readLine()) != null)
 			{
-				stockList.add(readData);
+				stockList.add(readData.trim());
 			}
 			reader.close();
 		}

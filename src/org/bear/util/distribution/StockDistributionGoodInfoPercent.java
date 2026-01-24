@@ -29,7 +29,7 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 			String readData;			
 			while((readData = reader.readLine()) != null)
 			{
-				stockList.add(readData);
+				stockList.add(readData.trim());
 			}
 			reader.close();
 		}
@@ -78,7 +78,7 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 				}
 				GoodInfoDistributionPercentParser parser = new GoodInfoDistributionPercentParser();
 				parser.parse(content.toString(), dateString, week, dao, STOCK_ID, true);
-				Thread.sleep(3000);
+				Thread.sleep(5000);
 			}
 			catch (Exception ex)
 			{
