@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class BuildStockDistributionAll extends ImportStockID
 {
-	public void getData(String dateString, String url)
+	public void getData(String dateString, String url, String tableName)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
 		StockDistributionDao dao = (StockDistributionDao)context.getBean("stockDistributionDao");
@@ -25,7 +25,7 @@ public class BuildStockDistributionAll extends ImportStockID
 			GetURLContent content = new GetURLContent(url);
 			FileParser fileParser = new FileParser();
 			List<String> listData = fileParser.getResponse(content.getContent(null));
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");	
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");	
 			Date date = dateFormat.parse(dateString);
 			//Parse Data
 			StockDistributionEntity entity = null;
@@ -114,7 +114,7 @@ public class BuildStockDistributionAll extends ImportStockID
 					{
 						entity.setD1000000(Long.parseLong(data));
 						entity.setP1000000(Double.parseDouble(percentage));
-						dao.insert(entity);
+						dao.insert(entity, tableName);
 					}
 				}
 			}
@@ -127,6 +127,6 @@ public class BuildStockDistributionAll extends ImportStockID
 	public static void main(String[] args)
 	{
 		BuildStockDistributionAll buildStock = new BuildStockDistributionAll();
-		buildStock.getData("202512", "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5");
+		buildStock.getData("20260101", "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5", "StockDistribution");
 	}
 }

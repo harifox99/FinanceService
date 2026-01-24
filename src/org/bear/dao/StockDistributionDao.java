@@ -9,6 +9,7 @@ public interface StockDistributionDao
 	 * @param entity
 	 */
 	public void insert(StockDistributionEntity entity);
+	public void insert(StockDistributionEntity entity, String tableName);
 	/**
 	 * 查詢最新資料
 	 * @param stockID

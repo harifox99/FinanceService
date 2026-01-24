@@ -35,10 +35,28 @@
 	 	<property name="cronExpression" value="0 45 8 ? * MON-SAT"/>
 	</bean>
 		
+	<!--  -->	
+	
+	<bean id="distributionWeekly"
+		class="org.bear.cron.WeeklyDistribution">
+	</bean>
+	
+	<bean id="weeklyDistribution" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	 	<property name="targetObject" ref="distributionWeekly" />
+	 	<property name="targetMethod" value="start" />
+	</bean> 
+	
+	<bean id="weeklyDistributionTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	 	<property name="jobDetail" ref="weeklyDistribution" />
+	 	<property name="cronExpression" value="0 52 11 ? * SAT"/>
+	</bean>	
+		
+		
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 	 	<property name="triggers">
 	 		<list>
 	 			<ref bean="tradeDataTrigger" />
+	 			<ref bean="weeklyDistributionTrigger" />
 	 		</list>
 	 	</property>
 	</bean>  
