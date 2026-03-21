@@ -1,0 +1,17 @@
+# 忽略所有 .class 檔案
+*.class
+
+# 忽略編譯輸出的目錄
+build/
+bin/
+target/
+
+# 忽略 Eclipse 特有的設定檔 (如果你不希望將 IDE 設定同步)
+.settings/
+.metadata/
+.project
+.classpath
+
+# 忽略作業系統產生的暫存檔
+Thumbs.db
+.DS_Store
