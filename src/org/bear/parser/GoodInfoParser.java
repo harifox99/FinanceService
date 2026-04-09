@@ -31,16 +31,16 @@ public class GoodInfoParser
 			Elements tables = xmlDoc.select("#tblStockList");
 			Element table = tables.get(0);
 			Elements rows = table.select("tr");
-	        for (int j = 0; j < rows.size(); j++)
+	        for (int j = 1; j < rows.size(); j++)
 	        {
 	        	GoodInfoEntity entity = new GoodInfoEntity();
 	        	Element td = rows.get(j);
         		Elements tdList = td.select("td");
-        		Elements thList = td.select("th");
+        		//Elements thList = td.select("th");
         		String data = "";
-        		if (tdList.size() <= 0 || thList.size() <= 0)
+        		if (tdList.size() <= 0)
         			continue;     
-        		data = thList.get(0).text().trim();
+        		data = tdList.get(0).text().trim();
         		//System.out.println("Stock ID: " + data);
         		//String dtime = tdList.get(3).text().trim();
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -66,19 +66,19 @@ public class GoodInfoParser
 						entity.setStockId(data);
 	        	}	        	        		
 				//成交價
-				data = tdList.get(0).text().trim();
+				data = tdList.get(2).text().trim();
         		entity.setPrice(Double.parseDouble(data));
         		//日K值
-        		data = tdList.get(5).text().trim();
+        		data = tdList.get(7).text().trim();
         		entity.setDay_k(data);
         		//日D值
-        		data = tdList.get(6).text().trim();
+        		data = tdList.get(8).text().trim();
         		entity.setDay_d(data);
         		//周K值
-        		data = tdList.get(9).text().trim();
+        		data = tdList.get(11).text().trim();
         		entity.setWeek_k(data);	
         		//周D值
-        		data = tdList.get(10).text().trim();
+        		data = tdList.get(12).text().trim();
 				entity.setWeek_d(data);	
 				if (isDay)
 				{
