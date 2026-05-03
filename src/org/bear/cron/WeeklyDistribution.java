@@ -18,11 +18,12 @@ public class WeeklyDistribution
 	}
 	public static void main(String[] args)
 	{		
-		Date date = new Date();
+		//Date date = new Date();
+		String dateString = "20260430";
 		//設定日期格式
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		//進行轉換
-		String dateString = dateFormat.format(date);
+		//String dateString = dateFormat.format(date);
 		BuildStockDistributionAll buildStock = new BuildStockDistributionAll();
 		buildStock.getData(dateString, "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5", "StockDistributionWeekly");
 	}
