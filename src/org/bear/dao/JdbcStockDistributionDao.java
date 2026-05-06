@@ -38,11 +38,11 @@ public class JdbcStockDistributionDao extends SimpleJdbcDaoSupport implements St
 	}
 
 	@Override
-	public StockDistributionEntity query(String stockID, String dateString) 
+	public StockDistributionEntity query(String stockID, String dateString, String tableName) 
 	{
 		try
 		{
-			String sql = "select * from stockDistribution where stockID = ? and yearMonth = ?";
+			String sql = "select * from " + tableName + " where stockID = ? and yearMonth = ?";
 			System.out.println(sql);
 			StockDistributionEntity entity = getJdbcTemplate().queryForObject(sql,
 					new Object[]{stockID, dateString}, 
@@ -56,23 +56,30 @@ public class JdbcStockDistributionDao extends SimpleJdbcDaoSupport implements St
 	}
 
 	@Override
-	public void update(StockDistributionEntity entity, String stockID, String yearMonth) 
+	public void update(StockDistributionEntity entity, String stockID, String yearMonth, String tableName) 
 	{
-		String sql = "update stockDistribution set " + 
+		String sql = "update " + tableName + " set " + 
 	                 "p1 = ?, p1000 = ?, p5000 = ?, p10000 = ?, p15000 = ?, " +
 	                 "p20000 = ?, p30000 = ?, p40000 = ?, p50000 = ?, p100000 = ?, " +
 	                 "p200000 = ?, p400000 = ?, p600000 = ?, p800000 = ?, p1000000 = ? " +
 	                 "where stockID = ? and yearMonth = ?";
 	                  
-		int result = this.getSimpleJdbcTemplate().update(sql, 
-				entity.getP1(), entity.getP1000(), entity.getP5000(), entity.getP10000(), entity.getP15000(), 
-				entity.getP20000(), entity.getP30000(), entity.getP40000(), entity.getP50000(), entity.getP100000(), 
-				entity.getP200000(), entity.getP400000(), entity.getP600000(), entity.getP800000(), entity.getP1000000(),
-				stockID, yearMonth);
-		if (result <= 0)
+		try
 		{
-			System.out.println("Update StockDistributionEntity Error!");
-			System.exit(result);
+			int result = this.getSimpleJdbcTemplate().update(sql, 
+					entity.getP1(), entity.getP1000(), entity.getP5000(), entity.getP10000(), entity.getP15000(), 
+					entity.getP20000(), entity.getP30000(), entity.getP40000(), entity.getP50000(), entity.getP100000(), 
+					entity.getP200000(), entity.getP400000(), entity.getP600000(), entity.getP800000(), entity.getP1000000(),
+					stockID, yearMonth);
+			if (result <= 0)
+			{
+				System.out.println("Update StockDistributionEntity Error!");
+				System.exit(result);
+			}
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
 		}
 	}
 

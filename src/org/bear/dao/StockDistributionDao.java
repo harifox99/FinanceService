@@ -23,12 +23,12 @@ public interface StockDistributionDao
 	 * @param dateString
 	 * @return
 	 */
-	public StockDistributionEntity query(String stockID, String dateString);
+	public StockDistributionEntity query(String stockID, String dateString, String tableName);
 	/**
 	 * Update
 	 * @param entity
 	 * @param stockID
 	 * @param yearMonth
 	 */
-	public void update(StockDistributionEntity entity, String stockID, String yearMonth);
+	public void update(StockDistributionEntity entity, String stockID, String yearMonth, String tableName);
 }
