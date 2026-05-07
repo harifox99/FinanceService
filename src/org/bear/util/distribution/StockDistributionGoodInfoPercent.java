@@ -37,7 +37,7 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 		{
 			ex.printStackTrace();
 		}
-		for (int j = 0; j < wrapperList.size(); j++)
+		for (int j = 1583; j < wrapperList.size(); j++)
 		{
 			try
 			{
@@ -45,7 +45,7 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 				if (stockList.contains(STOCK_ID) == false)				
 					continue;		
 				else
-					System.out.println("STOCK_ID: " + STOCK_ID);
+					System.out.println("STOCK_ID: " + STOCK_ID + "; Key = " + j);
 				String DISPLAY_CAT = "持有比例區間分級一覽(完整)";
 				DISPLAY_CAT = URLEncoder.encode(DISPLAY_CAT, "UTF-8");
 				StringBuffer content = new StringBuffer();
@@ -78,7 +78,7 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 				//System.out.println(content);
 				GoodInfoDistributionPercentParser parser = new GoodInfoDistributionPercentParser();
 				parser.parse(content.toString(), dateString, week, dao, STOCK_ID, true);
-				Thread.sleep(3000);
+				Thread.sleep(10000);
 			}
 			catch (Exception ex)
 			{
