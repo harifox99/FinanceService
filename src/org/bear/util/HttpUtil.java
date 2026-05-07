@@ -383,6 +383,7 @@ public class HttpUtil {
 			{
 		        System.out.println(response.getStatusLine());
 			}
+			demo.close();
 			return responseString;
 		}
 		catch (Exception ex)
