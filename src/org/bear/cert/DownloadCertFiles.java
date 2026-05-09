@@ -223,6 +223,7 @@ public class DownloadCertFiles {
     	String[] opentdcc = {"opendata.tdcc.com.tw", "443"};
     	String[] mops = {"mops.twse.com.tw", "443"};    	
     	String[] goodinfo = {"goodinfo.tw", "443"};
+    	String[] moneydj = {"www.moneydj.com", "443"};
     	DownloadCertFiles twseCerts = new DownloadCertFiles();
     	twseCerts.loadCerts(twse);
     	DownloadCertFiles tpexCerts = new DownloadCertFiles();
@@ -237,5 +238,7 @@ public class DownloadCertFiles {
     	goodinfoCerts.loadCerts(goodinfo);
     	DownloadCertFiles openTdccCerts = new DownloadCertFiles();   	
     	openTdccCerts.loadCerts(opentdcc);
+    	DownloadCertFiles moneydjCerts = new DownloadCertFiles();   	
+    	moneydjCerts.loadCerts(moneydj);
     }
 }
