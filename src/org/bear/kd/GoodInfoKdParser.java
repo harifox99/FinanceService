@@ -1,4 +1,5 @@
 package org.bear.kd;
+
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.URL;
@@ -17,160 +18,175 @@ import org.jsoup.select.Elements;
 
 public class GoodInfoKdParser
 {
-	private final static String RESPONSE_FILE_LOCATION = "D:\\file.html";
-	private final static String USER_AGENT = "Mozilla/5.0";
-	String urlString;
-	public void setUrlString(String urlString) {
-		this.urlString = urlString;
-	}
-	public void parse(String responseString)
-	{
-		try
-		{
-			Document xmlDoc = Jsoup.parse(responseString);
-	        //(要解析的文件,timeout)
-	        System.out.println(xmlDoc);
-	        Element table = xmlDoc.select("table").get(56); //select the first table.
-	        Elements rows = table.select("tr");
-	        for (int j = 0; j < rows.size(); j++)
-	        {}
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	/*
-	public static void main(String[] args) throws Exception
-	{
-		String url = "https://goodinfo.tw/StockInfo/StockList.asp";
-		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		String MARKET_CAT = "智慧選股";
-		MARKET_CAT = URLEncoder.encode(MARKET_CAT, "UTF-8");
-		paramList.add(new BasicNameValuePair("MARKET_CAT", MARKET_CAT));
-		
-		String INDUSTRY_CAT = "日KD低於20黃金交叉@@日KD相互交叉@@KD低於20黃金交叉";
-		INDUSTRY_CAT = URLEncoder.encode(INDUSTRY_CAT, "UTF-8");
-		paramList.add(new BasicNameValuePair("INDUSTRY_CAT", INDUSTRY_CAT));
-		
-		String SHEET = "KD指標";
-		SHEET = URLEncoder.encode(SHEET, "UTF-8");
-		paramList.add(new BasicNameValuePair("SHEET", SHEET));
-		
-		String SHEET2 = "日/週/月";
-		SHEET2 = URLEncoder.encode(SHEET2, "UTF-8");
-		paramList.add(new BasicNameValuePair("SHEET2", SHEET2));
-		
-		String RPT_TIME = "";
-		paramList.add(new BasicNameValuePair("RPT_TIME", RPT_TIME));
-		
-		String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
-		GoodInfoKdParser parser = new GoodInfoKdParser();
-		parser.parse(responseString);
-		
-	}*/
-	
-	public static void main(String[] args) throws IOException 
-	{
-        String url = "https://goodinfo.tw/StockInfo/StockList.asp";
-        Map<String, String> parameters = new HashMap<String, String>();
-        
-        String MARKET_CAT = "智慧選股";
-		MARKET_CAT = URLEncoder.encode(MARKET_CAT, "UTF-8");
-        parameters.put("MARKET_CAT", MARKET_CAT);
-        
-        String INDUSTRY_CAT = "日KD低於20黃金交叉@@日KD相互交叉@@KD低於20黃金交叉";
-		INDUSTRY_CAT = URLEncoder.encode(INDUSTRY_CAT, "UTF-8");
-		parameters.put("INDUSTRY_CAT", INDUSTRY_CAT);
-        
-		String SHEET = "KD指標";
-		SHEET = URLEncoder.encode(SHEET, "UTF-8");
-		parameters.put("SHEET", SHEET);
-		
-		String SHEET2 = "日/週/月";
-		SHEET2 = URLEncoder.encode(SHEET2, "UTF-8");
-        parameters.put("SHEET2", SHEET2);
-        
-        String RPT_TIME = "";
-        parameters.put("RPT_TIME", RPT_TIME);
-        makePostRequest(url, parameters);
+    private final static String RESPONSE_FILE_LOCATION = "D:\\file.html";
+    private final static String USER_AGENT = "Mozilla/5.0";
+    String urlString;
+
+    public void setUrlString(String urlString)
+    {
+	this.urlString = urlString;
     }
-	
-	static {
-        // this part is needed cause Lebocoin has invalid SSL certificate, that cannot be normally processed by Java
-        TrustManager[] trustAllCertificates = new TrustManager[]{
-                new X509TrustManager() {
-                    @Override
-                    public X509Certificate[] getAcceptedIssuers() {
-                        return null; // Not relevant.
-                    }
 
-                    @Override
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                        // Do nothing. Just allow them all.
-                    }
+    public void parse(String responseString)
+    {
+	try
+	{
+	    Document xmlDoc = Jsoup.parse(responseString);
+	    // (要解析的文件,timeout)
+	    System.out.println(xmlDoc);
+	    Element table = xmlDoc.select("table").get(56); // select the first table.
+	    Elements rows = table.select("tr");
+	    for (int j = 0; j < rows.size(); j++)
+	    {
+	    }
+	} 
+	catch (Exception ex)
+	{
+	    ex.printStackTrace();
+	}
+    }
 
-                    @Override
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                        // Do nothing. Just allow them all.
-                    }
-                }
-        };
+    /*
+     * public static void main(String[] args) throws Exception { String url =
+     * "https://goodinfo.tw/StockInfo/StockList.asp"; List<NameValuePair> paramList
+     * = new ArrayList<NameValuePair>(); String MARKET_CAT = "智慧選股"; MARKET_CAT =
+     * URLEncoder.encode(MARKET_CAT, "UTF-8"); paramList.add(new
+     * BasicNameValuePair("MARKET_CAT", MARKET_CAT));
+     * 
+     * String INDUSTRY_CAT = "日KD低於20黃金交叉@@日KD相互交叉@@KD低於20黃金交叉"; INDUSTRY_CAT =
+     * URLEncoder.encode(INDUSTRY_CAT, "UTF-8"); paramList.add(new
+     * BasicNameValuePair("INDUSTRY_CAT", INDUSTRY_CAT));
+     * 
+     * String SHEET = "KD指標"; SHEET = URLEncoder.encode(SHEET, "UTF-8");
+     * paramList.add(new BasicNameValuePair("SHEET", SHEET));
+     * 
+     * String SHEET2 = "日/週/月"; SHEET2 = URLEncoder.encode(SHEET2, "UTF-8");
+     * paramList.add(new BasicNameValuePair("SHEET2", SHEET2));
+     * 
+     * String RPT_TIME = ""; paramList.add(new BasicNameValuePair("RPT_TIME",
+     * RPT_TIME));
+     * 
+     * String responseString = HttpUtil.send(url, paramList, 1, "UTF-8");
+     * GoodInfoKdParser parser = new GoodInfoKdParser();
+     * parser.parse(responseString);
+     * 
+     * }
+     */
 
-        HostnameVerifier trustAllHostnames = new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true; // Just allow them all.
-            }
-        };
+    public static void main(String[] args) throws IOException
+    {
+	String url = "https://goodinfo.tw/StockInfo/StockList.asp";
+	Map<String, String> parameters = new HashMap<String, String>();
 
-        try {
-            System.setProperty("jsse.enableSNIExtension", "false");
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCertificates, new SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            HttpsURLConnection.setDefaultHostnameVerifier(trustAllHostnames);
-        } catch (GeneralSecurityException e) {
-            throw new ExceptionInInitializerError(e);
-        }
+	String MARKET_CAT = "智慧選股";
+	MARKET_CAT = URLEncoder.encode(MARKET_CAT, "UTF-8");
+	parameters.put("MARKET_CAT", MARKET_CAT);
+
+	String INDUSTRY_CAT = "日KD低於20黃金交叉@@日KD相互交叉@@KD低於20黃金交叉";
+	INDUSTRY_CAT = URLEncoder.encode(INDUSTRY_CAT, "UTF-8");
+	parameters.put("INDUSTRY_CAT", INDUSTRY_CAT);
+
+	String SHEET = "KD指標";
+	SHEET = URLEncoder.encode(SHEET, "UTF-8");
+	parameters.put("SHEET", SHEET);
+
+	String SHEET2 = "日/週/月";
+	SHEET2 = URLEncoder.encode(SHEET2, "UTF-8");
+	parameters.put("SHEET2", SHEET2);
+
+	String RPT_TIME = "";
+	parameters.put("RPT_TIME", RPT_TIME);
+	makePostRequest(url, parameters);
+    }
+
+    static
+    {
+	// this part is needed cause Lebocoin has invalid SSL certificate, that cannot
+	// be normally processed by Java
+	TrustManager[] trustAllCertificates = new TrustManager[]
+	{ new X509TrustManager()
+	{
+	    @Override
+	    public X509Certificate[] getAcceptedIssuers()
+	    {
+		return null; // Not relevant.
+	    }
+
+	    @Override
+	    public void checkClientTrusted(X509Certificate[] certs, String authType)
+	    {
+		// Do nothing. Just allow them all.
+	    }
+
+	    @Override
+	    public void checkServerTrusted(X509Certificate[] certs, String authType)
+	    {
+		// Do nothing. Just allow them all.
+	    }
+	} };
+
+	HostnameVerifier trustAllHostnames = new HostnameVerifier()
+	{
+	    @Override
+	    public boolean verify(String hostname, SSLSession session)
+	    {
+		return true; // Just allow them all.
+	    }
+	};
+
+	try
+	{
+	    System.setProperty("jsse.enableSNIExtension", "false");
+	    SSLContext sc = SSLContext.getInstance("SSL");
+	    sc.init(null, trustAllCertificates, new SecureRandom());
+	    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+	    HttpsURLConnection.setDefaultHostnameVerifier(trustAllHostnames);
+	} catch (GeneralSecurityException e)
+	{
+	    throw new ExceptionInInitializerError(e);
+	}
     }
 
     /**
-     * Make post request for given URL with given parameters and save response into RESPONSE_FILE_LOCATION
+     * Make post request for given URL with given parameters and save response into
+     * RESPONSE_FILE_LOCATION
      *
      * @param url        HTTPS link to send POST request
-     * @param parameters POST request parameters. currently expecting following parameters:
-     *                   name, email, phone, body, send
+     * @param parameters POST request parameters. currently expecting following
+     *                   parameters: name, email, phone, body, send
      */
-    public static void makePostRequest(String url, Map<String, String> parameters) {
-        try {
-            ensureAllParametersArePresent(parameters);
-            //we need this cookie to submit form
-            String initialCookies = getUrlConnection(url, "").getHeaderField("Set-Cookie");
-            HttpsURLConnection con = getUrlConnection(url, initialCookies);
-            String urlParameters = processRequestParameters(parameters);
-            // Send post request
-            con.setRequestProperty("Content-Type","application/x-www-form-urlencoded"); 
-            sendPostParameters(con, urlParameters);
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            File outputFile = new File(RESPONSE_FILE_LOCATION);
-            if (!outputFile.exists()) {
-                outputFile.createNewFile();
-            }
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile)));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                bw.write(inputLine);
-            }
-            in.close();
-            bw.flush();
-            bw.close();
-            //print result
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public static void makePostRequest(String url, Map<String, String> parameters)
+    {
+	try
+	{
+	    ensureAllParametersArePresent(parameters);
+	    // we need this cookie to submit form
+	    String initialCookies = getUrlConnection(url, "").getHeaderField("Set-Cookie");
+	    HttpsURLConnection con = getUrlConnection(url, initialCookies);
+	    String urlParameters = processRequestParameters(parameters);
+	    // Send post request
+	    con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	    sendPostParameters(con, urlParameters);
+	    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	    File outputFile = new File(RESPONSE_FILE_LOCATION);
+	    if (!outputFile.exists())
+	    {
+		outputFile.createNewFile();
+	    }
+	    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile)));
+	    String inputLine;
+	    while ((inputLine = in.readLine()) != null)
+	    {
+		bw.write(inputLine);
+	    }
+	    in.close();
+	    bw.flush();
+	    bw.close();
+	    // print result
+	} catch (Exception e)
+	{
+	    throw new RuntimeException(e);
+	}
     }
 
     /**
@@ -180,12 +196,13 @@ public class GoodInfoKdParser
      * @param urlParameters encoded URL POST parameters
      * @throws IOException
      */
-    private static void sendPostParameters(URLConnection con, String urlParameters) throws IOException {
-        con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
+    private static void sendPostParameters(URLConnection con, String urlParameters) throws IOException
+    {
+	con.setDoOutput(true);
+	DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+	wr.writeBytes(urlParameters);
+	wr.flush();
+	wr.close();
     }
 
     /**
@@ -196,23 +213,22 @@ public class GoodInfoKdParser
      * @return ready-to-use HttpURLConnection
      * @throws IOException
      */
-    private static HttpsURLConnection getUrlConnection(String url, String cookies) throws IOException {
-        HttpsURLConnection con = (HttpsURLConnection) new URL(url).openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("User-Agent", USER_AGENT);
-        con.setRequestProperty("Cookie", cookies);
-        return con;
+    private static HttpsURLConnection getUrlConnection(String url, String cookies) throws IOException
+    {
+	HttpsURLConnection con = (HttpsURLConnection) new URL(url).openConnection();
+	con.setRequestMethod("POST");
+	con.setRequestProperty("User-Agent", USER_AGENT);
+	con.setRequestProperty("Cookie", cookies);
+	return con;
     }
 
-    private static void ensureAllParametersArePresent(Map<String, String> parameters) 
+    private static void ensureAllParametersArePresent(Map<String, String> parameters)
     {
-    	/*
-        if (parameters.get("send") == null) {
-            parameters.put("send", "Envoyer votre message");
-        }
-        if (parameters.get("phone") == null) {
-            parameters.put("phone", "");
-        }*/
+	/*
+	 * if (parameters.get("send") == null) { parameters.put("send",
+	 * "Envoyer votre message"); } if (parameters.get("phone") == null) {
+	 * parameters.put("phone", ""); }
+	 */
     }
 
     /**
@@ -221,12 +237,14 @@ public class GoodInfoKdParser
      * @param parameters request parameters
      * @return URL-encoded parameters string
      */
-    private static String processRequestParameters(Map<String, String> parameters) {
-        StringBuilder sb = new StringBuilder();
-        for (String parameterName : parameters.keySet()) {
-            sb.append(parameterName).append('=').append(urlEncode(parameters.get(parameterName))).append('&');
-        }
-        return sb.substring(0, sb.length() - 1);
+    private static String processRequestParameters(Map<String, String> parameters)
+    {
+	StringBuilder sb = new StringBuilder();
+	for (String parameterName : parameters.keySet())
+	{
+	    sb.append(parameterName).append('=').append(urlEncode(parameters.get(parameterName))).append('&');
+	}
+	return sb.substring(0, sb.length() - 1);
     }
 
     /**
@@ -235,13 +253,17 @@ public class GoodInfoKdParser
      * @param s string to encode
      * @return URL-encoded string
      */
-    private static String urlEncode(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // This is impossible, UTF-8 is always supported according to the java standard
-            throw new RuntimeException(e);
-        }
+    private static String urlEncode(String s)
+    {
+	try
+	{
+	    return URLEncoder.encode(s, "UTF-8");
+	} 
+	catch (UnsupportedEncodingException e)
+	{
+	    // This is impossible, UTF-8 is always supported according to the java standard
+	    throw new RuntimeException(e);
+	}
     }
-    
+
 }
