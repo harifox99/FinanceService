@@ -19,7 +19,7 @@ public class WeeklyDistribution
 	public static void main(String[] args)
 	{		
 		//Date date = new Date();
-		String dateString = "20260430";
+		String dateString = "20260515";
 		//設定日期格式
 		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		//進行轉換
