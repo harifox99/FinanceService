@@ -112,4 +112,8 @@
 		class="org.bear.dao.DealerBranchDao">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	<bean id="branchDetailDao"
+		class="org.bear.dao.BranchDetailDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
