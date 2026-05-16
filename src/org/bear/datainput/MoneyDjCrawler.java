@@ -11,25 +11,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 /**
- * Gemini Auto Gen Java
+ * Gemini Auto Gen Java，執行爬蟲並回傳 Entity 列表
  */
 public class MoneyDjCrawler
 {
-	public static void main(String[] args)
-	{
-		String targetUrl = "https://www.moneydj.com/z/zg/zgb/zgb0.djhtm?a=1030&b=0031003000330046&c=E&d=5";
-		MoneyDjCrawler moneyDjCrawler = new MoneyDjCrawler();
-		moneyDjCrawler.crawer(targetUrl);
-	}
 
-	public void crawer(String targetUrl)
+	/**
+	 * 執行爬蟲並回傳 Entity 列表
+	 */
+	public List<BranchDetailEntity> crawlData(String targetUrl)
 	{
+		List<BranchDetailEntity> detailList = new ArrayList<>();
 		try
 		{
-			System.out.println("開始連線並取得網頁資料...");
-
 			// 1. 取得網頁 HTML 文件
 			Document doc = Jsoup.connect(targetUrl).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
 					.timeout(10000).get();
@@ -43,23 +38,18 @@ public class MoneyDjCrawler
 			}
 
 			// 3. 解析表格資料
-			List<BranchDetailEntity> detailList = new ArrayList<>();
-
-			// MoneyDJ 的主要資料表格通常會套用 "t01" 這個 CSS class
 			Elements rows = doc.select("table.t0 tr");
 
 			for (Element row : rows)
 			{
 				Elements tds = row.select("td");
 
-				// 略過標題列（如果包含「買進張數」等文字則跳過）
 				if (tds.text().contains("買進張數") || tds.isEmpty())
 				{
 					continue;
 				}
 
-				// MoneyDJ 表格經常會將資料拆成左右兩側：
-				// 左側區塊 index: 0(代碼/名稱), 1(買進), 2(賣出), 3(差額)
+				// 左側區塊
 				if (tds.size() >= 4)
 				{
 					BranchDetailEntity entityLeft = parseEntity(tds, 0, exchangeDate);
@@ -69,7 +59,7 @@ public class MoneyDjCrawler
 					}
 				}
 
-				// 右側區塊 index: 4(代碼/名稱), 5(買進), 6(賣出), 7(差額)
+				// 右側區塊
 				if (tds.size() >= 8)
 				{
 					BranchDetailEntity entityRight = parseEntity(tds, 4, exchangeDate);
@@ -79,30 +69,16 @@ public class MoneyDjCrawler
 					}
 				}
 			}
-
-			// 4. 輸出結果預覽
-			System.out.println("資料抓取完成，共取得 " + detailList.size() + " 筆紀錄。\n");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-
-			for (int i = 0; i < Math.min(detailList.size(), 5); i++)
-			{
-				BranchDetailEntity e = detailList.get(i);
-				System.out.printf("日期: %s | 代碼: %-20s | 買進: %-6d | 賣出: %-6d | 差額: %-6d%n",
-						sdf.format(e.getExchangeDate()), e.getStockId(), e.getBuyColumn(), e.getSellColumn(),
-						e.getDiff());
-			}
-
 		}
 		catch (Exception e)
 		{
 			System.err.println("抓取或解析過程中發生錯誤: " + e.getMessage());
 			e.printStackTrace();
 		}
+
+		return detailList;
 	}
 
-	/**
-	 * 從網頁中尋找並解析「資料日期：2026/05/08」
-	 */
 	private Date extractDate(Document doc)
 	{
 		Elements divTags = doc.select("div");
@@ -130,39 +106,27 @@ public class MoneyDjCrawler
 		return null;
 	}
 
-	/**
-	 * 從 td 節點中將特定欄位映射至 Entity
-	 */
 	private BranchDetailEntity parseEntity(Elements tds, int startIndex, Date date)
 	{
 		String stockId = null;
 		String scriptContent = tds.get(startIndex).data().trim();
 		Pattern pattern = Pattern.compile("GenLink2stk\\((.*?)\\);");
 		Matcher matcher = pattern.matcher(scriptContent);
+
 		if (matcher.find())
 		{
-			// 這是完整的字串: GenLink2stk('AP00982A','主動群益台灣強棒');
-			String fullFunction = matcher.group(0);
-			System.out.println("擷取完整函式: " + fullFunction);
-
-			// 這是括號內的參數: 'AP00982A','主動群益台灣強棒'
 			String params = matcher.group(1);
-			// 如果要進一步拆分參數並存入您的 BranchDetailEntity.stockID
 			String[] parts = params.split(",");
 			if (parts.length >= 2)
 			{
-				// 移除單引號得到: AP00982A 主動群益台灣強棒
-				stockId = parts[0].replace("'", "");
-				stockId = stockId.substring(2);
-				String stockName = parts[1].replace("'", "");
-				System.out.println("股票代碼: " + stockId);
-				System.out.println("股票名稱: " + stockName);
-				// 建議存入格式：
-				// entity.setStockID(stockId + " " + stockName);
+				stockId = parts[0].replace("'", "").substring(2);				
+				// 如果需要股票名稱，可以在這處理
+				//String stockName = parts[1].replace("'", "");
 			}
 		}
-		// 過濾掉空值、佔位符號或最後一列的「合計」
-		if (stockId.isEmpty() || stockId.equals("-") || stockId.contains("合計"))
+
+		// 加入 null 檢查以避免例外錯誤
+		if (stockId == null || stockId.isEmpty() || stockId.equals("-") || stockId.contains("合計"))
 		{
 			return null;
 		}
@@ -176,14 +140,10 @@ public class MoneyDjCrawler
 		return entity;
 	}
 
-	/**
-	 * 處理數字字串，移除千分位逗號，並將負號計算在內
-	 */
 	private int parseVolume(String volumeText)
 	{
 		try
 		{
-			// [^\\d-] 意思是：除了數字(\d)和負號(-)以外的字元全部刪除（例如逗號）
 			String cleanText = volumeText.replaceAll("[^\\d-]", "");
 			if (cleanText.isEmpty())
 			{
