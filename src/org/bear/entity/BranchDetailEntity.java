@@ -1,4 +1,5 @@
 package org.bear.entity;
+
 import java.util.Date;
 
 /**
@@ -6,66 +7,90 @@ import java.util.Date;
  */
 public class BranchDetailEntity
 {
-    /**
-     * 布絏
-     */
-    String stockId;
-    /**
-     * 禦秈眎计
-     */
-    int buyColumn;
-    /**
-     * 芥眎计
-     */
-    int sellColumn;
-    /**
-     * 畉肂
-     */
-    int diff;
-    /**
-     * ユら戳
-     */
-    public Date exchangeDate;
-    
-    public Date getExchangeDate()
-    {
-        return exchangeDate;
-    }
-    public void setExchangeDate(Date exchangeDate)
-    {
-        this.exchangeDate = exchangeDate;
-    }
-    public String getStockId()
-    {
-        return stockId;
-    }
-    public void setStockId(String stockID)
-    {
-        this.stockId = stockID;
-    }
-    public int getBuyColumn()
-    {
-        return buyColumn;
-    }
-    public void setBuyColumn(int buyColumn)
-    {
-        this.buyColumn = buyColumn;
-    }
-    public int getSellColumn()
-    {
-        return sellColumn;
-    }
-    public void setSellColumn(int sellColumn)
-    {
-        this.sellColumn = sellColumn;
-    }
-    public int getDiff()
-    {
-        return diff;
-    }
-    public void setDiff(int diff)
-    {
-        this.diff = diff;
-    }
-    
+	/**
+	 * ㄩ坝だ翴絏 (穝糤)
+	 */
+	String code;
+	/**
+	 * 布絏
+	 */
+	String stockId;
+	/**
+	 * 禦秈眎计
+	 */
+	int buyColumn;
+	/**
+	 * 芥眎计
+	 */
+	int sellColumn;
+	/**
+	 * 畉肂
+	 */
+	int diff;
+	/**
+	 * ユら戳
+	 */
+	public Date exchangeDate;
+
+	// --- 穝糤 Getter / Setter ---
+	public String getCode()
+	{
+		return code;
+	}
+
+	public void setCode(String code)
+	{
+		this.code = code;
+	}
+
+	// --- セ Getter / Setter ---
+	public Date getExchangeDate()
+	{
+		return exchangeDate;
+	}
+
+	public void setExchangeDate(Date exchangeDate)
+	{
+		this.exchangeDate = exchangeDate;
+	}
+
+	public String getStockId()
+	{
+		return stockId;
+	}
+
+	public void setStockId(String stockID)
+	{
+		this.stockId = stockID;
+	}
+
+	public int getBuyColumn()
+	{
+		return buyColumn;
+	}
+
+	public void setBuyColumn(int buyColumn)
+	{
+		this.buyColumn = buyColumn;
+	}
+
+	public int getSellColumn()
+	{
+		return sellColumn;
+	}
+
+	public void setSellColumn(int sellColumn)
+	{
+		this.sellColumn = sellColumn;
+	}
+
+	public int getDiff()
+	{
+		return diff;
+	}
+
+	public void setDiff(int diff)
+	{
+		this.diff = diff;
+	}
 }
