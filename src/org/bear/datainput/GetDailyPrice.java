@@ -28,6 +28,7 @@ public class GetDailyPrice
 		boolean isParse = false;
 		List<DailyPriceEntity> list = new ArrayList<DailyPriceEntity>();
 		Map<String, Integer> mapShares = basicStockDao.getSharesOutstanding();
+		//一堆雜訊和Header，所以從300開始
 		for (int i = 300; i < listData.size(); i++)
 		{
 			//System.out.println(listData.get(i));
@@ -97,6 +98,6 @@ public class GetDailyPrice
 		DailyPriceDao dailyPriceDao = (DailyPriceDao)context.getBean("dailyPriceDao");
 		BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 		GetDailyPrice getDailyPrice = new GetDailyPrice();
-		getDailyPrice.getContent("20241108", "Big5", dailyPriceDao, basicStockDao);
+		getDailyPrice.getContent("20260522", "Big5", dailyPriceDao, basicStockDao);
 	}
 }
