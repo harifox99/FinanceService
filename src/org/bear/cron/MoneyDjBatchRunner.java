@@ -19,10 +19,10 @@ public class MoneyDjBatchRunner
 	public static void main(String[] args)
 	{
 		MoneyDjBatchRunner runner = new MoneyDjBatchRunner();
-		runner.executeBatch();
+		runner.executeBatch(true);
 	}
 
-	public void executeBatch()
+	public void executeBatch(boolean isWeek)
 	{
 		System.out.println("--- 啟動券商分點爬蟲批次作業 ---");
 
@@ -42,10 +42,15 @@ public class MoneyDjBatchRunner
 
 		for (DealerBranchEntity branch : dealerBranches)
 		{
-
+			String day = "";
+			if (isWeek)
+				day = "&c=E&d=5";
+			else
+				day = "&c=B&e=2026-7-6&f=2026-7-10";
 			// 組成每個分點的目標 URL
 			String targetUrl = "https://www.moneydj.com/z/zg/zgb/zgb0.djhtm?a=" + branch.getGroupCode() + "&b="
-					+ branch.getCode() + "&c=E&d=5";
+					+ branch.getCode() + day;
+			
 			System.out.println("開始抓取: " + branch.getName() + " (" + branch.getCode() + ") - 網址: " + targetUrl);
 
 			// 呼叫爬蟲
