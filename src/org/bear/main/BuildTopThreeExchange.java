@@ -43,7 +43,7 @@ public class BuildTopThreeExchange {
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"115/05/06"};
+		String[] date = {"115/07/17"};
 		BuildTopThreeExchange trader = new BuildTopThreeExchange();
 		trader.update(date);
 	}
@@ -115,16 +115,16 @@ public class BuildTopThreeExchange {
 			juristicDailyReportDao.updateRank("兩大", westenDate.replace("/", ""));
 			juristicDailyReportDao.updateRank("外資", westenDate.replace("/", ""));
 			juristicDailyReportDao.updateRank("投信", westenDate.replace("/", ""));
-			//KD指標	
-			GoodInfoRequest request = new GoodInfoRequest();
-			request.conn(true, westenDate);
-			request.conn(false, westenDate);			
-			System.out.println(westenDate + " End!");
 			//每日成交資訊
 			GetDailyPrice getDailyPrice = new GetDailyPrice();
 			getDailyPrice.getContent(westenDate.replace("/", ""), "Big5", dailyPriceDao, basicStockDao);
 			UpdateTpexPrice tpexPrice = new UpdateTpexPrice();
 			tpexPrice.getContent(westenDate, "Big5", dailyPriceDao, basicStockDao);
+			//KD指標	
+			GoodInfoRequest request = new GoodInfoRequest();
+			request.conn(true, westenDate);
+			request.conn(false, westenDate);			
+			System.out.println(westenDate + " End!");
 			/* 
 			Set <String> kdGolden = request.getKdGolden();
 		    CronVcp cronVcp = new CronVcp();
