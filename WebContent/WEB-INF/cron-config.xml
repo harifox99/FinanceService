@@ -19,7 +19,7 @@
 	</bean>
 	<bean id="tradeDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	 	<property name="jobDetail" ref="updateTradeData" />
-	 	<property name="cronExpression" value="0 35 21 ? * MON-FRI"/>
+	 	<property name="cronExpression" value="0 02 22 ? * MON-FRI"/>
 	</bean>
 	<bean id="vcp"
 		class="org.bear.cron.CronVcp">
@@ -58,6 +58,11 @@
 	<bean id="djBatcherRunner" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	 	<property name="targetObject" ref="djBatcher" />
 	 	<property name="targetMethod" value="executeBatch" />
+	 	<property name="arguments">
+	 		<list>
+	 			<value>true</value>
+	 		</list>
+	 	</property>
 	</bean> 
 	
 	<bean id="djBatcherRunnerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
