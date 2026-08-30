@@ -37,7 +37,7 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 		{
 			ex.printStackTrace();
 		}
-		for (int j = 1583; j < wrapperList.size(); j++)
+		for (int j = 0; j < wrapperList.size(); j++)
 		{
 			try
 			{
@@ -88,8 +88,8 @@ public class StockDistributionGoodInfoPercent extends ImportStockID
 	}
 	public static void main(String args[])
 	{		
-		String[] dateString = {"2026-04-02", "2026-04-10", "2026-04-17", "2026-04-24"};		
-		String[] week = {"26W14", "26W15", "26W16", "26W17"};
+		String[] dateString = {"20260814"};		
+		String[] week = {"26W33"};
 		StockDistributionGoodInfoPercent distribution = new StockDistributionGoodInfoPercent();
 		distribution.conn(dateString, week);
 	}
