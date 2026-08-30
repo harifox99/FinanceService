@@ -9,7 +9,6 @@ import org.bear.dao.JuristicDailyReportDao;
 import org.bear.dao.ThreeBigExchangeDao;
 import org.bear.datainput.GetDailyPrice;
 import org.bear.datainput.UpdateTpexPrice;
-import org.bear.kd.GoodInfoRequest;
 import org.bear.parser.EtfParser;
 import org.bear.parser.RankingParser;
 import org.bear.parser.TaifexLotParser;
@@ -43,7 +42,7 @@ public class BuildTopThreeExchange {
 	BasicStockDao basicStockDao = (BasicStockDao)context.getBean("basicStockDao");
 	public static void main(String[] args)
 	{
-		String[] date = {"115/07/17"};
+		String[] date = {"115/08/28"};
 		BuildTopThreeExchange trader = new BuildTopThreeExchange();
 		trader.update(date);
 	}
@@ -121,9 +120,9 @@ public class BuildTopThreeExchange {
 			UpdateTpexPrice tpexPrice = new UpdateTpexPrice();
 			tpexPrice.getContent(westenDate, "Big5", dailyPriceDao, basicStockDao);
 			//KD«ü¼Ð	
-			GoodInfoRequest request = new GoodInfoRequest();
-			request.conn(true, westenDate);
-			request.conn(false, westenDate);			
+			//GoodInfoRequest request = new GoodInfoRequest();
+			//request.conn(true, westenDate);
+			//request.conn(false, westenDate);			
 			System.out.println(westenDate + " End!");
 			/* 
 			Set <String> kdGolden = request.getKdGolden();
