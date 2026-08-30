@@ -58,11 +58,11 @@ public class UpdateRevenue
 	{
 		//¤W¥«
 		UpdateRevenue revenueTwse = new UpdateRevenue();
-		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_114_11.csv");
+		revenueTwse.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fsii%2F&fileName=t21sc03_115_7.csv");
 		revenueTwse.getData();
 		//¤WÂd
 		UpdateRevenue revenueOtc = new UpdateRevenue();
-		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_114_11.csv");
+		revenueOtc.setParameters("step=9&functionName=show_file2&filePath=%2Ft21%2Fotc%2F&fileName=t21sc03_115_7.csv");
 		revenueOtc.getData();
 	}
 	public String getParameters() {
