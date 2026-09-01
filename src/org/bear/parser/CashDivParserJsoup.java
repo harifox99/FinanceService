@@ -25,7 +25,7 @@ public class CashDivParserJsoup extends ParserBase
 	public static void main(String[] args) throws Exception 
 	{
         // TODO Auto-generated method stub
-		String url = "http://sjmain.esunsec.com.tw/z/zc/zcc/zcc.djhtm?A=1101";
+		String url = "https://djinfo.cathaysec.com.tw/z/zc/zcc/zcc.djhtm?A=1101";
         new CashDivParserJsoup(url).parsing(7);
     }
 	public CashDivParserJsoup(String urlString)
@@ -51,7 +51,15 @@ public class CashDivParserJsoup extends ParserBase
 		        Element td = tr.get(i);
 		        Elements tdList = td.select("td");
 		        listYear.add(tdList.get(0).text());
-		        listCashDiv.add(Double.parseDouble(tdList.get(3).text()));
+		        try 
+		        {
+		        	Double.parseDouble(tdList.get(3).text());
+		        	listCashDiv.add(Double.parseDouble(tdList.get(3).text()));
+		        }
+		        catch (NumberFormatException ex)
+		        {
+		        	listCashDiv.add(0.0);
+		        }
 		        //mapCashDiv.put(tdList.get(0).text(), Double.parseDouble(tdList.get(3).text()));
 	        }
     	}
