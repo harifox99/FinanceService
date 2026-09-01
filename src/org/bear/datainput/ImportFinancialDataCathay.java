@@ -30,7 +30,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 	//其他財務資料DAO
 	FinancialDataDao dao;
 	FinancialDataEntity entity;
-	int expectedNum = 1;
+	int expectedNum = 2;
 	public void insertBatchList()
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -39,7 +39,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 		List<String> stockList = new ArrayList<String>();
 		try
 		{	
-			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/StockListBack.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("C:/Users/bear/Desktop/StockList.txt"));
 			while((readData = reader.readLine()) != null)
 			{
 				stockList.add(readData);
@@ -54,7 +54,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 				{
 					continue;
 				}
-				//if (!stockID.equals("2437"))
+				//if (!stockID.equals("1201"))
 					//continue;
 				System.out.println("股票代碼：" + stockID + " " + idleTime + ". ");
 				/***********/
@@ -77,7 +77,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			urlNav = new GetURLCathayNav(stockID, true);
 		else
 			urlNav = new GetURLCathayNavSingle(stockID, true);
-		String responseString = HttpUtil.httpGet(urlNav.getUrlString(), "UTF-8");
+		String responseString = HttpUtil.httpGet(urlNav.getUrlString(), "Big5");
 		NAVParserCathay navParser = new NAVParserCathay(urlNav.getContentString(responseString), stockID);
 		navParser.parse(1);
 		//每年配發股息
@@ -107,7 +107,7 @@ public class ImportFinancialDataCathay extends ImportStockID
 			else
 				entity.setCashDiv(mapCashDiv.get(year));	
 			//只要當年的
-			if (entity.year.equals("2021"))
+			if (entity.year.equals("2025") || entity.year.equals("2026"))
 			{
 				entityList.add(entity);
 				//合併財務資料不足，擷取非合併財務資料
