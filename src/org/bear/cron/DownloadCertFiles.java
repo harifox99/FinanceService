@@ -244,4 +244,35 @@ public class DownloadCertFiles {
     	DownloadCertFiles djinfoCerts = new DownloadCertFiles();   	
     	djinfoCerts.loadCerts(djinfo);
     }
+    
+    public void update() throws Exception
+    {    	
+    	String[] twse = {"www.twse.com.tw", "443"};
+    	String[] tpex = {"www.tpex.org.tw", "443"};
+    	String[] taif = {"www.taifex.com.tw", "443"};
+    	String[] tdcc = {"www.tdcc.com.tw", "443"};
+    	String[] opentdcc = {"opendata.tdcc.com.tw", "443"};
+    	String[] mops = {"mops.twse.com.tw", "443"};    	
+    	String[] goodinfo = {"goodinfo.tw", "443"};
+    	String[] moneydj = {"www.moneydj.com", "443"};
+    	String[] djinfo =  {"djinfo.cathaysec.com.tw", "443"};
+    	DownloadCertFiles twseCerts = new DownloadCertFiles();
+    	twseCerts.loadCerts(twse);
+    	DownloadCertFiles tpexCerts = new DownloadCertFiles();
+    	tpexCerts.loadCerts(tpex);
+    	DownloadCertFiles taifCerts = new DownloadCertFiles();
+    	taifCerts.loadCerts(taif);
+    	DownloadCertFiles tdccCerts = new DownloadCertFiles();   	
+    	tdccCerts.loadCerts(tdcc);
+    	DownloadCertFiles mopsCerts = new DownloadCertFiles();   	
+    	mopsCerts.loadCerts(mops);
+    	DownloadCertFiles goodinfoCerts = new DownloadCertFiles();   	
+    	goodinfoCerts.loadCerts(goodinfo);
+    	DownloadCertFiles openTdccCerts = new DownloadCertFiles();   	
+    	openTdccCerts.loadCerts(opentdcc);
+    	DownloadCertFiles moneydjCerts = new DownloadCertFiles();   	
+    	moneydjCerts.loadCerts(moneydj);
+    	DownloadCertFiles djinfoCerts = new DownloadCertFiles();   	
+    	djinfoCerts.loadCerts(djinfo);
+    }
 }
