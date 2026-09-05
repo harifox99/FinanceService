@@ -48,7 +48,7 @@
 	
 	<bean id="weeklyDistributionTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	 	<property name="jobDetail" ref="weeklyDistribution" />
-	 	<property name="cronExpression" value="0 52 11 ? * SAT"/>
+	 	<property name="cronExpression" value="0 0 12 ? * SAT"/>
 	</bean>	
 	
 	<!--             -->
@@ -69,7 +69,7 @@
 	
 	<bean id="djBatcherRunnerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	 	<property name="jobDetail" ref="djBatcherRunner" />
-	 	<property name="cronExpression" value="0 55 11 ? * SAT"/>
+	 	<property name="cronExpression" value="0 15 12 ? * SAT"/>
 	</bean>	
 	
 	<!--             -->
@@ -80,12 +80,12 @@
 	
 	<bean id="certUpdate" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	 	<property name="targetObject" ref="certUpdater" />
-	 	<property name="targetMethod" value="loadCerts" />
+	 	<property name="targetMethod" value="update" />
 	</bean> 
 	
 	<bean id="certUpdateTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	 	<property name="jobDetail" ref="certUpdate" />
-	 	<property name="cronExpression" value="0 25 11 ? * SAT"/>
+	 	<property name="cronExpression" value="0 45 11 ? * SAT"/>
 	</bean>	
 				
 		
